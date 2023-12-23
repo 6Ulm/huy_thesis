@@ -7,16 +7,15 @@
 In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
 The general structure for each topic includes the motivation, the theoritical and numerical aspects.
-We present the motivation, then focus on the computational and practical aspects,
-which are not usually thoroughly discussed in the OT literature. By contrast,
-we only briefly introduce the theory since it has been well-studied and can be found easily
+In particular, we focus on the computational and practical aspects,
+which are not usually discussed in the OT literature. By contrast,
+we only briefly present the theory since it has been well-studied and can be found easily
 in many prior works, which will be precised during the discussion of each topic.
 
 We start with the balanced OT, which quantifies the discrepancy between probability measures,
 whose supports live in the same underlying space. Then, we study two important extensions
 of this problem. The first one is based on the relaxation of the hard marginal constraints,
-which results in the unbalanced OT. As a byproduct, it also provides more flexibility to
-the comparison of measures, not just limited to the probability ones. The second generalization
+which results in the unbalanced OT. The second generalization
 considers the situation where the supports of the probability measures lie in
 incomparable ground spaces. This leads to the Gromov-Wasserstein distance,
 whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein distance.
@@ -27,10 +26,10 @@ whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein
 \subsection{Balanced Optimal Transport}
 
 We present two viewpoints on the motivation of the OT problem:
-the Monge problem serves as the historical starting point of the Kantorovich problem and
-the Hausdorff distance is particularly useful to develop the original intuition of
-the Gromov-Wasserstein distance. Then, we briefly present some theoritical properties of the
-Wasserstein distance, which are widely used in machine learning applications.
+the Monge problem serves as the historical starting point and
+the Hausdorff distance later provides the intuition to the Gromov-Wasserstein distance.
+Then, we briefly present some theoritical properties of the Wasserstein distance,
+which are widely used in machine learning applications.
 Finally, we discuss in details the numerical and practical aspects of the
 entropic approximation of the OT distance.
 
@@ -160,7 +159,7 @@ then by Proposition 2.1 in \citep{Memoli11}, we have
   d_{H}^{(Z, d)}(X,Y) = \inf_{R \in  \mathcal R(X,Y)} \sup_{(x,y) \in R} d(x,y)
   = \inf_{R \in \mathcal R(X,Y)} \vert\vert d \vert\vert_{L^{\infty}(R)}.
 \end{equation}
-Now, we equip each compact subset in $\cC(Z)$ with a Borel probability measure and consider
+Suppose that we equip each compact subset in $\cC(Z)$ with a Borel probability measure and consider
 the collection of such "weighted spaces"
 $\cC_w(Z) := \{(X,\mu_X): \text{supp}(\mu_X) = X \text{ and } X \in \cC(Z) \}$.
 Given the similarity discussed above,
@@ -191,7 +190,6 @@ when extending to the setting of metric measure space.
   "$L^p$" indicates the \textit{$L^p$-ization} process: replacing the supremum norm by the $L^p$-norm.}
   \label{fig:wass_motiv}
 \end{figure}
-
 \subsubsection{Theory}
 Since the seminal work of Kantorovich \citep{Kanto42},
 the theory of OT has been profoundly developped in the last decades.
@@ -199,7 +197,7 @@ Different theoretical aspects with different level of generality
 (from compact metric space to Polish space) are covered in various excellent references,
 to name just a few, \citep{Villani03,Villani08,Fillipo15,Ambrosio05}. This list is
 by no means exhaustive or representative. In this thesis, we only present a few
-basic and useful properties, which have much impact in machine learning.
+basic and useful properties of OT, which have much impact in machine learning.
 
 \paragraph{Existence of solution, metric and weak convergence properties}
 The existence of minimizer of the Kantorovich problem is guaranteed,
@@ -275,8 +273,8 @@ There exist some approaches to overcome this limitation, for example, the mini-b
 \citep{Sommerfeld19,Fatras20} considers multiple resamplings of the data and
 uses the average of distances in the mini-batches as an estimation of the true OT distance.
 The "sliced" method \citep{Rabin12,Bonneel15} develops an alternative metric
-called \textit{Sliced Wasserstein distance},
-which relies on the fact that computing the $1$-D Wasserstein distance boils down to sorting the
+called \textit{Sliced Wasserstein distance}.
+It relies on the fact that computing the $1$-D Wasserstein distance boils down to sorting the
 point values, which only requires the complexity of $O(n \log n)$.
 Using the framework from statistical physics, \citep{Koehl19}
 approximate the OT distance by the free energy evaluated at sufficiently small temperature.
@@ -295,11 +293,11 @@ for $\varepsilon > 0$,
   \varepsilon \; \kl(P | \mu \otimes \nu).
 \end{align}
 In the OT literature, the entropic regularization can sometimes be referred to the case where
-the regularizer is the negative entropy $H$ defined by $H(P) = \sum_{i,j} P_{ij} (\log P_{ij} - 1)$.
+the regularizer is the negative entropy defined by $H(P) = \sum_{i,j} P_{ij} (\log P_{ij} - 1)$.
 However, since $\kl(P | \mu \otimes \nu) = H(P) - H(\mu) - H(\nu)$, for any $P \in U(\mu, \nu)$,
 the two regularized problems are equivalent, up to a constant.
 Interestingly, the entropic OT is an even older problem than the unregularized one.
-It is already studied in the early 30's by \citep{Schrodinger32},
+It was already studied in the early 30's by \citep{Schrodinger32},
 under the name \textit{static Schrodinger bridge problem}.
 The entropic OT problem has attracted much attention to the
 machine learning community thanks to the seminal work of \citep{Cuturi13}.
@@ -342,12 +340,12 @@ This issue can be mitigated, for example when the probability measures are sub-G
 Entropic OT is also known for its joint convexity, smoothness with respect to
 the inputs \citep{Luise18} and metric property \citep{Sanjabi18}.
 
-\paragraph{Algorithm} To solve the dual problem \ref{eq:dual_ot}, one can use the
-stochastic approach \citep{Genevay16,Seguy18}, which also allows to cope with large-scale problems.
-In this thesis, we are interested in the deterministic one, where the most popular solver
+\paragraph{Algorithm} To solve the dual problem \ref{eq:dual_ot},
+we are interested in the deterministic approach, where the most popular solver
 is the Sinkhorn algorithm \citep{Sinkhorn67}
-\footnote{For the historical perspective, see Remark 4.5 in \citep{Peyre19}.}
-(also known as \textit{matrix scaling algorithm}). Denote $K = e^{-C / \varepsilon}$,
+\footnote{Also known as \textit{matrix scaling algorithm}.
+For the historical perspective, see Remark 4.5 in \citep{Peyre19}.}.
+Denote $K = e^{-C / \varepsilon}$ the kernel matrix. Then,
 from the first-order optimality conditions of the dual problem, the iterates read
 \begin{align}
   u^{(t+1)} = \frac{\mu}{Kv^{(t)}} \text{ and } v^{(t+1)} = \frac{\nu}{K^T u^{(t+1)}}.
@@ -356,10 +354,8 @@ This algorithm is very easy to implement and available in the Python Optimal Tra
 \citep{Flamary21} and OTT-JAX \citep{Cuturi22} packages.
 It is well known that it converges globally to the optimal dual vectors of the dual problem
 \citep{Sinkhorn67}, at a linear rate in variation semi-norm \citep{Franklin89}.
-The OT plan then can be retrieved from the optimal solution $(f^*, g^*)$ by
-\begin{align*}
-  P^* = (\mu \otimes \nu) \odot \exp \left( \frac{f^* \oplus g^* - C}{\varepsilon} \right).
-\end{align*}
+The OT plan then can be retrieved from the optimal solution $(u, v)$ by
+$P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$.
 
 % Note that, as Sinkhorn algorithm is nothing but a coordinate ascent algorithm,
 % \footnote{Note that the "one-at-a-time" scheme must be used
@@ -370,9 +366,9 @@ The OT plan then can be retrieved from the optimal solution $(f^*, g^*)$ by
 \paragraph{Discussion on Sinkhorn algorithm}
 The Sinkhorn algorithm has two key advantages. First, since the iterates only require
 vector-matrix multiplication, they can be seamlessly parallerized.
-The computation can also be further speed up by exploiting the structure of the kernel matrix
-(see Section 4.3 in \citep{Peyre19}). Second, one only needs to store the dual vectors
-(which cost $O(n)$ in memory) and the OT plan (which costs $O(n^2)$ in memory)
+The computation can be further speed up by exploiting the structure of the kernel matrix
+(see Section 4.3 in \citep{Peyre19}). Second, it is enough to store only the dual vectors
+(which cost $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
 can be easily queried on demand.
 
 However, the smaller the regularization, the more it hurts the Sinkhorn algorithm.
@@ -384,14 +380,14 @@ While being admissible, the rounded transport plan may not be the solution of th
 
 Second, when $\varepsilon$ is close to $0$, the quick saturation of the kernel
 $\exp^{-C / \varepsilon}$ to the zero matrix may trigger the numerical error caused by the division by zero.
-To avoid the numerical instability, the implementation in the log-domain is recommended
+To avoid this numerical instability, the implementation in the log-domain is recommended
 at the cost of slowing down the algorithm, due to the logsumexp operation.
 More precisely, the log-domain iterates read
 \begin{enumerate}
   \item $f^{(t+1)} = \log \mu - \log \sum_j \exp \left( g_j^{(t)} - \frac{C_{\cdot, j}}{\varepsilon} \right)$.
   \item $g^{(t+1)} = \log \nu - \log \sum_i \exp \left( f_i^{(t+1)} - \frac{C_{i, \cdot}}{\varepsilon} \right)$.
 \end{enumerate}
-To mitigate this side effect, one can use the redundant parametrization strategy
+To mitigate the side effect, one can use the redundant parametrization strategy
 \citep{Chizat18a,Schmitzer19}.
 
 Third, the initialization of dual vectors is important.
@@ -401,7 +397,7 @@ One can use the $\varepsilon$-scaling scheme \citep{Schmitzer19}
 \footnote{This strategy is very efficiently exploited and implemented in the Geomloss package
 \citep{Feydy19}}, whose idea is simple: we fix a decreasing sequence of regularizations
 converging to $\varepsilon$, then successively use the solution of the previous problem to
-initialize the next one. However, it can be very costly due to the amount of subproblems,
+initialize the next one. However, this can be very costly due to the amount of subproblems,
 while not necessarily ensuring the convergence to the true minimizer of the entropic OT problem.
 Recently, \citep{Thornton23a} leverage the fact that the dual vectors in unregularized OT problem
 can admit closed-form expressions for $1$D-OT and Gaussian measures, and propose to use them
@@ -435,11 +431,10 @@ This approach, known as \textit{Inexact Proximal OT} (IPOT), is introduced in \c
 Later, we will see in \Cref{sec:input} that it can be easily extended to the unbalanced OT setting
 and achieves superior performance to other existing methods.
 
-Third, there are some recent improvements on the Sinkhorn algorithm,
-which rely on careful elaboration of the iterates, for example,
-the over-relaxation method \citep{Lehmann21,Thibault21}, the screening strategy \citep{Alaya19},
-or the greedy approach \citep{Altschuler17,Lin20,Kostic21}.
-There exist also other classes of algorithms for the entropic OT, notably
+Third, the recent improvements on the Sinkhorn algorithm,
+namely the over-relaxation method \citep{Lehmann21,Thibault21}, the screening strategy \citep{Alaya19},
+or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, tend to rely on careful elaboration
+of the iterates. There exist also other classes of algorithms for the entropic OT, notably
 the adaptive primal-dual accelerated mirror descent \citep{Dvurechensky18,Lin22},
 or the stochastic gradient descent \citep{Abid18,Genevay16,Seguy18}.
 
@@ -482,7 +477,7 @@ integrate the prior knowledge on the data, or the structure of the transport mat
 \subsubsection{Formulation and properties}
 
 Recall that the balanced OT enforces hard constraints on the marginal distributions
-of the OT plan. These constraints lead to two main disadvantages: first,
+of the OT plan. These constraints lead to two main disadvantages. First,
 imbalanced datasets where samples are re-weighted cannot be accurately compared.
 Second, mass transportation must be exhaustive in the sense that,
 outliers, if any, must be matched regardless of the cost they induce.
@@ -501,7 +496,7 @@ modeling cell developmental trajectories \citep{Schiebinger19}.
 Unbalanced OT and its variants are usually sought for
 their known robustness to outliers \citep{Mukherjee21,Balaji20,Fatras21,Nietert22,Le21}.
 
-\paragraph{Formulation} To define the UOT problem, we first start with
+\paragraph{Formulation} To define the UOT problem, let us start with
 the Csiszár divergence \citep{Csiszar63}. Given an entropy function
 $\varphi : \mathbb R_{> 0} \to [0, \infty]$ (\textit{i.e.} it is convex,
 positive and lower semi-continuous such that $\varphi(1) = 0$), we define
