@@ -7,10 +7,9 @@
 In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
 The general structure for each topic includes the motivation, the theoritical and numerical aspects.
-In particular, we focus on the computational and practical aspects,
-which are not usually discussed in the OT literature. By contrast,
-we only briefly present the theory since it has been well-studied and can be found easily
-in many prior works, which will be precised during the discussion of each topic.
+In particular, we focus on the numerics, which are not usually discussed in the OT literature,.
+By contrast, we only briefly present the theory since it has been well-studied and can be found
+easily in many prior works, which will be precised during the discussion of each topic.
 
 We start with the balanced OT, which quantifies the discrepancy between probability measures,
 whose supports live in the same underlying space. Then, we study two important extensions
@@ -433,7 +432,7 @@ and achieves superior performance to other existing methods.
 
 Third, the recent improvements on the Sinkhorn algorithm,
 namely the over-relaxation method \citep{Lehmann21,Thibault21}, the screening strategy \citep{Alaya19},
-or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, tend to rely on careful elaboration
+or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, usually rely on careful elaboration
 of the iterates. There exist also other classes of algorithms for the entropic OT, notably
 the adaptive primal-dual accelerated mirror descent \citep{Dvurechensky18,Lin22},
 or the stochastic gradient descent \citep{Abid18,Genevay16,Seguy18}.
@@ -940,16 +939,16 @@ and regularizers, with the corresponding related works.
 \subsection{Problem statement}
 
 When the source and target data do not live in the same underlying space, it is no longer possible
-to calculate the inter-space distance. Such situations are ubiquitous in practice.
+to compute the inter-space distance. Such situations are ubiquitous in practice.
 For example, images in source and target domains may have different resolutions. Even if they
 are vectorized by the last layers of neural networks, it is not unusual to have the
 embeddings of different dimensions. Even worse, in graph,
-such vectorial representation of the nodes may not even exist by default
+such vectorial representation of the node may not even exist by default
 (though it can be learned), and only within-domain similarity matrix is available.
 We also note that, in the finite-dimensional setting,
 one can still manipulate the formulation of the Wasserstein distance,
 in order to adapt the unequal-dimension supports of the measures \citep{Cai22,McCann20}.
-However, it is not clear how such methods can be applied to real-life applications.
+However, it is not clear how such methods are applied into practical situations.
 
 In this section, we present a metric which can be used to compare incomparable spaces,
 termed \textbf{Gromov-Wasserstein} (GW) distance introduced by \citep{Memoli07,Memoli11}
@@ -994,15 +993,15 @@ A metric measure space (mm-space) is a triplet $(X, d_X, \mu_X)$, where
 \end{definition}
 In other words, we focus on essentially the same objects as in the Wasserstein distance, except that
 the metric is no longer shared across spaces but must be specified for each individual space.
-Now, we will see that the motivation of the Wasserstein distance via Hausdorff distance presented
+As we will see, the relation between Wasserstein and Hausdorff distances presented
 in \Cref{subsec:ot_motiv} becomes very handy as it gives us a natural extension to
 the setting of mm-space. First, we introduce the Gromov-Hausdorff (GH) distance proposed
 by \citep{Gromov81} (see also Remark 7.3.12 in \citep{Burago01}).
-While we are inspired by Chapter 4 in \citep{Memoli11},
-we aim to perform a more thorough literature review, including the most recent development and
+While we are mostly inspired by Chapter 4 in \citep{Memoli11},
+we perform a more thorough literature review, including the most recent development and
 applications of the GH-based distances in the OT and machine learning literature.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{definition}
+\begin{definition}[Admissible distance]
   Given two compact metric spaces $(X,d_X)$ and $(Y,d_Y)$, we denote $\cD(d_X,d_Y)$
   the set of all pseudo-metrics on the disjoint union $X \cup Y$, such that for any
   $d \in \cD(d_X,d_Y)$, we have $d = d_X$ on $X^2$, and $d = d_Y$ on $Y^2$.
@@ -1044,9 +1043,9 @@ Let us first introduce the following useful notions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 Clearly, any isometric embedding is necessarily injective, so an isometry is bijective.
 Moreover, it can be shown that $\varphi^* d_Y$ defines a metric if and
-only if $\varphi$ is injective. The strict preservation of distance can also be softened, meaning
-that $d_X = O(\varphi^* d_Y)$. This is known as \textit{approximate embedding} \citep{Matousek13},
-which has already been studied since the 80's. Notable examples include the famous
+only if $\varphi$ is injective. By relaxing the strict preservation of distance,
+where $d_X = O(\varphi^* d_Y)$, one obtains the \textit{approximate embedding} \citep{Matousek13}.
+This object has already been studied since the 80's, whose notable examples include the famous
 Johnson-Lindenstrauss lemma \citep{Johnson84} and Bourgain's embedding theorem \citep{Bourgain85}.
 
 Now, we will briefly discuss some distances betweeen mm-spaces, whose origins come from
@@ -1275,7 +1274,7 @@ handy OT plan.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Isomorphism between mm-spaces}
 Isomorphism is a central concept in the study of GW distance between the mm-spaces.
-Two mm-spaces are \textit{isomorphic} (or sometimes called \textit{strongly isomorphic})
+Two mm-spaces are \textit{isomorphic}
 if and only if there exists a measure-preserving isometry from
 one mm-space to the other. Notable examples of isomorphism include orthogonal transformations,
 for example rotation, translation and relection.
@@ -1329,7 +1328,7 @@ There are several immediate observations from this definition.
   \item \Cref{def:isomorphic} can also adapted to the mm-space. In this case,
   by Lemma 1.10 in \citep{Sturm12}, the three forms are equivalent.
 
-  \item The strong isomorphism is a very strict condition. Indeed, first,
+  \item The strong isomorphism is a very strict condition. First,
   it is not difficult to see that strong isomorphism implies semi-strong isomorphism and
   semi-strong isomorphism implies weak isomorphism. By Remark 2 in \citep{Chowdhury19},
   the reverse may not hold in general. Second, it requires the pullback equality to hold
@@ -1338,13 +1337,13 @@ There are several immediate observations from this definition.
   \item To the best of our knowledge, the semi-strong isomorphism has never been discussed in the literature.
   However, as we will see, it is useful to characterize the Gromov-Monge distance.
 \end{enumerate}
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.6\textwidth,keepaspectratio]{Chapitre1/figures/isomorphism.pdf}
-  \caption{Semi-strong and weak isomorphisms. The direction of the arrow indicates that one network
-  is a mass splitting of the other.}
-  \label{fig:strong_weak}
-\end{figure}
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.6\textwidth,keepaspectratio]{Chapitre1/figures/isomorphism.pdf}
+%   \caption{Semi-strong and weak isomorphisms. The direction of the arrow indicates that one network
+%   is a mass splitting of the other.}
+%   \label{fig:strong_weak}
+% \end{figure}
 Similar to the Wasserstein distance, a Monge version of the GW distance,
 known as \textit{Gromov-Monge} (GM) distance, is defined as
 \begin{equation}
@@ -1688,10 +1687,10 @@ for structure information needs to be also feature-preserving.
 The structure of the objective function allows FGW to interpolate
 between the OT and GW distances, depending on the asymptotic behavior of $\alpha$ \citep{Vayer19b}.
 
-Any solver for GW can be easily applied to the FGW. The feature can also be seen as node embedding
-and can be learned simultaneous with the alignment matrix, for example in \citep{Xu19}.
-Despite the simplicity, FGW has been successfully used in many applications.
-It can be easily integrated into many OT-based divergences, for example low-rank GW \citep{Meyer21b},
+Any solver for GW can be easily applied to the FGW. Instead of using predefined feature,
+it is also possible to learn it simultaneously with the alignment matrix,
+for example in \citep{Xu19}. It can also be easily integrated into many OT-based divergences,
+for example low-rank GW \citep{Meyer21b},
 Keypoint-guided OT \citep{Gu22}, Information-maximizing OT \citep{Chuang23},
 fused unbalanced GW \citep{Thual22}.
 In supervised learning, the main idea of FGW is also shared in other OT-based divergences,
@@ -1761,15 +1760,15 @@ This section is an ongoing work on an alternative solver for the entropic UOT pr
 to the best of our knowledge.
 We called this approach \textit{INexact Proximal Unbalanced optimal Transport} (INPUT),
 since it is a straightforward application of the inexact Bregman Proximal Point (BPP) algorithm
-to the UOT problem. We present the derivation of INPUT, then discuss how
+to the UOT problem. We present the derivation of INPUT, then illustrate how
 it can overcome the limitations of the MM and Sinkhorn-based methods,
 while being orders of magnitude faster in our toy experiments. Despite the simplicity,
-its convergence analysis remains a challenging open problem and is left to future work.
+its convergence analysis remains a challenging open problem and is under our active research.
 
 \subsection{Motivation, optimization and algorithm}
 
 While the Bregman Proximal Point method \citep{Chen93} applies to the class of Bregman divergences,
-we will only focus on the KL divergence in our case.
+we will exclusively focus on the KL divergence throughout this thesis.
 \begin{definition}
   Given a nonepmpty closed convex set of $E \subset \bbR^d_{\geq 0}$
   and a proper closed convex function $f: E \to \bbR$, consider the following
@@ -1777,13 +1776,19 @@ we will only focus on the KL divergence in our case.
   \begin{equation*}
     \min_{x \in E} f(x)
   \end{equation*}
-  For learning rate $\eta > 0$, the BPP scheme with respect to the KL divergence reads
+  For learning rate $\eta > 0$, the exact BPP scheme with respect to the KL divergence reads
   \begin{equation}
     \label{eq:bppa}
-    x^{(t+1)} = \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}).
+    x^{(t+1)} = \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}),
   \end{equation}
+  and the inexact BPP scheme reads
+  \begin{equation}
+    \label{eq:bppa_inexact}
+    x^{(t+1)} \approx \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}).
+  \end{equation}
+  Here, $x^{(t+1)}$ is only an approximate solution in some sense.
 \end{definition}
-When applying to Problem \ref{eq:discrete_ent_uot}, the BPP iteration boils down to solving
+When applying to Problem \ref{eq:discrete_ent_uot}, the exact BPP iteration boils down to solving
 \begin{align}
   \label{eq:bpp_uot}
   P^{(t+1)} &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
@@ -1796,13 +1801,15 @@ When applying to Problem \ref{eq:discrete_ent_uot}, the BPP iteration boils down
 This is nothing but an entropic UOT problem with modified cost and regularization.
 Thus, any solvers discussed in \Cref{sub:uot_optim} can be used. In particular,
 by construction, BPP is naturally applicable to the unregularized UOT.
-
-The inexact BPP method has already been studied at the same time as the exact one, and
-recently attracted some interest in OT.
-While it has been applied to the balanced OT \citep{Xie20,Yang22},
+In practice, the exact BPP may not be an efficient algorithm to solve the UOT problem since
+it requires solving \textbf{exactly} many entropic subproblems. This can be computationally expensive,
+especially when the learning rate is small.
+While the inexact method has recently been applied to the balanced OT \citep{Xie20,Yang22},
 we are not aware of any extension to the unbalanced counterpart.
 Our proposed method follows directly from \citep{Xie20}, which is simple to implement and
-appears to show strong performance in practice.
+usually performs well in practice. In particular,
+we only require running a few Sinkhorn iterations for each entropic subproblem and
+use the approximated coupling as input for the next BPP iteration.
 The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
 \begin{algorithm}[t]
   \caption{INPUT algorithm for Problem \ref{eq:discrete_ent_uot}.}
@@ -1887,62 +1894,67 @@ Inequality (\ref{eq:chen_teboulle}). Indeed,
 
 \subsection{Convergence analysis in the inexact setting}
 
-Despite the simplicity, the convergence analysis of INPUT seems not ...
-We note that the techniques used in the balanced OT \citep{Xie20} can not be adapted to
-the unbalanced setting, since they rely on the property of the set of admissible couplings,
-which is not available in the unbalanced OT. Moreover, their inexact conditions are also
-not trivial to verify in practice.
+Despite the simplicity, it is difficult to analyze the convergence of INPUT.
+In particular, while it is an immediate extension of the work of \citep{Xie20} on the balanced OT,
+their proof techniques of the convergence can not be adapted to the unbalanced setting.
+This is because they rely on the property of the set of admissible couplings,
+which is not available in the UOT. Moreover, the assumptions and conditions are also
+not trivial to verify in practice, thus their convergence results are mostly of theoretical interest.
 
-we postulate that could be
+The convergence analysis of the inexact BPP has already been studied at the same time
+as the exact one. Typically, one can control the approximation error using
+$\varepsilon$-subdifferential \citep{Burachik97,Kiwiel97},
+or bounded subgradient \citep{Eckstein98,Rockafellar76}, to name a few.
+We are studying the literature in this domain to identify the relevant criteria, which are
+amenable to study the convergence and to verify in practice.
 
 \subsection{Illustration on toy example}
 
 \paragraph{Experimental setup}
-We consider a synthetic dataset: the source $X$ contains $200$ points forming an ellipse and a square,
+We consider a synthetic dataset:
+the source data $X$ contains $200$ points forming an ellipse and a square,
 assigned with the same uniform probability on both shapes
-$\mu = \frac{1}{200} \sum_{i=1}^{200} \delta_{x_i}$. The target $Y$ also contains $200$ points
+$\mu = \frac{1}{200} \sum_{i=1}^{200} \delta_{x_i}$. The target data $Y$ also contains $200$ points
 forming an ellipse and a circle, assigned with the histogram
 $\nu = \frac{3}{200} \sum_{j=1}^{30} \delta_{y_j \in \text{Circle}} +
 \frac{7}{200} \sum_{j=31}^{100} \delta_{y_j \in \text{Circle}} +
 \frac{7}{200} \sum_{j=1}^{100} \delta_{y_j \in \text{Ellipse}}$.
-In Problem \ref{eq:discrete_ent_uot}, we choose $\gamma = \mu \otimes \nu$ and
-the cost $C(x, y) = || x - y||^2_2$.
+The objective in this experiment is to estimate the entropic UOT cost, where
+we choose $\gamma = \mu \otimes \nu$ and the cost $C(x, y) = || x - y||^2_2$.
 
 \paragraph{Competing methods}
 For INPUT, we consider $3$ versions corresponding to $3$ solvers for the inner entropic UOT problem:
 \texttt{INPUT-Sinkhorn}, \texttt{INPUT-TI-v2}, \texttt{INPUT-MM}.
 Here, we choose the variant of Sinkhorn-TI (\Cref{alg:TI_Sinkhorn_variant})
-since it is more simple to implement, yet appears to perform as well as the Sinkhorn-TI.
+since it is more simple to implement, yet appears to perform comparably to the Sinkhorn-TI.
 The Sinkhorn-based methods include
 \texttt{Sinkhorn} (\Cref{alg:Sinkhorn_algo}), \texttt{Sinkhorn-TI-v1} (\Cref{alg:TI_Sinkhorn})
 and its variant \texttt{Sinkhorn-TI-v2} (\Cref{alg:TI_Sinkhorn_variant}).
 We emphasize that all Sinkhorn-based methods require log-domain implementation
 for numerical stability, whereas INPUT does not suffer this issue,
 thus is implemented with direct vector-matrix multiplication.
-Apart from these $2$ families of methods, we also compare with Majorization-Minimization \texttt{MM},
+Apart from these $2$ families of solvers, we also evaluate the performance of
+Majorization-Minimization algorithm \texttt{MM}.
 
 \paragraph{Results}
 We construct $4$ scenarios to verify if INPUT can overcome the limitations of other existing methods.
-The first one considers small relaxations and large regularization.
-It is an easy test and we expect all methods perform well.
+More precisely, the first one considers the situation of small relaxations and large regularization.
+It is an easy test and we expect that all methods perform well.
 In the second one, we fix the relaxations but choose small regularization
-to test the convergence of Sinkhorn-based methods. The third scenario contains fixed regularization
-but very large marginal relaxations to test MM. The last one combines small regularization
-and very large relaxations.
+in order to hinder convergence of Sinkhorn-based methods.
+The third scenario uses fixed regularization but very large marginal relaxations to obstruct
+the convergence of MM.
+The last one combines small regularization and very large relaxations. It is designed to challenge
+both Sinkhorn and MM methods.
 
-It is clear that the INPUT family consistently and significantly outperforms other methods,
+It is clear that the INPUT family consistently and significantly outperforms other solvers,
 The distinction becomes even more visible in the regimes where Sinkhorn and MM struggle.
-In particular, except the first scenario, INPUT takes much fewer time to reach the
-desired tolerance than Sinkhorn-based methods, while attaining a comparable (sometimes better)
-estimation of UOT. Even though MM is as fast as INPUT, the quality of its optimum is not
-guaranteed, especially in the scenarios 3 and 4.
-
-Within the family of INPUT, combining INPUT with Sinkhorn-TI yields the most efficient algorithm.
-Within the Sinkhorn-based family, Sinkhorn-TI shows clear improvement over Sinkhorn,
-even though this advantage quickly diminishes for small regularization.
-
-While this experiment is mostly for the proof-of-concept purpose,
-the performance of INPUT is very encouraging, which encourages its usage in the applications.
+Except for the first scenario, by contrast to its competitors,
+it seems that INPUT does not require compensating the running time for the quality of the estimation.
+We also observe that, within the family of INPUT,
+combining INPUT with Sinkhorn-TI yields the most efficient algorithm.
+Amongst the Sinkhorn-based solvers, Sinkhorn-TI shows clear improvement over Sinkhorn,
+even though this advantage quickly diminishes when regularization is small.
 
 \begin{table}[]
   \small
@@ -2005,14 +2017,17 @@ the performance of INPUT is very encouraging, which encourages its usage in the 
 
 \subsection{Discussion}
 
+While this experiment is mainly for the proof-of-concept purpose,
+it shows strong performance of INPUT over other existing approaches.
+
 \paragraph{Strengths of INPUT}
-In practice, INPUT has two very appealing features. First, it overcomes the limitations of
+INPUT has two very appealing features. First, it overcomes the limitations of
 the MM and Sinkhorn-based algorithms. In particular,
 it can, not only handle both balanced/unbalanced, and unregularized/regularized settings,
 but also, empirically, can converge very fast to the optimal plan and the global minimum,
-even in the regimes of very small regularization $\varepsilon$
-(where Sinkhorn-based methods struggles) or of very large relaxation $\rho_1, \rho_2$
-(where MM wrestles). We summarize the applicability of these algorithms in \Cref{t:uot_algo_compare}.
+even in the regimes of very small regularization (where Sinkhorn-based methods struggles),
+or of very large relaxation (where MM wrestles).
+We summarize the applicability of these algorithms in \Cref{t:uot_algo_compare}.
 
 Second, the presence of learning rate $\eta$
 increases the level of regularization in the inner entropic UOT subproblem,
@@ -2025,13 +2040,13 @@ and employ the one with direct vector-matrix multiplication,
 without any concern about the numerical overflow issue.
 As a result, this allows to speed up the calculation of the iterates.
 
-\paragraph{Weaknesses of INPUT} There is no free lunch. INPUT also has two potential drawbacks.
-First, it requires the recalculation of the cost matrix at the beginning of each BPP iteration,
-which can be computationally expensive.
+\paragraph{Weaknesses of INPUT} There is no free lunch. INPUT has two drawbacks.
+First, the cost matrix must be recalculated at the beginning of each BPP iteration.
+This can be computationally expensive and prevents INPUT from being scalable.
 Second, while tuning the learning rate is neither too tricky nor difficult,
 it may take some effort to find an appropriate value. One possible workaround,
 which usually works well in practice, is to start with $\eta$ small and not too far from $\varepsilon$.
-The motivation of this heuristic comes from \Cref{prop:convergence-exact-sppa},
+The intuition of this heuristic comes from \Cref{prop:convergence-exact-sppa} of exact BPP,
 which indicates that, for fixed initialization, the smaller the learning rate, the smaller
 the potential gap between the estimation and the minimum.
 \begin{table}[t]
@@ -2067,10 +2082,10 @@ the potential gap between the estimation and the minimum.
 \paragraph{Can we adapt INPUT to solve the squared $l_2$-regularized Problem \ref{uot_general} ?}
 In theory, yes, since the squared $l_2$-norm is a Bregman divergence,
 thus the (inexact) BPP scheme is applicable. However, comparing to the MM solver,
-we doubt that it would bring any gain in convergence speed and computational complexity. Indeed,
+we doubt that it would bring any gain in convergence speed. Indeed,
 recall that the main motivation of INPUT comes from the poor convergence behavior of Sinkhorn
 algorithm when \textbf{regularization} is small. For this reason, adding more regularization
-to each BPP iteration empirically helps accelerating the Sinkhorn calculation
+to each BPP iteration helps accelerating the calculation
 and improving the convergence of the algorithm. By contrast,
 the case of squared $l_2$-norm does not suffer the same issue,
-but rather on the \textbf{relaxation} parameters. So, more regularization does not bring much benefit.
+but rather on the \textbf{relaxation} parameters. So, more regularization does not help.
