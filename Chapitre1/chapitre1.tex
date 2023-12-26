@@ -2067,20 +2067,17 @@ the potential gap between the estimation and the minimum.
     \hline
     \makecell[l]{Semi-relaxed \\ setting} & \yesmark & \yesmark & \nomark  & \yesmark  \\
     \hline
-    \makecell[l]{Main \\ drawback} & \makecell{Very slow conv. \\ for small $\varepsilon$}
+    \makecell[l]{Major \\ drawbacks} & \makecell{Very slow conv. \\ for small $\varepsilon$}
     & \makecell{Slow conv. \\ for small $\varepsilon$}
     & \makecell{Slow conv. \\ for large $\rho$}
     & \makecell{Cost recalculation, \\
     extra tuning of \\ hyperparameters} \\
     \hline
-    Divergence & Csiszár & KL & Bregman & Bregman \\
-    \hline
 		\end{tabular}
 		\caption{Summary of features of algorithms for entropic UOT problem \ref{eq:discrete_ent_uot}.
     Unregularized setting refers to $\varepsilon = 0$, balanced setting corresponds to
     $\rho_1 = \rho_2 = \infty$ and semi-relaxed setting refers to either $\rho_1 = \infty$
-    or $\rho_2 = \infty$. "Divergence" indicates the class of divergences to which the algorithm
-    can be applied.
+    or $\rho_2 = \infty$.
     \label{t:uot_algo_compare}}
 \end{table}
 
