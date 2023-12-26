@@ -8,10 +8,10 @@ In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
 The general structure for each topic includes the motivation, the theoritical and numerical aspects.
 In particular, we focus on the numerics, which are not usually discussed in the OT literature,.
-By contrast, we only briefly present the theory since it has been well-studied and can be found
-easily in many prior works, which will be precised during the discussion of each topic.
+By contrast, we only briefly present the theory since it has already been well-studied and
+can be found in many prior works, which will be precised during the discussion of each topic.
 
-We start with the balanced OT, which quantifies the discrepancy between probability measures,
+We start with the balanced OT, which compares probability measures
 whose supports live in the same underlying space. Then, we study two important extensions
 of this problem. The first one is based on the relaxation of the hard marginal constraints,
 which results in the unbalanced OT. The second generalization
@@ -27,9 +27,9 @@ whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein
 We present two viewpoints on the motivation of the OT problem:
 the Monge problem serves as the historical starting point and
 the Hausdorff distance later provides the intuition to the Gromov-Wasserstein distance.
-Then, we briefly present some theoritical properties of the Wasserstein distance,
+Then, we introduce some important theoritical properties of the Wasserstein distance,
 which are widely used in machine learning applications.
-Finally, we discuss in details the numerical and practical aspects of the
+Finally, we discuss in details the algorithmic and practical aspects of the
 entropic approximation of the OT distance.
 
 \subsubsection{Motivation} \label{subsec:ot_motiv}
@@ -206,7 +206,7 @@ apart from the classic choice of cost function $c = d^p$ as in the Wasserstein d
 there are other alternatives, for example, the Bregman divergence \citep{Guo21},
 or even the Wasserstein distance \citep{Huizing22}.
 
-The Wasserstein distance defines a distance
+The Wasserstein distance defines a metric
 on the space of probability measures with finite moments of order $p \geq 1$
 (Theorem 7.3 in \citep{Villani03}) and characterizes the weak convergence: for any $p \geq 1$,
 we have $\mu_n \rightharpoonup \mu$ if and only if $W_p(\mu_n, \mu) \to 0$
@@ -214,7 +214,7 @@ we have $\mu_n \rightharpoonup \mu$ if and only if $W_p(\mu_n, \mu) \to 0$
 This topological property also holds for the integral probability metric \citep{Muller97},
 but not for other popular statistical divergences, namely the Kullback-Leibler divergence,
 total variation, Hellinger distance
-\footnote{More detailed comparison amongst divergences can be found \citep{Gibbs02}.}.
+\footnote{More detailed comparison amongst divergences can be found in \citep{Gibbs02}.}.
 
 \paragraph{Duality theory}
 Given the convexity of the OT problem, another very powerful property
@@ -226,7 +226,7 @@ in \citep{Fillipo15}, one has
   \int_X f d\mu + \int_Y g d\nu
 \end{align*}
 where $\cC_b(X), \cC_b(Y)$ denote the space of bounded continuous functions on $X, Y$, respectively.
-Strong duality also holds in a much more general setting (see Theorem 5.10 in \citep{Villani08}).
+Strong duality still holds in a much more general setting (see Theorem 5.10 in \citep{Villani08}).
 The theory of duality plays a crucial role, not only in theoritical study, but also
 in practical applications. In particular, it is at the heart of some exact solvers
 for the discrete OT problem (see Section 3 in \citep{Peyre19}).
@@ -268,18 +268,18 @@ for a more detailed discussion on classic algorithms and Section 2.1 in \citep{P
 for an overview on computational complexity.}
 is the interior point method \citep{Orlin88}. It requires the complexity of $O(n^3 \log n)$,
 which is computationally prohibitive in many applications.
-There exist some approaches to overcome this limitation, for example, the mini-batch approach
+There exist some approaches to overcome this limitation. For example, the mini-batch approach
 \citep{Sommerfeld19,Fatras20} considers multiple resamplings of the data and
-uses the average of distances in the mini-batches as an estimation of the true OT distance.
+uses the average of distances computed in the mini-batches as an estimation of the true OT distance.
 The "sliced" method \citep{Rabin12,Bonneel15} develops an alternative metric
 called \textit{Sliced Wasserstein distance}.
 It relies on the fact that computing the $1$-D Wasserstein distance boils down to sorting the
 point values, which only requires the complexity of $O(n \log n)$.
 Using the framework from statistical physics, \citep{Koehl19}
 approximate the OT distance by the free energy evaluated at sufficiently small temperature.
-From a more mathematical viewpoint, the idea relies on the interesting relation
+From a more mathematical viewpoint, this idea is based on the interesting relation
 between the minimum and the logsumexp operation, where informally, one has that:
-$\min f(x) = \lim_{\varepsilon \to 0^+} -\frac{1}{\varepsilon} \int e^{-\varepsilon f(x)} dx$.
+$\min f(x) = \lim_{\beta \to 0^+} -\frac{1}{\beta} \int e^{-\beta f(x)} dx$.
 
 \paragraph{Entropic OT problem}
 In this thesis, we focus on the line of works on the discrete entropic approximation
@@ -332,7 +332,7 @@ Second, since entropic OT is a convex problem, strong duality holds and one has 
 \end{align}
 Arguably, this is the most important premise in the study of the entropic approximation, which
 allows to develop and analyze many Sinkhorn-based algorithms (see \Cref{para:summary} for discussion).
-In particular, \citep{Genevay19} rely on the dual problem to show that entropic OT
+In particular, \citep{Genevay19} use the dual problem to show that entropic OT
 has better sample complexity than unregularized OT,
 though it fixes the bottleneck in the sample size by introducing a new one in the regularization.
 This issue can be mitigated, for example when the probability measures are sub-Gaussian \citep{Mena19}.
@@ -354,7 +354,8 @@ This algorithm is very easy to implement and available in the Python Optimal Tra
 It is well known that it converges globally to the optimal dual vectors of the dual problem
 \citep{Sinkhorn67}, at a linear rate in variation semi-norm \citep{Franklin89}.
 The OT plan then can be retrieved from the optimal solution $(u, v)$ by
-$P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$.
+$P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$,
+where $\otimes$ is the element-wise multiplication.
 
 % Note that, as Sinkhorn algorithm is nothing but a coordinate ascent algorithm,
 % \footnote{Note that the "one-at-a-time" scheme must be used
@@ -365,7 +366,7 @@ $P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$.
 \paragraph{Discussion on Sinkhorn algorithm}
 The Sinkhorn algorithm has two key advantages. First, since the iterates only require
 vector-matrix multiplication, they can be seamlessly parallerized.
-The computation can be further speed up by exploiting the structure of the kernel matrix
+One can further speed up the computation by exploiting the structure of the kernel matrix
 (see Section 4.3 in \citep{Peyre19}). Second, it is enough to store only the dual vectors
 (which cost $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
 can be easily queried on demand.
@@ -387,7 +388,8 @@ More precisely, the log-domain iterates read
   \item $g^{(t+1)} = \log \nu - \log \sum_i \exp \left( f_i^{(t+1)} - \frac{C_{i, \cdot}}{\varepsilon} \right)$.
 \end{enumerate}
 To mitigate the side effect, one can use the redundant parametrization strategy
-\citep{Chizat18a,Schmitzer19}.
+\citep{Chizat18a,Schmitzer19}, which additionally performs "absorption" iterations
+to reduce the computational overhead of the logsumexp operation.
 
 Third, the initialization of dual vectors is important.
 Under the absence of prior knowledge, the most popular practice is to initialize with
@@ -432,8 +434,8 @@ and achieves superior performance to other existing methods.
 
 Third, the recent improvements on the Sinkhorn algorithm,
 namely the over-relaxation method \citep{Lehmann21,Thibault21}, the screening strategy \citep{Alaya19},
-or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, usually rely on careful elaboration
-of the iterates. There exist also other classes of algorithms for the entropic OT, notably
+or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, usually focus on careful elaboration
+of the iterates. There are also gradient-based solvers for the entropic OT, notably
 the adaptive primal-dual accelerated mirror descent \citep{Dvurechensky18,Lin22},
 or the stochastic gradient descent \citep{Abid18,Genevay16,Seguy18}.
 
@@ -549,27 +551,31 @@ readers are invited to see the seminal works of \citep{Liero18,Chizat18b}, and t
 The case where $D_{\varphi_1} = D_{\varphi_2} = \kl$ is also of our special interest,
 since it allows to show that the UOT is robust to outliers.
 \begin{proposition}[Generalization of Lemma 1 in \citep{Fatras21}]
-  Let $\mu, \mu_o$ be two nonnegative finite Borel measures with disjoint compact supports.
-  For $\alpha \in [0, 1]$, denote $\widetilde{\mu} = \alpha \mu + (1 - \alpha) \mu_o$
+  Let $\mu, \mu_o$ be two nonnegative finite Borel measures with disjoint compact supports $E, E_o$,
+  respectively. For $\alpha \in [0, 1]$, denote $\widetilde{\mu} = \alpha \mu + (1 - \alpha) \mu_o$
   the noisy measure. Then, for any nonnegative finite Borel measures $\nu$
-  with compact support, we have
+  with compact support $F$, we have
   \begin{align}
-    \ot(\widetilde{\mu}, \nu) \geq \ot(\mu, \nu) +
+    \label{eq:ot_robust}
+    \ot(\widetilde{\mu}, \nu) \geq
+    (1 - \alpha) \inf_{(x, y) \in E_o \times F} c(x, y),
   \end{align}
   whereas
   \begin{align}
     \uot_{\rho}(\widetilde{\mu}, \nu) \leq \alpha \uot_{\rho}(\mu, \nu) +
-    (1 - \alpha) m
-    \left( 1 - \exp \left( -\frac{K}{m} \right) \right)
+    (1 - \alpha) M
+    \left( 1 - \exp \left( -\frac{K}{M} \right) \right)
   \end{align}
-  where, $K = \int c(x, y) \; d\mu_o(x) d\nu(y)$ and $m = \rho_1 m(\mu_o) + \rho_2 m(\nu)$.
+  where, $K = \int c(x, y) \; d\mu_o(x) d\nu(y)$ and $M = \rho_1 m(\mu_o) + \rho_2 m(\nu)$.
   Here, $m(\mu)$ denotes the mass of measure $\mu$.
 \end{proposition}
-As we can see, the behavior of the outliers is always controlled in UOT.
+Clearly, the behavior of the outliers is always controlled in UOT.
 Thanks to the marginal relaxation, if the outlier is too impactful,
-its impact will quickly saturate to $0$, meaning that it will receive no mass from other points.
+its impact will quickly saturate to $0$, meaning that it receives no mass from other points.
 By contrast, this is not the case for balanced OT, since every point (including outliers)
-must be aligned regardless of its cost, due to the marginal constraints.
+must be aligned regardless of its cost, due to the marginal constraints. The right-hand side of
+the inequality \ref{eq:ot_robust} can be made arbitrarily large by taking outliers "far" enough
+from the clean data.
 
 \subsubsection{Optimization and algorithm} \label{sub:uot_optim}
 
@@ -582,13 +588,14 @@ GPU-friendly implementation, strong convexity and smoothness coming from the dua
 making it a suitable training loss for neural networks.
 While entropic regularization also introduces bias to the UOT, it is possible to debiase
 using the same trick as in the balanced counterpart \citep{Sejourne19}.
+
 It is important to note that, in the OT literature, the entropic regularization
 can be referred to two different regularizers: the negative entropy \citep{Frogner15, Chizat18a} and
 the KL divergence \citep{Sejourne19}. We cover both cases by considering a
-more general entropic UOT formulation: given the hyperparameters
+more general formulation: given the hyperparameters
 $\rho_1, \rho_2 \geq 0, \varepsilon > 0$, the cost matrix $C \in \bbR^{m \times n}$
 and the positive measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
-we want to solve
+we want to solve the problem
 \begin{align}
   \label{eq:discrete_ent_uot}
   \uot_{\varepsilon, \rho} = \min_{P \in \bbR^{m \times n}_{\geq 0}} \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
@@ -604,16 +611,15 @@ Denote $m(Q) = \sum_{i, j} Q_{ij}$ the mass of measure $Q$. Observe that
   + \varepsilon \left[ m(\gamma) - m \big(\gamma \odot e^{-C / \varepsilon} \big) \right],
 \end{align}
 where $\odot$ is the element-wise multiplication between two matrices and the exponential operation
-is also element-wise.
-So, it is easy to see that the ambiguity of the entropic regularizer is naturally handled in
+is also element-wise. Now, the ambiguity of the entropic regularizer is naturally handled in
 Problem \ref{eq:discrete_ent_uot}. More precisely,
-\begin{enumerate}
-  \item Negative entropy corresponds to $\gamma = 1_{m \times n}$,
-  since $\kl(P | 1_{m \times n}) = \langle P, \log P \rangle - m(P) + mn = H(P) + mn$.
-  \item KL divergence corresponds to $\gamma = \mu \otimes \nu$.
-\end{enumerate}
+the KL divergence corresponds to $\gamma = \mu \otimes \nu$ whereas
+the negative entropy corresponds to $\gamma = 1_{m \times n}$,
+since $\kl(P | 1_{m \times n}) = \langle P, \log P \rangle - m(P) + mn = H(P) + mn$.
+
 An interesting property of Problem \ref{eq:discrete_ent_uot}, which does not exist in the
-balanced OT, is that the minimum can be explicitly expressed as a function of minimizer.
+balanced OT or for other Csiszár divergences,
+is that the minimum can be explicitly expressed as a function of minimizer.
 This proves to be particularly helpful when studying the computational complexity of
 Sinkhorn algorithm \citep{Khiem20}.
 \begin{lemma}[Slight generalization of Lemma 4 in \citep{Khiem20}]
@@ -626,12 +632,11 @@ Denote $P^*$ is the minimizer of Problem \ref{eq:discrete_ent_uot}. Then,
 \end{lemma}
 While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
 (\textit{i.e.} $\varepsilon = 0$). Later, we will see how this result can also be extended
-to other unbalanced settings, namely the unbalanced Gromov-Wasserstein and
-unbalanced Co-Optimal Transport divergences.
+to other unbalanced divergences, namely the unbalanced Gromov-Wasserstein and
+unbalanced Co-Optimal Transport.
 Now, we discuss some existing approaches to Problem \ref{eq:discrete_ent_uot}.
 
-\paragraph{Sinkhorn algorithm} The Sinkhorn algorithm can be extended easily to the
-unbalanced setting.
+\paragraph{Sinkhorn algorithm} The Sinkhorn algorithm can be extended easily to the entropic UOT.
 \footnote{When the regularizer is the negative entropy, the Sinkhorn algorithm is also called
 \textit{scaling algorithm} \citep{Chizat18a}.} The (strict) convexity of the primal problem ensures
 that duality holds, thanks to the Fenchel-Rockafellar duality theorem. In particular,
@@ -669,7 +674,7 @@ More generally, the Sinkhorn algorithm is applicable to all Csiszár divergences
 as long as the regularizer is the KL divergence (see Definition 3 in \citep{Sejourne19}).
 We leave the convergence analysis to the discussion of the next method.
 In practice, the Sinkhorn algorithm also suffers from slow convergence for small regularization
-and can be accelerated using the workarounds in the balanced setting.
+and can be accelerated using the similar workarounds in the balanced setting.
 
 \begin{algorithm}[t]
   \caption{Sinkhorn algorithm for Problem \ref{eq:discrete_ent_uot}.}
