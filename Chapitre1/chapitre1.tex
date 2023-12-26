@@ -822,13 +822,15 @@ whereas the Sinkhorn-based algorithms are only applicable to the regularized UOT
 unlike its competitors, the MM algorithm does not work in the balanced ($\rho_1=\rho_2=\infty$)
 and semi-relaxed (either $\rho_1=\infty$ or $\rho_2=\infty$) OT settings.
 
-Another example of the Bregman divergence is the squared $l_2$-norm. Interstingly,
+Another example of the Bregman divergence is the squared $l_2$-norm, where
+$D_{\varphi}(p, q) := \frac{|| p - q||^2}{2}$, with $\varphi(x) = \frac{||x||^2}{2}$. Interstingly,
 the MM iterate can also be computed explicitly in this case.
 \begin{corollary}[Generalization of Equation 7 in \citep{Chapel21}]
-  For $\mu \in \bbR^m, \nu \in \bbR^n$ and $\gamma \in \bbR^{m \times n}$, consider the
+  For $\mu \in \bbR^m, \nu \in \bbR^n$ and $\gamma \in \bbR^{m \times n}$,  consider the
   problem
   \begin{equation}
-  \label{uot_general}
+  \label{uot_l2}
+      \uot_{\varepsilon, \rho} =
       \min_{P \geq 0} \; \langle C, P \rangle + \rho_1 \frac{||P_{\# 1} - \mu||^2}{2}
       + \rho_2 \frac{|| P_{\# 2} - \nu ||^2}{2} + \varepsilon  \frac{||P - \gamma||^2}{2}.
   \end{equation}
@@ -841,7 +843,7 @@ the MM iterate can also be computed explicitly in this case.
 \end{corollary}
 
 % \begin{proof}
-% Note that we can write the problem \ref{uot_general} as
+% Note that we can write the problem \ref{uot_l2} as
 % \begin{align}
 %     \min_{t \in \bbR^{mn}_{\geq 0}} \langle c, t \rangle + \frac{|| Mt - y ||^2}{2}
 % \end{align}
@@ -871,9 +873,58 @@ the MM iterate can also be computed explicitly in this case.
 % Now, $\text{mat}(M^T y) = (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma$. Here, matrization is the inverse operation of vectorization. Also, $M^T M = \rho_1 M_r^T M_r + \rho_2 M_c^T M_c + \varepsilon I_{mn}$, so
 % $\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k)}) + \varepsilon P^{(k)} $. The result then follows.
 % \end{proof}
-One attracting feature of the squared $l_2$-norm is that, thanks to the max operation,
+There are two interesting features of the squared $l_2$-norm. First, thanks to the max operation,
 the iterate matrix can be made sparse from the very first iteration,
-which further accelerates the matrix operations.
+which further accelerates the matrix operations. Second, similar to the entropic UOT problem,
+it is also possible to express the minimum of Problem \ref{uot_l2} in terms of its minimizer.
+\begin{corollary}
+Denote $P^*$ the solution of Problem \ref{uot_l2}. Then
+\begin{align*}
+  \uot_{\varepsilon, \rho} = \frac{1}{2} \Big( \rho_1 ||\mu||^2
+  + \rho_2 ||\nu||^2 + \varepsilon ||\gamma||^2 \Big)
+  - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
+  + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big).
+\end{align*}
+\end{corollary}
+% \begin{proof}
+% Since $l^2$-squared norm is a Bregman divergence, we denote it
+% $D_{\varphi}(p, q) = \frac{|| p - q ||_2^2}{2}$,
+% where $\varphi(x) = \frac{||x||_2^2}{2}$. We have that
+% $D_{\varphi}(p, q) = \varphi(p) + \varphi(q) - \langle p, q \rangle$. So, for $t \in \bbR$,
+% \begin{align*}
+%   \frac{\partial D_{\varphi}(tp, q)}{\partial t}
+%   &= 2 t \; \varphi(p) - \langle p, q \rangle \\
+%   &= 2t \left[ \varphi(p) + \varphi(q) - \langle p, q \rangle \right]
+%   - 2t \; \varphi(q) + (2t-1) \langle p, q \rangle \\
+%   &= 2t \; D_{\varphi}(p, q) - 2t \; \varphi(q) + (2t - 1) \langle p, q \rangle.
+% \end{align*}
+% Denote
+% \begin{align*}
+%   g(tP) = t^2 \langle C, P \rangle + \rho_1 D_{\varphi}(t P_{\# 1}, \mu) +
+%   \rho_2 D_{\varphi}(t P_{\# 2}, \nu) + \varepsilon D_{\varphi}(t P, \gamma)
+% \end{align*}
+% Then
+% \begin{align*}
+%   \frac{\partial g(tP)}{\partial t} &= 2t \langle C, P \rangle
+%   + \rho_1 \Big[ 2t \; D_{\varphi}(P_{\# 1}, \mu) - 2t \; \varphi(\mu)
+%   + (2t - 1) \langle P_{\# 1}, \mu \rangle \Big] \\
+%   &+ \rho_2 \Big[ 2t \; D_{\varphi}(P_{\# 2}, \nu) - 2t \; \varphi(\nu)
+%   + (2t - 1) \langle P_{\# 2}, \nu \rangle \Big] \\
+%   &+ \varepsilon \Big[ 2t \; D_{\varphi}(P, \gamma) - 2t \; \varphi(\gamma)
+%   + (2t - 1) \langle P, \gamma \rangle \Big] \\
+%   &= 2t \; g(P) - 2t \Big[ \rho_1 \varphi(\mu)
+%   + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma) \Big] \\
+%   &+ (2t - 1) \Big[ \rho_1 \langle P_{\# 1}, \mu \rangle
+%   + \rho_2 \langle P_{\# 2}, \nu \rangle + \varepsilon \langle P, \gamma \rangle \Big]
+% \end{align*}
+% Since $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$, we have
+% \begin{align*}
+%   g(P^*) = \rho_1 \varphi(\mu)
+%   + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma)
+%   - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
+%   + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big)
+% \end{align*}
+% \end{proof}
 
 To conclude, MM is a very appealing alternative to the Sinkhorn-based algorithms,
 especially when the regularization is too small. However, it also has several practical concerns.
@@ -2086,7 +2137,7 @@ the potential gap between the estimation and the minimum.
     \label{t:uot_algo_compare}}
 \end{table}
 
-\paragraph{Can we adapt INPUT to solve the squared $l_2$-regularized Problem \ref{uot_general} ?}
+\paragraph{Can we adapt INPUT to solve the squared $l_2$-regularized Problem \ref{uot_l2} ?}
 In theory, yes, since the squared $l_2$-norm is a Bregman divergence,
 thus the (inexact) BPP scheme is applicable. However, comparing to the MM solver,
 we doubt that it would bring any gain in convergence speed. Indeed,
