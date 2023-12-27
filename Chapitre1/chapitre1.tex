@@ -570,6 +570,17 @@ since it allows to show that the UOT is robust to outliers.
   where, $K = \int c(x, y) \; d\mu_o(x) d\nu(y)$ and $M = \rho_1 m(\mu_o) + \rho_2 m(\nu)$.
   Here, $m(\mu)$ denotes the mass of measure $\mu$.
 \end{proposition}
+\begin{proof}
+  For any $\pi \in U(\widetilde{\mu}, \nu)$, we have
+  \begin{align*}
+      \int_{(E \cup E_o) \times Y} c(x, y) d\pi(x, y) &\geq \int_{E_o \times F} c(x, y) d\pi(x, y)
+      \geq \min_{(x, y) \in E_o \times F} c(x, y ) \int_{E_o \times F} d\pi(x, y) \\
+      &= \min_{(x, y) \in E_o \times F} c(x, y) \int_{E_o} d\pi_{\# 1}(x)
+      = (1 - \alpha) \min_{(x, y) \in E_o \times F} c(x, y).
+  \end{align*}
+  Taking the infimum over $U(\widetilde{\mu}, \nu)$, we obtain the upper bound of OT.
+  The lower bound on UOT follows immediately from the proof of Lemma 1.1 in \citep{Fatras21}.
+\end{proof}
 Clearly, the behavior of the outliers is always controlled in UOT.
 Thanks to the marginal relaxation, if the outlier is too impactful,
 its impact will quickly saturate to $0$, meaning that it receives no mass from other points.
@@ -631,6 +642,9 @@ Denote $P^*$ is the minimizer of Problem \ref{eq:discrete_ent_uot}. Then,
   - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*)
 \end{align*}
 \end{lemma}
+\begin{proof}
+  The proof follows immediately from the proof of Lemma 4 in \citep{Khiem20}.
+\end{proof}
 While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
 (\textit{i.e.} $\varepsilon = 0$). Later, we will see how this result can also be extended
 to other unbalanced divergences, namely the unbalanced Gromov-Wasserstein and
