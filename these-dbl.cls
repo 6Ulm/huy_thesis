@@ -140,6 +140,7 @@
 \newcommand{\rms}{\text{RMS}}
 \newcommand{\ms}{\text{MS}}
 \newcommand{\diam}{\text{diam}}
+\newcommand{\wrt}{w.r.t. }
 
 \newcommand{\bbR}{\mathbb R}
 \newcommand{\bbN}{\mathbb N}

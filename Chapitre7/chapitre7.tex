@@ -6,8 +6,336 @@
 
 \chaptermark{Annexes}
 
-\section{Proof of Chapter }
+\section{Proofs in Chapter 1}
 
+\begin{proof}[Proof of \Cref{prop:uot_robust}]
+Follows immediately from Lemma 1 in \citep{Fatras21}
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{eq:uot_minimizer}]
+    Lemma 4 in \citep{Khiem20}
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{coro:uot_l2_mm}]
+Note that we can write the problem \ref{uot_l2} as
+\begin{align}
+    \min_{t \in \bbR^{mn}_{\geq 0}} \langle c, t \rangle + \frac{|| Mt - y ||^2}{2}
+\end{align}
+where $t = \vect(P), c = \vect(C)$ are the vectorizations of $P, C$, respectively. Here,
+\begin{itemize}
+    \item $M = (\rho_1^{1/2} M_r^T, \rho_2^{1/2} M_c^T, \varepsilon^{1/2} I_{mn})^T \in \bbR^{(m + n + mn) \times (mn)}$.
+
+    \item $y = (\rho_1^{1/2} \mu^T, \rho_2^{1/2} \nu^T, \varepsilon^{1/2} \vect(\gamma)^T)^T \in \bbR^{m + n + mn}$.
+
+    \item $M_r = \texttt{np.repeat(np.eye(n),m)} \in \bbR^{n \times mn}$.
+
+    \item $M_c = [I_m, ..., I_m] = \texttt{np.tile(np.eye(m),n)} \in \bbR^{m \times mn}$
+\end{itemize}
+See Appendix A in \citep{Chapel21} for more details of $M_r, M_c$.
+Remark that if $A \in \bbR^{m \times n}$ and $B \in \bbR^{m \times p}$, then
+\begin{align}
+    (A, B) \begin{pmatrix}
+        A^T \\
+        B^T
+    \end{pmatrix}
+    = A A^T + B B^T
+\end{align}
+Following Equation 23 in \citep{Chapel21},  we have
+\begin{align}
+    t^{(k+1)}_i = t^{(k)}_i \frac{\max( 0, [M^T y]_i - c_i)}{[M^T M t^{(k)}]_i}
+\end{align}
+Now, $\text{mat}(M^T y) = (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma$.
+Here, matrization is the inverse operation of vectorization. Also,
+$M^T M = \rho_1 M_r^T M_r + \rho_2 M_c^T M_c + \varepsilon I_{mn}$, so
+$\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k)})
++ \varepsilon P^{(k)} $. The result then follows.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{coro:uot_l2_minimizer}]
+We follow the same proof technique of Lemma 4 in \citep{Khiem20}. The $l^2$-squared norm satisfies
+$D_{\varphi}(p, q) = \varphi(p) + \varphi(q) - \langle p, q \rangle$. So, for any $t \in \bbR$,
+\begin{align*}
+  \frac{\partial D_{\varphi}(tp, q)}{\partial t}
+  &= 2 t \; \varphi(p) - \langle p, q \rangle \\
+  &= 2t \left[ \varphi(p) + \varphi(q) - \langle p, q \rangle \right]
+  - 2t \; \varphi(q) + (2t-1) \langle p, q \rangle \\
+  &= 2t \; D_{\varphi}(p, q) - 2t \; \varphi(q) + (2t - 1) \langle p, q \rangle.
+\end{align*}
+For $t \in \bbR$, denote
+\begin{align*}
+  g(tP) = t^2 \langle C, P \rangle + \rho_1 D_{\varphi}(t P_{\# 1}, \mu) +
+  \rho_2 D_{\varphi}(t P_{\# 2}, \nu) + \varepsilon D_{\varphi}(t P, \gamma)
+\end{align*}
+Then, we have
+\begin{align*}
+  \frac{\partial g(tP)}{\partial t} &= 2t \langle C, P \rangle
+  + \rho_1 \Big[ 2t \; D_{\varphi}(P_{\# 1}, \mu) - 2t \; \varphi(\mu)
+  + (2t - 1) \langle P_{\# 1}, \mu \rangle \Big] \\
+  &+ \rho_2 \Big[ 2t \; D_{\varphi}(P_{\# 2}, \nu) - 2t \; \varphi(\nu)
+  + (2t - 1) \langle P_{\# 2}, \nu \rangle \Big] \\
+  &+ \varepsilon \Big[ 2t \; D_{\varphi}(P, \gamma) - 2t \; \varphi(\gamma)
+  + (2t - 1) \langle P, \gamma \rangle \Big] \\
+  &= 2t \; g(P) - 2t \Big[ \rho_1 \varphi(\mu)
+  + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma) \Big] \\
+  &+ (2t - 1) \Big[ \rho_1 \langle P_{\# 1}, \mu \rangle
+  + \rho_2 \langle P_{\# 2}, \nu \rangle + \varepsilon \langle P, \gamma \rangle \Big]
+\end{align*}
+If $P^*$ is the minimizer, then $\min_{t \in \bbR} g(tP^*) = g(P^*)$ and the minimum is attained
+when $t=1$. This means $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$. So,
+\begin{align*}
+  g(P^*) = \rho_1 \varphi(\mu)
+  + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma)
+  - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
+  + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big)
+\end{align*}
+The result then follows.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{corollary}
+    The formulations \eqref{GH:zeroth} and \eqref{GH:first} of the Gromov-Hausdorff distance
+    are equivalent.
+\end{corollary}
+\begin{proof}
+In the formulation \eqref{GH:first}, by choosing identity mappings (which are clearly isometric embeddings)
+$f = \id_X$ and $g = \id_Y$, and $Z = X \cup Y$ equipped with an admissible distance $d$, we have
+\begin{equation*}
+  \gh((X,d_X), (Y,d_Y)) \leq d_{H}^{(Z,d)}(X, Y)
+\end{equation*}
+As this is true for any $d \in \cD(d_X,d_Y)$, we have
+$\gh((X,d_X), (Y,d_Y)) \leq \inf_{d} d_{H}^{(X \cup Y, d)}(X, Y)$. For the reverse direction,
+given any isometries $f: X \to X'$ and $g: Y \to Y'$ with $X', Y' \subset (Z, d_Z)$
+(we call $(X',Y')$ a \textit{metric coupling} \citep{Villani08}), one can define
+a distance $d$ on $X \cup Y$ (as shown in Proposition 27.1 in \citep{Villani08}). Then,
+\begin{equation*}
+  \begin{split}
+    d_H^{(Z, d_Z)}(f(X), g(Y)) &=
+  \max(\sup_{y \in Y} d_Z(g(y), f(X)), \sup_{x \in X} d_Z(f(x), g(Y))) \\
+  &= \max(\sup_{y \in Y} d(y, X), \sup_{x \in X} d(x, Y)) \\
+  &= d_H^{(X \cup Y, d)}(X, Y) \geq \inf_{d'} d_{H}^{(X \cup Y, d')}(X, Y)
+  \end{split}
+\end{equation*}
+We deduce that $\gh((X,d_X), (Y,d_Y)) \geq \inf_{d} d_{H}^{(X \cup Y, d)}(X, Y)$,
+thus equality holds.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{lemma:fgw_pgd}]
+  Denote $F(P) = \langle C \otimes P, P \rangle + \langle M, P \rangle + \varepsilon \kl(P | \gamma)$.
+  Then $\nabla F(P) = C \otimes P + M + \varepsilon \log \frac{P}{\gamma}$.
+  The PGD iterate reads: for $\tau > 0$,
+  \begin{align}
+    P^{(t+1)} = \text{proj}^{\kl}_{U(\mu_x, \mu_y)}
+    \left( P^{(t)} \odot e^{-\tau \nabla F(P^{(t)})} \right),
+  \end{align}
+  where $\text{proj}^{\kl}_{U(\mu_x, \mu_y)}(K) =
+  \argmin_{P \in U(\mu_x, \mu_y)} - \varepsilon \langle \log K, P \rangle + \varepsilon H(P)$.
+  Denote $\eta = \tau \varepsilon$. We have
+  \begin{align}
+    \log K &= \log \left( P^{(t)} \odot e^{-\tau \nabla F(P^{(t)})} \right) =
+    \log P^{(t)} - \tau (C \otimes P^{(t)} + M)  - \tau \varepsilon \log \frac{P^{(t)}}{\gamma} \\
+    &= - \tau (C \otimes P^{(t)} + M) + \log \left( \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right)
+  \end{align}
+  So,
+  \begin{align}
+    &- \varepsilon \langle \log K, P \rangle + \varepsilon H(P) \\
+    &= \eta \langle C \otimes P^{(t)} + M, P \rangle
+    - \varepsilon \langle P, \log \left( \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right) \rangle
+    + \varepsilon H(P) \\
+    &= \eta \langle C \otimes P^{(t)} + M, P \rangle +
+    \varepsilon \kl \left( P \big | \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right)
+    - m \left( \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right),
+  \end{align}
+  where $m(Q) = \sum_{i,j} Q_{ij}$ is the mass of measure $Q$. The result then follows.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{lemma:convex-smoothness}]
+We begin by noticing that $g(\pi) = \kl(\pi | \mu)$ is $1$-strongly convex \wrt the KL divergence.
+Indeed, $\nabla g(\pi) = \log \pi - \log \mu$, so for any positive measure $\pi, \gamma$, we have
+\begin{align*}
+    \langle \nabla g(\pi) - \nabla g(\gamma), \pi - \gamma \rangle
+    &= \langle
+    \log \pi - \log \gamma, \pi - \gamma \rangle.
+\end{align*}
+This means $g$ is $1$-strongly convex \wrt the KL divergence.
+To conclude the proof of strong convexity, note that if $f$ is $\sigma$-strongly convex \wrt
+some divergence $D$ and $g$ is convex, then the composite function $h = f + g$ is
+$\sigma$-strongly convex \wrt $D$. Indeed, for $a \in [0,1]$,
+\begin{align*}
+    h \big( a \pi + (1-a) \gamma \big)
+    &= f \big( a \pi + (1-a) \gamma \big) + g \big( a \pi + (1-a) \gamma \big) \\
+    &\leq a f(\pi) + (1 - a) f(\gamma) - \sigma \frac{a (1 - a)}{2} D(\pi, \gamma)
+    + a g(\pi) + (1 - a) g(\gamma) \\
+    &= a h(\pi) + (1 - a) h(\gamma) - \sigma \frac{a (1 - a)}{2} D(\pi, \gamma).
+\end{align*}
+Regarding the relative smoothness, denote $h(\pi) = \kl(\pi_{\#1} | \alpha)$,
+then $(\nabla h(\pi))_{ij} = \log (\pi_{\#1})_i - \log \alpha_i$, for every $j$. So,
+\begin{equation*}
+    \begin{split}
+        \langle \nabla h(\pi) - \nabla h(\gamma), \pi - \gamma \rangle
+    &= \langle
+    \log \pi_{\# 1} - \log \gamma_{\# 1}, \pi_{\# 1} - \gamma_{\# 1} \rangle\\
+    &= \kl(\pi_{\# 1} | \gamma_{\# 1}) + \kl(\gamma_{\# 1} | \pi_{\# 1}) \\
+    &\leq \kl(\pi | \gamma) + \kl(\gamma | \pi) \\
+    &= \langle \log \pi - \log \gamma, \pi - \gamma \rangle
+    \end{split}
+\end{equation*}
+where the last inequality is due to the data pre-processing inequality.
+This means that $h$ is $1$-relative smooth \wrt the KL divergence.
+We conclude that $F$ is $(\lambda_1 + \lambda_2 + \varepsilon)$-relative smooth.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{prop:convergence-exact-sppa}]
+We adapt the proof of Theorem 3.1 in \citep{Lu18}.
+First, recall the 4-points identity of Bregman divergence.
+\begin{lemma}[Four-point lemma]
+    \label{lemma:four-points}
+    For any $x, y, z, t \in \text{dom}(\varphi)$, we have
+    \begin{equation*}
+    D_{\varphi}(z, y) - D_{\varphi}(z,x) + D_{\varphi}(t, x) - D_{\varphi}(t, y)
+    = \langle \nabla \varphi(x) - \nabla \varphi(y), z - t \rangle.
+    \end{equation*}
+    As a consequence, by taking $y = t$, we obtain the three-point lemma
+    \begin{equation*}
+    D_{\varphi}(z, y) + D_{\varphi}(y, x) - D_{\varphi}(z, x)
+    = \langle \nabla \varphi(x) - \nabla \varphi(y), z - y \rangle.
+    \end{equation*}
+\end{lemma}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lemma}[Adapted from Lemma 3.2 in \citep{Chen93}]
+    \label{lemma:bregman-minimizer-property}
+    Suppose $f$ is a $l$-strongly convex, proper differentiable function whose domain is a closed set
+    $C$. Let $ x^{(t+1)} = \argmin_{x \in C} f(x) + D_{\varphi}\left(x, x^{(t)} \right)$.
+    Then, for any $x \in C$, we have
+    \begin{align*}
+        f(x^{(t+1)}) + (l+1) D_{\varphi}(x, x^{(t+1)}) + D_{\varphi} (x^{(t+1)}, x^{(t)})
+        \leq f(x) + D_{\varphi} (x, x^{(t)}).
+    \end{align*}
+    Moreover, if $f$ is also $L$-smooth, then
+    \begin{align*}
+            f(x^{(t+1)}) + (L+1) D_{\varphi}(x, x^{(t+1)}) + D_{\varphi} (x^{(t+1)}, x^{(t)})
+            \geq f(x) + D_{\varphi} (x, x^{(t)}).
+        \end{align*}
+\end{lemma}
+\begin{proof}[Proof of \Cref{lemma:bregman-minimizer-property}]
+    From the optimality of $x^{(t+1)}$, we have
+    $\nabla \varphi(x^{(t+1)}) - \nabla \varphi(x^{(t)}) + \nabla f(x^{(t+1)}) = 0$.
+    By three-point lemma, for every $x \in C$,
+    \begin{align*}
+        D_{\varphi}(x, x^{(t+1)}) + D_{\varphi} (x^{(t+1)}, x^{(t)}) - D_{\varphi} (x, x^{(t)}) &= \langle \nabla \varphi(x^{(t)}) - \nabla \varphi(x^{(t+1)}), x - x^{(t+1)} \rangle \\
+        &= \langle \nabla f(x^{(t+1)}), x - x^{(t+1)} \rangle.
+    \end{align*}
+    As $f$ is $l-$strongly convex and differentiable, we have
+    \begin{align*}
+        f(x) &\geq f(x^{(t+1)}) + \langle \nabla f(x^{(t+1)}), x -
+                x^{(t+1)} \rangle  + l D_{\varphi}(x, x^{(t+1)})\\
+        &=         f(x^{(t+1)}) + (l+1) D_{\varphi}(x, x^{(t+1)})
+        + D_{\varphi} (x^{(t+1)}, x^{(t)}) - D_{\varphi} (x, x^{(t)}).
+    \end{align*}
+    Similarly, if $f$ is $L$-relatively smooth, then
+    \begin{align*}
+        f(x) &\leq f(x^{(t+1)}) + \langle \nabla f(x^{(t+1)}), x -
+                x^{(t+1)} \rangle  + L D_{\varphi}(x, x^{(t+1)})\\
+        &=         f(x^{(t+1)}) + (L+1) D_{\varphi}(x, x^{(t+1)})
+        + D_{\varphi} (x^{(t+1)}, x^{(t)}) - D_{\varphi} (x, x^{(t)}).
+    \end{align*}
+    The result then follows.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lemma}
+    \label{lemma:bound_seq}
+    If $(y_t)_t$ is a nonnegative decreasing sequence, $(z_t)_t$ is a nonnegative sequence,
+    $a, b > 0$ such that $y_t \leq a z_{t-1} - b z_t$, then
+    \begin{align*}
+        y_t \leq \frac{(b-a)}{\left( \frac{b}{a} \right)^t - 1} z_0
+        - \frac{\left( \frac{b}{a} \right)^t
+        - \left( \frac{b}{a} \right)^{t-1} }{\left( \frac{b}{a} \right)^t - 1} z_t.
+    \end{align*}
+\end{lemma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lemma}
+\label{lemma:bppa_conv}
+    Let $F$ be a differentiable function. Suppose that $F$ is $l-$strongly convex and $L-$ smooth,
+    where $L > l \geq 0$. For any learning rate $l \leq \eta \leq L$,
+    define $x^{(t+1)} = \argmin F(x) + \eta D_{\varphi}(x, x^{(t)})$.
+    Then, for any initialization $x^{(0)}$, we have
+    \begin{align*}
+        F(x^{(t)}) - F(x^*) \leq \frac{l}{\left( 1 + \frac{Ll }{\eta (L - l)} \right)^t - 1}
+        D_{\varphi}(x^*, x^{(0)}).
+\end{align*}
+\end{lemma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{lemma:bppa_conv}]
+By applying \Cref{lemma:bregman-minimizer-property} with $f = \frac{F}{\eta}$,
+which is $\frac{l}{\eta}-$strongly convex, we obtain that
+\begin{equation}
+    D_{\varphi}(x^{(t+1)}, x^{(t)}) \leq D_{\varphi}(x, x^{(t)})
+    - \left( \frac{l}{\eta} + 1 \right) D_{\varphi}(x, x^{(t+1)})
+    - \frac{F(x^{(t+1)}) - F(x)}{\eta}.
+\end{equation}
+In particular, by choosing $x = x^{(t)}$, we have
+\begin{equation*}
+    F(x^{(t+1)}) - F(x^{(t)}) \leq - \eta \left[ \left(\frac{l}{\eta} + 1 \right)
+    D_{\varphi}(x^{(t)}, x^{(t+1)}) + D_{\varphi}(x^{(t+1)}, x^{(t)}) \right] \leq 0.
+\end{equation*}
+This means $\big(F(x^{(t)}) \big)_t$ is a (nonnegative) decreasing sequence.
+Now, for every $x \in C$ and $l \leq \eta \leq L$,
+\begin{align*}
+    F(x^{(t+1)})
+    &\leq F(x^{(t)}) + \langle \nabla F(x^{(t)}), x^{(t+1)} - x^{(t)} \rangle
+    + L D_{\varphi}(x^{(t+1)}, x^{(t)}) \\
+    &\leq F(x^{(t)}) + \langle \nabla F(x^{(t)}), x - x^{(t)} \rangle
+    + \eta D_{\varphi}(x, x^{(t)}) - \eta D(x, x^{(t+1)})
+    + (L - \eta) D_{\varphi}(x^{(t+1)}, x^{(t)}) \\
+    &\leq F(x) + (\eta - l) D_{\varphi}(x, x^{(t)})
+    - \eta D(x, x^{(t+1)}) + (L - \eta) D_{\varphi}(x^{(t+1)}, x^{(t)}) \\
+    &\leq F(x) + (\eta - l) D_{\varphi}(x, x^{(t)}) - \eta D(x, x^{(t+1)}) \\
+    &+ (L - \eta) \left[ D_{\varphi}(x, x^{(t)})
+    - \left( \frac{l}{\eta} + 1 \right) D_{\varphi}(x, x^{(t+1)})
+    - \frac{F(x^{(t+1)}) - F(x)}{\eta} \right] \\
+    &= F(x) + (L - l) D_{\varphi}(x, x^{(t)})
+    - \left[ L + \frac{l}{\eta}(L - \eta) \right] D_{\varphi}(x, x^{(t+1)})
+    - \frac{L - \eta}{\eta} \big[ F(x^{(t+1)}) - F(x) \big],
+\end{align*}
+where the first and third inequalities follow from the strong convexity and
+relative smoothness of $F$, respectively. The second one follows by applying
+\Cref{lemma:bregman-minimizer-property} with
+$f = \frac{1}{\eta} \langle \nabla F(x^{(t)}), \cdot - x^{(t)} \rangle$
+(which is $0$-strongly convex). By rearranging the terms, we obtain
+\begin{align*}
+    F(x^{(t+1)}) - F(x) \leq \frac{\eta(L-l)}{L} D_{\varphi}(x, x^{(t)})
+    - \left[ l + \frac{\eta (L - l)}{L} \right] D_{\varphi}(x, x^{(t+1)}).
+\end{align*}
+By applying \Cref{lemma:bound_seq} and choosing $x = x^*$, we deduce that
+\begin{align*}
+    F(x^{(t)}) - F(x^*) \leq \frac{l}{\left( 1 + \frac{Ll }{\eta (L - l)} \right)^t - 1}
+    D_{\varphi}(x, x^{(0)}).
+\end{align*}
+The result then follows.
+\end{proof}
+Now, \Cref{prop:convergence-exact-sppa} follows immediately from \Cref{lemma:bppa_conv} and
+\Cref{lemma:convex-smoothness}.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Proof of Chapter }
 
 \section{Proof of Chapter }

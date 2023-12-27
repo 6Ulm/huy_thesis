@@ -1,4 +1,5 @@
 \chapter[Technical Background on Optimal Transport]{Technical Background on Optimal Transport}
+\label{chap:1}
 
 % \localtableofcontents
 \addcontentsline{tot}{chapter}{section}
@@ -143,7 +144,6 @@ Chapter 8 in \citep{Brualdi06} or Chapter 3.4 in \citep{Peyre19}.}.
 First, both describe the alignments between $X$ and $Y$.
 Second, the transport plan can also be seen as a flow in a bipartite graph,
 where the source nodes must be connected to all target nodes via weighted edges.
-
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.35\textwidth,keepaspectratio]{Chapitre1/figures/correspondance.pdf}
@@ -551,6 +551,7 @@ readers are invited to see the seminal works of \citep{Liero18,Chizat18b}, and t
 The case where $D_{\varphi_1} = D_{\varphi_2} = \kl$ is also of our special interest,
 since it allows to show that the UOT is robust to outliers.
 \begin{proposition}[Generalization of Lemma 1 in \citep{Fatras21}]
+  \label{prop:uot_robust}
   Let $\mu, \mu_o$ be two nonnegative finite Borel measures with disjoint compact supports $E, E_o$,
   respectively. For $\alpha \in [0, 1]$, denote $\widetilde{\mu} = \alpha \mu + (1 - \alpha) \mu_o$
   the noisy measure. Then, for any nonnegative finite Borel measures $\nu$
@@ -826,6 +827,7 @@ Another example of the Bregman divergence is the squared $l_2$-norm, where
 $D_{\varphi}(p, q) := \frac{|| p - q||^2}{2}$, with $\varphi(x) = \frac{||x||^2}{2}$. Interstingly,
 the MM iterate can also be computed explicitly in this case.
 \begin{corollary}[Generalization of Equation 7 in \citep{Chapel21}]
+  \label{coro:uot_l2_mm}
   For $\mu \in \bbR^m, \nu \in \bbR^n$ and $\gamma \in \bbR^{m \times n}$,  consider the
   problem
   \begin{equation}
@@ -841,43 +843,12 @@ the MM iterate can also be computed explicitly in this case.
   \end{align}
   where the max and division operations are element-wise.
 \end{corollary}
-
-% \begin{proof}
-% Note that we can write the problem \ref{uot_l2} as
-% \begin{align}
-%     \min_{t \in \bbR^{mn}_{\geq 0}} \langle c, t \rangle + \frac{|| Mt - y ||^2}{2}
-% \end{align}
-% where $t = \vect(P), c = \vect(C)$ are the vectorizations of $P, C$, respectively. Here,
-% \begin{itemize}
-%     \item $M = (\rho_1^{1/2} M_r^T, \rho_2^{1/2} M_c^T, \varepsilon^{1/2} I_{mn})^T \in \bbR^{(m + n + mn) \times (mn)}$.
-
-%     \item $y = (\rho_1^{1/2} \mu^T, \rho_2^{1/2} \nu^T, \varepsilon^{1/2} \vect(\gamma)^T)^T \in \bbR^{m + n + mn}$.
-
-%     \item $M_r = \texttt{np.repeat(np.eye(n),m)} \in \bbR^{n \times mn}$.
-
-%     \item $M_c = [I_m, ..., I_m] = \texttt{np.tile(np.eye(m),n)} \in \bbR^{m \times mn}$
-% \end{itemize}
-% See Appendix A in \citep{Chapel21} for more details of $M_r, M_c$.
-% Remark that if $A \in \bbR^{m \times n}$ and $B \in \bbR^{m \times p}$, then
-% \begin{align}
-%     (A, B) \begin{pmatrix}
-%         A^T \\
-%         B^T
-%     \end{pmatrix}
-%     = A A^T + B B^T
-% \end{align}
-% Following Equation 23 in \citep{Chapel21},  we have
-% \begin{align}
-%     t^{(k+1)}_i = t^{(k)}_i \frac{\max( 0, [M^T y]_i - c_i)}{[M^T M t^{(k)}]_i}
-% \end{align}
-% Now, $\text{mat}(M^T y) = (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma$. Here, matrization is the inverse operation of vectorization. Also, $M^T M = \rho_1 M_r^T M_r + \rho_2 M_c^T M_c + \varepsilon I_{mn}$, so
-% $\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k)}) + \varepsilon P^{(k)} $. The result then follows.
-% \end{proof}
 There are two interesting features of the squared $l_2$-norm. First, thanks to the max operation,
 the iterate matrix can be made sparse from the very first iteration,
 which further accelerates the matrix operations. Second, similar to the entropic UOT problem,
 it is also possible to express the minimum of Problem \ref{uot_l2} in terms of its minimizer.
 \begin{corollary}
+  \label{coro:uot_l2_minimizer}
 Denote $P^*$ the solution of Problem \ref{uot_l2}. Then
 \begin{align*}
   \uot_{\varepsilon, \rho} = \frac{1}{2} \Big( \rho_1 ||\mu||^2
@@ -886,44 +857,6 @@ Denote $P^*$ the solution of Problem \ref{uot_l2}. Then
   + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big).
 \end{align*}
 \end{corollary}
-% \begin{proof}
-% The $l^2$-squared norm satisfies
-% $D_{\varphi}(p, q) = \varphi(p) + \varphi(q) - \langle p, q \rangle$. So, for $t \in \bbR$,
-% \begin{align*}
-%   \frac{\partial D_{\varphi}(tp, q)}{\partial t}
-%   &= 2 t \; \varphi(p) - \langle p, q \rangle \\
-%   &= 2t \left[ \varphi(p) + \varphi(q) - \langle p, q \rangle \right]
-%   - 2t \; \varphi(q) + (2t-1) \langle p, q \rangle \\
-%   &= 2t \; D_{\varphi}(p, q) - 2t \; \varphi(q) + (2t - 1) \langle p, q \rangle.
-% \end{align*}
-% Denote
-% \begin{align*}
-%   g(tP) = t^2 \langle C, P \rangle + \rho_1 D_{\varphi}(t P_{\# 1}, \mu) +
-%   \rho_2 D_{\varphi}(t P_{\# 2}, \nu) + \varepsilon D_{\varphi}(t P, \gamma)
-% \end{align*}
-% Then
-% \begin{align*}
-%   \frac{\partial g(tP)}{\partial t} &= 2t \langle C, P \rangle
-%   + \rho_1 \Big[ 2t \; D_{\varphi}(P_{\# 1}, \mu) - 2t \; \varphi(\mu)
-%   + (2t - 1) \langle P_{\# 1}, \mu \rangle \Big] \\
-%   &+ \rho_2 \Big[ 2t \; D_{\varphi}(P_{\# 2}, \nu) - 2t \; \varphi(\nu)
-%   + (2t - 1) \langle P_{\# 2}, \nu \rangle \Big] \\
-%   &+ \varepsilon \Big[ 2t \; D_{\varphi}(P, \gamma) - 2t \; \varphi(\gamma)
-%   + (2t - 1) \langle P, \gamma \rangle \Big] \\
-%   &= 2t \; g(P) - 2t \Big[ \rho_1 \varphi(\mu)
-%   + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma) \Big] \\
-%   &+ (2t - 1) \Big[ \rho_1 \langle P_{\# 1}, \mu \rangle
-%   + \rho_2 \langle P_{\# 2}, \nu \rangle + \varepsilon \langle P, \gamma \rangle \Big]
-% \end{align*}
-% Since $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$, we have
-% \begin{align*}
-%   g(P^*) = \rho_1 \varphi(\mu)
-%   + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma)
-%   - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
-%   + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big)
-% \end{align*}
-% \end{proof}
-
 To conclude, MM is a very appealing alternative to the Sinkhorn-based algorithms,
 especially when the regularization is too small. However, it also has several practical concerns.
 \begin{enumerate}
@@ -1141,27 +1074,7 @@ are equivalent (see Appendix). Intuitively, \eqref{GH:first} implies that
 the GH distance can be alternatively obtained by projecting the two original metric spaces
 onto a common metric one, where the Hausdorff distance between the two embeddings can be computed.
 Moreover, each projection map must also preserve the within-space distance.
-% Indeed, in \eqref{GH:first},
-% by choosing identity mappings (which are clearly isometric embeddings) $f = \id_X$ and
-% $g = \id_Y$, and $Z = X \cup Y$ equipped with an admissible distance $d$, we have
-% \begin{equation*}
-%   \gh((X,d_X), (Y,d_Y)) \leq d_{H}^{(Z,d)}(X, Y)
-% \end{equation*}
-% As this is true for any $d \in \cD(d_X,d_Y)$, we have
-% $\gh((X,d_X), (Y,d_Y)) \leq \inf_{d} d_{H}^{(X \cup Y, d)}(X, Y)$. For the reverse direction,
-% given any isometries $f: X \to X'$ and $g: Y \to Y'$ with $X', Y' \subset (Z, d_Z)$
-% (we call $(X',Y')$ a \textit{metric coupling} \citep{Villani08}), one can define
-% a distance $d$ on $X \cup Y$ (as shown in the proposition 27.1 in \citep{Villani08}). Then,
-% \begin{equation*}
-%   \begin{split}
-%     d_H^{(Z, d_Z)}(f(X), g(Y)) &=
-%   \max(\sup_{y \in Y} d_Z(g(y), f(X)), \sup_{x \in X} d_Z(f(x), g(Y))) \\
-%   &= \max(\sup_{y \in Y} d(y, X), \sup_{x \in X} d(x, Y)) \\
-%   &= d_H^{(X \cup Y, d)}(X, Y) \geq \inf_{d'} d_{H}^{(X \cup Y, d')}(X, Y)
-%   \end{split}
-% \end{equation*}
-% We deduce that $\gh((X,d_X), (Y,d_Y)) \geq \inf_{d} d_{H}^{(X \cup Y, d)}(X, Y)$,
-% thus equality holds.
+
 Thanks to Lemma 3.3 in \citep{Sturm06}, we can adapt the idea of \eqref{GH:first}
 to the setting of mm-space by replacing the Hausdorff distance with the Wasserstein distance,
 and obtain the equivalent form of the $L_p$-transportation distance
@@ -1391,13 +1304,6 @@ There are several immediate observations from this definition.
   \item To the best of our knowledge, the semi-strong isomorphism has never been discussed in the literature.
   However, as we will see, it is useful to characterize the Gromov-Monge distance.
 \end{enumerate}
-% \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=0.6\textwidth,keepaspectratio]{Chapitre1/figures/isomorphism.pdf}
-%   \caption{Semi-strong and weak isomorphisms. The direction of the arrow indicates that one network
-%   is a mass splitting of the other.}
-%   \label{fig:strong_weak}
-% \end{figure}
 Similar to the Wasserstein distance, a Monge version of the GW distance,
 known as \textit{Gromov-Monge} (GM) distance, is defined as
 \begin{equation}
@@ -1592,9 +1498,9 @@ for some relevant reference histogram $\gamma \in \bbR^{m \times n}_{> 0}$ and $
 For example, $\gamma = 1_{m \times n}$ corresponds to using the negative entropy as regularizer.
 To solve this problem, \citep{Peyre16,Solomon16} propose to use projected gradient descent,
 where each iteration boils down to solving an entropic OT problem. More precisely,
-\begin{lemma}
-  [Generalization of Proposition 2 in \citep{Peyre16}] Given a matrix $M \in \bbR^{m \times n}$,
-  consider the (entropic fused GW) problem
+\begin{lemma}[Generalization of Proposition 2 in \citep{Peyre16}]
+  \label{lemma:fgw_pgd}
+  Given a matrix $M \in \bbR^{m \times n}$, consider the (entropic fused GW) problem
   \begin{align}
     \label{eq:fused_egw}
     \min_{\substack{P \in U(\mu_X, \mu_Y)}} \langle C \otimes P, P \rangle
@@ -1607,34 +1513,6 @@ where each iteration boils down to solving an entropic OT problem. More precisel
     + \varepsilon \kl \left( P \big| \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right).
   \end{align}
 \end{lemma}
-% \begin{proof}
-%   Denote $F(P) = \langle C \otimes P, P \rangle + \langle M, P \rangle + \varepsilon \kl(P | \gamma)$.
-%   Then $\nabla F(P) = C \otimes P + M + \varepsilon \log \frac{P}{\gamma}$.
-%   The PGD iterate reads: for $\tau > 0$,
-%   \begin{align}
-%     P^{(t+1)} = \text{proj}^{\kl}_{U(\mu_x, \mu_y)}
-%     \left( P^{(t)} \odot e^{-\tau \nabla F(P^{(t)})} \right)
-%   \end{align}
-%   Recall that $\text{proj}^{\kl}_{U(\mu_x, \mu_y)}(K) =
-%   \argmin_{P \in U(\mu_x, \mu_y)} - \varepsilon \langle \log K, P \rangle + \varepsilon H(P)$.
-%   Denote $\eta = \tau \varepsilon$. We have
-%   \begin{align}
-%     \log K &= \log \left( P^{(t)} \odot e^{-\tau \nabla F(P^{(t)})} \right) =
-%     \log P^{(t)} - \tau (C \otimes P^{(t)} + M)  - \tau \varepsilon \log \frac{P^{(t)}}{\gamma} \\
-%     &= - \tau (C \otimes P^{(t)} + M) + \log \left( \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right)
-%   \end{align}
-%   So,
-%   \begin{align}
-%     &- \varepsilon \langle \log K, P \rangle + \varepsilon H(P) \\
-%     &= \eta \langle C \otimes P^{(t)} + M, P \rangle
-%     - \varepsilon \langle P, \log \left( \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right) \rangle
-%     + \varepsilon H(P) \\
-%     &= \eta \langle C \otimes P^{(t)} + M, P \rangle +
-%     \varepsilon \kl \left( P \big | \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right)
-%     - m \left( \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right),
-%   \end{align}
-%   where $m(Q) = \sum_{i,j} Q_{ij}$ is the mass of measure $Q$. The result then follows.
-% \end{proof}
 As observed in \citep{Peyre19}, $\eta = 1$ usually works well in practice,
 where the sequence $(P^{(t)})_t$ converges empirically. However, the convergence analysis remains
 unexplored. As a side note, adding regularization to the GW distance also incurs bias,
