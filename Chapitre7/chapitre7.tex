@@ -15,7 +15,7 @@ Follows immediately from Lemma 1 in \citep{Fatras21}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{eq:uot_minimizer}]
-    Lemma 4 in \citep{Khiem20}
+The proof follows immediately from the proof of Lemma 4 in \citep{Khiem20}.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -259,12 +259,12 @@ First, recall the 4-points identity of Bregman divergence.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lemma}
     \label{lemma:bound_seq}
-    If $(y_t)_t$ is a nonnegative decreasing sequence, $(z_t)_t$ is a nonnegative sequence,
-    $a, b > 0$ such that $y_t \leq a z_{t-1} - b z_t$, then
+    If $(y_t)_t$ is a nonnegative decreasing sequence, $(x_t)_t$ is a nonnegative sequence and
+    $a, b > 0$ such that $y_t \leq a x_{t-1} - b x_t$, then
     \begin{align*}
-        y_t \leq \frac{(b-a)}{\left( \frac{b}{a} \right)^t - 1} z_0
+        y_t \leq \frac{(b-a)}{\left( \frac{b}{a} \right)^t - 1} x_0
         - \frac{\left( \frac{b}{a} \right)^t
-        - \left( \frac{b}{a} \right)^{t-1} }{\left( \frac{b}{a} \right)^t - 1} z_t.
+        - \left( \frac{b}{a} \right)^{t-1} }{\left( \frac{b}{a} \right)^t - 1} x_t.
     \end{align*}
 \end{lemma}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
