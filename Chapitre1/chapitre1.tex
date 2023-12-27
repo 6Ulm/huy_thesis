@@ -86,14 +86,14 @@ known as the \textit{Kantorovich's problem} \citep{Kanto42}.
   the following optimization problem
   \begin{align}
     \label{eq:kanto_prob}
-    \ot(\mu, \nu) = \inf_{\pi \in U(\mu, \nu)} \int_{X \times Y} c(x, y) \; d\pi(x, y)
+    \ot(\mu, \nu) = \inf_{\pi \in U(\mu, \nu)} \int_{X \times Y} c(x, y) \; d\pi(x, y).
   \end{align}
 \end{definition}
 Throughout this thesis, we refer Problem \ref{eq:kanto_prob} to as the OT problem.
 When $c(x, y) = d^p(x, y)$, for $p \geq 1$ and $d$ is the (common) metric on the metric spaces
 $X$ and $Y$, we obtain the famous Wasserstein distance of order $p$ \citep{Villani03}.
 \begin{align}
-  W^p_p(\mu, \nu) = \inf_{\pi \in U(\mu, \nu)} \int_{X \times Y} d^p(x, y) \; d\pi(x, y)
+  W^p_p(\mu, \nu) = \inf_{\pi \in U(\mu, \nu)} \int_{X \times Y} d^p(x, y) \; d\pi(x, y).
 \end{align}
 Since $\cT(\mu, \nu) \subset U(\mu, \nu)$, we have $\text{MOT}(\mu, \nu) \geq \ot(\mu, \nu)$.
 Equality may hold, for example in the cases of the celebrated Brenier's theorem \citep{Brenier87}
@@ -107,17 +107,17 @@ Most materials are taken from \citep{Memoli11}.
 
 Given a compact metric space $(Z, d)$, we denote $\cC(Z)$ the collection of all compact subsets of
 $Z$. The Hausdorff distance between $X, Y \in \cC(Z)$ is defined as
-\begin{equation}
+\begin{align}
     d_{H}^{(Z, d)}(X,Y) := \max \left( \sup_{x \in X} d(x,Y), \sup_{y \in Y} d(y,X) \right),
-\end{equation}
+\end{align}
 where the distance between a point to a subset of a metric space is defined by
 $d(x,Y) := \inf_{y \in Y} d(x,y)$.
 It is known that $d_{H}^{(Z, d)}$ is a proper metric on $\cC(Z)$ (see for example,
 Proposition 7.3.3 in \citep{Burago01}).
 % Equivalently, we have
-% \begin{equation}
+% \begin{align}
 %   d_{H}^{(Z, d)}(X,Y) = \sup_{z \in K} \left| d(z,Y) - d(z,X) \right|,
-% \end{equation}
+% \end{align}
 % for any $K \in \cC(Z)$ such that $X \cup Y \subset K$ (see for example, \citep{Aamari22}).
 % Now, we consider a different formulation of the Hausdorff distance.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,20 +154,20 @@ where the source nodes must be connected to all target nodes via weighted edges.
 \end{figure}
 Denote $\mathcal R(X,Y)$ the collection of all correspondances between $X$ and $Y$,
 then by Proposition 2.1 in \citep{Memoli11}, we have
-\begin{equation} \label{haus_corres}
+\begin{align} \label{haus_corres}
   d_{H}^{(Z, d)}(X,Y) = \inf_{R \in  \mathcal R(X,Y)} \sup_{(x,y) \in R} d(x,y)
   = \inf_{R \in \mathcal R(X,Y)} \vert\vert d \vert\vert_{L^{\infty}(R)}.
-\end{equation}
+\end{align}
 Suppose that we equip each compact subset in $\cC(Z)$ with a Borel probability measure and consider
 the collection of such "weighted spaces"
 $\cC_w(Z) := \{(X,\mu_X): \text{supp}(\mu_X) = X \text{ and } X \in \cC(Z) \}$.
 Given the similarity discussed above,
 one can replace the correspondance by the admissible coupling and obtain the Wasserstein distance
-\begin{equation}
+\begin{align}
   W_{Z, \infty}\big((X,\mu_X), (Y,\mu_Y) \big) :=
   \inf_{\pi \in U(\mu_X, \mu_Y)} \sup_{(x,y) \in R(\pi)} d(x,y)
   = \inf_{\pi \in U(\mu_X, \mu_Y)} \vert\vert d \vert\vert_{L^{\infty}(R(\pi))},
-\end{equation}
+\end{align}
 where $R(\pi) := \text{supp}(\pi)$ the support of the measure $\pi$. Note that,
 by Lemma 2.2 in \citep{Memoli11}, for any $\pi \in U(\mu_X, \mu_Y)$, we have
 $R(\pi) \in  \mathcal R(\text{supp}(\mu_X), \text{supp}(\mu_Y))$, thus
@@ -221,10 +221,10 @@ Given the convexity of the OT problem, another very powerful property
 is the duality theorem, which asserts that the strong duality holds. More precisely,
 if $X, Y$ are compact metric spaces and the cost $c$ is continuous, then by Theorem 1.46
 in \citep{Fillipo15}, one has
-\begin{align*}
+\begin{align}
   \ot(\mu, \nu) = \sup_{\substack{(f, g) \in \cC_b(X) \times \cC_b(Y) \\ f \oplus g \leq c}} \;
-  \int_X f d\mu + \int_Y g d\nu
-\end{align*}
+  \int_X f d\mu + \int_Y g d\nu,
+\end{align}
 where $\cC_b(X), \cC_b(Y)$ denote the space of bounded continuous functions on $X, Y$, respectively.
 Strong duality still holds in a much more general setting (see Theorem 5.10 in \citep{Villani08}).
 The theory of duality plays a crucial role, not only in theoritical study, but also
@@ -306,10 +306,10 @@ in the sense that $\ot_{\varepsilon}(\mu, \mu) \neq 0$, for any $\varepsilon > 0
 This issue can be easily overcome by considering the Sinkhorn divergence
 \footnote{This divergence is implemented very efficiently in the Geomloss package \citep{Feydy19}.}
 \citep{Ramdas17,Feydy19} defined by
-\begin{align*}
+\begin{align}
   \text{SD}_{\varepsilon}(\mu, \nu) = \ot_{\varepsilon}(\mu, \nu)
-  - \frac{1}{2} \left[ \ot_{\varepsilon}(\mu, \mu) + \ot_{\varepsilon}(\nu, \nu) \right]
-\end{align*}
+  - \frac{1}{2} \left[ \ot_{\varepsilon}(\mu, \mu) + \ot_{\varepsilon}(\nu, \nu) \right].
+\end{align}
 Not only being unbiased, the Sinkhorn divergence also enjoys favorable topological, statistical
 and interpolation properties \citep{Feydy19,Genevay19}. In particular,
 if the cost is the squared $l_2$-norm, then it is a good proxy
@@ -328,7 +328,7 @@ Second, since entropic OT is a convex problem, strong duality holds and one has 
   \label{eq:dual_ot}
   \ot_{\varepsilon}(\mu, \nu) = \sup_{\substack{f \in \bbR^m \\ g \in \bbR^n}}
   \langle f, \mu \rangle + \langle g, \nu \rangle
-  - \varepsilon \; \left\langle \exp \left( \frac{f \oplus g - C}{\varepsilon} \right), \mu \otimes \nu \right\rangle
+  - \varepsilon \; \left\langle \exp \left( \frac{f \oplus g - C}{\varepsilon} \right), \mu \otimes \nu \right\rangle.
 \end{align}
 Arguably, this is the most important premise in the study of the entropic approximation, which
 allows to develop and analyze many Sinkhorn-based algorithms (see \Cref{para:summary} for discussion).
@@ -420,9 +420,9 @@ at iteration $t$, we solve
 \end{align}
 This is a slightly modified entropic OT problem and can still be solved with the
 Sinkhorn algorithm, but now the OT plan is computed by
-\begin{align*}
+\begin{align}
   P^{(t+1)} = P^{(t)} \odot \exp \left( \frac{f^{(t+1)} \oplus g^{(t+1)} - C}{\eta} \right),
-\end{align*}
+\end{align}
 where $(f^{(t+1)}, g^{(t+1)})$ is the optimal dual vectors of the problem \ref{eq:bpp_eot}.
 Classic results \citep{Chen93} guarantee the linear convergence of BPP method
 to the minimum and the minimizer of the OT problem.
@@ -502,30 +502,30 @@ the Csiszár divergence \citep{Csiszar63}. Given an entropy function
 $\varphi : \mathbb R_{> 0} \to [0, \infty]$ (\textit{i.e.} it is convex,
 positive and lower semi-continuous such that $\varphi(1) = 0$), we define
 the recession constant $\varphi_{\infty}' \in \mathbb R \cup \{ \infty \}$ as
-\begin{equation}
+\begin{align}
   \varphi_{\infty}' = \lim_{x \to \infty} \frac{\varphi(x)}{x}.
-\end{equation}
+\end{align}
 Denote $\mathcal M^+(\mathcal S)$ the set of finite nonnegative Radon measures on a
 Hausdorff topological space $S$. The Csiszár divergence (or $\varphi$-divergence) between
 two measures $\mu$ and $\nu$ in $\mathcal M^+(\mathcal S)$ is defined as
-\begin{equation}
+\begin{align}
   D_{\varphi}(\mu \vert \nu) = \int_\mathcal S \varphi \Big( \frac{d\mu}{d\nu} \Big) d\nu +
   \varphi_{\infty}' \int_\mathcal S d\mu^{\perp},
-\end{equation}
+\end{align}
 where, by Lebesgue decomposition, we have $\mu = \frac{d\mu}{d\nu} \nu + \mu^{\perp}$.
 It is jointly convex, positive and weakly lower-semicontinuous \citep{Liero18}.
 The analysis of some Csiszár divergences can be found in \citep{Sejourne19}.
 Here, we are mostly interested in two following special cases:
 \begin{itemize}
   \item[$\bullet$] The Kullback-Leibler (KL) divergence defined by
-  \begin{equation}
+  \begin{align}
     \kl(\mu \vert \nu) =
     \begin{cases}
       \int \frac{d \mu}{ d \nu} \log \frac{d \mu}{ d \nu} - \int d\mu + \int d\nu,
       \text{ if } \mu \ll \nu \\
       \infty, \text{ otherwise}.
     \end{cases}
-  \end{equation}
+  \end{align}
   corresponds to $\varphi(x) = x \log x - x + 1$.
 
   \item[$\bullet$] The indicator divergence $\iota_{=}(\mu \vert \nu)$ is equal to $0$
@@ -537,11 +537,11 @@ Here, we are mostly interested in two following special cases:
 Given a proper lower semicontinuous cost function $c: X \times Y \to [0, \infty]$
 and for $\rho_1, \rho_2 \geq 0$, the UOT cost between two measures $\mu \in \cM^+(X)$ and
 $\nu \in \cM^+(Y)$ is defined by
-\begin{align*}
+\begin{align}
   \uot_{\rho}(\mu, \nu) = \inf_{\pi \in \cM^+(X \times Y)} \int c \; d\pi
   + \rho_1 D_{\varphi_1}(\pi_{\# 1} | \mu)
-  + \rho_2 D_{\varphi_2}(\pi_{\# 2} | \nu)
-\end{align*}
+  + \rho_2 D_{\varphi_2}(\pi_{\# 2} | \nu).
+\end{align}
 
 \paragraph{Properties} Under mild conditions of the cost and entropy functions,
 the UOT problem always admits a solution (Theorem 3.3 in \citep{Liero18}).
@@ -565,19 +565,19 @@ since it allows to show that the UOT is robust to outliers.
   \begin{align}
     \uot_{\rho}(\widetilde{\mu}, \nu) \leq \alpha \uot_{\rho}(\mu, \nu) +
     (1 - \alpha) M
-    \left( 1 - \exp \left( -\frac{K}{M} \right) \right)
+    \left( 1 - \exp \left( -\frac{K}{M} \right) \right),
   \end{align}
-  where, $K = \int c(x, y) \; d\mu_o(x) d\nu(y)$ and $M = \rho_1 m(\mu_o) + \rho_2 m(\nu)$.
+  where $K = \int c(x, y) \; d\mu_o(x) d\nu(y)$ and $M = \rho_1 m(\mu_o) + \rho_2 m(\nu)$.
   Here, $m(\mu)$ denotes the mass of measure $\mu$.
 \end{proposition}
 \begin{proof}
   For any $\pi \in U(\widetilde{\mu}, \nu)$, we have
-  \begin{align*}
+  \begin{align}
       \int_{(E \cup E_o) \times Y} c(x, y) d\pi(x, y) &\geq \int_{E_o \times F} c(x, y) d\pi(x, y)
       \geq \min_{(x, y) \in E_o \times F} c(x, y ) \int_{E_o \times F} d\pi(x, y) \\
       &= \min_{(x, y) \in E_o \times F} c(x, y) \int_{E_o} d\pi_{\# 1}(x)
       = (1 - \alpha) \min_{(x, y) \in E_o \times F} c(x, y).
-  \end{align*}
+  \end{align}
   Taking the infimum over $U(\widetilde{\mu}, \nu)$, we obtain the upper bound of OT.
   The lower bound on UOT follows immediately from the proof of Lemma 1.1 in \citep{Fatras21}.
 \end{proof}
@@ -637,10 +637,10 @@ Sinkhorn algorithm \citep{Khiem20}.
 \begin{lemma}[Slight generalization of Lemma 4 in \citep{Khiem20}]
   \label{eq:uot_minimizer}
 Denote $P^*$ is the minimizer of Problem \ref{eq:discrete_ent_uot}. Then,
-\begin{align*}
+\begin{align}
   \uot_{\varepsilon, \rho} = \rho_1 m(\mu) + \rho_2 m(\nu) + \varepsilon m(\gamma)
-  - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*)
-\end{align*}
+  - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*).
+\end{align}
 \end{lemma}
 \begin{proof}
   The proof follows immediately from the proof of Lemma 4 in \citep{Khiem20}.
@@ -661,12 +661,13 @@ The dual problem of Problem \ref{eq:discrete_ent_uot} reads
   \sup_{\substack{f \in \bbR^m \\ g \in \bbR^n}}
   -\rho_1 \; \left\langle \exp \left( - \frac{f}{\rho_1}\right), \mu \right\rangle
   -\rho_2 \; \left\langle \exp \left( - \frac{g}{\rho_2} \right), \nu \right\rangle
-  - \varepsilon \; \left\langle \exp \left( \frac{f \oplus g - C}{\varepsilon} \right), \gamma \right\rangle
+  - \varepsilon \; \left\langle \exp
+  \left( \frac{f \oplus g - C}{\varepsilon} \right), \gamma \right\rangle.
 \end{align}
 Similar to the balanced case, the OT plan can be retrieved from the optimal solution $(f^*, g^*)$ by
-\begin{align*}
-  P^* = \gamma \odot \exp \left( \frac{f^* \oplus g^* - C}{\varepsilon} \right)
-\end{align*}
+\begin{align}
+  P^* = \gamma \odot \exp \left( \frac{f^* \oplus g^* - C}{\varepsilon} \right).
+\end{align}
 Note that, when $\rho_1, \rho_2 \to \infty$, we have
 $-\rho_1 \; \left\langle \exp \left( - \frac{f}{\rho_1}\right), \mu \right\rangle \to
 \langle f, \mu \rangle$ and
@@ -699,8 +700,10 @@ and can be accelerated using the similar workarounds in the balanced setting.
   measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n_{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
   regularization $\varepsilon > 0$, relaxation parameters $\rho_1, \rho_2 > 0$.
   \FOR{$t=1, \dots, T$}
-  \STATE $f_i^{(t+1)} \gets \frac{\rho_1}{\rho_1 + \varepsilon} \; \overline{\smin}^{\mu_i, \gamma_{i, \cdot}}_{\varepsilon}(C_{i, \cdot} - g^{(t)})$, for $i \in [m]$.
-  \STATE $g_j^{(t+1)} \gets \frac{\rho_2}{\rho_2 + \varepsilon} \; \overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(C_{\cdot, j} - f^{(t+1)})$, for $j \in [n]$.
+  \STATE $f_i^{(t+1)} \gets \frac{\rho_1}{\rho_1 + \varepsilon} \;
+  \overline{\smin}^{\mu_i, \gamma_{i, \cdot}}_{\varepsilon}(C_{i, \cdot} - g^{(t)})$, for $i \in [m]$.
+  \STATE $g_j^{(t+1)} \gets \frac{\rho_2}{\rho_2 + \varepsilon} \;
+  \overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(C_{\cdot, j} - f^{(t+1)})$, for $j \in [n]$.
   \ENDFOR
   \STATE \textbf{Output:} pair of dual vectors $(f^{(T)}, g^{(T)})$.
 \end{algorithmic}
@@ -717,14 +720,15 @@ is too small relative to the relaxation ($\varepsilon \ll \rho$).
 This issue can be mitigated by considering the optimization problem
 \begin{align}
   H_{\varepsilon}(\overline{f}, \overline{g}) := \sup_{\lambda \in \bbR}
-  F_{\varepsilon}(\overline{f} + \lambda, \overline{g} - \lambda)
+  F_{\varepsilon}(\overline{f} + \lambda, \overline{g} - \lambda),
 \end{align}
 where $F_{\varepsilon}$ is the objective function of the dual problem \ref{eq:dual_uot}.
 By Proposition 2 in \citep{Sejourne21}, the optimality happens when
 \begin{align}
   \label{eq:optimal_lambda}
   \lambda^*(\overline{f}, \overline{g}) = \frac{\rho_1 \rho_2}{\rho_1 + \rho_2}
-  \log \frac{\langle \mu, e^{-\overline{f} / \rho_1} \rangle}{\langle \nu, e^{-\overline{g} / \rho_2} \rangle}.
+  \log \frac{\langle \mu, e^{-\overline{f} / \rho_1} \rangle}
+  {\langle \nu, e^{-\overline{g} / \rho_2} \rangle}.
 \end{align}
 By construction, $H_{\varepsilon}$ is TI. Not only $H_{\varepsilon}$ and $F_{\varepsilon}$
 have the same maximum, but also the their maximizers are related by the equation
@@ -739,7 +743,7 @@ Denote $\kappa_{\varepsilon}(\mu)$ the contraction rate of the softmin operator
 $\smin_{\varepsilon}^{\mu}$ for the norm $||f||_*$, meaning that
 \begin{align}
   ||\smin_{\varepsilon}^{\mu}(C - f_1) - \smin_{\varepsilon}^{\mu}(C - f_2) ||_* \leq
-  \kappa_{\varepsilon}(\mu) \; || f_1 - f_2 ||_*
+  \kappa_{\varepsilon}(\mu) \; || f_1 - f_2 ||_*.
 \end{align}
 The convergence of Sinkhorn and TI-Sinkhorn algorithms when $\gamma = \mu \otimes \nu$
 is summarized in the following result.
@@ -748,11 +752,13 @@ is summarized in the following result.
   the dual problem \ref{eq:dual_uot}. Given initialization $f_0$, suppose
   $(f_t, g_t), (\overline{f}_t, \overline{g}_t)$ are the iterates
   of the Sinkhorn and TI-Sinkhorn algorithms at iteration $t$, respectively. Denote
-  $\kappa = \left( 1 + \frac{\varepsilon}{\rho_1} \right)^{-1} \left( 1 + \frac{\varepsilon}{\rho_2} \right)^{-1}$
+  $\kappa = \left( 1 + \frac{\varepsilon}{\rho_1} \right)^{-1}
+  \left( 1 + \frac{\varepsilon}{\rho_2} \right)^{-1}$
   and $\overline{\kappa} = \kappa_{\varepsilon}(\mu) \kappa_{\varepsilon}(\nu) \kappa$. Then,
   for Sinkhorn algorithm, we have
   \begin{align}
-    || f^{(t)} - f^* ||_{\infty} + || g^{(t)} - g^* ||_{\infty} \leq 2 \kappa^t || f^{(0)} - f^* ||_*.
+    || f^{(t)} - f^* ||_{\infty} + || g^{(t)} - g^* ||_{\infty} \leq
+    2 \kappa^t || f^{(0)} - f^* ||_*.
   \end{align}
   whereas for TI-Sinkhorn algorithm,
   \begin{align}
@@ -774,13 +780,16 @@ TI-Sinkhorn still suffers from small regularization and remains slow in such sit
   \STATE \textbf{Input:} cost matrix $C \in \bbR^{m \times n}$,
   measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n_{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
   regularization $\varepsilon > 0$, relaxation parameters $\rho_1, \rho_2 > 0$.
-  \STATE Calculate $k_{ij} = \frac{\varepsilon}{\varepsilon + \rho_i} \frac{\rho_j}{\rho_1 + \rho_2}$,
+  \STATE Calculate $k_{ij} = \frac{\varepsilon}{\varepsilon + \rho_i}
+  \frac{\rho_j}{\rho_1 + \rho_2}$,
   for $i, j \in \{ 1, 2\}$, and $\xi_{ij} = \frac{k_{ij}}{1 - k_{ij}}$, for $i \neq j$.
   \FOR{$t=1, \dots, T$}
-  \STATE $f_i \gets \frac{\rho_1}{\rho_1 + \varepsilon} \; \overline{\smin}^{\mu_i, \gamma_{i, \cdot}}_{\varepsilon}(C_{i, \cdot} - g^{(t)})
+  \STATE $f_i \gets \frac{\rho_1}{\rho_1 + \varepsilon} \;
+  \overline{\smin}^{\mu_i, \gamma_{i, \cdot}}_{\varepsilon}(C_{i, \cdot} - g^{(t)})
   - k_{11} \; \smin^{\nu}_{\rho_2}(g^{(t)})$, for $i \in [m]$.
   \STATE $f^{(t+1)} \gets f + \xi_{12} \; \smin^{\mu}_{\rho_1}(f)$.
-  \STATE $g_j \gets \frac{\rho_2}{\rho_2 + \varepsilon} \; \overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(C_{\cdot, j} - f^{(t+1)})
+  \STATE $g_j \gets \frac{\rho_2}{\rho_2 + \varepsilon} \;
+  \overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(C_{\cdot, j} - f^{(t+1)})
   - k_{22} \; \smin^{\mu}_{\rho_1}(f^{(t+1)})$, for $j \in [n]$.
   \STATE $g^{(t+1)} \gets g + \xi_{21} \; \smin^{\nu}_{\rho_2}(g)$.
   \ENDFOR
@@ -802,9 +811,11 @@ we observe that both TI algorithms work comparatively well.
   measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n_{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
   regularization $\varepsilon > 0$, relaxation parameters $\rho_1, \rho_2 > 0$.
   \FOR{$t=1, \dots, T$}
-  \STATE $f_i^{(t+1)} \gets \frac{\rho_1}{\rho_1 + \varepsilon} \; \overline{\smin}^{\mu_i, \gamma_{i, \cdot}}_{\varepsilon}(C_{i, \cdot} - g^{(t)})
+  \STATE $f_i^{(t+1)} \gets \frac{\rho_1}{\rho_1 + \varepsilon} \;
+  \overline{\smin}^{\mu_i, \gamma_{i, \cdot}}_{\varepsilon}(C_{i, \cdot} - g^{(t)})
   - \lambda^{(t)}$, for $i \in [m]$.
-  \STATE $g_j^{(t+1)} \gets \frac{\rho_2}{\rho_2 + \varepsilon} \; \overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(C_{\cdot, j} - f^{(t+1)})
+  \STATE $g_j^{(t+1)} \gets \frac{\rho_2}{\rho_2 + \varepsilon} \;
+  \overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(C_{\cdot, j} - f^{(t+1)})
   + \lambda^{(t)}$, for $j \in [n]$.
   \STATE $\lambda^{(t+1)} = \lambda^*(f^{(t+1)}, g^{(t+1)})$ using \Cref{eq:optimal_lambda}.
   \ENDFOR
@@ -824,9 +835,10 @@ the MM iterate of Problem \ref{eq:discrete_ent_uot} reads
     P^{(t+1)} &= \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
     \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot
     (P^{(t)})^{\lambda_1 + \lambda_2} \odot \gamma^r \odot \exp\left(-\frac{C}{\lambda} \right) \\
-    &= \frac{(P^{(t)})^{\lambda_1 + \lambda_2}}{(P^{(t)}_{\# 1})^{\lambda_1} \otimes (P^{(t)}_{\# 2})^{\lambda_2}}
+    &= \frac{(P^{(t)})^{\lambda_1 + \lambda_2}}{(P^{(t)}_{\# 1})^{\lambda_1}
+    \otimes (P^{(t)}_{\# 2})^{\lambda_2}}
     \odot \left( \mu^{\lambda_1} \otimes \nu^{\lambda_2} \right) \odot \gamma^r
-    \odot \exp\left(-\frac{C}{\lambda} \right)
+    \odot \exp\left(-\frac{C}{\lambda} \right),
 \end{align}
 where $\lambda = \rho_1 + \rho_2 + \varepsilon$ and
 $\lambda_i = \frac{\rho_i}{\lambda}$ and $r = \frac{\varepsilon}{\lambda}$.
@@ -844,16 +856,17 @@ the MM iterate can also be computed explicitly in this case.
   \label{coro:uot_l2_mm}
   For $\mu \in \bbR^m, \nu \in \bbR^n$ and $\gamma \in \bbR^{m \times n}$,  consider the
   problem
-  \begin{equation}
+  \begin{align}
   \label{uot_l2}
       \uot_{\varepsilon, \rho} =
       \min_{P \geq 0} \; \langle C, P \rangle + \rho_1 \frac{||P_{\# 1} - \mu||^2}{2}
       + \rho_2 \frac{|| P_{\# 2} - \nu ||^2}{2} + \varepsilon  \frac{||P - \gamma||^2}{2}.
-  \end{equation}
+  \end{align}
   Then, the update reads
   \begin{align}
       P^{(t+1)} = \max \Big(0, (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma - C \Big)
-      \odot \frac{P^{(t)}}{(\rho_1 P^{(t)}_{\# 1}) \oplus (\rho_2 P^{(t)}_{\# 2}) + \varepsilon P^{(t)}},
+      \odot \frac{P^{(t)}}{(\rho_1 P^{(t)}_{\# 1}) \oplus (\rho_2 P^{(t)}_{\# 2})
+      + \varepsilon P^{(t)}},
   \end{align}
   where the max and division operations are element-wise.
 \end{corollary}
@@ -864,12 +877,12 @@ it is also possible to express the minimum of Problem \ref{uot_l2} in terms of i
 \begin{corollary}
   \label{coro:uot_l2_minimizer}
 Denote $P^*$ the solution of Problem \ref{uot_l2}. Then
-\begin{align*}
+\begin{align}
   \uot_{\varepsilon, \rho} = \frac{1}{2} \Big( \rho_1 ||\mu||^2
   + \rho_2 ||\nu||^2 + \varepsilon ||\gamma||^2 \Big)
   - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
   + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big).
-\end{align*}
+\end{align}
 \end{corollary}
 To conclude, MM is a very appealing alternative to the Sinkhorn-based algorithms,
 especially when the regularization is too small. However, it also has several practical concerns.
@@ -880,7 +893,7 @@ especially when the regularization is too small. However, it also has several pr
   Then, $\exp(-C / \lambda) \approx 1_{m \times n}$ and $r \approx 0$. So,
   \begin{align}
     P^{(t+1)} \approx \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
-    \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot P^{(t)}
+    \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot P^{(t)}.
   \end{align}
   If one initializes with the solution of the balanced OT problem, then $P^{(1)} \approx P^{(0)}$.
   By induction, we obtain that $P^{(t+1)} \approx P^{(t)}$.
@@ -899,7 +912,7 @@ the parameters $\rho_1, \rho_2, \varepsilon \geq 0$, we want to solve
 \begin{align}
   \label{eq:generic_uot}
   \min_{P \in \bbR^{m \times n}_{\geq 0}} \; \langle C, P \rangle + \rho_1 D(P_{\# 1} | \mu)
-  + \rho_2 D(P_{\# 2} | \nu) + \varepsilon R(P)
+  + \rho_2 D(P_{\# 2} | \nu) + \varepsilon R(P),
 \end{align}
 where $D$ is a certain divergence (for example, Csiszár or Bregman divergence)
 and $R$ is a regularizer. \Cref{t:uot_variation} summarizes some choices of divergences
@@ -1011,10 +1024,10 @@ applications of the GH-based distances in the OT and machine learning literature
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The GH distance between two arbitrary compact metric spaces $(X,d_X)$ and $(Y,d_Y)$
 (not necessarily living in the same underlying space) is defined by
-\begin{equation}
+\begin{align}
   \label{GH:zeroth}
   \gh((X,d_X), (Y,d_Y)) := \inf_{d \in \cD(d_X,d_Y)} d_{H}^{(X \cup Y, d)}(X, Y),
-\end{equation}
+\end{align}
 The idea of the GH distance is to, first, construct a "union" metric space as a common underlying space,
 in which the Hausdorff distance between two component metric spaces can be calculated. Then,
 amongst these admissible "union" metric spaces, identify the one which
@@ -1054,27 +1067,25 @@ different reformulations of GH distance.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{$L_p$-transportation distance}
 By combining \eqref{GH:zeroth} and \eqref{haus_corres}, we have,
-\begin{equation}
+\begin{align}
   \label{GH:second}
     \gh((X,d_X), (Y,d_Y)) = \inf_{d, R} \sup_{(x,y) \in R} d(x,y) =
     \inf_{d,R} || d ||_{L^{\infty}(R)},
-\end{equation}
+\end{align}
 where the infimum is taken over all $R \in \mathcal R(X,Y)$ and $d \in \cD(d_X, d_Y)$.
 Now, we can immediately extend \eqref{GH:second} to the mm-space setting,
 using the Wassersteinization and $L^p$-ization processes in \Cref{fig:wass_motiv}.
 This results in the $L_p$-transportation distance \citep{Sturm06}: for $1 \leq p < \infty$,
-\begin{equation}
-  \begin{split}
+\begin{align}
     D_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y))
     := \inf_{d, \pi} \left( \int_{X \times Y} d(x,y)^p d\pi(x,y) \right)^{1/p}
     = \inf_{d, \pi} || d ||_{L^p(\pi)},
-  \end{split}
-\end{equation}
+\end{align}
 and for $p = \infty$,
-\begin{equation}
+\begin{align}
     D_{\infty}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) := \inf_{d, \pi} \sup_{(x,y) \in R(\pi)} d(x,y) =
     \inf_{ d, \pi} || d ||_{L^{\infty}(R(\pi))},
-\end{equation}
+\end{align}
 where the infimum is taken over all $\pi \in U(\mu_X, \mu_Y)$ and $d \in \cD(d_X, d_Y)$.
 This distance can also be obtained from a more popular definition of the GH distance,
 also due to \citep{Gromov99}
@@ -1092,17 +1103,17 @@ Moreover, each projection map must also preserve the within-space distance.
 Thanks to Lemma 3.3 in \citep{Sturm06}, we can adapt the idea of \eqref{GH:first}
 to the setting of mm-space by replacing the Hausdorff distance with the Wasserstein distance,
 and obtain the equivalent form of the $L_p$-transportation distance
-\begin{equation}
+\begin{align}
    \label{D:alter}
   D_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
   \inf_{Z, f, g} W_{Z, p} \big( (f(X), f_{\# \mu_X}), (g(Y), g_{\# \mu_Y}) \big),
-\end{equation}
+\end{align}
 for $1 \leq p < \infty$ and
-\begin{equation}
+\begin{align}
    \label{D:alter_infty}
   D_{\infty}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
   \inf_{Z, f, g} W_{Z, \infty}\big( (f(X), f_{\# \mu_X} ), (g(Y), g_{\# \mu_Y} ) \big),
-\end{equation}
+\end{align}
 where the infimum is taken over all metric spaces $(Z,d)$ with measurable isometric embeddings
 $f: X \to Z$ and $g: Y \to Z$.
 
@@ -1122,38 +1133,33 @@ to project one space onto the other.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 For notational convenience, given two metric spaces $(X, d_X)$ and $(Y, d_Y)$,
 we define the function $|d_X - d_Y|: (X \times Y) \times (X \times Y) \to \bbR_{\geq 0}$ by
-\begin{equation*}
+\begin{align}
     |d_X - d_Y|((x_1, y_1), (x_2, y_2)) := \big\vert d_X(x_1, x_2) - d_Y(y_1, y_2) \big\vert.
-\end{equation*}
+\end{align}
 Now, due to Theorem 7.3.25 in \citep{Burago01},
-\begin{equation}
-  \begin{split}
-    \gh((X,d_X), (Y,d_Y)) &= \frac{1}{2} \inf_{R}
-    \sup_{\substack{(x_1,y_1) \in R \\ (x_2,y_2) \in R}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big| \\
-    &= \frac{1}{2} \inf_{R} || d_X - d_Y ||_{L^{\infty}(R \times R)},
-  \end{split}
-\end{equation}
+\begin{align}
+  \gh((X,d_X), (Y,d_Y)) &= \frac{1}{2} \inf_{R}
+  \sup_{\substack{(x_1,y_1) \in R \\ (x_2,y_2) \in R}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big| \\
+  &= \frac{1}{2} \inf_{R} || d_X - d_Y ||_{L^{\infty}(R \times R)},
+\end{align}
 where the infimum is taken over all $R \in \mathcal R(X,Y)$. By replacing the correspondance
 with the admissible coupling, we obtain the GW distance \citep{Memoli07,Memoli11}:
 for $1 \leq p < \infty$,
-\begin{equation}
-  \begin{split}
+\begin{align}
     &\gw_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) \\
     &:= \inf_{ \pi \in U(\mu_X, \mu_Y)} || d_X - d_Y ||_{L^p(\pi \otimes \pi)} \\
     &= \inf_{ \pi \in U(\mu_X, \mu_Y)}
     \left( \int_{X \times Y} \int_{X \times Y} |d_X(x_1, x_2) - d_Y(y_1, y_2)|^p \;
     d\pi(x_1, y_1) \; d\pi(x_2, y_2) \right)^{1 / p},
-  \end{split}
-\end{equation}
+\end{align}
 and for $p = \infty$,
-\begin{equation}
-  \begin{split}
+\begin{align}
     \text{GW}_{\infty}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) &:=
     \inf_{ \pi \in U(\mu_X, \mu_Y)} || d_X - d_Y ||_{L^{\infty}(R(\pi) \times R(\pi))} \\
     &= \inf_{ \pi \in U(\mu_X, \mu_Y)}
-    \sup_{\substack{(x_1,y_1) \in R(\pi) \\ (x_2,y_2) \in R(\pi)}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big|.
-  \end{split}
-\end{equation}
+    \sup_{\substack{(x_1,y_1) \in R(\pi) \\ (x_2,y_2) \in R(\pi)}}
+    \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big|.
+\end{align}
 Thanks to Theorem 5.1 in \citep{Memoli11b},
 we have the following relation between the GW and $L_p$-transportation distance:
 $\gw_{\infty} = D_{\infty}$ and $\gw_p \leq D_p$, for any $p \geq 1$.
@@ -1166,56 +1172,48 @@ which is difficult to optimize.
 \paragraph{Bi-directional Gromov-Monge}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Thanks to Theorem 2.1 in \citep{Kalton99}, for bounded metric spaces, we have
-\begin{equation} \label{kalton_form}
-  \begin{split}
-    \gh((X,d_X), (Y,d_Y)) &:= \frac{1}{2} \inf_{\substack{f: X \to Y \\ g: Y \to X}}
-    \sup_{\substack{(x_1, x_2) \in X^2 \\ (y_1, y_2) \in Y^2 \\
-    (x_i, y_i) \in G(f,g)}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big| \\
-    &= \frac{1}{2} \inf_{\substack{f: X \to Y \\ g: Y \to X}}
-    \max \Big( \Delta_{\infty}(f, X), \Delta_{\infty}(g, Y), \Delta_{\infty}(f,g, X, Y) \Big).
-  \end{split}
-\end{equation}
+\begin{align} \label{kalton_form}
+  \gh((X,d_X), (Y,d_Y)) &:= \frac{1}{2} \inf_{\substack{f: X \to Y \\ g: Y \to X}}
+  \sup_{\substack{(x_1, x_2) \in X^2 \\ (y_1, y_2) \in Y^2 \\
+  (x_i, y_i) \in G(f,g)}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big| \\
+  &= \frac{1}{2} \inf_{\substack{f: X \to Y \\ g: Y \to X}}
+  \max \Big( \Delta_{\infty}(f, X), \Delta_{\infty}(g, Y), \Delta_{\infty}(f,g, X, Y) \Big).
+\end{align}
 Here, the infimum is taken over all \textbf{arbitrary} maps $f$ and $g$, and
 \begin{itemize}
   \item[$\bullet$] The union of graphs is defined by:
   $G(f,g) := \{(x, f(x)), x \in X\} \cup \{(g(y), y), y \in Y \}$.
 
   \item[$\bullet$] The first term is defined by
-  \begin{equation*}
-    \begin{split}
-      \Delta_{\infty}(f, X) &:=
-      \sup_{(x_1, x_2) \in X^2} \left| d_X(x_1, x_2) - d_Y(f(x_1), f(x_2)) \right| \\
-      &= || d_X - f^* d_Y ||_{L^{\infty}(X^2)}.
-    \end{split}
-  \end{equation*}
+  \begin{align}
+    \Delta_{\infty}(f, X) &:=
+    \sup_{(x_1, x_2) \in X^2} \left| d_X(x_1, x_2) - d_Y(f(x_1), f(x_2)) \right| \\
+    &= || d_X - f^* d_Y ||_{L^{\infty}(X^2)}.
+  \end{align}
 
   \item[$\bullet$] The second term is defined by
-  \begin{equation*}
-    \begin{split}
-      \Delta_{\infty}(g, Y) &:= \sup_{(y_1, y_2) \in Y^2}
-      \left| d_X(g(y_1), g(y_2)) - d_Y(y_1, y_2) \right| \\
-      &= || g^*d_X - d_Y ||_{L^{\infty}(Y^2)}.
-    \end{split}
-  \end{equation*}
+  \begin{align}
+    \Delta_{\infty}(g, Y) &:= \sup_{(y_1, y_2) \in Y^2}
+    \left| d_X(g(y_1), g(y_2)) - d_Y(y_1, y_2) \right| \\
+    &= || g^*d_X - d_Y ||_{L^{\infty}(Y^2)}.
+  \end{align}
 
   \item[$\bullet$] The last term is defined by
-  \begin{equation*}
-    \begin{split}
-      \Delta_{\infty}(f,g, X, Y)
-      &:= \sup_{(x, y) \in X \times Y} \left| d_X(x, g(y)) - d_Y(f(x),y) \right| \\
-      &= || (\id_X, g)^*d_X - (f, \id_Y)^*d_Y ||_{L^{\infty}(X \times Y)}.
-    \end{split}
-  \end{equation*}
+  \begin{align}
+    \Delta_{\infty}(f,g, X, Y)
+    &:= \sup_{(x, y) \in X \times Y} \left| d_X(x, g(y)) - d_Y(f(x),y) \right| \\
+    &= || (\id_X, g)^*d_X - (f, \id_Y)^*d_Y ||_{L^{\infty}(X \times Y)}.
+  \end{align}
 \end{itemize}
 The second equality holds, due to Remark 2 in \citep{Memoli05}. Interested readers can find
 more discussion on the practical use of \eqref{kalton_form} in Remark 4.5 in \citep{Memoli11b}.
 Recently, \citep{Zhang21} adapt this fourth formulation to the mm-space and propose
 the bi-directional Gromov-Monge (BGM) distance defined as
-\begin{equation}
+\begin{align}
   \text{BGM}_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
   \inf_{\substack{f: X \to Y, f_{\#}\mu_X = \mu_Y \\ g: Y \to X, g_{\#} \mu_Y = \mu_X}}
   \Delta_{p}(f,X) + \Delta_{p}(g,Y) + \Delta_{p}(f,g, X, Y),
-\end{equation}
+\end{align}
 where
 \begin{itemize}
   \item[$\bullet$] $\Delta_{p}(f, X) = || d_X - f^* d_Y ||_{L^p(X^2, \mu_X \otimes \mu_X)}$.
@@ -1224,10 +1222,10 @@ where
 \end{itemize}
 Another concurrent variant of BGM is proposed by \citep{Hur21},
 where they consider the reversible Gromov-Monge (RGM) distance
-\begin{equation}
+\begin{align}
   \text{RGM}_2((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
   \inf_{(f,g) \in I(\mu_X, \mu_Y)} \Delta_2(f,g, X, Y),
-\end{equation}
+\end{align}
 where $I(\mu_X, \mu_Y) := \{(f, g): (g, \id_Y)_{\#} \mu_Y = (\id_X, f)_{\#} \mu_X \}$.
 We note that the constraints in RGM and BGM are related but not equivalent. In particular,
 as remarked in \citep{Hur21}, the equality $(g, \id_Y)_{\#} \mu_Y = (\id_X, f)_{\#} \mu_X$
@@ -1239,10 +1237,10 @@ To conclude, apart from the above metrics induced by the GH distance, there exis
 alternatives for comparing mm-spaces. For example, by relying on the idea of \eqref{GH:first},
 one can use the Gromov-Hausdorff-Prokhorov distance \citep{Villani08} and
 its variants \citep{Abraham13,Miermont09}
-\begin{equation}
+\begin{align}
   \text{GHP}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
-  \inf_{Z, f, g} d_H^Z(f(X), g(Y)) + d_P(f_{\#} \mu_X, g_{\#} \mu_Y)
-\end{equation}
+  \inf_{Z, f, g} d_H^Z(f(X), g(Y)) + d_P(f_{\#} \mu_X, g_{\#} \mu_Y),
+\end{align}
 where $d_P$ is the Prokhorov distance. The Prokhorov distance can also be replaced by,
 for example by the Wasserstein distance, which results in the
 Gromov-Hausdorff-Wasserstein distance \citep{Villani08}. However, from the practical perspective,
@@ -1320,10 +1318,10 @@ There are several immediate observations from this definition.
 \end{enumerate}
 Similar to the Wasserstein distance, a Monge version of the GW distance,
 known as \textit{Gromov-Monge} (GM) distance, is defined as
-\begin{equation}
+\begin{align}
   \text{GM}(\cX, \cY) =
   \inf_{\varphi \in \cT(\mu_X, \mu_Y)} || c_X - \varphi^* c_Y ||_{L^p(X^2, \mu_X \otimes \mu_X)},
-\end{equation}
+\end{align}
 where, recall that $\cT(\mu, \nu)$ is the set of transport maps from $\mu$ to $\nu$.
 The GM distance suffers the same limitations as the Monge's problem,
 notably the existence of the transport map and the asymmetry of the metric.
@@ -1336,10 +1334,10 @@ The following result is very handy as it allows us to flexibly switch between th
 \begin{corollary}[Theorem 14 in \citep{Memoli21}]
   \label{GW_mGW}
   Let $\cX$ and $\cY$ be two measure networks, then
-  \begin{equation*}
+  \begin{align}
     \text{GW}(\cX, \cY) = \inf_{\cZ \in \ms(\cX)} \text{GM}(\cZ, \cY)
     = \inf_{\cZ \in \ms(\cY)} \text{GM}(\cZ, \cX).
-  \end{equation*}
+  \end{align}
   Moreover, the infima are always attained: there exist two measure networks $\cZ_x \in \ms(\cX)$ and
   $\cZ_y \in \ms(\cY)$ such that
   $\text{GW}(\cX, \cY) = \text{GM}(\cZ_x, \cY) = \text{GM}(\cZ_y, \cX)$.
@@ -1401,7 +1399,7 @@ $C^x \in \bbR^{m \times m}, C^y \in \bbR^{n \times n}$ and histograms
 $\mu_X \in \Sigma_m, \mu_Y \in \Sigma_n$, the GW problem reads
 \begin{align}
   \label{eq:discrete_gw}
-  \min_{P \in U(\mu, \nu)} \sum_{i,j,k,l} |C^x_{ik} - C^y_{jl}|^p \; P_{ij} P_{kl}
+  \min_{P \in U(\mu, \nu)} \sum_{i,j,k,l} |C^x_{ik} - C^y_{jl}|^p \; P_{ij} P_{kl}.
 \end{align}
 For convenience, we write
 $\sum_{i,j,k,l} |C^x_{ik} - C^y_{jl}|^p \; P_{ij} P_{kl} = \langle C \otimes P, P \rangle$,
@@ -1471,7 +1469,7 @@ with $d_x \ll m$ and $d_y \ll n$, we have
   \langle \vert C^x - C^y \vert^2 \otimes P, P \rangle
   &= (C^x)^{\odot 2} P_{\# 1} \oplus (C^y)^{\odot 2} P_{\# 2} - 2 C^x P (C^y)^T \\
   &= \mu_X^T \widetilde{D}_x \widetilde{D}_x^T \mu_X
-  + \mu_Y^T \widetilde{D}_y \widetilde{D}_y^T \mu_Y - 2 \langle D_x D_x^T P D_y D_y^T, P \rangle
+  + \mu_Y^T \widetilde{D}_y \widetilde{D}_y^T \mu_Y - 2 \langle D_x D_x^T P D_y D_y^T, P \rangle.
 \end{align}
 Comparing to \Cref{eq:cost_tensor_full}, the computational costs are now much cheaper,
 where for the constant term, it is $O(m d_x^2 + n d_y^2)$, and for $C^x P (C^y)^T$,
@@ -1537,7 +1535,7 @@ but there is no theoritical guarantee with their approach.
 \paragraph{3. (Inexact) Bregman proximal point} Inspired by IPOT \citep{Xie20}, \citep{Xu19, Xu19b}
 propose to use the Bregman proximal point (BPP) method, where at each iteration, we solve
 \begin{align}
-  \min_{P \in U(\mu_X, \mu_Y)} \langle C \otimes P, P \rangle + \eta \; \kl(P | P^{(t)})
+  \min_{P \in U(\mu_X, \mu_Y)} \langle C \otimes P, P \rangle + \eta \; \kl(P | P^{(t)}).
 \end{align}
 This is nothing but the entropic GW problem presented in the second approach, thus can be solved
 with the PGD algorithm. The resulting sequence only guarantees that
@@ -1570,7 +1568,7 @@ under exactly the same conditions as in Problem \ref{eq:coot}.
 \paragraph{5. Bregman alternating projected gradient}
 Another way to use the lower bound is in \citep{Li22}.
 \begin{align}
-  \min_{\substack{(P, Q) \in \cC_1 \times \cC_2 \\ P = Q}} \langle C \otimes P, Q \rangle
+  \min_{\substack{(P, Q) \in \cC_1 \times \cC_2 \\ P = Q}} \langle C \otimes P, Q \rangle,
 \end{align}
 where $\cC_1 = \{ P \geq 0: P_{\# 1} = \mu_X \}$ and $\cC_2 = \{ Q \geq 0: Q_{\# 2} = \mu_Y \}$,
 They propose to use the Bregman alternating projected gradient (BAPG), whose iterates read:
@@ -1596,12 +1594,12 @@ run the following iterative scheme until convergence.
 \begin{enumerate}
   \item Calculate the new OT cost $C^{(k)} = C \otimes Q^{(k)}$.
   \item Solve the non-linear system of equations for $u \in \bbR^m$ and $v \in \bbR^n$.
-  \begin{align*}
+  \begin{align}
     \begin{cases}
-      \sum\limits_{j=1}^n \varphi \big( \beta_t (u + v_j + C^{(k)}_{\cdot, j}) \big) = \mu_X \\
-      \sum\limits_{i=1}^m \varphi \big( \beta_t (u_i + v + C^{(k)}_{i, \cdot}) \big) = \mu_Y
+      \sum\limits_{j=1}^n \varphi \big( \beta_t (u + v_j + C^{(k)}_{\cdot, j}) \big) = \mu_X. \\
+      \sum\limits_{i=1}^m \varphi \big( \beta_t (u_i + v + C^{(k)}_{i, \cdot}) \big) = \mu_Y.
     \end{cases}
-  \end{align*}
+  \end{align}
   \item Compute $Q^{(k+1)} = \varphi \big( \beta_t (u \oplus v + C^{(k)}) \big)$.
 \end{enumerate}
 Finally, set $P^{(t)} = Q^{(k)}$ and repeat the procedure.
@@ -1653,20 +1651,20 @@ the unbalanced setting. More precisely, given two mm-spaces
 $\cX = (X, d_X, \mu_X)$ and $\cY = (Y, d_Y, \mu_Y)$, \citep{Ponti20}
 study the unbalanced extension of the $L_p$-transportation distance called
 \textit{Sturm-Entropic-Transport distance}, defined as
-\begin{equation}
+\begin{align}
   \text{D}_{\text{ET}}(\cX, \cY) =
   \inf_{Z, f, g} UW_{Z, p}\big( (f(X), f_{\#} \mu_X), (g(Y), g_{\#} \mu_Y) \big),
-\end{equation}
+\end{align}
 where the infimum is taken over all complete and separable metric spaces $Z$ and
 isometric embeddings $f: X \to Z$ and $g: Y \to Z$. \citep{Sejourne20} introduce the
 unbalanced GW (UGW) divergence: given two relaxation parameters
 $\rho_1, \rho_2 > 0$ and two Csizar divergences $D_{\varphi_1}, D_{\varphi_2}$, they define
-\begin{equation}
+\begin{align}
   \text{UGW}_{\lambda}(\cX, \cY) =
   \inf_{ \pi \in U(\mu_X, \mu_Y)} \int |d_X - d_Y|^p d\pi d\pi +
   \rho_1 D_{\varphi_1}^{\otimes 2}(\pi_{\# 1} | \mu_X) +
   \rho_2 D_{\varphi_2}^{\otimes 2}(\pi_{\# 2} | \mu_Y).
-\end{equation}
+\end{align}
 Here, $D_{\varphi}^{\otimes 2}$ denotes the \textit{quadratic divergence}
 $D_{\varphi}^{\otimes 2}(\mu | \nu) := D_{\varphi}(\mu \otimes \mu | \nu \otimes \nu)$.
 This structure of product measures is particularly useful in the study of theoretical
@@ -1675,13 +1673,11 @@ the relation with conic formulation \citep{Sejourne20} and the robustness to out
 
 \citep{Zhang21} propose the unbalanced bidirectional Gromov-Monge divergence defined as:
 for $\lambda_x, \lambda_y > 0$,
-\begin{equation}
-  \begin{split}
+\begin{align}
     \text{UBGM}_{\lambda}(\cX, \cY) = \inf_{\substack{f: X \to Y \\ g: Y \to X}}
   \Delta_p(f,g, X, Y) + \lambda_x \text{D}_{\varphi_x}(g_{\#} \mu_Y | \mu_X)
   + \lambda_y \text{D}_{\varphi_y}(f_{\#}\mu_X | \mu_Y).
-  \end{split}
-\end{equation}
+\end{align}
 where $D_{\varphi_x}$ and $D_{\varphi_y}$ are divergences on $\mathcal M^+_1(X)$ and $\mathcal M^+_1(Y)$,
 respectively. Here, the authors define a divergence $D$ on $\mathcal M^+_1(Z)$ as a function
 $D: \mathcal M^+_1(Z) \times \mathcal M^+_1(Z) \to \bbR_{\geq 0}$ such that
@@ -1723,30 +1719,31 @@ we will exclusively focus on the KL divergence throughout this thesis.
   Given a nonepmpty closed convex set of $E \subset \bbR^d_{\geq 0}$
   and a proper closed convex function $f: E \to \bbR$, consider the following
   convex optimization problem
-  \begin{equation*}
-    \min_{x \in E} f(x)
-  \end{equation*}
+  \begin{align}
+    \min_{x \in E} f(x).
+  \end{align}
   For learning rate $\eta > 0$, the exact BPP scheme with respect to the KL divergence reads
-  \begin{equation}
+  \begin{align}
     \label{eq:bppa}
     x^{(t+1)} = \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}),
-  \end{equation}
+  \end{align}
   and the inexact BPP scheme reads
-  \begin{equation}
+  \begin{align}
     \label{eq:bppa_inexact}
     x^{(t+1)} \approx \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}).
-  \end{equation}
+  \end{align}
   Here, $x^{(t+1)}$ is only an approximate solution in some sense.
 \end{definition}
 When applying to Problem \ref{eq:discrete_ent_uot}, the exact BPP iteration boils down to solving
 \begin{align}
-  \label{eq:bpp_uot}
-  P^{(t+1)} &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
+\label{eq:bpp_uot}
+  &P^{(t+1)} \\
+  &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
   \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
   + \rho_2 \kl(P_{\# 2} | \nu) + \varepsilon \kl(P | \gamma) + \eta \kl(P | P^{(t)}) \\
   &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
   \left \langle C - \eta \log \frac{P^{(t)}}{\gamma}, P \right \rangle
-  + \rho_1 \kl(P_{\# 1} | \mu) + \rho_2 \kl(P_{\# 2} | \nu) + (\varepsilon + \eta) \kl(P | \gamma)
+  + \rho_1 \kl(P_{\# 1} | \mu) + \rho_2 \kl(P_{\# 2} | \nu) + (\varepsilon + \eta) \kl(P | \gamma).
 \end{align}
 This is nothing but an entropic UOT problem with modified cost and regularization.
 Thus, any solvers discussed in \Cref{sub:uot_optim} can be used. In particular,
@@ -1772,10 +1769,10 @@ The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
   \FOR{$t=1, \dots, T$}
   \STATE Calculate new cost: $C^{(t+1)} \gets C - \eta \log \Big( \frac{P^{(t)}}{\gamma} \Big)$.
   \STATE Solve approximatively the entropic UOT problem
-  \begin{align*}
+  \begin{align}
     P^{(t+1)} \approx \argmin_{P \geq 0} \; \langle C^{(t+1)}, P \rangle +
     \rho_1 \kl(P_{\# 1} | \mu) + \rho_2 \kl(P_{\# 2} | \nu) + (\varepsilon + \eta) \kl(P | \gamma).
-  \end{align*}
+  \end{align}
   \ENDFOR
   \STATE \textbf{Output:} transport plan $P^{(T)}$.
 \end{algorithmic}
@@ -1803,14 +1800,14 @@ strong convexity \citep{Lu18} of a function with respect to the KL divergence.
   Let $f:C \to \bbR$ be a differentiable convex function.
   Given $L \geq 0$, we say that $f$ is $L-$smooth relative to the KL divergence
   if for any $x, y \in C$,
-  \begin{equation*}
+  \begin{align}
     f(x) \leq f(y) + \langle \nabla f(y), x - y \rangle + L \; \kl(x, y).
-  \end{equation*}
+  \end{align}
   Given $l \geq 0$, we say $f$ is $l-$strongly convex relative to the KL divergence
   if for any $x, y \in C$,
-  \begin{equation*}
+  \begin{align}
     f(x) \geq f(y) + \langle \nabla f(y), x - y \rangle + l\; \kl(x, y).
-  \end{equation*}
+  \end{align}
 \end{definition}
 
 \begin{lemma}
@@ -1825,22 +1822,22 @@ The following result is a simple generalization of Theorem 3.1 in \citep{Lu18}.
   the sequence $\big( F(\pi^{(t)}) \big)_t$ is monotonically decreasing.
   Moreover, if $\varepsilon \leq \eta \leq \lambda_1 + \lambda_2 + \varepsilon$,
   then we have
-  \begin{align*}
+  \begin{align}
     F(\pi^{(t)}) - F(\pi^*)
     \leq \frac{\varepsilon}{\left( 1 +
     \frac{\varepsilon (\lambda_1 + \lambda_2 + \varepsilon)}{\eta (\lambda_1 + \lambda_2)} \right)^t - 1}
     \kl(\pi^* | \pi^{(0)}).
-  \end{align*}
+  \end{align}
 \end{proposition}
 It is not difficult to check that this bound is weaker than the one in
 Inequality (\ref{eq:chen_teboulle}). Indeed,
-\begin{align*}
+\begin{align}
   \frac{\varepsilon}{\left( 1 +
   \frac{\varepsilon (\lambda_1 + \lambda_2 + \varepsilon)}{\eta (\lambda_1 + \lambda_2)} \right)^t - 1}
   \leq \frac{\varepsilon}{\frac{t \varepsilon(\lambda_1 + \lambda_2 + \varepsilon)}{\eta (\lambda_1 + \lambda_2)}}
   = \frac{\eta}{t} \frac{\lambda_1 + \lambda_2}{\lambda_1 + \lambda_2 + \varepsilon}
   \leq \frac{\eta}{t}.
-\end{align*}
+\end{align}
 
 \subsection{Convergence analysis in the inexact setting}
 
