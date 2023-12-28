@@ -307,7 +307,7 @@ that $\xi_1, \xi_2$ are continuous on their supports.
 We denote the contaminated sample-feature space by
 $\widetilde{\cX_1} = ((X^s_1 \cup O^s, \widetilde{\mu}^s_1), (X^f_1 \cup O^f, \widetilde{\mu}^f_1), \xi_1)$.
 Finally, we define some useful minimal and maximal costs:
-  \begin{equation*}
+  \begin{equation}
     \begin{cases}
   \Delta_{0} := \min\limits_{
   \substack{
@@ -320,7 +320,7 @@ Finally, we define some useful minimal and maximal costs:
   x_2^s \in X_2^s, x_2^f \in X_2^f
   }} \quad|\xi_1(x_1^s, x_1^f) - \xi_2(x_2^s, x_2^f)|^p \enspace.
   \end{cases}
-  \end{equation*}
+  \end{equation}
 Here, $\Delta_{0}$ accounts for the minimal deviation of the cost between
 the outliers and target support, while $\Delta_{\infty}$ is the maximal deviation
 between the contaminated source and the target.
@@ -412,7 +412,7 @@ For the sake of simplicity, we assume uniform weights over both samples and feat
 Computing UCOOT can be done using block-coordinate descent (BCD) both with
 and without entropy regularization. More precisely, given a hyperparameter $\varepsilon \geq 0$,
 discrete UCOOT can be written as:
-\begin{equation*}
+\begin{equation}
 \begin{split}
     \label{eq:ucoot-discrete-2}
   &\min_{\substack{\pi^s, \pi^f \\
@@ -422,7 +422,7 @@ discrete UCOOT can be written as:
   &+ \lambda_2 \kl({\pi^s}^\top \mathds 1_{n_2} \otimes {\pi^f}^{\top} \mathds 1_{d_2} | u_2) +
   \varepsilon \text{KL}( \pi^s \otimes \pi^f | \mu^s_1 \otimes \mu_2^s \otimes \mu_1^f \otimes \mu_2^f).
 \end{split}
-\end{equation*}
+\end{equation}
 
 \begin{algorithm}
     \caption{BCD algorithm to solve UCOOT \label{alg:bcd}}
