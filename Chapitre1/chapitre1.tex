@@ -645,10 +645,7 @@ Denote $P^*$ is the minimizer of Problem \ref{eq:discrete_ent_uot}. Then,
 \begin{proof}
   The proof follows immediately from the proof of Lemma 4 in \citep{Khiem20}. In particular,
   it relies on two observations. First, the KL divergence has the following property:
-  for any $t > 0$,
-  \begin{align}
-    \kl(t P | Q) = t \; \kl(P | Q) + (1-t) \; m(Q) + t \log t \; m(P).
-  \end{align}
+  for any $t > 0$, we have $\kl(t P | Q) = t \; \kl(P | Q) + (1-t) \; m(Q) + t \log t \; m(P)$.
   Second, if we denote $G$ the objective function of Problem \ref{eq:discrete_ent_uot}, then
   $\uot_{\varepsilon, \rho} = \min_{t > 0} G(tP^*)$ and the minimum is attained when $t=1$.
 \end{proof}
