@@ -450,7 +450,36 @@ which can be solved efficiently using the unbalanced variant of Sinkhorn's algor
 The main benefit of entropy regularization is to reduce the number of variables
 from $(n_1 \times n_2) + (d_1 \times d_2)$ to $n_1 + n_2 + d_1 + d_2$.
 Moreover, by taking $\varepsilon$ sufficiently small, we can recover solutions
-close to those in the non-entropic case.
+close to those in the non-entropic case. We formalize this claim in the following result.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proposition}
+  \label{convergence_minimiser_unbalanced}
+  Let $(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f)$ be an equal-mass solution of the problem
+  $\ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2)$. Denote $\mu^s = \mu_1^s \otimes \mu_2^s$
+  and $\mu^f = \mu_1^f \otimes \mu_2^f$.
+  \begin{enumerate}
+    \item When $\varepsilon \to \infty$, we have $\pi_{\varepsilon}^s \rightharpoonup
+    \sqrt{\frac{m(\mu^f)}{m(\mu^s)}} \mu^s$
+    and $\pi_{\varepsilon}^f \rightharpoonup \sqrt{\frac{m(\mu^s)}{m(\mu^f)}} \mu^f$.
+
+    \item When $\varepsilon \to 0$, we have
+    \begin{enumerate}
+      \item $\ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2) \to \ucoot_{\lambda}(\cX_1, \cX_2)$ and
+      $m(\pi_{\varepsilon}^s) \to m(\pi_*^s)$, for any equal-mass solution
+      $(\pi_*^s, \pi_*^f)$ of the unregularized problem.
+
+      \item Any cluster point $(\widehat{\pi}^s, \widehat{\pi}^f)$ of the sequence
+      $(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f)_{\varepsilon}$ is an equal-mass
+      solution of the unregularized problem. Furthermore,
+      \begin{equation}
+        \kl(\widehat{\pi}^s \otimes \widehat{\pi}^f | \mu^s \otimes \mu^f) =
+        \min_{(\pi^s, \pi^f)} \kl(\pi^s \otimes \pi^f \vert \mu^s \otimes \mu^f),
+      \end{equation}
+      where the infimum is taken over all solutions of the unregularized problem.
+    \end{enumerate}
+  \end{enumerate}
+\end{proposition}
+
 \iffalse It should also be noted that, while the proposed algorithm in \citep{Sejourne21}
 requires mass rescaling within each BCD iteration, it is not necessarily the case for the UCOOT. \fi
 For $\varepsilon=0$, the non-regularized UOT problem can be recast as a
