@@ -650,9 +650,10 @@ Denote $P^*$ is the minimizer of Problem \eqref{eq:discrete_ent_uot}. Then,
   $\uot_{\varepsilon, \rho} = \min_{t > 0} G(tP^*)$ and the minimum is attained when $t=1$.
 \end{proof}
 While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
-(\textit{i.e.} $\varepsilon = 0$). Later, we will see how this result can also be extended
-to other unbalanced divergences, namely the unbalanced Gromov-Wasserstein
-(see Equation \eqref{eq:ugw_minimizer_minimum})
+(\textit{i.e.} $\varepsilon = 0$). Interestingly, this result can be easily extended
+to other unbalanced divergences, namely
+the squared $l_2$-regularized UOT problem \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
+the unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
 and unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
 Now, we discuss some existing approaches to Problem \eqref{eq:discrete_ent_uot}.
 
@@ -1529,7 +1530,7 @@ where each iteration boils down to solving an entropic OT problem. More precisel
   Then the PGD iteration reads: for any learning rate $\eta > 0$,
   \begin{align}
     P^{(t+1)} = \argmin_{P \in U(\mu_X, \mu_Y)}
-    \eta \langle C \otimes P^{(t)} + M, P \rangle
+    \eta \; \langle C \otimes P^{(t)} + M, P \rangle
     + \varepsilon \kl \left( P \big| \gamma^{\eta} \odot (P^{(t)})^{1 - \eta} \right).
   \end{align}
 \end{lemma}
