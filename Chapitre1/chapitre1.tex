@@ -651,8 +651,9 @@ Denote $P^*$ is the minimizer of Problem \eqref{eq:discrete_ent_uot}. Then,
 \end{proof}
 While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
 (\textit{i.e.} $\varepsilon = 0$). Later, we will see how this result can also be extended
-to other unbalanced divergences, namely the unbalanced Gromov-Wasserstein and
-unbalanced Co-Optimal Transport.
+to other unbalanced divergences, namely the unbalanced Gromov-Wasserstein
+(see Equation \eqref{eq:ugw_minimizer_minimum})
+and unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
 Now, we discuss some existing approaches to Problem \eqref{eq:discrete_ent_uot}.
 
 \paragraph{Sinkhorn algorithm} The Sinkhorn algorithm can be extended easily to the entropic UOT.
@@ -1616,6 +1617,7 @@ the temperature tends to $0$, the convergence analysis of this algorithm remains
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Beyond GW distance}
+\label{subsec:beyond_gw}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \paragraph{Fused GW distance} Structured data - an object made of two components:
@@ -1663,22 +1665,30 @@ study the unbalanced extension of the $L_p$-transportation distance called
   \inf_{Z, f, g} UW_{Z, p}\big( (f(X), f_{\#} \mu_X), (g(Y), g_{\#} \mu_Y) \big),
 \end{align}
 where the infimum is taken over all complete and separable metric spaces $Z$ and
-isometric embeddings $f: X \to Z$ and $g: Y \to Z$. \citep{Sejourne20} introduce the
-unbalanced GW (UGW) divergence: given two relaxation parameters
-$\rho_1, \rho_2 > 0$ and two Csizar divergences $D_{\varphi_1}, D_{\varphi_2}$, they define
+isometric embeddings $f: X \to Z$ and $g: Y \to Z$.
+
+To compare compact mm-spaces,
+\citep{Sejourne20} propose the unbalanced GW (UGW) divergence: given two relaxation parameters
+$\lambda_1, \lambda_2 > 0$ and two Csizar divergences $D_{\varphi_1}, D_{\varphi_2}$, they define
 \begin{align}
   \text{UGW}_{\lambda}(\cX, \cY) =
-  \inf_{ \pi \in U(\mu_X, \mu_Y)} \int |d_X - d_Y|^p d\pi d\pi +
-  \rho_1 D_{\varphi_1}^{\otimes 2}(\pi_{\# 1} | \mu_X) +
-  \rho_2 D_{\varphi_2}^{\otimes 2}(\pi_{\# 2} | \mu_Y).
+  \inf_{ \pi \in \cM^+(X \times Y)} \int |d_X - d_Y|^p d\pi d\pi +
+  \lambda_1 D_{\varphi_1}^{\otimes 2}(\pi_{\# 1} | \mu_X) +
+  \lambda_2 D_{\varphi_2}^{\otimes 2}(\pi_{\# 2} | \mu_Y).
 \end{align}
 Here, $D_{\varphi}^{\otimes 2}$ denotes the \textit{quadratic divergence}
 $D_{\varphi}^{\otimes 2}(\mu | \nu) := D_{\varphi}(\mu \otimes \mu | \nu \otimes \nu)$.
 This structure of product measures is particularly useful in the study of theoretical
 and practical properties of UGW, namely the existence of solution,
 the relation with conic formulation \citep{Sejourne20} and the robustness to outliers \citep{Tran23}.
-
-\citep{Zhang21} propose the unbalanced bidirectional Gromov-Monge divergence defined as:
+Moreover, if $\pi^*$ is the solution of UGW, then by using the proof technique of
+Lemma 4 in \citep{Khiem20}, one can show that
+\begin{align}
+  \label{eq:ugw_minimizer_minimum}
+  \text{UGW}_{\lambda}(\cX, \cY) = \lambda_1 \; m(\mu_X)^2 + \lambda_2 \; m(\mu_Y)^2
+  - (\lambda_1 + \lambda_2) \; m(\pi^*)^2.
+\end{align}
+\citep{Zhang21} introduce the unbalanced bidirectional Gromov-Monge divergence defined as:
 for $\lambda_x, \lambda_y > 0$,
 \begin{align}
     \text{UBGM}_{\lambda}(\cX, \cY) = \inf_{\substack{f: X \to Y \\ g: Y \to X}}
