@@ -89,7 +89,7 @@ known as the \textit{Kantorovich's problem} \citep{Kanto42}.
     \ot(\mu, \nu) = \inf_{\pi \in U(\mu, \nu)} \int_{X \times Y} c(x, y) \; d\pi(x, y).
   \end{align}
 \end{definition}
-Throughout this thesis, we refer Problem \ref{eq:kanto_prob} to as the OT problem.
+Throughout this thesis, we refer Problem \eqref{eq:kanto_prob} to as the OT problem.
 When $c(x, y) = d^p(x, y)$, for $p \geq 1$ and $d$ is the (common) metric on the metric spaces
 $X$ and $Y$, we obtain the famous Wasserstein distance of order $p$ \citep{Villani03}.
 \begin{align}
@@ -177,7 +177,7 @@ we recover the $p$-Wasserstein distance
     W_{Z, p}\big( (X,\mu_X), (Y,\mu_Y) \big)
     = \inf_{\pi \in U(\mu_X, \mu_Y)} \vert\vert d \vert\vert_{L^p(X \times Y, \pi)}.
 \end{align}
-To conclude, Diagram \eqref{fig:wass_motiv} summarizes
+To conclude, Diagram \ref{fig:wass_motiv} summarizes
 the process of transforming the Hausdorff distance into the $p$-Wasserstein distance,
 when the compact metric space is equipped with a probability measure.
 As we will see in \Cref{sec:gw}, this process is particularly useful
@@ -339,7 +339,7 @@ This issue can be mitigated, for example when the probability measures are sub-G
 Entropic OT is also known for its joint convexity, smoothness with respect to
 the inputs \citep{Luise18} and metric property \citep{Sanjabi18}.
 
-\paragraph{Algorithm} To solve the dual problem \ref{eq:dual_ot},
+\paragraph{Algorithm} To solve the dual problem \eqref{eq:dual_ot},
 we are interested in the deterministic approach, where the most popular solver
 is the Sinkhorn algorithm \citep{Sinkhorn67}
 \footnote{Also known as \textit{matrix scaling algorithm}.
@@ -423,10 +423,10 @@ Sinkhorn algorithm, but now the OT plan is computed by
 \begin{align}
   P^{(t+1)} = P^{(t)} \odot \exp \left( \frac{f^{(t+1)} \oplus g^{(t+1)} - C}{\eta} \right),
 \end{align}
-where $(f^{(t+1)}, g^{(t+1)})$ is the optimal dual vectors of the problem \ref{eq:bpp_eot}.
+where $(f^{(t+1)}, g^{(t+1)})$ is the optimal dual vectors of Problem \eqref{eq:bpp_eot}.
 Classic results \citep{Chen93} guarantee the linear convergence of BPP method
 to the minimum and the minimizer of the OT problem.
-Interestingly, it is not necessarily to solve \textbf{exactly} the entropic problem \ref{eq:bpp_eot},
+Interestingly, it is not necessarily to solve \textbf{exactly} the entropic problem \eqref{eq:bpp_eot},
 but even as few as one Sinkhorn iteration can work in practice.
 This approach, known as \textit{Inexact Proximal OT} (IPOT), is introduced in \citep{Xie20}.
 Later, we will see in \Cref{sec:input} that it can be easily extended to the unbalanced OT setting
@@ -586,12 +586,12 @@ Thanks to the marginal relaxation, if the outlier is too impactful,
 its impact will quickly saturate to $0$, meaning that it receives no mass from other points.
 By contrast, this is not the case for balanced OT, since every point (including outliers)
 must be aligned regardless of its cost, due to the marginal constraints. The right-hand side of
-the inequality \ref{eq:ot_robust} can be made arbitrarily large by taking outliers "far" enough
+Inequality \ref{eq:ot_robust} can be made arbitrarily large by taking outliers "far" enough
 from the clean data.
 
 \subsubsection{Optimization and algorithm} \label{sub:uot_optim}
 
-In general, given any differentiable divergence and regularizer, since Problem \ref{eq:generic_uot}
+In general, given any differentiable divergence and regularizer, since Problem \eqref{eq:generic_uot}
 is a bound-constrained minimization problem, it can be solved with the L-BFGS-B algorithm
 \citep{Byrd95,Zhu97}. When $D_{\varphi_1} = D_{\varphi_2} = \kl$, the unregularized UOT can
 be approximated with entropic regularization. The main advantages of this approach include
@@ -624,19 +624,19 @@ Denote $m(Q) = \sum_{i, j} Q_{ij}$ the mass of measure $Q$. Observe that
 \end{align}
 where $\odot$ is the element-wise multiplication between two matrices and the exponential operation
 is also element-wise. Now, the ambiguity of the entropic regularizer is naturally handled in
-Problem \ref{eq:discrete_ent_uot}. More precisely,
+Problem \eqref{eq:discrete_ent_uot}. More precisely,
 the KL divergence corresponds to $\gamma = \mu \otimes \nu$ whereas
 the negative entropy corresponds to $\gamma = 1_{m \times n}$,
 since $\kl(P | 1_{m \times n}) = \langle P, \log P \rangle - m(P) + mn = H(P) + mn$.
 
-An interesting property of Problem \ref{eq:discrete_ent_uot}, which does not exist in the
+An interesting property of Problem \eqref{eq:discrete_ent_uot}, which does not exist in the
 balanced OT or for other Csiszár divergences,
 is that the minimum can be explicitly expressed as a function of minimizer.
 This proves to be particularly helpful when studying the computational complexity of
 Sinkhorn algorithm \citep{Khiem20}.
 \begin{lemma}[Slight generalization of Lemma 4 in \citep{Khiem20}]
   \label{eq:uot_minimizer}
-Denote $P^*$ is the minimizer of Problem \ref{eq:discrete_ent_uot}. Then,
+Denote $P^*$ is the minimizer of Problem \eqref{eq:discrete_ent_uot}. Then,
 \begin{align}
   \uot_{\varepsilon, \rho} = \rho_1 m(\mu) + \rho_2 m(\nu) + \varepsilon m(\gamma)
   - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*).
@@ -646,20 +646,20 @@ Denote $P^*$ is the minimizer of Problem \ref{eq:discrete_ent_uot}. Then,
   The proof follows immediately from the proof of Lemma 4 in \citep{Khiem20}. In particular,
   it relies on two observations. First, the KL divergence has the following property:
   for any $t > 0$, we have $\kl(t P | Q) = t \; \kl(P | Q) + (1-t) \; m(Q) + t \log t \; m(P)$.
-  Second, if we denote $G$ the objective function of Problem \ref{eq:discrete_ent_uot}, then
+  Second, if we denote $G$ the objective function of Problem \eqref{eq:discrete_ent_uot}, then
   $\uot_{\varepsilon, \rho} = \min_{t > 0} G(tP^*)$ and the minimum is attained when $t=1$.
 \end{proof}
 While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
 (\textit{i.e.} $\varepsilon = 0$). Later, we will see how this result can also be extended
 to other unbalanced divergences, namely the unbalanced Gromov-Wasserstein and
 unbalanced Co-Optimal Transport.
-Now, we discuss some existing approaches to Problem \ref{eq:discrete_ent_uot}.
+Now, we discuss some existing approaches to Problem \eqref{eq:discrete_ent_uot}.
 
 \paragraph{Sinkhorn algorithm} The Sinkhorn algorithm can be extended easily to the entropic UOT.
 \footnote{When the regularizer is the negative entropy, the Sinkhorn algorithm is also called
 \textit{scaling algorithm} \citep{Chizat18a}.} The (strict) convexity of the primal problem ensures
 that duality holds, thanks to the Fenchel-Rockafellar duality theorem. In particular,
-The dual problem of Problem \ref{eq:discrete_ent_uot} reads
+The dual problem of Problem \eqref{eq:discrete_ent_uot} reads
 \begin{align}
   \label{eq:dual_uot}
   \sup_{\substack{f \in \bbR^m \\ g \in \bbR^n}}
@@ -683,7 +683,7 @@ converges to the constraint $f \oplus g \leq C$, which corresponds to the dual p
 unregularized UOT problem.
 
 Similar to the balanced case, the log-domain Sinkhorn algorithm \ref{alg:Sinkhorn_algo}
-applied to the dual problem \ref{eq:dual_uot} consists in alternatively updating the dual vectors.
+applied to the dual problem \eqref{eq:dual_uot} consists in alternatively updating the dual vectors.
 Here, the generalized softmin operator is defined by
 $\overline{\smin}^{\nu_j, \gamma_{\cdot, j}}_{\varepsilon}(f) =
 \varepsilon \left( \log \nu_j - \log \langle \gamma_{\cdot, j}, e^{-f / \varepsilon} \rangle \right)$,
@@ -697,7 +697,7 @@ In practice, the Sinkhorn algorithm also suffers from slow convergence for small
 and can be accelerated using the similar workarounds in the balanced setting.
 
 \begin{algorithm}[t]
-  \caption{Sinkhorn algorithm for Problem \ref{eq:discrete_ent_uot}.}
+  \caption{Sinkhorn algorithm for Problem \eqref{eq:discrete_ent_uot}.}
   \label{alg:Sinkhorn_algo}
 \begin{algorithmic}[1]
   \STATE \textbf{Input:} cost matrix $C \in \bbR^{m \times n}$,
@@ -726,7 +726,7 @@ This issue can be mitigated by considering the optimization problem
   H_{\varepsilon}(\overline{f}, \overline{g}) := \sup_{\lambda \in \bbR}
   F_{\varepsilon}(\overline{f} + \lambda, \overline{g} - \lambda),
 \end{align}
-where $F_{\varepsilon}$ is the objective function of the dual problem \ref{eq:dual_uot}.
+where $F_{\varepsilon}$ is the objective function of the dual problem \eqref{eq:dual_uot}.
 By Proposition 2 in \citep{Sejourne21}, the optimality happens when
 \begin{align}
   \label{eq:optimal_lambda}
@@ -737,7 +737,7 @@ By Proposition 2 in \citep{Sejourne21}, the optimality happens when
 By construction, $H_{\varepsilon}$ is TI. Not only $H_{\varepsilon}$ and $F_{\varepsilon}$
 have the same maximum, but also the their maximizers are related by the equation
 $(f, g) = (\overline{f} + \lambda^*(\overline{f}, \overline{g}), \overline{g} - \lambda^*(\overline{f}, \overline{g}))$.
-The details of the TI-Sinkhorn algorithm applied to Problem \ref{eq:discrete_ent_uot}
+The details of the TI-Sinkhorn algorithm applied to Problem \eqref{eq:discrete_ent_uot}
 can be found in \Cref{alg:TI_Sinkhorn}.
 
 To analyze the convergence of TI-Sinkhorn, we introduce two norms:
@@ -753,7 +753,7 @@ The convergence of Sinkhorn and TI-Sinkhorn algorithms when $\gamma = \mu \otime
 is summarized in the following result.
 \begin{proposition}
   [Theorem 1 in \citep{Sejourne21}] Denote $(f^*, g^*)$ the optimal solution of
-  the dual problem \ref{eq:dual_uot}. Given initialization $f_0$, suppose
+  the dual problem \eqref{eq:dual_uot}. Given initialization $f_0$, suppose
   $(f_t, g_t), (\overline{f}_t, \overline{g}_t)$ are the iterates
   of the Sinkhorn and TI-Sinkhorn algorithms at iteration $t$, respectively. Denote
   $\kappa = \left( 1 + \frac{\varepsilon}{\rho_1} \right)^{-1}
@@ -778,7 +778,7 @@ For this reason, despite the acceleration over Sinkhorn,
 TI-Sinkhorn still suffers from small regularization and remains slow in such situation.
 
 \begin{algorithm}[t]
-  \caption{TI-Sinkhorn algorithm for Problem \ref{eq:discrete_ent_uot}.}
+  \caption{TI-Sinkhorn algorithm for Problem \eqref{eq:discrete_ent_uot}.}
   \label{alg:TI_Sinkhorn}
 \begin{algorithmic}[1]
   \STATE \textbf{Input:} cost matrix $C \in \bbR^{m \times n}$,
@@ -808,7 +808,7 @@ $\sup_{f, g, \lambda} F_{\varepsilon}(f + \lambda, g - \lambda)$, which guarante
 the convergence to a stationary point \citep{Tseng01}. In practice,
 we observe that both TI algorithms work comparatively well.
 \begin{algorithm}[t]
-  \caption{Variant of TI-Sinkhorn algorithm for Problem \ref{eq:discrete_ent_uot}.}
+  \caption{Variant of TI-Sinkhorn algorithm for Problem \eqref{eq:discrete_ent_uot}.}
   \label{alg:TI_Sinkhorn_variant}
 \begin{algorithmic}[1]
   \STATE \textbf{Input:} cost matrix $C \in \bbR^{m \times n}$,
@@ -827,14 +827,14 @@ we observe that both TI algorithms work comparatively well.
 \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Majorization-minimization algorithm} Interestingly, Problem \ref{eq:discrete_ent_uot}
+\paragraph{Majorization-minimization algorithm} Interestingly, Problem \eqref{eq:discrete_ent_uot}
 can be reformulated as a nonnegative penalized linear regression problem \citep{Chapel21},
 whose objective function comprises of a linear term and a KL divergence as penalization.
 Moreover, since the KL divergence is a Bregman divergence, one can apply the
 majorization-minimization (MM) approach (see, for example \citep{Hunter04,Sun17}) and obtain
 a closed-form update of the transport plan, without the need of invoking the dual vectors
 to reconstruct the coupling, as in the Sinkhorn-based methods. Following \citep{Chapel21},
-the MM iterate of Problem \ref{eq:discrete_ent_uot} reads
+the MM iterate of Problem \eqref{eq:discrete_ent_uot} reads
 \begin{align}
     P^{(t+1)} &= \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
     \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot
@@ -877,10 +877,10 @@ the MM iterate can also be computed explicitly in this case.
 There are two interesting features of the squared $l_2$-norm. First, thanks to the max operation,
 the iterate matrix can be made sparse from the very first iteration,
 which further accelerates the matrix operations. Second, similar to the entropic UOT problem,
-it is also possible to express the minimum of Problem \ref{uot_l2} in terms of its minimizer.
+it is also possible to express the minimum of Problem \eqref{uot_l2} in terms of its minimizer.
 \begin{corollary}
   \label{coro:uot_l2_minimizer}
-Denote $P^*$ the solution of Problem \ref{uot_l2}. Then
+Denote $P^*$ the solution of Problem \eqref{uot_l2}. Then
 \begin{align}
   \uot_{\varepsilon, \rho} = \frac{1}{2} \Big( \rho_1 ||\mu||^2
   + \rho_2 ||\nu||^2 + \varepsilon ||\gamma||^2 \Big)
@@ -945,7 +945,7 @@ and regularizers, with the corresponding related works.
     \makecell[l]{Convex conjugate of \\ co-finite Bregman function} & N/A & \citep{Sonthalia20} \\
     \hline
     \end{tabular}
-		\caption{Summary of choices of divergences and regularizers for Problem \ref{eq:generic_uot}.
+		\caption{Summary of choices of divergences and regularizers for Problem \eqref{eq:generic_uot}.
     The case N/A (not available) corresponds to the unregularized problem
     (\textit{i.e.} $\varepsilon = 0$).
     \label{t:uot_variation}}
@@ -1070,14 +1070,14 @@ Now, we will briefly discuss some distances betweeen mm-spaces, whose origins co
 different reformulations of GH distance.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{$L_p$-transportation distance}
-By combining \eqref{GH:zeroth} and \eqref{haus_corres}, we have,
+By combining Formulation \eqref{GH:zeroth} and Equation \eqref{haus_corres}, we have,
 \begin{align}
   \label{GH:second}
     \gh((X,d_X), (Y,d_Y)) = \inf_{d, R} \sup_{(x,y) \in R} d(x,y) =
     \inf_{d,R} || d ||_{L^{\infty}(R)},
 \end{align}
 where the infimum is taken over all $R \in \mathcal R(X,Y)$ and $d \in \cD(d_X, d_Y)$.
-Now, we can immediately extend \eqref{GH:second} to the mm-space setting,
+Now, we can immediately extend Formulation \eqref{GH:second} to the mm-space setting,
 using the Wassersteinization and $L^p$-ization processes in \Cref{fig:wass_motiv}.
 This results in the $L_p$-transportation distance \citep{Sturm06}: for $1 \leq p < \infty$,
 \begin{align}
@@ -1098,13 +1098,13 @@ also due to \citep{Gromov99}
   \gh((X,d_X), (Y,d_Y)) = \inf_{Z, f, g} d_{ H}^{Z}(f(X), g(Y)),
 \end{align}
 where the infimum is taken over all metric spaces $(Z,d)$ and isometric embeddings
-$f: X \to Z$ and $g: Y \to Z$. It can be shown that \eqref{GH:zeroth} and \eqref{GH:first}
-are equivalent (see Appendix). Intuitively, \eqref{GH:first} implies that
+$f: X \to Z$ and $g: Y \to Z$. It can be shown that Formulations \eqref{GH:zeroth} and \eqref{GH:first}
+are equivalent (see Appendix). Intuitively, Formulation \eqref{GH:first} implies that
 the GH distance can be alternatively obtained by projecting the two original metric spaces
 onto a common metric one, where the Hausdorff distance between the two embeddings can be computed.
 Moreover, each projection map must also preserve the within-space distance.
 
-Thanks to Lemma 3.3 in \citep{Sturm06}, we can adapt the idea of \eqref{GH:first}
+Thanks to Lemma 3.3 in \citep{Sturm06}, we can adapt the idea of Formulation \eqref{GH:first}
 to the setting of mm-space by replacing the Hausdorff distance with the Wasserstein distance,
 and obtain the equivalent form of the $L_p$-transportation distance
 \begin{align}
@@ -1126,7 +1126,7 @@ the $L_p$-transportation distance has not yet found any applications in practice
 due to the computational intractability of the optimization problem that it encodes.
 In the OT literature, there exist other works which also rely on
 this idea of projecting onto a common space.
-For example, \citep{Alaya22} study a variant of the reformulation \eqref{D:alter} called
+For example, \citep{Alaya22} study a variant of Formulation \eqref{D:alter} called
 \textit{Sub-Embedding Robust Wasserstein}, or
 \citep{Paty19} propose the subspace robust Wasserstein projection,
 which projects onto a Grassmannian manifold, or \citep{Cai22} use orthogonal transformations
@@ -1167,9 +1167,10 @@ and for $p = \infty$,
 Thanks to Theorem 5.1 in \citep{Memoli11b},
 we have the following relation between the GW and $L_p$-transportation distance:
 $\gw_{\infty} = D_{\infty}$ and $\gw_p \leq D_p$, for any $p \geq 1$.
-While bearing some similarity with \eqref{GH:second}, the optimization problem in GW distance is
+While bearing some similarity with Formulation \eqref{GH:second},
+the optimization problem in GW distance is
 much more feasibility to solve in practice. In particular, the maximization over
-the set of admissible distance in \eqref{GH:second} incurs an additional variable,
+the set of admissible distance in Formulation \eqref{GH:second} incurs an additional variable,
 which is difficult to optimize.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1210,7 +1211,8 @@ Here, the infimum is taken over all \textbf{arbitrary} maps $f$ and $g$, and
   \end{align}
 \end{itemize}
 The second equality holds, due to Remark 2 in \citep{Memoli05}. Interested readers can find
-more discussion on the practical use of \eqref{kalton_form} in Remark 4.5 in \citep{Memoli11b}.
+more discussion on the practical use of Formulation \eqref{kalton_form} in
+Remark 4.5 in \citep{Memoli11b}.
 Recently, \citep{Zhang21} adapt this fourth formulation to the mm-space and propose
 the bi-directional Gromov-Monge (BGM) distance defined as
 \begin{align}
@@ -1238,7 +1240,8 @@ In case of measure networks \citep{Chowdhury19}, Proposition 1 in \citep{Hur21} 
 $\text{RGM}_p \geq \gw_p$, for every $p \geq 1$.
 
 To conclude, apart from the above metrics induced by the GH distance, there exist other
-alternatives for comparing mm-spaces. For example, by relying on the idea of \eqref{GH:first},
+alternatives for comparing mm-spaces. For example, by relying on the idea of
+Formulation \eqref{GH:first},
 one can use the Gromov-Hausdorff-Prokhorov distance \citep{Villani08} and
 its variants \citep{Abraham13,Miermont09}
 \begin{align}
@@ -1358,10 +1361,10 @@ The following result is very handy as it allows us to flexibly switch between th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}
-  If $\cX$ and $\cY$ are weakly isormorphic, then there exists a common mass splitting $\cZ$ of $\cX$ and $\cY$,
-which means $\text{GM}(\cZ, \cY) = 0$. By \cref{GW_mGW},
+If $\cX$ and $\cY$ are weakly isormorphic, then there exists a common mass splitting
+$\cZ$ of $\cX$ and $\cY$, which means $\text{GM}(\cZ, \cY) = 0$. By \Cref{GW_mGW},
 $\text{GW}(\cX, \cY) = \text{GM}(\cZ, \cY) = 0$. Conversely, if $\text{GW}(\cX, \cY) = 0$,
-then by \cref{GW_mGW}, there exists $\cZ \in \ms(\cX)$ such that $\text{GM}(\cZ, \cY) = 0$.
+then by \Cref{GW_mGW}, there exists $\cZ \in \ms(\cX)$ such that $\text{GM}(\cZ, \cY) = 0$.
 But this means $\cZ \in \ms(\cY)$. We conclude that $\cX$ and $\cY$ are weakly isormorphic
 since $\cZ$ is the common mass splitting. The equivalence between semi-strong isormorphism and
 GM follows immediately from the definition.
@@ -1559,7 +1562,7 @@ In these cases, we can apply the block coordinate descent (BCD) algorithm,
 where in each iteration, we alternatively fix one coupling and solve the OT problem
 with respect to the other. Since the objective function is smooth,
 this algorithm can only guarantee the convergence to a stationary point \citep{Tseng01}.
-This lower-bound strategy can also be easily extended to the general problem \ref{eq:fused_egw},
+This lower-bound strategy can also be easily extended to the general problem \eqref{eq:fused_egw},
 where it is enough to rewrite the objective function as
 \begin{align}
   \min_{\substack{P, Q \in U(\mu_X, \mu_Y)}} \langle C \otimes P, Q \rangle
@@ -1567,7 +1570,7 @@ where it is enough to rewrite the objective function as
   + \frac{\varepsilon}{2} \kl(Q | \gamma),
 \end{align}
 with $P = Q$. Moreover, one can ignore the equality constraint without impacting the minimum,
-under exactly the same conditions as in Problem \ref{eq:coot}.
+under exactly the same conditions as in Problem \eqref{eq:coot}.
 
 \paragraph{5. Bregman alternating projected gradient}
 Another way to use the lower bound is in \citep{Li22}.
@@ -1680,7 +1683,7 @@ for $\lambda_x, \lambda_y > 0$,
 \begin{align}
     \text{UBGM}_{\lambda}(\cX, \cY) = \inf_{\substack{f: X \to Y \\ g: Y \to X}}
   \Delta_p(f,g, X, Y) + \lambda_x \text{D}_{\varphi_x}(g_{\#} \mu_Y | \mu_X)
-  + \lambda_y \text{D}_{\varphi_y}(f_{\#}\mu_X | \mu_Y).
+  + \lambda_y \text{D}_{\varphi_y}(f_{\#}\mu_X | \mu_Y),
 \end{align}
 where $D_{\varphi_x}$ and $D_{\varphi_y}$ are divergences on $\mathcal M^+_1(X)$ and $\mathcal M^+_1(Y)$,
 respectively. Here, the authors define a divergence $D$ on $\mathcal M^+_1(Z)$ as a function
@@ -1736,9 +1739,9 @@ we will exclusively focus on the KL divergence throughout this thesis.
     \label{eq:bppa_inexact}
     x^{(t+1)} \approx \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}).
   \end{align}
-  Here, $x^{(t+1)}$ is only an approximate solution in some sense.
+  Here, $x^{(t+1)}$ is only an approximate solution in some predefined sense.
 \end{definition}
-When applying to Problem \ref{eq:discrete_ent_uot}, the exact BPP iteration boils down to solving
+When applying to Problem \eqref{eq:discrete_ent_uot}, the exact BPP iteration boils down to solving
 \begin{align}
 \label{eq:bpp_uot}
   &P^{(t+1)} \\
@@ -1755,6 +1758,7 @@ by construction, BPP is naturally applicable to the unregularized UOT.
 In practice, the exact BPP may not be an efficient algorithm to solve the UOT problem since
 it requires solving \textbf{exactly} many entropic subproblems. This can be computationally expensive,
 especially when the learning rate is small.
+
 While the inexact method has recently been applied to the balanced OT \citep{Xie20,Yang22},
 we are not aware of any extension to the unbalanced counterpart.
 Our proposed method follows directly from \citep{Xie20}, which is simple to implement and
@@ -1763,7 +1767,7 @@ we only require running a few Sinkhorn iterations for each entropic subproblem a
 use the approximated coupling as input for the next BPP iteration.
 The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
 \begin{algorithm}[t]
-  \caption{INPUT algorithm for Problem \ref{eq:discrete_ent_uot}.}
+  \caption{INPUT algorithm for Problem \eqref{eq:discrete_ent_uot}.}
   \label{alg:isppa}
 \begin{algorithmic}[1]
   \STATE \textbf{Input:} cost matrix $C \in \bbR^{m \times n}$,
@@ -1786,7 +1790,7 @@ The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
 
 Let us start with the convergence analysis in case of BPP iteration \ref{eq:bpp_uot}.
 Thanks to Lemma 3.3 and Theorem 3.4 in \citep{Chen93}, if $P^*$ is a minimizer of
-Problem \ref{eq:discrete_ent_uot}, then
+Problem \eqref{eq:discrete_ent_uot}, then
 \begin{enumerate}
   \item The sequence $\big( \kl(P^*, P^{(t)}) \big)_t$ is nonincreasing and converges to $0$.
   \item The sequence $\big( F(P^{(t)}) \big)_t$ is nonincreasing and
@@ -1795,8 +1799,8 @@ Problem \ref{eq:discrete_ent_uot}, then
     F(P^{(t)}) - F(P^*) \leq \frac{\eta}{t} \kl(P^* | P^{(0)}).
   \end{align}
 \end{enumerate}
-The upper bound \ref{eq:chen_teboulle} can be improved by further exploiting the property of
-the objective function of Problem \ref{eq:discrete_ent_uot}.
+The upper bound \eqref{eq:chen_teboulle} can be improved by further exploiting the property of
+the objective function of Problem \eqref{eq:discrete_ent_uot}.
 First, we introduce the notions of relative smoothness \citep{Bauschke17} and
 strong convexity \citep{Lu18} of a function with respect to the KL divergence.
 \begin{definition}
@@ -1820,7 +1824,7 @@ strong convexity \citep{Lu18} of a function with respect to the KL divergence.
   with respect to the KL divergence.
 \end{lemma}
 The following result is a simple generalization of Theorem 3.1 in \citep{Lu18}.
-\begin{proposition}[Convergence rate of exact BPP for Problem \ref{eq:discrete_ent_uot}]
+\begin{proposition}[Convergence rate of exact BPP for Problem \eqref{eq:discrete_ent_uot}]
   \label{prop:convergence-exact-sppa}
   For every $\eta > 0$, exact BPP decreases the value of $F(\cdot)$ with each iteration $t$:
   the sequence $\big( F(\pi^{(t)}) \big)_t$ is monotonically decreasing.
@@ -2021,14 +2025,14 @@ the potential gap between the estimation and the minimum.
     extra tuning of \\ hyperparameters} \\
     \hline
 		\end{tabular}
-		\caption{Summary of features of algorithms for entropic UOT problem \ref{eq:discrete_ent_uot}.
+		\caption{Summary of features of algorithms for entropic UOT problem \eqref{eq:discrete_ent_uot}.
     Unregularized setting refers to $\varepsilon = 0$, balanced setting corresponds to
     $\rho_1 = \rho_2 = \infty$ and semi-relaxed setting refers to either $\rho_1 = \infty$
     or $\rho_2 = \infty$.
     \label{t:uot_algo_compare}}
 \end{table}
 
-\paragraph{Can we adapt INPUT to solve the squared $l_2$-regularized Problem \ref{uot_l2} ?}
+\paragraph{Can we adapt INPUT to solve the squared $l_2$-regularized Problem \eqref{uot_l2} ?}
 In theory, yes, since the squared $l_2$-norm is a Bregman divergence,
 thus the (inexact) BPP scheme is applicable. However, comparing to the MM solver,
 we doubt that it would bring any gain in convergence speed. Indeed,
