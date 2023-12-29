@@ -104,8 +104,8 @@ be confused with the third lower bound of the GW distance \citep{Memoli07,Memoli
 \begin{equation}
   \text{TLB}(\bbX, \bbY) :=
   \inf_{\gamma \in U(\mu_x, \mu_y)}
-  \Big( \inf_{\pi \in U(\mu_x, \mu_y)} \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik}
-  \Big) \gamma_{jl}
+  \Big( \inf_{\pi \in U(\mu_x, \mu_y)} \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \Big)
+  \gamma_{jl}
 \end{equation}
 In particular, it is not difficult to see that
 \begin{equation}
@@ -483,7 +483,8 @@ After having defined the two optimization problems, we now set on exploring thei
 %The following properties are direct consequences of the definition.
 Intuitively, the relaxed problem is expected to allow for solutions with a lower value of the final objective function. We formally prove the validity of this intuition below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition}[Preliminary properties] \label{MMOT_dc_prop}
+\begin{proposition}[Preliminary properties]
+  \label{MMOT_dc_prop}
   Given a collection of histograms $\mu$ and a tuple partition $\mathcal T$,
   \begin{enumerate}
     \item For every $\varepsilon \geq 0$, we have $\text{MMOT}(\mu) \leq
@@ -498,7 +499,8 @@ for very large $\varepsilon$, the KL divergence term dominates, so the optimal t
 On the other hand, for very small $\varepsilon$, the KL divergence term becomes negligible and we approach MMOT.
 The result below formalizes this intuition.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition}[Interpolation between MMOT and F-MMOT] \label{interpolation_prop}
+\begin{proposition}[Interpolation between MMOT and F-MMOT]
+  \label{interpolation_prop}
   For any tuple partition $\mathcal T$ and for $\varepsilon > 0$,
   let $P_{\varepsilon}$ be a minimiser of the problem $\text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu)$.
   \begin{enumerate}
@@ -869,7 +871,8 @@ On the other hand, the sample and feature spaces are unknown and have little int
   which indicates the comparable performance of MMOT-DC-v1. On the other hand, the top-right plot shows the clear superiority of EGW-PGD.}
   \label{fig:continuous_coot}
 \end{figure}
-\begin{proposition} \label{prop:exist_coot}
+\begin{proposition}
+  \label{prop:exist_coot}
   The COOT problem always admits a minimizer.
 \end{proposition}
 
