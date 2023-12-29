@@ -191,7 +191,7 @@ As the multiplicative nature between $\pi^s$ and $\pi^f$ leads to an invariance 
 $\alpha \mapsto (\alpha \pi^s, \frac{1}{\alpha}\pi^f)$, for $\alpha > 0$,
 we further impose the equal mass constraint $m(\pi^s) = m(\pi^f)$.
 
-It is worth mentioning that the formulation \ref{eq:ucoot} is not the only way to
+It is worth mentioning that Formulation \eqref{eq:ucoot} is not the only way to
 relax the marginal constraints. For example, instead of
 $D_k(\pi^s_{\#k} \otimes \pi^f_{\#k} | \mu^s_k \otimes \mu^f_k)$,
 one can consider $D_k(\pi^s_{\#k} | \mu^s_k) + D_k( \pi^f_{\#k} | \mu^f_k)$,
@@ -199,11 +199,11 @@ or $D_s(\pi^s_{\#1} \otimes \pi^s_{\#2} | \mu^s_1 \otimes \mu^s_2)$,
 for some divergence $D_s$. However, amongst these choices,
 ours is the only one which can be recast as a variation of the unbalanced OT problem.
 This allows us to leverage the known techniques in unbalanced OT to justify
-the theoritical and practical properties, namely Proposition \ref{prop:existence}
-and Theorem \ref{thm:ucoot_robust} below.
+the theoritical and practical properties, namely \Cref{prop:existence}
+and \Cref{thm:ucoot_robust} below.
 
 Note that the problem above is very general and can, with some additional
-constraints, recover exact OT, UOT, GW, UGW, COOT (see Table \ref{t:examples}).
+constraints, recover exact OT, UOT, GW, UGW, COOT (see \Cref{t:examples}).
 In particular, if the measures $(\mu^s_1, \mu^s_2)$ and $(\mu^f_1, \mu^f_2)$
 are probability measures, then setting $D_1 = D_2 = \iota_=$ leads to the
 COOT problem first introduced in the discrete case in \citep{Redko20} and
@@ -255,12 +255,12 @@ for which an interaction function can be $\xi(a, j) = a_j$.
   \label{t:examples}}
 \end{table}
 \begin{proposition} \label{prop:existence}
-For any $D_1$, $D_2 \in \{ \iota_{=}, \kl \}$, Problem \ref{def:ucoot} (in Equation \ref{eq:ucoot})
+For any $D_1$, $D_2 \in \{ \iota_{=}, \kl \}$, Problem \eqref{def:ucoot} (in Equation \eqref{eq:ucoot})
 admits a minimizer.
 \end{proposition}
 
 \begin{remark}
-The existence of minimizer shown in \cref{prop:existence}
+The existence of minimizer shown in \Cref{prop:existence}
 can be extended to a larger family of Csiszár divergences \citep{Csiszar63}.
 A general proof is given in the Appendix.
 \end{remark}
@@ -278,8 +278,10 @@ columns (features) of the interaction matrices $\xi_1$ and $\xi_2$.
 
 \paragraph{Relation between UCOOT and its solution.} Similar to UOT,
 it is possible to express UCOOT in terms of its solution, thanks to the property of the
-KL divergence. More precisely, if $(\pi_*^s, \pi_*^f)$ is the equal-mass solution, then
+KL divergence. More precisely, if $(\pi_*^s, \pi_*^f)$ is the equal-mass solution,
+then by using the proof technique of Lemma 4 in \citep{Khiem20}, one can show that
 \begin{align}
+  \label{eq:ucoot_minimizer_minimum}
   \ucoot_{\lambda}(\cX_1, \cX_2) =
   \sum_{k=1, 2} \lambda_k \; m(\mu_k^s) \; m(\mu_k^f) - (\lambda_1  + \lambda_2) \; m(\pi^s_*)^2.
 \end{align}
@@ -381,7 +383,7 @@ where we simulate outliers by adding a perturbation to a row of the interaction 
 More precisely, we first generate a matrix $A \in \mathbb R^{20 \times 15}$ by
 $A_{ij} = \cos(\frac{i}{20} \pi) + \cos(\frac{j}{15} \pi)$.
 Then, we replace its last row by $\tau \mathds 1_{15}$, for $\tau \geq 0$.
-Figure~\ref{fig:robust} depicts COOT and UCOOT between $A$
+\Cref{fig:robust} depicts COOT and UCOOT between $A$
 and its modified version as a function of $\tau$. The higher the value of $\tau$,
 the more likely that the last row contains the interaction of outliers.
 Consequently, as $\tau$ increases, so does COOT but at a much higher pace,
@@ -443,7 +445,7 @@ lies in the inner-loop algorithm used to update one of transport plans $(\pi^s, 
 while the other one remains fixed. Note that both cases allow for
 implementations of a scaling multiplicative algorithm that can be parallelized on GPUs.
 %: Sinkhorn's algorithm ($\varepsilon > 0$) or NNPR ($\varepsilon = 0
-%$).  The main BCD scheme is summarized in Algorithm \ref{alg:bcd}.
+%$).  The main BCD scheme is summarized in \Cref{alg:bcd}.
 % ($\varepsilon > 0$ Sinkhorn's algorithm.}
 For $\varepsilon > 0$, updating each transport plan boils down to an entropic UOT problem,
 which can be solved efficiently using the unbalanced variant of Sinkhorn's algorithm \citep{Chizat18a}.
@@ -519,12 +521,12 @@ that performs a zero-padding (shift), a 45\textdegree\ rotation,
 a resize to (28, 34) and adds Gaussian noise $\cN(0, \sigma^2)$ entries
 to the first 10 columns of the image.
 
-Figure~\ref{f:mnist-example} (a) shows some examples of original and transformed images.
+\Cref{f:mnist-example} (a) shows some examples of original and transformed images.
 We randomly sample 100 images per class (1000 total) from $X = \text{MNIST}$ and
 $Y = \varphi_{\sigma}(\text{MNIST})$. Regarding the sample outliers,
 we add 50 random images with uniform entries in [0, 1] to the target data $Y$.
 We then compute the optimal COOT and UCOOT alignments shown in
-Figure~\ref{f:mnist-example} (b) and (c).
+\Cref{f:mnist-example} (b) and (c).
 The flexibility of UCOOT with respect to mass transportation allows it to completely disregard:
 (1) noisy and uninformative pixels (features),
 which are all given the same weight as depicted by (b);
@@ -549,7 +551,7 @@ while the UCOOT alignment remains unscathed.
   % \end{figure}
 \end{wrapfigure}
 One may wonder whether the performance of UCOOT would still hold for different values of $\sigma$.
-Figure~\ref{f:mnist-sigma} answers this question positively.
+\Cref{f:mnist-sigma} answers this question positively.
 For $\sigma > 0$, we compute the average accuracy
 (defined by the percentage of mass within the block-diagonal structure) over 20 different runs.
 The performance of COOT not only degrades with noisier outliers but is also unstable.
@@ -851,7 +853,7 @@ both methods with similar grid size per hyperparameter (see Experimental Details
 across the two datasets. For this, we subset the gene expression domain with the ten genes that
 match to the ten antibodies they express. Original data contains the same number of cells
 across domains since both domains are simultaneously measured in the same single-cells.
-We observe that both UCOOT and COOT can correctly align features (Figure~\ref{fig:multiomics}~(a))
+We observe that both UCOOT and COOT can correctly align features (\Cref{fig:multiomics}~(a))
 and the cells (Appendix Figure S1(a)) across the two measurements. However,
 UCOOT gives better performance, as demonstrated by a lower FOCSTTM score (0.0062 vs 0.0127)
 for cells. Both COOT and UCOOT recover the diagonal for matching features (100\% accuracy),
@@ -861,7 +863,7 @@ whereas COOT assigns weights to other features as well.
 \textbf{Unbalanced Scenarios.} Next, we perform alignment with an unequal number of features.
 This setting is more likely to occur for real-world single-cell datasets as different features
 are measured. In the first simple scenario, we align the ten antibodies with only a subset (five)
-of their matching genes. As visualized in Figure~\ref{fig:multiomics}~(b),
+of their matching genes. As visualized in \Cref{fig:multiomics}~(b),
 COOT struggles to find the correct feature alignments (60\% accuracy),
 which would lie in the diagonal of the highlighted square (dashed lines). However,
 the relaxation of the mass conservation constraint in UCOOT allows it to shrink
@@ -877,7 +879,7 @@ Therefore, biologists focus their analyses on the reduced set of most variable f
 It is also the most computationally challenging case among all our experiments on this dataset.
 Hence, we provide sample-level supervision to both methods by giving a cost penalization matrix
 based on the correct sample alignments to the sample alignment computation.
-We see in Figure ~\ref{fig:multiomics}(c) that in comparison to COOT (50\% accuracy),
+We see in \Cref{fig:multiomics}(c) that in comparison to COOT (50\% accuracy),
 UCOOT recovers more of the correct feature alignments (70\% accuracy),
 and yields fewer redundant alignments  (for more detail, see Experimental Details in Appendix).
 Note that UCOOT avoids incorrect mappings by locally shrinking the mass of the features or samples
@@ -886,7 +888,7 @@ the integration results. This property can also help users to discover rare cell
 by observing the extent of mass relaxation per cell or prune uninformative features in
 the single-cell datasets.
 
-%Similarly to the alignment in Figure ~\ref{fig:multiomics}(b), this is thanks to the mass shrinkage of the features that lack correspondences. By locally adjusting the mass in transport, UCOOT tends to avoid assigning correspondences to samples or features that lack matches across the aligned domains. With this, UCOOT can help users to detect outliers that can result from experimental artifacts,
+%Similarly to the alignment in \Cref{fig:multiomics}(b), this is thanks to the mass shrinkage of the features that lack correspondences. By locally adjusting the mass in transport, UCOOT tends to avoid assigning correspondences to samples or features that lack matches across the aligned domains. With this, UCOOT can help users to detect outliers that can result from experimental artifacts,
 %(such as rare cell types or lowly expressed genes that are not captured well by a sequencing technology), prune features or discover rare cell types.}
 
 Lastly, we also consider the case of unequal number of samples across the two measurements.
