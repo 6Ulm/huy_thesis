@@ -142,29 +142,28 @@
 \newcommand{\diam}{\text{diam}}
 \newcommand{\wrt}{w.r.t. }
 
-\newcommand{\bbR}{\mathbb R}
+\newcommand{\bbE}{\mathbb E}
 \newcommand{\bbN}{\mathbb N}
-\newcommand{\cP}{\mathcal P}
-\newcommand{\cM}{\mathcal M}
-\newcommand{\cE}{\mathcal E}
-
+\newcommand{\bbR}{\mathbb R}
 \newcommand{\bbX}{\mathbb X}
 \newcommand{\bbY}{\mathbb Y}
 \newcommand{\bbZ}{\mathbb Z}
-\newcommand{\bbE}{\mathbb E}
 
-\newcommand{\cX}{\mathcal X}
-\newcommand{\cY}{\mathcal Y}
-\newcommand{\cZ}{\mathcal Z}
-\newcommand{\cU}{\mathcal U}
-\newcommand{\cO}{\mathcal O}
-\newcommand{\cN}{\mathcal N}
-\newcommand{\cD}{\mathcal D}
 \newcommand{\cA}{\mathcal A}
 \newcommand{\cB}{\mathcal B}
 \newcommand{\cC}{\mathcal C}
-\newcommand{\cT}{\mathcal T}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\cN}{\mathcal N}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\cP}{\mathcal P}
 \newcommand{\cS}{\mathcal S}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\cY}{\mathcal Y}
+\newcommand{\cZ}{\mathcal Z}
 
 % Override default font here if you want
 %\renewcommand{\rmdefault}{qpl}
