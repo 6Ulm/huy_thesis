@@ -124,6 +124,7 @@
 \newcommand{\ot}{\text{OT}}
 \newcommand{\coot}{\text{COOT}}
 \newcommand{\ucoot}{\text{UCOOT}}
+\newcommand{\mcoot}{\text{M-COOT}}
 \newcommand{\ugw}{\text{UGW}}
 \newcommand{\fugw}{\text{FUGW}}
 \newcommand{\kl}{\text{KL}}
