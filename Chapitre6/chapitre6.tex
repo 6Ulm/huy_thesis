@@ -345,187 +345,353 @@ Now, \Cref{prop:convergence-exact-sppa} follows immediately from \Cref{lemma:bpp
 
 \subsection{Discrete Co-Optimal Transport}
 
+First, let us define three following reshaping operations.
+\begin{itemize}
+  \item[$\bullet$] Vectorization: concatenates rows of a matrix into a vector.
+  \begin{equation*}
+    \vect: \bbR^{m \times n} \to \bbR^{m n},
+  \end{equation*}
+  where each element $A_{i,j}$ of the matrix $A \in \bbR^{m \times n}$ is
+  mapped to a unique element $b_{(i-1)n + j}$ of the vector
+  $b \in \bbR^{m n}$, with $A_{i,j} = b_{(i-1)n + j}$, for $i = 1, ..., m$ and $j = 1, ...,n$.
+  Conversely, each element $b_k$ is mapped to a unique element $A_{k // n, n - k \% n}$,
+  for every $k = 1, ..., mn$. Here, $k // n$ and $k \% n$ are the quotient and
+  the remainder of the division of $k$ by $n$,
+  respectively, i.e. if $k = q n + r$, with $0 \leq r < n$, then $k // n = q$ and $k \% n = r$.
+
+  \item[$\bullet$] Matrization: transforms a $4$D tensor to a $2$D tensor (matrix) by
+  vectorizing the first two and the last two dimensions of the tensor.
+  \begin{equation*}
+    \text{mat}: \bbR^{n_1 \times n_2 \times n_3 \times n_4} \to \bbR^{(n_1 n_2) \times (n_3 n_4)},
+  \end{equation*}
+  where, similar to the vectorization, each element $P_{i,j,k,l}$ of the tensor
+  $P \in \bbR^{n_1 \times n_2 \times n_3 \times n_4}$ is mapped to
+  a unique element $A_{(i-1)n_2 + j, (k-1)n_4 + l}$ of the
+  matrix $A \in \bbR^{(n_1 n_2) \times (n_3 n_4)}$,
+  with $P_{i,j,k,l} = A_{(i-1)n_2 + j, (k-1)n_4 + l}$.
+
+  \item[$\bullet$] Concatenation: stacks vertically two equal-column matrices.
+  \begin{equation*}
+    \begin{split}
+      \text{con}_v: &\bbR^{m \times d} \times \bbR^{n \times d} \to \bbR^{(m+n) \times d} \\
+      & \big( (u_1, ..., u_m),(v_1, ..., v_n) \big) \to (u_1, ..., u_m, v_1, ..., v_n)^T.
+    \end{split}
+  \end{equation*}
+  Or, stacks horizontally two equal-row matrices
+  \begin{equation*}
+    \begin{split}
+      \text{con}_h: &\bbR^{n \times p} \times \bbR^{n \times q} \to \bbR^{n \times (p+q)} \\
+      & \big( (u_1, ..., u_p),(v_1, ..., v_q) \big) \to (u_1, ..., u_p, v_1, ..., v_q).
+    \end{split}
+  \end{equation*}
+\end{itemize}
+\begin{lemma} \label{vec_mat}
+  For any $4$-D tensor $P \in \bbR^{n_1 \times n_2 \times n_3 \times n_4}$,
+  denote $\pi$ its matrization. We have,
+  \begin{equation*}
+    \vect \Big( \sum_{k,l} P_{\cdot, \cdot, k, l} \Big) = \sum_{n=1}^{n_3 n_4} \pi_{\cdot, n} = \pi 1_{n_3 n_4},
+  \end{equation*}
+  where $1_n$ is the vector of ones in $\bbR^n$.
+\end{lemma}
+\begin{proof}
+For $(i,j) \in [n_1] \times [n_2]$, we have
+\begin{align*}
+    \vect \Big(\sum_{k,l} P_{\cdot,\cdot, k, l}\Big)_{(i-1)n_2 + j} &= \sum_{k,l} P_{i,j,k,l} \\
+    &= \sum_{k,l} \pi_{(i-1) n_2 + j, (k-1) n_4 + l} \\
+    &= \sum_{n=1}^{n_3 n_4} \pi_{(i-1) n_2 + j, n}.
+\end{align*}
+The result then follows.
+\end{proof}
+Now, let $(e_i)_{i=1}^{n_1 n_2}$ be the standard basis vectors of $\bbR^{(n_1 n_2)}$,
+\ie $(e_i)_k = 1_{\{i=k\}}$. For each $P \in U(\mu)$, denote $\pi$ its matrisation,
+then by \Cref{vec_mat}, we have, for $i \in [n_1]$,
+\begin{equation*}
+  (\mu_1)_i = \sum_j \sum_{k,l} P_{i,j,k,l} = \sum_{j = 1}^{n_2} \sum_{n=1}^{n_3 n_4} \pi_{(i-1) n_2 + j, n},
+\end{equation*}
+which can be recast in matrix form as $A_1^T \pi 1_{n_3 n_4} = \mu_1$,
+where the matrix $A_1 = \text{con}_{h}(v_1, ..., v_{n_1}) \in \bbR^{(n_1 n_2) \times n_1}$,
+with $v_i \in \bbR^{(n_1 n_2)}$, where $v_i = \sum_{j=(i-1)n_2 + 1}^{i n_2} e_j$,
+with $i \in [n_1]$. Similarly, $A_2 \pi 1_{n_3 n_4} = \mu_2$, where the matrix
+$A_2 = \text{con}_h(I_{n_2}, ..., I_{n_2}) \in \bbR^{n_2 \times (n_1 n_2)}$,
+where $I_n \in \bbR^{n \times n}$ is the identity matrix.
+Both conditions can be compactly written as $A_{12}^T \pi 1_{n_3 n_4} = \mu_{12}$,
+where the matrix $A_{12} = \text{con}_h(A_1, A_2^T) \in \bbR^{(n_1 n_2) \times (n_1+n_2)}$ and
+$\mu_{12} = \text{con}_v(\mu_1, \mu_2) \in \bbR^{(n_1 + n_2)}$.
+Note that $\mu_{12}$ is not a probability because its mass is $2$.
+The matrix $A_{12}$ has exactly $2n_1n_2$ ones and the rest are zeros.
+An example of $A_{12}$ is shown in \Cref{fig:matrix_a12}.
+
+Similarly, for $A_{34}$ and $\mu_{34}$ defined in the same way as $A_{12}$ and
+$\mu_{12}$, respectively, we establish the equality $A_{34}^T \pi^T 1_{n_1 n_2} = \mu_{34}$.
+As a side remark, both matrices $A_{12}^T$ and $A_{34}^T$ are \textit{totally unimodular},
+meaning that every square submatrix has determinant $-1, 0$, or $1$.
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=0.25\textheight,keepaspectratio]{./Chapitre2/fig/matrix.pdf}
+  \caption{An example of the matrix $A_{12}$ when $n_1=2$ and $n_2=3$.}
+  \label{fig:matrix_a12}
+\end{figure}
+
+We also have that, the condition $P = P_1 \otimes P_2$ can be rewritten as
+$\text{mat}(P) = \vect(P_1) \vect(P_2)^T$. By Lemma 2.1 in \citep{Joel93}, $\text{rank}_+(A) = 1$
+if and only if there exist two non-negative vectors $u,v$ such that
+$A = u v^T$. Thus, the factorization constraint is equivalent to
+$\text{rank}_+\big( \text{mat}(P) \big) = 1$.
+
 \subsection{MMOT-DC}
 
-\subsection{Continuous Co-Optimal Transport}
+\subsection{Continuous Co-Optimal Transport} \label{annex:cont_coot}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{prop:exist_coot}]
-    The COOT problem can be rewritten as
-    \begin{equation} \label{UCOOT:1}
-      \coot(\cX, \cY) = \inf_{\pi \in E_{co}} \int_{\cS} \vert c_X - c_Y \vert^p \; d\pi,
-    \end{equation}
-    where the set
-    \begin{equation}
-      E_{co} = \{ \pi \in \cP(\cS): \pi = \pi_1 \otimes \pi_2,
-      \text{ where } \pi_k \in U(\mu_k^X, \mu_k^Y) \}.
-    \end{equation}
-    \Cref{compact_subset}, \Cref{continuous} and \Cref{continuous_cont}
-    below imply that Problem \eqref{UCOOT:1} always admits a minimiser.
-  \end{proof}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{lemma} \label{product_polish}
-    Countable product of Polish spaces is also a Polish space.
-  \end{lemma}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{proof}
-    First, the countable product of completely metrizable spaces is also completely metrizable
-    (see for example, Proposition 1.4 in \citep{Dominique20})
+  The COOT problem can be rewritten as
+  \begin{equation} \label{UCOOT:1}
+    \coot(\cX, \cY) = \inf_{\pi \in E_{co}} \int_{\cS} \vert c_X - c_Y \vert^p \; d\pi,
+  \end{equation}
+  where the set
+  \begin{equation}
+    E_{co} = \{ \pi \in \cP(\cS): \pi = \pi_1 \otimes \pi_2,
+    \text{ where } \pi_k \in U(\mu_k^X, \mu_k^Y) \}.
+  \end{equation}
+  \Cref{lemma:compact_subset,lemma:coot_continuous}
+  below imply that Problem \eqref{UCOOT:1} always admits a minimiser.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lemma} \label{lemma:product_polish}
+  Countable product of Polish spaces is also a Polish space.
+\end{lemma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{lemma:product_polish}]
+  First, the countable product of completely metrizable spaces is also completely metrizable
+  (see for example, Proposition 1.4 in \citep{Dominique20})
 
-    Second, we show that countable product of seperable spaces is also seperable.
-    Given a sequence of seperable spaces $(X_k)_k$,
-    let $\mathcal D_k$ be a countable dense subset of $X_k$. For each $k$,
-    we fix a point $x_k \in X_k$. For each integer $j \geq 1$, define
-    \begin{equation}
-      \widetilde{\mathcal D}_j = \prod_{k=1}^j \mathcal D_k \times \prod_{k > j} \{ x_k \}
-      \;\; \text{ and } \;\;
-      \widetilde{\mathcal D} = \cup_{j} \widetilde{\mathcal D}_j.
-    \end{equation}
-    Then clearly $\widetilde{\mathcal D}_j$ is countable, for every $j \geq 1$,
-    which implies $\widetilde{\mathcal D}$ is also countable.
-    To show that $\widetilde{\mathcal D}$ is dense, every neighborhood $\mathcal N$ of
-    $(x_1, ..., x_k, ...)$ (after reindexing) is of the form
-    $\mathcal N = \prod_{k=1}^j \mathcal O_k \times \prod_{k > j} \{ x_k \}$,
-    for some integer $j \geq 1$ and $\mathcal O_k \subset X_k$ is a neighborhood of $x_k$.
-    As $\mathcal D_k$ is dense in $X_k$, we have $\mathcal O_k \cap \mathcal D_k \neq \emptyset$,
-    thus $\mathcal N \cap \widetilde{\mathcal D} \neq \emptyset$.
-    It follows that $\widetilde{\mathcal D}$ is dense in $X$.
-    This concludes that the countable product of Polish spaces is also a Polish space.
-  \end{proof}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{lemma} \label{compact_subset}
-    If $X_k$ and $Y_k$ are Polish spaces, for every $k = 1, 2$,
-    then $E_{co}$ is non-empty and weakly compact in $\cP(\cS)$.
-  \end{lemma}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{proof}
-    Clearly, $(\mu_1^X \otimes \mu_1^Y) \otimes (\mu_2^X \otimes \mu_2^Y) \in E_{co}$,
-    so $E_{co}$ is not empty.
-    We recall that $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ is the set of admissible couplings
-    whose four marginals are $\mu^X_1, \mu^Y_1, \mu^X_2$ and $\mu^Y_2$. First,
-    we show that $E_{co} \subset U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
-    Indeed, given $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k = 1,2$ and denote
-    $\pi = \pi_1 \otimes \pi_2 \in E_{co}$. Then, for every $i, k \in \{ 1, 2 \}$ and $i \neq k$,
-    we have
-    \begin{equation}
-        \bigg(\int_{X_{i} \times Y_{i}} d\pi_i \bigg) \int_{Y_k}  d\pi_k = d\mu_k^X.
-    \end{equation}
-    Other marginal distributions can be calculated in a similar manner and we conclude that
-    $\pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
+  Second, we show that countable product of seperable spaces is also seperable.
+  Given a sequence of seperable spaces $(X_k)_k$,
+  let $\mathcal D_k$ be a countable dense subset of $X_k$. For each $k$,
+  we fix a point $x_k \in X_k$. For each integer $j \geq 1$, define
+  \begin{equation}
+    \widetilde{\mathcal D}_j = \prod_{k=1}^j \mathcal D_k \times \prod_{k > j} \{ x_k \}
+    \;\; \text{ and } \;\;
+    \widetilde{\mathcal D} = \cup_{j} \widetilde{\mathcal D}_j.
+  \end{equation}
+  Then clearly $\widetilde{\mathcal D}_j$ is countable, for every $j \geq 1$,
+  which implies $\widetilde{\mathcal D}$ is also countable.
+  To show that $\widetilde{\mathcal D}$ is dense, every neighborhood $\mathcal N$ of
+  $(x_1, ..., x_k, ...)$ (after reindexing) is of the form
+  $\mathcal N = \prod_{k=1}^j \mathcal O_k \times \prod_{k > j} \{ x_k \}$,
+  for some integer $j \geq 1$ and $\mathcal O_k \subset X_k$ is a neighborhood of $x_k$.
+  As $\mathcal D_k$ is dense in $X_k$, we have $\mathcal O_k \cap \mathcal D_k \neq \emptyset$,
+  thus $\mathcal N \cap \widetilde{\mathcal D} \neq \emptyset$.
+  It follows that $\widetilde{\mathcal D}$ is dense in $X$.
+  This concludes that the countable product of Polish spaces is also a Polish space.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lemma} \label{lemma:compact_subset}
+  If $X_k$ and $Y_k$ are Polish spaces, for every $k = 1, 2$,
+  then $E_{co}$ is non-empty and weakly compact in $\cP(\cS)$.
+\end{lemma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{lemma:compact_subset}]
+  Clearly, $(\mu_1^X \otimes \mu_1^Y) \otimes (\mu_2^X \otimes \mu_2^Y) \in E_{co}$,
+  so $E_{co}$ is not empty.
+  We recall that $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ is the set of admissible couplings
+  whose four marginals are $\mu^X_1, \mu^Y_1, \mu^X_2$ and $\mu^Y_2$. First,
+  we show that $E_{co} \subset U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
+  Indeed, given $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k = 1,2$ and denote
+  $\pi = \pi_1 \otimes \pi_2 \in E_{co}$. Then, for every $i, k \in \{ 1, 2 \}$ and $i \neq k$,
+  we have
+  \begin{equation}
+      \bigg(\int_{X_{i} \times Y_{i}} d\pi_i \bigg) \int_{Y_k}  d\pi_k = d\mu_k^X.
+  \end{equation}
+  Other marginal distributions can be calculated in a similar manner and we conclude that
+  $\pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
 
-    As a direct generalisation of Lemma 4.4 in \citep{Villani08},
-    $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ is weakly compact in $\cP(\cS)$. Thus,
-    to show the compactness of $E_{co}$, it is enough to show that $E_{co}$
-    is a weakly closed subset of $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
-    Take a sequence $(\pi^{(n)})_n \subset E_{co}$
-    such that $\pi^{(n)} \rightharpoonup \pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$
-    (due to its compactness), we need to show that $\pi \in E_{co}$.
-    As $(\pi^{(n)})_n \subset E_{co}$, there exist two sequences
-    $(\pi_1^{(n)})_n \subset U(\mu_1^X, \mu_1^Y)$ and $(\pi_2^{(n)})_n \subset U(\mu_2^X, \mu_2^Y)$
-    such that $\pi^{(n)} = \pi_1^{(n)} \otimes \pi_2^{(n)}$.
+  As a direct generalization of Lemma 4.4 in \citep{Villani08},
+  $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ is weakly compact in $\cP(\cS)$. Thus,
+  to show the compactness of $E_{co}$, it is enough to show that $E_{co}$
+  is a weakly closed subset of $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
+  Take a sequence $(\pi^{(n)})_n \subset E_{co}$
+  such that $\pi^{(n)} \rightharpoonup \pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$
+  (due to its compactness), we need to show that $\pi \in E_{co}$.
+  As $(\pi^{(n)})_n \subset E_{co}$, there exist two sequences
+  $(\pi_1^{(n)})_n \subset U(\mu_1^X, \mu_1^Y)$ and $(\pi_2^{(n)})_n \subset U(\mu_2^X, \mu_2^Y)$
+  such that $\pi^{(n)} = \pi_1^{(n)} \otimes \pi_2^{(n)}$.
 
-    For each $k = 1, 2$, due to the compactness of $U(\mu_k^X, \mu_k^Y)$ in $\cP(X_k \times Y_k)$
-    (Lemma 4.4 in \citep{Villani08}), we can extract a converging subsequence
-    $\pi^{(n_i^{(k)})}_k \rightharpoonup \pi_k \in U(\mu_k^X, \mu_k^Y)$, when $i \to \infty$.
-    By applying Theorem 2.8 in \citep{Billingsley99} on the Polish space $\cS$
-    (thanks to \Cref{product_polish}), we have
-    $\pi^{(n_i^{(1)})}_1 \otimes \pi^{(n_i^{(2)})}_2 \rightharpoonup \pi_1 \otimes \pi_2 \in E_{co}$,
-    when $i \to \infty$. This implies $\pi = \pi_1 \otimes \pi_2$, thus $\pi \in E_{co}$.
-  \end{proof}
+  For each $k = 1, 2$, due to the compactness of $U(\mu_k^X, \mu_k^Y)$ in $\cP(X_k \times Y_k)$
+  (Lemma 4.4 in \citep{Villani08}), we can extract a converging subsequence
+  $\pi^{(n_i^{(k)})}_k \rightharpoonup \pi_k \in U(\mu_k^X, \mu_k^Y)$, when $i \to \infty$.
+  By applying Theorem 2.8 in \citep{Billingsley99} on the Polish space $\cS$
+  (thanks to \Cref{lemma:product_polish}), we have
+  $\pi^{(n_i^{(1)})}_1 \otimes \pi^{(n_i^{(2)})}_2 \rightharpoonup \pi_1 \otimes \pi_2 \in E_{co}$,
+  when $i \to \infty$. This implies $\pi = \pi_1 \otimes \pi_2$, thus $\pi \in E_{co}$.
+\end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{lemma} \label{continuous}
+\begin{lemma} \label{lemma:coot_continuous}
     If $c_X$ and $c_Y$ are bounded measurable functions, then
     the functional $F: \pi \to \Big( \int_{\cS} \vert c_X - c_Y \vert^p \; d\pi \Big)^{1/p}$ is continuous on $E_{co}$.
-  \end{lemma}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{proof}
-    It is enough to show that $F$ is continuous on $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
-    To do this, we adapt the proof of Lemma 11 in \citep{Chowdhury19} by showing that
-    there exists a sequence of continuous functions converging uniformly to $F$.
+\end{lemma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{lemma:coot_continuous}]
+  It is enough to show that $F$ is continuous on $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
+  To do this, we adapt the proof of Lemma 11 in \citep{Chowdhury19} by showing that
+  there exists a sequence of continuous functions converging uniformly to $F$.
 
-    As $\cC_b$ is dense in $L^p$ (by applying Proposition 7.9 in \citep{Folland99}
-    on Polish spaces endowed with finite measures), there exist two sequences of
-    bounded continuous functions $(c_X^{(n)})_n \subset L^p(X, \mu^X)$ and
-    $(c_Y^{(n)})_n \subset L^p(Y, \mu^Y)$ such that
-    $\vert\vert c_X - c_X^{(n)} \vert\vert_{L^p(X, \mu^X)} \leq 1/n$ and
-    $\vert\vert c_Y - c_Y^{(n)} \vert\vert_{L^p(Y, \mu^Y)} \leq 1/n$.
+  As $\cC_b$ is dense in $L^p$ (by applying Proposition 7.9 in \citep{Folland99}
+  on Polish spaces endowed with finite measures), there exist two sequences of
+  bounded continuous functions $(c_X^{(n)})_n \subset L^p(X, \mu^X)$ and
+  $(c_Y^{(n)})_n \subset L^p(Y, \mu^Y)$ such that
+  $\vert\vert c_X - c_X^{(n)} \vert\vert_{L^p(X, \mu^X)} \leq 1/n$ and
+  $\vert\vert c_Y - c_Y^{(n)} \vert\vert_{L^p(Y, \mu^Y)} \leq 1/n$.
 
-    For each $n \in \mathbb N$, define $F_n: U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y) \to \bbR_{\geq 0}$
-    by $F_n(\pi) = \vert\vert c_X^{(n)} - c_Y^{(n)} \vert\vert_{L^p(\cS, \pi)}$.
+  For each $n \in \bbN$, define $F_n: U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y) \to \bbR_{\geq 0}$
+  by $F_n(\pi) = \vert\vert c_X^{(n)} - c_Y^{(n)} \vert\vert_{L^p(\cS, \pi)}$.
 
-    The compactness of $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ implies that, for every
-    $\pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$,
-    there exists a sequence $(\pi^{(m)})_m \subset U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ such that
-    $\pi^{(m)} \rightharpoonup \pi$. In particular, as
-    $\vert c_X^{(n)} - c_Y^{(n)} \vert^p \in \cC_b(\cS)$, we have
+  The compactness of $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ implies that, for every
+  $\pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$,
+  there exists a sequence $(\pi^{(m)})_m \subset U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ such that
+  $\pi^{(m)} \rightharpoonup \pi$. In particular, as
+  $\vert c_X^{(n)} - c_Y^{(n)} \vert^p \in \cC_b(\cS)$, we have
+  \begin{equation}
+    \begin{split}
+      \lim_{m \to \infty} F_n(\pi^{(m)}) =
+      \lim_{m \to \infty} \Big( \int_{\cS} \vert c_X^{(n)} - c_Y^{(n)} \vert^p \;
+      d\pi^{(m)} \Big)^{1/p}
+      = \Big( \int_{\cS} \vert c_X^{(n)} - c_Y^{(n)} \vert^p \; d\pi \Big)^{1/p} = F_n(\pi).
+    \end{split}
+  \end{equation}
+  We deduce that $F_n$ is sequentially continuous, thus continuous
+  (by Remark 5.1.1 in \citep{Ambrosio05}).
+  Now, for any $\pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$, we have
+  \begin{equation}
+    \begin{split}
+      \vert F_n(\pi) - F(\pi) \vert &=
+      \Big\vert \vert\vert c_X^{(n)} - c_Y^{(n)} \vert\vert_{L^p(\cS, \pi)}
+      - \vert\vert c_X - c_Y \vert\vert_{L^p(\cS, \pi)} \Big\vert \\
+      &\leq \vert\vert c_X^{(n)} - c_Y^{(n)} - (c_X - c_Y) \vert\vert_{L^p(\cS, \pi)} \\
+      &\leq \vert\vert c_X^{(n)} - c_X \vert\vert_{L^p(\cS, \pi)} +
+      \vert\vert c_Y^{(n)} - c_Y \vert\vert_{L^p(\cS, \pi)} \\
+      &= \vert\vert c_X^{(n)} - c_X \vert\vert_{L^p(X, \mu^X)} +
+      \vert\vert c_Y^{(n)} - c_Y \vert\vert_{L^p(Y, \mu^Y)} \\
+      &\leq 2/n.
+    \end{split}
+  \end{equation}
+  The first inequality follows from a consequence of Minkowski's inequality:
+  $ \Big\vert \vert\vert f \vert\vert - \vert\vert g \vert\vert \Big\vert
+  \leq \vert\vert f-g \vert\vert$. The second inequality is the Minkowski's inequality.
+  This implies that $F_n$ converges uniformly to $F$, thus $F$ is continuous.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Before proving the isomorphism and metric properties of COOT, let us first introduce the Monge's
+formulation of COOT.
+\begin{align}
+  \mcoot(\cX, \cY) =
+  \inf_{\substack{T_1 \in \cT(\mu^X_1, \mu^Y_1) \\ T_2 \in \cT(\mu^X_2, \mu^Y_2)}}
+  \iint \Big|c_X(x_1, x_2) - c_Y \big( T_1(x_1), T_2(x_2) \big) \Big|^p
+  \; d\mu^X_1(x_1) \; d\mu^X_2(x_2).
+\end{align}
+where recall that
+$\cT(\mu^X_k, \mu^Y_k) = \{T: X_k \to Y_k \text{ such that } T_{\# \mu^X_k} = \mu^Y_k \}$,
+for $k=1,2$. It is not difficult to see that, $\mcoot(\cX, \cY) = 0$ if and only if
+$\cX \in \rms(\cY)$. Similar to the GW and Gromo-Monge distances, we have
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{corollary} \label{coro:coot_mcoot}
+  Let $\cX$ and $\cY$ be two measure hypernetworks, then
+  \begin{equation}
+    \coot(\cX, \cY) = \inf_{\cZ \in \rms(\cX)} \mcoot(\cZ, \cY)
+    = \inf_{\cZ \in \rms(\cY)} \mcoot(\cZ, \cX).
+  \end{equation}
+  Moreover, the infima are always attained: there exist two measure hypernetworks
+  $\cZ_x \in \rms(\cX)$ and $\cZ_y \in \rms(\cY)$ such that
+  $\coot(\cX, \cY) = \mcoot(\cZ_x, \cY) = \mcoot(\cZ_y, \cX)$.
+\end{corollary}
+The proof is adapted directly from that of Theorem 14 in \citep{Memoli21}.
+For self-contained purpose, we provide the complete proof here.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{coro:coot_mcoot}]
+  Let $(\pi_1^*, \pi_2^*)$ be a solution of the problem $\coot(\cX, \cY)$.
+  For $k=1,2$, define the space $Z_k = X_k \times Y_k$
+  equipped with the probability measure $\mu_k^Z = \pi_k^* \in U(\mu_k^X, \mu_k^Y)$.
+  Define the projection map $P_{X_k}: Z_k \to X_k$ by $P_{X_k}(x,y) = x$ and denote
+  $c_Z = (P_{X_1}, P_{X_2})^*c_X$. Clearly, the measure hypernetwork
+  $\cZ := ((Z_1, \mu_1^Z), (Z_2, \mu_2^Z), c_Z)$ is a RMS of $\cX$. For
+  $k=1,2$, consider the canonical projection map $P_{Y_k}: Z_k \to Y_k$ defined by $P_{Y_k}(x,y) = y$,
+  then $P_{Y_k}$ is a transport map from $\mu_k^Z$ to $\mu_k^Y$. Now, as
+  $(P_{X_k}, P_{Y_k})_{\#} \mu_k^Z = (P_{X_k}, P_{Y_k})_{\#} \pi_k^* = \pi_k^*$,
+  for $k=1,2$, we have
+  \begin{align}
+    \mcoot(\cZ, \cY) &\leq \int_{Z_1 \times Z_2}
+    \big\vert c_Z - (P_{Y_1}, P_{Y_2})^*c_Y \big\vert^p \; d\mu_1^Z \; d\mu_2^Z \\
+    &= \int_{Z_1 \times Z_2}
+    \big\vert (P_{X_1}, P_{X_2})^*c_X - (P_{Y_1}, P_{Y_2})^*c_Y \big\vert^p
+    \; d\mu_1^Z \; d\mu_2^Z \\
+    &= \int_{S} \vert c_X - c_Y \vert^p
+    \; d(P_{X_1}, P_{Y_1})_{\#} \mu_1^Z \; d(P_{X_2}, P_{Y_2})_{\#} \mu_2^Z \\
+    &= \int_{S} \vert c_X - c_Y \vert^p \; d\pi_1^* \; d\pi_2^* \\
+    &= \coot(\cX, \cY),
+  \end{align}
+  and consequently,
+  \begin{equation}
+    \label{eq:coot_geq_mcoot}
+    \coot(\cX, \cY) \geq \inf_{\cZ \in \rms(\cX)} \mcoot(\cZ, \cY).
+  \end{equation}
+  For the reverse direction, let $\cZ$ be a RMS of $\cX$. Then,
+  there exist two transport maps $f_k : Z_k \to X_k$, for $k=1,2$ such that $c_Z = (f_1, f_2)^*c_X$,
+  for $\mu_1^Z \otimes \mu_2^Z$-almost everywhere.
+  The inequality \eqref{eq:coot_geq_mcoot} implies that we can safely exclude every
+  $\cZ \in \rms(\cX)$ with $\mcoot(\cZ, \cY) = \infty$ and consider only those with
+  $\mcoot(\cZ, \cY) < \infty$. In this case, there always exists a transport map
+  $g_k$ from $\mu_k^Z$ to $\mu_k^Y$, for each $k=1,2$. If we define the map
+  $(f_k, g_k): Z_k \to X_k \times Y_k$ by $(f_k,g_k)(z_k) = (f_k(z_k), g_k(z_k))$,
+  then $(f_k,g_k)_{\# \mu_k^Z} \in U(\mu_k^X, \mu_k^Y)$, for any $k=1,2$. Now,
+  \begin{align}
+    \coot(\cX, \cY) &\leq \int_{S} \vert c_X - c_Y \vert^p
+    \; d (f_1,g_1)_{\#} \mu_1^Z \; d (f_2,g_2)_{\#} \mu_2^Z \\
+    &= \int_{Z_1 \times Z_2} \vert (f_1,f_2)^*c_X - (g_1,g_2)^*c_Y \vert^p \; d\mu_1^Z \; d\mu_2^Z \\
+    &= \int_{Z_1 \times Z_2} \vert c_Z - (g_1,g_2)^*c_Y \vert^p \; d\mu_1^Z \; d\mu_2^Z.
+  \end{align}
+  As this is true for any $\cZ \in \rms(\cX)$ and any corresponding pair of transport maps
+  $(g_1, g_2)$, we have
+  \begin{equation}
+    \coot(\cX, \cY) \leq \inf_{\cZ \in \rms(\cX)} \mcoot(\cZ, \cY).
+  \end{equation}
+  The equality then follows. Moreover, the first part of the proof also
+  shows us how to construct a minimizer $\cZ_x \in \rms(\cX)$ such that
+  $\coot(\cX, \cY) = \mcoot(\cZ_x, \cY)$. Similarly, we have
+  \begin{equation}
+    \coot(\cY, \cX) = \inf_{\cZ \in \rms(\cY)} \mcoot(\cZ, \cX).
+  \end{equation}
+  By the symmetry of COOT, we deduce that
+  \begin{equation}
+    \inf_{\cZ \in \rms(\cX)} \mcoot(\cZ, \cY) = \inf_{\cZ \in \rms(\cY)} \mcoot(\cZ, \cX),
+  \end{equation}
+  and there exists $\cZ_y \in \rms(\cY)$ such that $\coot(\cX, \cY) = \mcoot(\cZ_y, \cX)$.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{proof}[Proof of \Cref{prop:coot_iso}]
+    Suppose two measure hypernetworks $\cX$ and $\cY$ are weakly isomorphic,
+    then there exists a measure hypernetwork $\cZ^*$ which is a common RMS of $\cX$ and $\cY$.
+    In particular, $\mcoot(\cZ^*, \cY) = 0$. By \Cref{coro:coot_mcoot}, we deduce that
     \begin{equation}
-      \begin{split}
-        \lim_{m \to \infty} F_n(\pi^{(m)}) =
-        \lim_{m \to \infty} \Big( \int_{\cS} \vert c_X^{(n)} - c_Y^{(n)} \vert^p \;
-        d\pi^{(m)} \Big)^{1/p}
-        = \Big( \int_{\cS} \vert c_X^{(n)} - c_Y^{(n)} \vert^p \; d\pi \Big)^{1/p} = F_n(\pi).
-      \end{split}
+      \coot(\cX, \cY) = \inf_{\cZ \in \rms(\cX)} \mcoot(\cZ, \cY) = 0.
     \end{equation}
-    We deduce that $F_n$ is sequentially continuous, thus continuous
-    (by Remark 5.1.1 in \citep{Ambrosio05}).
-    Now, for any $\pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$, we have
-    \begin{equation}
-      \begin{split}
-        \vert F_n(\pi) - F(\pi) \vert &=
-        \Big\vert \vert\vert c_X^{(n)} - c_Y^{(n)} \vert\vert_{L^p(\cS, \pi)}
-        - \vert\vert c_X - c_Y \vert\vert_{L^p(\cS, \pi)} \Big\vert \\
-        &\leq \vert\vert c_X^{(n)} - c_Y^{(n)} - (c_X - c_Y) \vert\vert_{L^p(\cS, \pi)} \\
-        &\leq \vert\vert c_X^{(n)} - c_X \vert\vert_{L^p(\cS, \pi)} +
-        \vert\vert c_Y^{(n)} - c_Y \vert\vert_{L^p(\cS, \pi)} \\
-        &= \vert\vert c_X^{(n)} - c_X \vert\vert_{L^p(X, \mu^X)} +
-        \vert\vert c_Y^{(n)} - c_Y \vert\vert_{L^p(Y, \mu^Y)} \\
-        &\leq 2/n.
-      \end{split}
-    \end{equation}
-    The first inequality follows from a consequence of Minkowski's inequality:
-    $ \Big\vert \vert\vert f \vert\vert - \vert\vert g \vert\vert \Big\vert
-    \leq \vert\vert f-g \vert\vert$. The second inequality is the Minkowski's inequality.
-    This implies that $F_n$ converges uniformly to $F$, thus $F$ is continuous.
-  \end{proof}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{lemma} \label{continuous_cont}
-    If the functions $c_X$ and $c_Y$ are continuous, then the functional
-    $F: \pi \to \Big( \int_{\cS} \vert c_X - c_Y \vert^p \; d\pi \Big)^{1/p}$
-    is lower semicontinuous on $\cP(\cS)$.
-  \end{lemma}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{proof}
-    This is a direct adaptation of the proof of Lemma 4.3 in \citep{Villani08}.
-  \end{proof}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{proof}
-%     Suppose two probability sample-feature spaces $\cX$ and $\cY$ are weakly isomorphic,
-%     then there exists a probability sample-feature space $\cZ^*$ which is a common mass
-%     splitting of $\cX$ and $\cY$, which implies
-%     $\text{M-COOT}(\cZ^*, \cY) = 0$. By corollary \ref{coot_mcoot}, we deduce that
-%     \begin{equation}
-%       \coot(\cX, \cY) =
-%       \inf_{\cZ \in \text{MS}(\cX)} \text{M-COOT}(\cZ, \cY) = 0.
-%     \end{equation}
-%     Now, suppose $\coot(\cX, \cY)=0$, then by corollary \ref{coot_mcoot},
-%     there exists a mass splitting $\cZ^*$ of $\cX$ such that
-%     $\text{M-COOT}(\cZ^*, \cY) = 0$. But by remark \ref{mass_split_mcoot},
-%     this means $\cZ^*$ is also a mass splitting of $\cY$.
-%     We conclude that $\cX$ and $\cY$ are weakly isomorphic.
-% \end{proof}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Now, suppose $\coot(\cX, \cY)=0$, then by \Cref{coro:coot_mcoot},
+    there exists a mass splitting $\cZ^*$ of $\cX$ such that
+    $\mcoot(\cZ^*, \cY) = 0$. But this also means $\cZ^*$ is a RMS of $\cY$.
+    We conclude that $\cX$ and $\cY$ are weakly isomorphic.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proof}
-    For clarity, given three probability sample-feature spaces $\cX, \cY$ and $\cZ$,
+\begin{proof}[Proof of \Cref{prop:metric_prop}]
+    For clarity, given three measure hypernetworks $\cX, \cY$ and $\cZ$,
     we denote $\cS_{xy} = \prod_{k=1}^2 X_k \times Y_k, \cS_{yz} = \prod_{k=1}^2 Y_k \times Z_k,
     \cS_{xz} = \prod_{k=1}^2 X_k \times Z_k$ and $\cS_{xyz} = \prod_{k=1}^2 X_k \times Y_k \times Z_k$.
     \begin{enumerate}
-      \item The positiveness is trivial. By Proposition, $\coot(\cX, \cY) = 0$ if and only if
-      $\cX$ and $\cY$ are weakly isomorphic.
+      \item The positiveness is trivial. By \Cref{prop:coot_iso},
+      $\coot(\cX, \cY) = 0$ if and only if $\cX$ and $\cY$ are weakly isomorphic.
 
       \item To show the symmetry, for each $k = 1, 2$, we define the bijection
       $f_k: X_k \times Y_k \to Y_k \times X_k$ by $f_k(x_k,y_k) = (y_k,x_k)$.
@@ -752,11 +918,6 @@ Now, \Cref{prop:convergence-exact-sppa} follows immediately from \Cref{lemma:bpp
 
         \item There exists constants $C > 0$ and $\alpha \in (0,1)$ such that
         \begin{equation}
-          H(\pi_{\Delta}) \leq \sum_{k=1}^K H(\mu_k) +
-          \sum_{k=1}^K \Big( C \big( M(\mu_k) + n_k \Delta^2 + 1 \big)^{\alpha} - n_k \log \Delta \Big),
-        \end{equation}
-        or, equivalently
-        \begin{equation}
           \kl(\pi_{\Delta} \vert \otimes_k \mu_k) \leq
           \sum_{k=1}^K \Big( C \big( M(\mu_k) + n_k \Delta^2 + 1 \big)^{\alpha} - n_k \log \Delta \Big).
         \end{equation}
@@ -848,7 +1009,7 @@ Now, \Cref{prop:convergence-exact-sppa} follows immediately from \Cref{lemma:bpp
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Proof in Chapter 3}
+\section{Proofs in Chapter 3}
 
 For later convenience, we define the function
 $\vert \xi_1 - \xi_2 \vert^p: (X_1^s \times X_2^s) \times (X_1^f \times X_2^f) \to \bbR_{\geq 0}$ by
@@ -1399,4 +1560,94 @@ where the last inequality follows from the marginal constraints.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Proof of Chapter }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Proof in Chapter 4}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{algorithm}[th]
+  \caption{Approximation scheme for LB-FUGW}
+  \label{alg:lbfugw}
+  \begin{algorithmic}[1]
+      \STATE \textbf{Input:} $\cX^s, \cX^t, \rho, \alpha, \varepsilon$.
+      \STATE \textbf{Output:} Pair of optimal couplings $(P, Q)$.
+      \STATE Initialize: $P = Q = w^s \otimes w^t / \sqrt{m(w^s) m(w^t)}$.
+      \WHILE{$(P, Q)$ has not converged}
+          \STATE Calculate: $c_P = \text{Cost}(P,  G, C, w^s, w^t, \rho, \alpha, \varepsilon)$.
+          \STATE Update: $Q \gets \text{Sinkhorn}(c_P, w^s, w^t, \rho m(P), \varepsilon m(P))$.
+          % % \Comment{fixed P}
+          \STATE Rescale: $Q \gets \sqrt{\frac{m(P)}{m(Q)}} Q$.
+          \STATE Calculate: $c_Q = \text{Cost}(Q,  G, C, w^s, w^t, \rho, \alpha, \varepsilon)$.
+          \STATE Update: $P \gets \text{Sinkhorn}(c_Q, w^s, w^t, \rho m(Q), \varepsilon m(Q))$.
+          % % \Comment{fixed Q}
+          \STATE Rescale: $P \gets \sqrt{\frac{m(Q)}{m(P)}} P$.
+      \ENDWHILE
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[th]
+  \caption{Sinkhorn algorithm \citep{Sejourne19}}
+  \label{alg:sinkhorn}
+  \begin{algorithmic}[1]
+      \STATE \textbf{Input:} $C, w^s, w^t, \rho, \varepsilon$.
+      \STATE \textbf{Output:} Optimal coupling $P$.
+      \STATE Initialize dual vectors: $f = 0_n \in \bbR^n, g = 0_p \in \bbR^p$.
+      \WHILE{$(f,g)$ has not converged}
+          \STATE Update: $f = -\frac{\rho}{\rho + \varepsilon} \log \sum_j \exp \big( g_j + \log w^t_j - \frac{C_{\cdot,j}}{\varepsilon} \big)$.
+        \STATE Update: $g = -\frac{\rho}{\rho + \varepsilon} \log \sum_i \exp \big( f_i + \log w^s_i - \frac{C_{i,\cdot}}{\varepsilon} \big)$.
+      \ENDWHILE
+      \STATE Calculate: $P = (w^s \otimes w^t) \exp \big(f \oplus g - \frac{C}{\varepsilon} \big)$.
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[th]
+  \caption{Cost}
+  \label{alg:local_cost}
+  \begin{algorithmic}[1]
+      \STATE \textbf{Input:} $P, G, C, w^s, w^t, \rho, \alpha, \varepsilon$.
+      \STATE \textbf{Output:} Local cost $c$.
+      \STATE Calculate: $G \otimes P := \left( \sum_{i,j} G_{i,j,k,l} P_{i,j} \right)_{k,l}$.
+      \STATE Calculate:
+      \begin{align*}
+          c := \alpha \; G \otimes P + \frac{1 - \alpha}{2} \; C +
+          \rho \; \langle \log \frac{P_{\#1}}{w^s}, P_{\#1} \rangle +
+          \rho \; \langle \log \frac{P_{\#2}}{w^t}, P_{\#2} \rangle +
+          \varepsilon \; \langle \log \frac{P}{w^s \otimes w^t}, P \rangle
+      \end{align*}
+  \end{algorithmic}
+\end{algorithm}
+Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively. The exponential, division and logarithm operations are all element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
+
+First,
+let us introduce the following problem
+\begin{equation}
+  \text{LB}_1(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
+\end{equation}
+where $\cE = \{(P, Q) \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
+the set of pairs of transportation plans whose corresponding marginal distributions are equal.
+Clearly, we have
+\begin{equation}
+    \text{LB-FUGW} (\cX^s, \cX^t) \leq \text{LB}_1(\cX^s, \cX^t)
+    \leq \fugw(\cX^s, \cX^t).
+\end{equation}
+Denote
+\begin{align}
+  \text{LB}_2 = \inf_{P \in U(Q_{\# 1}, Q_{\# 2})} \inf_{Q \geq 0} L_{\theta}(P, Q)
+\end{align}
+Show that $\text{LB}_2$ has solution?
+
+Observe that $\cE = \bigcup_{Q \geq 0} \{(P, Q): P \in U(Q_{\# 1}, Q_{\# 2}) \}$.
+Denote $(P^*, Q^*)$ the solution of $\text{LB}_1$. Then
+\begin{align*}
+  \text{LB}_1(\cX^s, \cX^t) \leq
+\end{align*}
+We have, for every $P, Q \geq 0$ and $t > 0$,
+\begin{align}
+  g(t(P, Q)) &= t g(P, Q) + (1-t) \left[ \lambda_1 m(\mu_X)^2 + \lambda_2 m(\mu_Y)^2 \right]
+  + (\lambda_1 + \lambda_2) t \log t m(P) m(Q) \\
+  &= t g(P, Q) + (1 - t) K + \lambda t \log t m(P) m(Q).
+\end{align}
+So,
+\begin{align}
+  \min_{t > 0} g(t(P, Q)) = K - t^* \lambda m(P) m(Q)
+\end{align}
+where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
