@@ -55,12 +55,12 @@ with the histogram $\mu^f \in \Delta_d$.
 We call the triplet $\bbX = (X, \mu^s, \mu^f)$ a sample-feature (s.f.) space.
 For $p \geq 1$, we define the COOT distance between two s.f. spaces
 $\bbX = (X, \mu_x^s, \mu_x^f)$ and $\bbY = (Y, \mu_y^s, \mu_y^f)$ as
-\begin{align*}
+\begin{align}
     \coot(\bbX, \bbY) :=
     \inf_{\substack{\pi^s \in U(\mu_x^s, \mu_y^s) \\ \pi^f \in U(\mu_x^f, \mu_y^f)}}
     \sum_{i,j,k,l} (X_{ij} - Y_{kl})^p \pi^s_{ik} \pi^f_{jl}
     = \langle |X - Y|^p, \pi^s \otimes \pi^f \rangle.
-\end{align*}
+\end{align}
 Here, for convenience, we write $|X - Y|^p$ the $4$-D tensor defined by
 $(|X - Y|^p)_{i,k,j,l} = (X_{ij} - Y_{kl})^p$. We summarize the versatility of COOT for practical
 usage in \Cref{t:comparisons}
@@ -80,6 +80,8 @@ usage in \Cref{t:comparisons}
     \label{t:comparisons}}
 \end{table}
 In the following sections, we will explore some aspects of COOT.
+
+COOT can be generalized to the multi-coupling setting \citep{Kerdoncuff22}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Three shades of discrete Co-Optimal Transport}
@@ -143,9 +145,9 @@ One can rewrite the problem as
 \end{align}
 \begin{proposition}
   (Theorem 1 in \citep{Maron18}) Denote
-\begin{equation*}
+\begin{equation}
     \text{lin(DS)} = \{X \in \bbR^{m \times n}: X 1_n = 0, X^T 1_m = 0 \}
-\end{equation*}
+\end{equation}
 the linear part of the affine-hull of the doubly-stochastic matrices. If the matrices $A \in \bbR^{m \times m}$ and
   $B \in \bbR^{n \times n}$ are both conditionally negative (or positive) semi-definite, then $\text{vec}(X)^T (B \otimes A) \text{vec}(X) \geq 0$, for every $X \in \text{lin(DS)}$.
 \end{proposition}
@@ -179,122 +181,30 @@ Recently, low non-negative rank OT \citep{Meyer21a} and extended to the GW and u
 \begin{definition}
   [\citep{Joel93}]
   Given a non-negative matrix $A$, we define its non-negative rank by
-  \begin{equation*}
+  \begin{equation}
     \rank_{+}(A):= \min \big\{ r \geq 1: A = \sum_{i=1}^r M_i,
     \text{ where } \rank(M_i) = 1, M_i \geq 0, \forall i \big\}.
-  \end{equation*}
+  \end{equation}
   By convention, zero matrix has zero (thus non-negative) rank.
 \end{definition}
 To estimate how large can the non-negative rank be, Lemma 2.3 in \citep{Joel93} states that
 $\rank(A) \leq \rank_+(A) \leq \min(m, n)$, for any nonnegative matrix $A \in \bbR^{m \times n}$.
 Now, the low non-negative rank OT (LROT) is defined as
-\begin{align*}
+\begin{align}
   \min_{P \in U(\mu, \nu)} &\langle C, P \rangle \\
   \text{ s.t. } &\rank_+(P) \leq r.
-\end{align*}
+\end{align}
 Now, we will show that COOT is in fact as a variation of the LROT.
-First, let us define three following reshaping operations.
-\begin{itemize}
-  \item[$\bullet$] Vectorization: concatenates rows of a matrix into a vector.
-  \begin{equation*}
-    \vect: \bbR^{m \times n} \to \bbR^{m n},
-  \end{equation*}
-  where each element $A_{i,j}$ of the matrix $A \in \bbR^{m \times n}$ is
-  mapped to a unique element $b_{(i-1)n + j}$ of the vector
-  $b \in \bbR^{m n}$, with $A_{i,j} = b_{(i-1)n + j}$, for $i = 1, ..., m$ and $j = 1, ...,n$.
-  Conversely, each element $b_k$ is mapped to a unique element $A_{k // n, n - k \% n}$,
-  for every $k = 1, ..., mn$. Here, $k // n$ and $k \% n$ are the quotient and
-  the remainder of the division of $k$ by $n$,
-  respectively, i.e. if $k = q n + r$, with $0 \leq r < n$, then $k // n = q$ and $k \% n = r$.
-
-  \item[$\bullet$] Matrization: transforms a $4$D tensor to a $2$D tensor (matrix) by
-  vectorizing the first two and the last two dimensions of the tensor.
-  \begin{equation*}
-    \text{mat}: \bbR^{n_1 \times n_2 \times n_3 \times n_4} \to \bbR^{(n_1 n_2) \times (n_3 n_4)},
-  \end{equation*}
-  where, similar to the vectorization, each element $P_{i,j,k,l}$ of the tensor
-  $P \in \bbR^{n_1 \times n_2 \times n_3 \times n_4}$ is mapped to
-  a unique element $A_{(i-1)n_2 + j, (k-1)n_4 + l}$ of the
-  matrix $A \in \bbR^{(n_1 n_2) \times (n_3 n_4)}$,
-  with $P_{i,j,k,l} = A_{(i-1)n_2 + j, (k-1)n_4 + l}$.
-
-  \item[$\bullet$] Concatenation: stacks vertically two equal-column matrices.
-  \begin{equation*}
-    \begin{split}
-      \text{con}_v: &\bbR^{m \times d} \times \bbR^{n \times d} \to \bbR^{(m+n) \times d} \\
-      & \big( (u_1, ..., u_m),(v_1, ..., v_n) \big) \to (u_1, ..., u_m, v_1, ..., v_n)^T.
-    \end{split}
-  \end{equation*}
-  Or, stacks horizontally two equal-row matrices
-  \begin{equation*}
-    \begin{split}
-      \text{con}_h: &\bbR^{n \times p} \times \bbR^{n \times q} \to \bbR^{n \times (p+q)} \\
-      & \big( (u_1, ..., u_p),(v_1, ..., v_q) \big) \to (u_1, ..., u_p, v_1, ..., v_q).
-    \end{split}
-  \end{equation*}
-\end{itemize}
-\begin{lemma} \label{vec_mat}
-  For any $4$-D tensor $P \in \bbR^{n_1 \times n_2 \times n_3 \times n_4}$,
-  denote $\pi$ its matrization. We have,
-  \begin{equation*}
-    \vect \Big( \sum_{k,l} P_{\cdot, \cdot, k, l} \Big) = \sum_{n=1}^{n_3 n_4} \pi_{\cdot, n} = \pi 1_{n_3 n_4},
-  \end{equation*}
-  where $1_n$ is the vector of ones in $\bbR^n$.
-\end{lemma}
-\begin{proof}
-For $(i,j) \in [n_1] \times [n_2]$, we have
-\begin{align*}
-    \vect \Big(\sum_{k,l} P_{\cdot,\cdot, k, l}\Big)_{(i-1)n_2 + j} &= \sum_{k,l} P_{i,j,k,l} \\
-    &= \sum_{k,l} \pi_{(i-1) n_2 + j, (k-1) n_4 + l} \\
-    &= \sum_{n=1}^{n_3 n_4} \pi_{(i-1) n_2 + j, n}.
-\end{align*}
-The result then follows.
-\end{proof}
-Now, let $(e_i)_{i=1}^{n_1 n_2}$ be the standard basis vectors of $\bbR^{(n_1 n_2)}$,
-\ie $(e_i)_k = 1_{\{i=k\}}$. For each $P \in U(\mu)$, denote $\pi$ its matrisation,
-then by \Cref{vec_mat}, we have, for $i \in [n_1]$,
-\begin{equation*}
-  (\mu_1)_i = \sum_j \sum_{k,l} P_{i,j,k,l} = \sum_{j = 1}^{n_2} \sum_{n=1}^{n_3 n_4} \pi_{(i-1) n_2 + j, n},
-\end{equation*}
-which can be recast in matrix form as $A_1^T \pi 1_{n_3 n_4} = \mu_1$,
-where the matrix $A_1 = \text{con}_{h}(v_1, ..., v_{n_1}) \in \bbR^{(n_1 n_2) \times n_1}$,
-with $v_i \in \bbR^{(n_1 n_2)}$, where $v_i = \sum_{j=(i-1)n_2 + 1}^{i n_2} e_j$,
-with $i \in [n_1]$. Similarly, $A_2 \pi 1_{n_3 n_4} = \mu_2$, where the matrix
-$A_2 = \text{con}_h(I_{n_2}, ..., I_{n_2}) \in \bbR^{n_2 \times (n_1 n_2)}$,
-where $I_n \in \bbR^{n \times n}$ is the identity matrix.
-Both conditions can be compactly written as $A_{12}^T \pi 1_{n_3 n_4} = \mu_{12}$,
-where the matrix $A_{12} = \text{con}_h(A_1, A_2^T) \in \bbR^{(n_1 n_2) \times (n_1+n_2)}$ and
-$\mu_{12} = \text{con}_v(\mu_1, \mu_2) \in \bbR^{(n_1 + n_2)}$.
-Note that $\mu_{12}$ is not a probability because its mass is $2$.
-The matrix $A_{12}$ has exactly $2n_1n_2$ ones and the rest are zeros.
-An example of $A_{12}$ is shown in \Cref{fig:matrix_a12}.
-
-Similarly, for $A_{34}$ and $\mu_{34}$ defined in the same way as $A_{12}$ and
-$\mu_{12}$, respectively, we establish the equality $A_{34}^T \pi^T 1_{n_1 n_2} = \mu_{34}$.
-As a side remark, both matrices $A_{12}^T$ and $A_{34}^T$ are \textit{totally unimodular},
-meaning that every square submatrix has determinant $-1, 0$, or $1$.
-\begin{figure}[h]
-  \centering
-  \includegraphics[height=0.25\textheight,keepaspectratio]{./Chapitre2/fig/matrix.pdf}
-  \caption{An example of the matrix $A_{12}$ when $n_1=2$ and $n_2=3$.}
-  \label{fig:matrix_a12}
-\end{figure}
-
-We also have that, the condition $P = P_1 \otimes P_2$ can be rewritten as
-$\text{mat}(P) = \vect(P_1) \vect(P_2)^T$. By Lemma 2.1 in \citep{Joel93}, $\text{rank}_+(A) = 1$
-if and only if there exist two non-negative vectors $u,v$ such that
-$A = u v^T$. Thus, the factorization constraint is equivalent to
-$\text{rank}_+\big( \text{mat}(P) \big) = 1$.
 
 Now, denote $L= \text{mat}(C)$ and $M = n_1 n_2, N = n_3 n_4$. COOT can be rewritten as
-\begin{equation*}
+\begin{equation}
   \begin{split}
     \min_{Q \in \bbR^{M \times N}_{\geq 0}} &\langle L, Q \rangle \\
     \text{ such that } & A_{12}^T Q 1_N = \mu_{12} \\
     &A_{34}^T Q^T 1_M = \mu_{34} \\
     &\text{rank}_{+}(Q) = 1,
   \end{split}
-\end{equation*}
+\end{equation}
 which is a variation of the non-negative rank-$1$ OT problem.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -312,9 +222,9 @@ marginal distributions are $\mu_1, ..., \mu_N$. In this case, any coupling in $U
 
 Given a collection of $N$ histograms $\mu = (\mu_n \in \bbR^{a_n})_{n=1}^N$
 and a $N$-D cost tensor $C \in \bbR^{a_1 \times ... \times a_N}$, the MMOT problem reads
-\begin{equation*}
+\begin{equation}
   \text{MMOT}(\mu) = \inf_{P \in U(\mu)} \langle C, P \rangle.
-\end{equation*}
+\end{equation}
 In practice, such a formulation is intractable to optimize in a discrete setting as it results in a linear program where the number
 of constraints grows exponentially in $N$. A more tractable strategy for solving MMOT is to consider the following entropic
 regularization problem
@@ -325,29 +235,29 @@ which can be solved using Sinkhorn's algorithm \citep{Benamou14}. We refer the i
 
 \paragraph{Derivation of the Sinkhorn algorithm in entropic MMOT.} The corresponding entropic dual problem of the primal problem
 \ref{MMOT_primal} reads
-\begin{equation*}
+\begin{equation}
   \sup_{f_n \in \bbR^{a_n}} \sum_{n=1}^N \langle f_n, \mu_n \rangle -
   \varepsilon \sum_{i_1,...,i_N} \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big) + \varepsilon.
-\end{equation*}
+\end{equation}
 For each $n \in [N]$ and $i_n \in [a_n]$, the first order optimality condition reads
-\begin{equation*}
+\begin{equation}
   0 = (\mu_n)_{i_n} - \exp\big( \frac{(f_n)_{i_n}}{\varepsilon} \big)
   \sum_{i_{-n}} \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
-\end{equation*}
+\end{equation}
 where, with some abuse of notation, we write $i_{-n} = (i_1, ..., i_{n-1}, i_{n+1}, ..., i_N)$. Or, equivalently
-\begin{equation*}
+\begin{equation}
   (f_n)_{i_n} = \varepsilon \log (\mu_n)_{i_n} - \varepsilon \log \sum_{i_{-n}}
   \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
-\end{equation*}
+\end{equation}
 or even more compact form
-\begin{equation*}
+\begin{equation}
   f_n = \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
   \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{\cdot, i_{-n}}}{\varepsilon} \Big).
-\end{equation*}
+\end{equation}
 Using the primal-dual relation, we obtain the minimiser of the primal problem \ref{MMOT_primal} by
-\begin{equation*}
+\begin{equation}
   P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big),
-\end{equation*}
+\end{equation}
 for $i_n \in [a_n]$, with $n \in [N]$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Similar to the entropic OT, the Sinkhorn algorithm \ref{algo:dual_mmot} is also usually implemented in log-domain to avoid numerical instability.
@@ -359,25 +269,25 @@ Similar to the entropic OT, the Sinkhorn algorithm \ref{algo:dual_mmot} is also 
   \textbf{Output.} Optimal transport plan $P$ and tuple of dual vectors $(f_1, ... f_N)$ (optional).
   \begin{enumerate}
     \item While not converge: for $n = 1, ..., N$,
-    \begin{equation*}
+    \begin{equation}
       \begin{split}
         f^{(t+1)}_n &= \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
         \Big[ \exp\Big( \frac{\sum_{j < n} (f^{(t+1)}_j)_{i_j} + \sum_{j > n} (f^{(t)}_j)_{i_j} -
         C_{\cdot, i_{-n}}}{\varepsilon} \Big) \Big].
       \end{split}
-    \end{equation*}
+    \end{equation}
     \item Return tensor $P$, where for $i_n \in [a_n]$, with $n \in [N]$,
-    \begin{equation*}
+    \begin{equation}
       P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big).
-    \end{equation*}
+    \end{equation}
   \end{enumerate}
   \label{algo:dual_mmot}
 \end{algorithm}
 
 Now, it is easy to see that COOT can be rewritten as
-\begin{align*}
+\begin{align}
   \inf_{\gamma \in U_2} \langle C, \gamma \rangle
-\end{align*}
+\end{align}
 where $U_2 = {\gamma \in U(\mu): \gamma = \pi^s }$
 
 \paragraph{Contributions} We define and study a general MMOT problem with structural penalization on the coupling matrix.
@@ -438,17 +348,17 @@ two tensors, the problem \cref{factor_mmot} is equivalent to a variation of low 
 
 As for the existence of the solution to this problem, we have that $U_{\mathcal T}$ is compact because it is a close subset of the
 compact set $U(\mu)$, which implies that the problem \cref{factor_mmot} always admits a solution. Furthermore, observe that
-\begin{equation*}
+\begin{equation}
   \begin{split}
     U_{\mathcal T} &= \{ P \in U(\mu): P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in \Sigma_{\mathcal T_m}, \forall m = 1,...,M \} \\
     &= \{ P \in \Sigma: P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in U_{\mathcal T_m}, \forall m = 1,...,M \}.
   \end{split}
-\end{equation*}
+\end{equation}
 Thus, the problem F-MMOT can be rewritten as
-\begin{equation*}
+\begin{equation}
   \text{F-MMOT}( \mathcal T, \mu) = \inf_{\substack{P_m \in U_{\mathcal T_m} \\ \forall m = 1,...,M}}
   \langle C, P_1 \otimes ... \otimes P_M \rangle.
-\end{equation*}
+\end{equation}
 So, if $\mathcal T_1,...,\mathcal T_M$ are $2$-tuples and two marginal distributions corresponding to each $U_{\mathcal T_m}$ are
 identical and uniform, then by Birkhoff's theorem \citep{Birkhoff46}, the problem \ref{factor_mmot} admits an optimal solution in
 which each component tensor $P_m$ is a permutation matrix.
@@ -520,14 +430,14 @@ finite subset (of size $m$) of a certain metric space. Denote $C_x \in \bbR^{m \
 matrix). We define similarly the set $\mathcal Y$ of size $n$ and the corresponding similarity matrix $C_y \in \bbR^{n \times n}$.
 We also assign two discrete probability measures $\mu_x \in \bbR^m$ and $\mu_y \in \bbR^n$ to $\mathcal X$ and $\mathcal Y$,
 respectively. The GW distance is then defined as
-\begin{equation*}
+\begin{equation}
   \gw(C_x, C_y) = \inf_{Q \in U(\mu_x, \mu_y)} \langle L(C_x, C_y), Q \otimes Q \rangle,
-\end{equation*}
+\end{equation}
 and the COOT reads
-\begin{equation*}
+\begin{equation}
   \coot(C_x, C_y) = \inf_{\substack{Q_s \in U(\mu_x, \mu_y) \\ Q_f \in U(\mu_x, \mu_y)}}
   \langle L(C_x, C_y), Q_s \otimes Q_f \rangle,
-\end{equation*}
+\end{equation}
 where $L(C_x,C_y) \in \bbR^{m \times n \times m \times n}$ represents the $4$-D cost tensor induced by the matrices $C_x$ and $C_y$,
 and $U(\mu, \nu)$ is the set of couplings in $\bbR^{m \times n}_{\geq 0}$ whose two marginal distributions are $\mu$ and
 $\nu$. When $C_x$ and $C_y$ are two squared Euclidean distance matrices, and $L(C_x,C_y)$ is of the form
@@ -553,9 +463,9 @@ Note that, this result is more general than the one in the previous section, whe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 We now turn to the computational aspect of the problem \ref{relax_mmot}. First, note that for any tuple partition
 $\mathcal T = (\mathcal T_m)_{m=1}^M$ and probability tensor $P$, the KL divergence term can be decomposed as
-\begin{equation*}
+\begin{equation}
   \kl(P \vert P_{\# \mathcal T}) = H(P) - \sum_{m=1}^m H_m(P),
-\end{equation*}
+\end{equation}
 where the function $H_m$ defined by $H_m(P) := H(P_{\# \mathcal T_m})$ is continuous and convex with respect to $P$.
 Now, the problem \ref{relax_mmot} becomes
 \begin{equation} \label{relax}
@@ -580,16 +490,16 @@ solution, thanks to the strict convexity of the objective function. Such solutio
 For the sake of simplicity, we illustrate the calculation in a simple case, where $M=2$ and $N=4$ with
 $\mathcal T_1$ and $\mathcal T_2$ are two $2$-tuples. The function $H_1 + H_2$ is continuous, so
 $G^{(t)} = \nabla_P (H_1 + H_2)(P^{(t)})$. Given a $4$-D probability tensor $P$, we have
-\begin{equation*}
+\begin{equation}
   H_1(P) + H_2(P) = \sum_{i,j,k,l} P_{i,j,k,l}
   \log\big( \sum_{i,j} P_{i,j,k,l} \big) + P_{i,j,k,l} \log\big( \sum_{k,l} P_{i,j,k,l} \big).
-\end{equation*}
+\end{equation}
 So,
-\begin{equation*} \label{optim_condition}
+\begin{equation} \label{optim_condition}
   \frac{\partial (H_1 + H_2)}{\partial P_{i,j,k,l}} = \log \left( \sum_{i,j} P_{i,j,k,l} \right) +
   \frac{P_{i,j,k,l}}{\sum_{i,j} P_{i,j,k,l}} +
   \log \left( \sum_{k,l} P_{i,j,k,l} \right) + \frac{P_{i,j,k,l}}{\sum_{k,l} P_{i,j,k,l}}.
-\end{equation*}
+\end{equation}
 The complete DC algorithm for the problem \ref{relax} can be found in the algorithm \ref{algo:dc_MMOT}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{algorithm}[h]
@@ -604,9 +514,9 @@ The complete DC algorithm for the problem \ref{relax} can be found in the algori
   \begin{enumerate}
     \item Gradient step: compute the gradient of the convex term $G^{(t)} = \sum\limits_{m=1}^M \nabla_P H_m(P^{(t)})$.
     \item Sinkhorn step: solve
-    \begin{equation*}
+    \begin{equation}
       P^{(t+1)} = \arg\min_{P \in U(\mu)} \langle C - \varepsilon G^{(t)}, P \rangle + \varepsilon H(P),
-    \end{equation*}
+    \end{equation}
     using the Sinkhorn algorithm \ref{algo:dual_mmot}, with the tuple of initial dual vectors $(f_1^{(0)},...,f_N^{(0)})$.
   \end{enumerate}
   \label{algo:dc_MMOT}
@@ -746,12 +656,12 @@ finding better solutions despite the non-convexity of the problem.
 over the linear term in the objective function of the MMOT-DC problem, which implies that the optimal tensor $P^*$ is "close" to its
 corresponding tensor product $P^*_{\# \mathcal T}$. So, instead of calculating the gradient at $P$, one may calculate at
 $P_{\# \mathcal T}$. In this case, the gradient reads
-\begin{equation*}
+\begin{equation}
   \begin{split}
     \sum_{m=1}^M \nabla_P H_m(P_{\# \mathcal T}) =
     \big[ \log P_{\# \mathcal T_1} + P_{\# \mathcal T_1} \big] \oplus ... \oplus \big[ \log P_{\# \mathcal T_M} + P_{\# \mathcal T_M} \big],
   \end{split}
-\end{equation*}
+\end{equation}
 where $\oplus$ represents the tensor sum operator between two arbitrary-size tensors: $(A \oplus B)_{i,j}:= A_i + B_j$, where with some
 abuse of notation, $i$ or $j$ can be understood as a tuple of indices. Thus, we avoid storing the $N$-D gradient tensor (as in the
 algorithm \ref{algo:dc_MMOT}) and only need to store $M$ smaller-size tensors. Not only saving the memory,
@@ -793,24 +703,24 @@ We call this variation \textit{MMOT-DC-v1} and use the same setup as in the expe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \textbf{Important note:} \textit{this section is based on my unpublished working paper
-on continuous COOT, its entropic regularization and unbalanced extension since November 2021.
-It bears similarity with two concurrent works. More precisely, the continuous COOT
-has also been first published by \citep{Chowdhury21b} in December 2021. Their work and ours
-are based on the same mathematical framework, which results in the same metric property.
-Apart from that, they pursue different research objectives, where
-COOT is used to explore the categorical properties of the space of measure hypernetworks.}
+on continuous COOT (including the entropic regularization and unbalanced extension) in November 2021.
+It bears similarity with two concurrent works. The first one has been published
+by \citep{Chowdhury21b} in December 2021. Their work and ours are based on the same
+mathematical framework of \citep{Chowdhury19}, which results in the same metric property.
+Apart from that, they pursue different research objectives,
+where COOT is used to explore the categorical properties of the space of measure hypernetworks.}
 
 \textit{Our study on the entropic COOT also shares some resemblance to
-entropic GW distance in the paper of \citep{Zhang23} published in December 2022.
-In particular, both of their analysis and ours rely on the block approximation technique
-\citep{Carlier17} to show the convergence and quantify the approximation error,
-and that ours can immediately extend to the GW setting. However, we consider different assumptions
-on the mm-spaces, which result in the same convergence of minimizer and minimum,
-but different upper bound of the approximation error.}
+entropic GW in the paper of \citep{Zhang23} published in December 2022.
+Their analysis and ours use the block approximation technique \citep{Carlier17}
+to show the convergence of the minimum and minimizer, and to quantify the approximation error.
+In particular, our result can be immediately extended to the GW setting. However,
+we consider different assumptions on the mm-spaces,
+which imply different upper bound of the approximation error.}
 
 In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
-In particular, we will mostly follow the terminology and concepts of the published works
-to avoid introducing unnecessary complication.
+In order to avoid introducing unnecessary notational complication,
+we will mostly follow the terminology and concepts of the published works.
 
 \subsection{From discrete to continuous Co-Optimal Transport}
 
@@ -825,8 +735,8 @@ $\mu_1^X = \mu^X_2 = \mu_X, \mu_1^Y = \mu^Y_2 = \mu_X$, one can reformulate the 
     \inf_{\pi_1, \pi_2}
     &\int_{X_1 \times Y_1} \int_{X_2 \times Y_2}
     \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2). \\
-    \text{ subject to: } &\pi_k \in U(\mu_k^X, \mu_k^Y), \forall k = 1,2 \\
-    &\pi_1 = \pi_2
+    \text{ subject to: } &\pi_k \in U(\mu_k^X, \mu_k^Y), \forall k = 1,2, \\
+    &\pi_1 = \pi_2.
   \end{split}
 \end{equation}
 When the equality constraint on the two couplings is relaxed,
@@ -837,19 +747,21 @@ where $X_1$ and $Y_1$ represent the "sample" spaces in the source and target dom
 and $X_2$ and $Y_2$ represent the "feature" spaces in the source and target domains, respectively.
 As a result, the corresponding "sample" and "feature" couplings are also different in their natures.
 
-\begin{definition}[Measure hypernetwork]
+\begin{definition}[Measure hypernetwork \citep{Chowdhury21b}]
 Suppose $(X_1, \mu_1^X)$ and $(X_2, \mu_2^X)$ are two Polish measure spaces,
 and $c_X$ is a bounded measurable function on $X_1 \times X_2$.
 We call the triplet $\cX = \big((X_1, \mu_1^X), (X_2, \mu_2^X), c_X \big)$
 a \textbf{measure hypernetwork}. We also say $c_X$ is the \textbf{interaction}
 between $X_1$ and $X_2$.
 \end{definition}
-With some abuse of notation and terminology, when $X_1 = X_2 = X$ and $\mu_1^X = \mu_2^X = \mu_X$,
-we use measure hypernetwork and measure network (as in the context of GW) interchangeably.
+Without risk of confusion, when $X_1 = X_2 = X$ and $\mu_1^X = \mu_2^X = \mu_X$,
+we use interchangeably "measure hypernetwork" and "measure network"
+in the context of GW \citep{Chowdhury19}.
 When $X_1$ and $X_2$ are finite spaces (so $\mu_1^X$ and $\mu_2^X$ are histograms),
-we say $\cX$ a finite measure hypernetwork. For convenience, we also refer the index $1$ as "sample"
+we call $\cX$ a finite measure hypernetwork. For convenience, we also refer the index $1$ as "sample"
 and $2$ as "feature", for example, $X_1$ is the sample space, $\pi_2$ is the feature coupling.
-\begin{definition}
+\begin{definition}[\citep{Chowdhury21b}]
+  \label{def:cont_coot}
   For $p \geq 1$, the COOT distance between two measure hypernetworks $\cX$ and $\cY$ is defined as
   \begin{align} \label{eq:cont_coot}
     \coot(\cX, \cY) =
@@ -858,28 +770,35 @@ and $2$ as "feature", for example, $X_1$ is the sample space, $\pi_2$ is the fea
     \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2).
   \end{align}
 \end{definition}
-It is not difficult to see that \Cref{eq:cont_coot} generalizes the discrete COOT \citep{Redko20}.
+It is not difficult to see that \Cref{def:cont_coot} generalizes the discrete COOT \citep{Redko20}.
 In practice, the input data is usually expressed as matrix,
 whose rows represent samples and columns represent features.
 In this case, the interaction value is precisely the coordinate of the data matrix.
 On the other hand, the sample and feature spaces are unknown and have little interest and importance.
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.9\textwidth, keepaspectratio]{./Chapitre2/fig/coot_diagram.pdf}
-  \caption{Scatter plots of MMOT-DC-v1 versus other solvers. In all three plots, the points tend to concentrate around the line $y=x$,
-  which indicates the comparable performance of MMOT-DC-v1. On the other hand, the top-right plot shows the clear superiority of EGW-PGD.}
-  \label{fig:continuous_coot}
-\end{figure}
-\begin{proposition}
+First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.9\textwidth, keepaspectratio]{./Chapitre2/fig/coot_diagram.pdf}
+%   \caption{Scatter plots of MMOT-DC-v1 versus other solvers. In all three plots, the points tend to concentrate around the line $y=x$,
+%   which indicates the comparable performance of MMOT-DC-v1. On the other hand, the top-right plot shows the clear superiority of EGW-PGD.}
+%   \label{fig:continuous_coot}
+% \end{figure}
+\begin{proposition}[Lemma 35 in \citep{Chowdhury21b}]
   \label{prop:exist_coot}
-  The COOT problem always admits a minimizer.
+  The COOT problem always admits a minimizer and the minimum is finite.
 \end{proposition}
+While using the proof technique of Lemma 35 in \citep{Chowdhury21b}, we provide a slightly different
+proof in Appendix \ref{annex:cont_coot}. More precisely,
+we exploit a different aspect of COOT, where it can be rewritten as a multi-marginal OT problem
+with additional factorization constraint on the coupling.
+Later, we will see that, this observation also allows to establish the
+convergence result of entropic COOT.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Metric properties}
 The framework on the isomorphism of GW distance presented in \Cref{subsec:prop_gw}
-can be extended easily to COOT setting, or more generally, to the multi-coupling setting.
+can be extended easily to COOT setting.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{definition}[Relaxed mass splitting]
   A measure hypernetwork $\cZ$ is a \textbf{relaxed mass splitting} (RMS) of a
@@ -892,7 +811,7 @@ can be extended easily to COOT setting, or more generally, to the multi-coupling
 \end{definition}
 We denote $\rms(\cX)$ the set of all relaxed mass splittings of $\cX$. Clearly,
 $\cX \in \rms(\cX)$, so $\rms(\cX)$ is not empty.
-Moreover, in case of measure networks, if $\cZ \in \ms(\cX)$, then $\cZ \in \rms(\cX)$, meaning that
+In particular, in the GW setting, if $\cZ \in \ms(\cX)$, then $\cZ \in \rms(\cX)$, meaning that
 $\ms(\cX) \subset \rms(\cX)$. Now, we can define the isomorphism between the measure hypernetworks
 as follows.
 \begin{definition}[COOT-isomorphism] \label{coot_isomorphic}
@@ -905,10 +824,9 @@ as follows.
     \item weakly isomorphic if they have a common RMS.
   \end{enumerate}
 \end{definition}
-This is an immediate relaxation of the isomorphism induced by the GW distance.
-In particular, in case of measure networks, COOT-isomorphism is weaker:
-isomorphism in GW sense implies COOT-isormorphism. The following result summarizes the relations
-amongst the three types of COOT-isomorphism.
+Clearly, this is an immediate relaxation of the isomorphism induced by the GW distance.
+In case of measure networks, isomorphism in GW sense implies COOT-isormorphism.
+The following result summarizes the relations amongst the three types of COOT-isomorphism.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{corollary} \label{prop:strong_weak_iso}
   Given two measure hypernetworks $\cX$ and $\cY$. Consider three statements
@@ -923,11 +841,11 @@ amongst the three types of COOT-isomorphism.
     \item If $\cX$ and $\cY$ are finite, then $(2) \implies (1)$.
     \item If $\cX$ and $\cY$ are finite such that $|X_k| = |Y_k|$
     and $\mu_k^X, \mu_k^Y$ are uniform distributions, for $k = 1,2$, then
-    $(3) \implies (2) \implies (1)$.
+    $(3) \implies (2)$. This means all three forms are equivalent.
   \end{enumerate}
 \end{corollary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We can also characterize the weak isomorphism by
+Now, we can characterize the weak isomorphism by
 \begin{proposition} \label{prop:coot_iso}
   Two measure hypernetworks $\cX$ and $\cY$ are COOT-weakly isomorphic if and only if
   $\coot(\cX, \cY) = 0$.
@@ -938,61 +856,67 @@ We can also characterize the weak isomorphism by
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Discussion on the setting of mm-space}
-While the measure network fits in the COOT framework, this is usually not the case for
+While the measure network can fit in the COOT framework, this is usually not the case for
 the mm-space since the distance function is only measurable in Polish space,
 but not necessarily bounded. However, all previous results on the existence of minimizer and
 metric property remain unchanged if one replaces measure hypernetworks by mm-spaces,
 as long as COOT is finite. Moreover,
 \begin{corollary}
-For $p=2$, all types of COOT-isomorphisms are equivalent and
+For $p=2$, all forms of COOT-isomorphisms are equivalent and
 they are also equivalent with the isomorphism in GW sense.
 \end{corollary}
-This indicates that, similar to the GW distance, COOT can also be used to compare isometric objects,
-for example objects transformed by reflection, rotation, translation or permutation.
+This indicates that, both GW distance and COOT can be used to compare isometric objects,
+namely those transformed by reflection, rotation or translation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Entropic regularization and approximation error}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Similar to the Wasserstein and GW distances, entropic regularization can be used as a computationally
-efficient approach to approximate the COOT. In this section,
-we are interested in the following formulation of entropic COOT: for $\varepsilon > 0$,
-\begin{align*}
+Similar to the Wasserstein and GW distances, one can approximate the COOT with entropic regularization.
+In this thesis, we are interested in the following formulation of entropic COOT:
+for $\varepsilon > 0$,
+\begin{align}
   \coot_{\varepsilon} (\cX, \cY) =
   \inf_{\substack{\pi_1 \in U(\mu^X_1, \mu^Y_1) \\
-  \pi_2 \in U(\mu^X_2, \mu^Y_2)}} &\int_{X_1 \times Y_1} \int_{X_2 \times Y_2}
+  \pi_2 \in U(\mu^X_2, \mu^Y_2)}} &\iint
   \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2) \\
   &+ \varepsilon \; \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big).
-\end{align*}
-This structure of the KL divergence term is particularly handy to prove all results related to
-the entropic COOT. It can also be seen as a relaxation of the \textit{quadratic divergence}
+\end{align}
+Note that, this structure of the KL divergence term is particularly handy to prove all results related to
+the entropic COOT. It also bears similarity with the \textit{quadratic divergence}
 \citep{Sejourne20} defined by $\kl^{\otimes 2}(\mu, \nu):= \kl(\mu \otimes \mu | \nu \otimes \nu)$,
 which is used to define the unbalanced GW divergence. Note that, in the balanced setting,
 the joint penalization in terms of KL divergence is in fact equivalent to the
-independent penalization. Indeed, when $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
+independent KL-penalization. Indeed, when $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
 \begin{equation}
   \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big)
   = \kl(\pi_1 \vert \mu^X_1 \otimes \mu^Y_1) + \kl(\pi_2 \vert \mu^X_2 \otimes \mu^Y_2).
 \end{equation}
-In practical situations, since the couplings may not have the same nature (for example,
-when working directly with the input data, rather than indirectly via the similarity matrix),
+In practice, since the couplings may not have the same nature (for example,
+when working directly with the input data, rather than via the similarity matrix),
 they can be regularized by different values of regularization.
-
+%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}
 The entropic COOT problem always admits a minimizer.
 \end{proposition}
-
+%%%%%%%%%%%%%%%%%%%%%%%
+Now, to study the convergence behavior when $\varepsilon \to 0$, first,
+we introduce the following assumption on the measure hypernetwork.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{assumption}
   \label{assump:ent_coot}
-  The measure hypernetwork satisfies that sample and feature spaces are
-  finite-dimensional vector spaces. The associated Borel probability measures
-  have finite $p$-th moment, \textit{i.e.} $M_p(\mu) = \int ||x||^p \; d\mu(x) < \infty$, and are
-  absolutely continuous with respect to the Lebesgue measure such that the negative entropy is finite,
-  \textit{i.e.} $H(\mu) = \int \mu(x) \log(\mu(x)) \; dx < \infty$.
+  Given a measure hypernetwork, we assume that
+  \begin{enumerate}
+    \item[A1] The sample and feature spaces are finite-dimensional vector spaces.
+    \item[A2] Their associated Borel probability measures have finite $p$-th moment,
+    \textit{i.e.} $\int ||x||^p \; d\mu(x) < \infty$, and are absolutely continuous
+    with respect to the Lebesgue measure such that the negative entropy is finite,
+    \textit{i.e.} $\int \mu(x) \log(\mu(x)) \; dx < \infty$.
+    \item[A3] The interaction is continuous.
+  \end{enumerate}
 \end{assumption}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition} \label{conv_ent_coot}
-  Suppose that the measure hypernetworks $\cX, \cY$ satisfy \Cref{assump:ent_coot} and
-  the interactions $c_X, c_Y$ are continuous. Then, $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$,
+  Under the assumptions A1-A3, $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$
   when $\varepsilon \to 0$. Moreover, let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
   positive regularizations such that $\varepsilon_n \to 0$.
   Denote $\pi_n := (\pi_{1, n}, \pi_{2, n})$ the solution of the entropic problem
@@ -1004,37 +928,33 @@ The above result is similar to the one known in entropic OT \citep{Carlier17}. T
 that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
 thus the block approximation and $\Gamma$-convergence techniques can be applied. Moreover,
 similar to \citep{Genevay19}, when working with the bounded subsets in finite-dimensional vector spaces,
-we can further quantify the approximation error.
+we can further quantify the approximation error as follows.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition} \label{prop:quant_bound_ent}
-  Suppose $X_1, X_2$ are bounded subsets of $\bbR^{d_x}$ and
-  $Y_1, Y_2$ are bounded subsets of $\bbR^{d_y}$,
-  where $\diam(X_k), \diam(Y_k) \leq D$, for every $k=1,2$. Denote $d = \max(d_x, d_y)$.
-  Suppose there exist two constants $q, L > 0$ such that
+  Suppose that $X_1, X_2$ are bounded subsets of $\bbR^{d_x}$ and $Y_1, Y_2$ are bounded subsets
+  of $\bbR^{d_y}$, where $\diam(X_k), \diam(Y_k) \leq D$, for every $k=1,2$.
+  Denote $d = \max(d_x, d_y)$. Suppose there exist two constants $q, L > 0$ such that
   $0 \leq c_X(x_1, x_2) \leq (L \vert\vert x_1 - x_2 \vert\vert)^q$,
   for every $(x_1,x_2) \in X_1 \times X_2$, and
   $0 \leq c_Y(y_1, y_2) \leq (L \vert\vert y_1 - y_2 \vert\vert)^q$,
-  for every $(y_1,y_2) \in Y_1 \times Y_2$. Then, we have
-  \begin{equation*}
-    \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \leq \frac{2 d \varepsilon}{pq} +
+  for every $(y_1,y_2) \in Y_1 \times Y_2$. Then,
+  \begin{equation}
+    \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \leq
     \frac{2d \varepsilon}{pq} \log\Big( \frac{pq (2DLd^{1/p})^{pq}}{2d \varepsilon} \Big).
-  \end{equation*}
+  \end{equation}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%
-Let us consider two popular cases in practice: when $p=2$ and
+This bound is very similar to the one in Wasserstein setting \citep{Genevay19}.
+Let us consider two special cases of \Cref{prop:quant_bound_ent}.
 \begin{itemize}
-  \item[$\bullet$] $c_X$ and $c_Y$ are Euclidean distances (i.e. $q=L=1$), the bound becomes
-  \begin{equation}
-    d \varepsilon + d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big).
-  \end{equation}
+  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\textit{i.e.} $q=L=1$),
+  the upper bound becomes $d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big)$.
 
-  \item[$\bullet$] $c_X$ and $c_Y$ are squared Euclidean distances (i.e. $q=2, L=1$),
-  the bound becomes
-  \begin{equation}
-    \frac{d \varepsilon}{2} + \frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big).
-  \end{equation}
+  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are squared Euclidean distances
+  (\textit{i.e.} $q=2, L=1$), the upper bound becomes
+  $\frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big)$.
 \end{itemize}
-In both cases, the dependence of the bound on the maximal distance $D$ between points
+In both situations, the dependence of the bound on the maximal distance $D$ between points
 within each space (even only at logarithmic scale) and on the dimension $d$ indicates
 that either high dimensional space, or large intra-space distance (for example, due to outliers)
 can have negative impact on the approximation error. On the other hand,
@@ -1042,35 +962,35 @@ by comparing these two bounds, we deduce that if $\log(2d \varepsilon) \leq 1$,
 then the squared Euclidean distances generates a provably better (smaller) upper bound.
 
 With little modification of the proof, exactly the same upper bound in \Cref{prop:quant_bound_ent}
-remains true for GW distance. We note that \citep{Zhang23} also establish the
-approximation error between unregularized and entropic GW, but they rely on different assumptions
-to ours. In particular, their result only holds for $2$-GW distance,
-when the distance function is the squared-Euclidean norm. By contrast,
+remains true for GW distance. We note that \citep{Zhang23} also establish a similar
+$O(\varepsilon \log \varepsilon)$-approximation error between the unregularized and entropic GW,
+but they rely on different assumptions to ours. In particular, their result only holds
+for $2$-GW distance, when the distance function is the squared-Euclidean norm. By contrast,
 \Cref{prop:quant_bound_ent} holds for any $p$-GW distance and any $L^q$-norm as distance function.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and future work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Stability of Co-Optimal Transport}
+% \subsection{Stability of Co-Optimal Transport}
 
-COOT setting: given two sample-feature spaces
-$\mathcal X_1 = ((X_1^s, \mu_1^s), (X_1^f, \mu_1^f), \xi_1)$ and
-$\mathcal X_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$. COOT reads
-\begin{equation*}
-    \coot(\mathcal X_1, \mathcal X_2) =
-    \inf_{\substack{\pi^s \in U() \\ \pi^f \in U()}}
-    \int |\xi_1 - \xi_2|^2 d\pi^s d\pi^f
-\end{equation*}
-Consider the "semi-empirical" spaces:
-$\widehat{\mathcal X}_i := ((\widehat{X}_i^s, \widehat{\mu}_i^s), (X_i^f, \mu_i^f), \xi_i))$, where
-we fix the dimension $f$ and only consider the empirical version of sample measures.
-Now, how does the feature coupling behave when $\widehat{\mu}^s \to \mu^s$?, i.e. when $n \to \infty$,
-quantify
-\begin{equation}
-    | \coot(\mathcal X_1, \mathcal X_2) -
-    \coot(\widehat{\mathcal X}_1, \widehat{\mathcal X}_2) |
-\end{equation}
-We can first start with finite-dimensional feature spaces (so the feature coupling is a matrix).
+% COOT setting: given two sample-feature spaces
+% $\mathcal X_1 = ((X_1^s, \mu_1^s), (X_1^f, \mu_1^f), \xi_1)$ and
+% $\mathcal X_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$. COOT reads
+% \begin{equation}
+%     \coot(\mathcal X_1, \mathcal X_2) =
+%     \inf_{\substack{\pi^s \in U() \\ \pi^f \in U()}}
+%     \int |\xi_1 - \xi_2|^2 d\pi^s d\pi^f
+% \end{equation}
+% Consider the "semi-empirical" spaces:
+% $\widehat{\mathcal X}_i := ((\widehat{X}_i^s, \widehat{\mu}_i^s), (X_i^f, \mu_i^f), \xi_i))$, where
+% we fix the dimension $f$ and only consider the empirical version of sample measures.
+% Now, how does the feature coupling behave when $\widehat{\mu}^s \to \mu^s$?, i.e. when $n \to \infty$,
+% quantify
+% \begin{equation}
+%     | \coot(\mathcal X_1, \mathcal X_2) -
+%     \coot(\widehat{\mathcal X}_1, \widehat{\mathcal X}_2) |
+% \end{equation}
+% We can first start with finite-dimensional feature spaces (so the feature coupling is a matrix).
 
 \subsection{Sample complexity of Co-Optimal Transport and GW distance}
