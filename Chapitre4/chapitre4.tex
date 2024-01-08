@@ -178,61 +178,20 @@ Given a tuple of hyper-parameters $\theta \triangleq (\rho, \alpha, \varepsilon)
 where $\rho, \varepsilon \in \bbR_+$ and $\alpha \in [0,1]$,
 for any coupling $P \in \bbR^{n \times p}$,
 we define the fused unbalanced Gromov-Wasserstein loss as
-
-% \vspace*{1\baselineskip}
-% \begin{equation}
-%     \label{eq:fugw_loss}
-%     \begin{split}
-%     \text{L}_{\theta}(P) \enspace \triangleq \enspace
-%     &(1 - \alpha) \enspace
-%     \tikzmarknode{wass}{
-%         \highlight{blue}{
-%             $\sum \limits_{\substack{0 \leq i < n\\0 \leq j < p}} || F^s_i - F^t_j||_2^2 P_{i,j}$
-%         }
-%     }
-%     + \alpha \enspace²
-%     \tikzmarknode{gw}{
-%         \highlight{teal}{
-%             $\sum\limits_{\substack{0 \leq i,k < n\\0 \leq j,l < p}} | D^s_{i, k} - D^t_{j, l}|^2 P_{i,j} P_{k,l}$
-%         }
-%     }\\
-%     &+ \rho \medspace \big(
-%     \tikzmarknode{unbal}{
-%         \highlight{red}{
-%             $\kl(P_{\# 1} \otimes P_{\# 1}
-%         \vert w^s \otimes w^s)
-%         + \kl(P_{\# 2} \otimes P_{\# 2}
-%         \vert w^t \otimes w^t)$
-%         }
-%     }
-%     \big)
-%     + \varepsilon \medspace
-%     \tikzmarknode{entr}{
-%         \highlight{gray}{
-%             $E(P)$
-%         }
-%     }
-%     \end{split}
-% \end{equation}
-% \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
-%     % Label for wasserstein loss
-%     \path (wass.north) ++ (0.6,0.8em) node[anchor=south east,color=blue!65] (wasstext){Wasserstein loss $\text{L}_{\text{W}}(P)$};
-%     \draw [color=blue!85](wass.north) |- ([xshift=-0.3ex,color=blue!85]wasstext.south west);
-%     % Label for gw loss
-%     \path (gw.north) ++ (-2.4,2.0em) node[anchor=north west,color=ForestGreen!85] (gwtext){Gromov-Wasserstein loss $\text{L}_{\text{GW}}(P)$};
-%     \draw [color=ForestGreen](gw.north) |- ([xshift=-0.3ex,color=ForestGreen]gwtext.south east);
-%     % Label for unbalanced loss
-%     \path (unbal.north) ++ (-4.8,-2em) node[anchor=north west,color=red!65] (unbaltext){Marginal constraints $\text{L}_{\text{U}}(P)$};
-%     \draw [color=red!85](unbal.south) |- ([xshift=-0.3ex,color=red!85]unbaltext.south west);
-%     % Label for entropy
-%     \path (entr.north) ++ (-2.1,-2em) node[anchor=north west,color=black!85] (entrtext){Entropy};
-%     \draw [color=black](entr.south) |- ([xshift=-0.3ex,color=black]entrtext.south west);
-% \end{tikzpicture}
-% \vspace*{1\baselineskip}
-
-where $\text{L}_{\text{W}}(P)$ matches vertices with similar features,
-$\text{L}_{\text{GW}}(P)$ penalizes changes in geometry
-and $\text{L}_{\text{U}}(P)$ fosters matching all parts of the source and target distributions.
+\begin{equation}
+    \label{eq:fugw_obj_func}
+    \begin{split}
+        L_{\theta}(P) &=
+        (1 - \alpha) \underbrace{\sum_{i,j} || F^s_i - F^t_j||_2^2 P_{ij}}_{\text{Wasserstein loss } L_{\text{W}}(P)}
+        + \alpha \underbrace{\sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} P_{kl}}_{\text{Gromov-Wasserstein loss } L_{\text{GW}}(P)} \\
+        &+ \rho \underbrace{\left[ \kl(P_{\# 1} \otimes P_{\# 1} \vert w^s \otimes w^s)
+        + \kl(P_{\# 2} \otimes P_{\# 2} \vert w^t \otimes w^t) \right]}_{\text{Marginal constraints } L_{\text{U}}(P)}
+        + \varepsilon \underbrace{E(P)}_{\text{Entropy}}
+    \end{split}
+\end{equation}
+where $L_{\text{W}}(P)$ matches vertices with similar features,
+$L_{\text{GW}}(P)$ penalizes changes in geometry
+and $L_{\text{U}}(P)$ fosters matching all parts of the source and target distributions.
 Throughout this paper, we refer to relaxing the hard marginal constraints of the underlying
 OT problem into soft ones as \textit{unbalancing}.
 Here, $P_{\# 1} \triangleq (\sum_j P_{i,j})_{0 \leq i < n}$ denotes
@@ -243,7 +202,7 @@ the Kronecker product between two vectors or two matrices.
 $\kl(\cdot|\cdot)$ denotes the Kullback Leibler divergence,
 which is a typical choice to measure the discrepancy between two measures
 in the context of unbalanced optimal transport \citep{Liero18}.
-The last term $E(P) \triangleq \kl\big(P \otimes P | (w^s \otimes w^t) \otimes (w^s \otimes w^t)\big)$
+The last term $E(P) \triangleq \kl \big(P \otimes P | (w^s \otimes w^t) \otimes (w^s \otimes w^t)\big)$
 is mainly introduced for computational purposes, as it helps accelerate
 the approximation scheme of the optimisation problem. Typically,
 it is used in combination with a small value of $\varepsilon$,
@@ -256,14 +215,13 @@ of the transportation plan $P$ are far from the prior weights $w^s$ and $w^t$.
 This potentially helps adapting the size of areas where either the signal or the geometry
 differs too much between source and target.
 
-Eventually, we define $\cX^s \triangleq (F^s, D^s, w^s)$ and
-$\cX^t \triangleq (F^t, D^t, w^t)$,
+Eventually, we define $\cX^s \triangleq (F^s, D^s, w^s)$ and $\cX^t \triangleq (F^t, D^t, w^t)$,
 and seek to derive an optimal coupling $P \in \bbR^{n \times p}$ minimizing
 \begin{equation}
     \label{eq:fugw}
     \begin{split}
         \fugw(\cX^s, \cX^t)
-        &\triangleq \inf_{P \geq 0} L_{\theta}(P)
+        &\triangleq \inf_{P \geq 0} L_{\theta}(P).
     \end{split}
 \end{equation}
 This can be seen as a natural combination of the fused GW \citep{Vayer19b}
@@ -277,22 +235,19 @@ due to the non-convexity of the problem.
 Therefore, FUGW is also \textit{a priori} non-convex, and comparably difficult to estimate.
 Consequently, following \citep{Sejourne20}, we instead compute a lower bound which
 is formulated as a bi-convex problem that relies on the joint estimation of two couplings.
-\begin{equation}
+\begin{align}
     \label{eq:lbfugw}
-    \begin{split}
-        \quad \fugw(\cX^s, \cX^t) = \quad
-        \inf_{\substack{P, Q \geq 0 \\ P = Q}} \text{L}_{\theta}(P, Q)
-        \quad \geq \inf_{\substack{P, Q \geq 0 \\ m(P) = m(Q)}}
-        L_{\theta}(P, Q) \quad \triangleq \quad \text{LB-FUGW} (\cX^s, \cX^t).
-    \end{split}
-\end{equation}
+    \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{P, Q \geq 0 \\ P = Q}} L_{\theta}(P, Q)
+    \geq \inf_{\substack{P, Q \geq 0 \\ m(P) = m(Q)}}
+    L_{\theta}(P, Q) \triangleq \text{LB-FUGW} (\cX^s, \cX^t),
+\end{align}
 where $m(P) = \sum_{i,j} P_{i,j}$ denotes the mass of $P$ and
 \begin{equation}
     \label{eq:fugw_loss_two_couplings}
     \begin{split}
-        \text{L}_{\theta}(P, Q) \triangleq
-        (1 - \alpha) \enspace \text{L}_{\text{W}}(P, Q) + \alpha \enspace \text{L}_{\text{GW}}(P, Q)
-        + \rho \enspace \text{L}_{\text{U}}(P, Q) + \varepsilon \enspace E(P, Q),
+        L_{\theta}(P, Q) \triangleq
+        (1 - \alpha) \enspace L_{\text{W}}(P, Q) + \alpha \enspace L_{\text{GW}}(P, Q)
+        + \rho \enspace L_{\text{U}}(P, Q) + \varepsilon \enspace E(P, Q),
     \end{split}
 \end{equation}
 where
@@ -301,44 +256,44 @@ where
 
     \item[$\bullet$] $G \triangleq \Big( |D^s_{i,j} - D^t_{k,l}| \Big)_{i,j,k,l} \in \bbR^4_+$ \hfill (geometry cost matrix)
 
-    \item[$\bullet$] $\text{L}_{\text{W}}(P, Q) \triangleq \langle C, \frac{P + Q}{2} \rangle = \frac{1}{2} ( \sum_{i,j} C_{i,j}P_{i,j} + \sum_{i,j} C_{i,j}Q_{i,j})$ \hfill (Wasserstein)
+    \item[$\bullet$] $L_{\text{W}}(P, Q) \triangleq \langle C, \frac{P + Q}{2} \rangle = \frac{1}{2} ( \sum_{i,j} C_{i,j}P_{i,j} + \sum_{i,j} C_{i,j}Q_{i,j})$ \hfill (Wasserstein)
 
-    \item[$\bullet$] $\text{L}_{\gw}(P, Q) \triangleq \langle G , P \otimes Q \rangle = \sum_{i,j,k,l}G_{i,j,k,l}P_{i,j}Q_{k,l}$ \hfill (Gromov-Wasserstein)
+    \item[$\bullet$] $L_{\gw}(P, Q) \triangleq \langle G , P \otimes Q \rangle = \sum_{i,j,k,l}G_{i,j,k,l}P_{i,j}Q_{k,l}$ \hfill (Gromov-Wasserstein)
 
-    \item[$\bullet$] $\text{L}_{\text{U}}(P, Q) \triangleq \enspace \kl \Big(P_{\# 1} \otimes Q_{\# 1} \vert w^s \otimes w^s \Big) + \enspace \kl \Big(P_{\# 2} \otimes Q_{\# 2} \vert w^t \otimes w^t \Big)$ \hfill (unbalancing)
+    \item[$\bullet$] $L_{\text{U}}(P, Q) \triangleq \enspace \kl \Big(P_{\# 1} \otimes Q_{\# 1} \vert w^s \otimes w^s \Big) + \enspace \kl \Big(P_{\# 2} \otimes Q_{\# 2} \vert w^t \otimes w^t \Big)$ \hfill (unbalancing)
 
     \item[$\bullet$] $E(P, Q) \triangleq \kl \Big(P \otimes Q | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big)$ \hfill (entropy)
 \end{itemize}
-In particular, we have $\text{L}_{\theta}(P, P) = \text{L}_{\theta}(P)$,
-which is the objective function of FUGW introduced
-in Equation 1. It is difficult to study when equality holds between FUGW and its lower bound.
-Here, we aim to understand the potential gap between them. First,
-let us introduce the following problem
-\begin{equation}
-  \widetilde{\fugw}(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} \text{L}_{\theta}(P, Q),
-\end{equation}
-where we denote $\cE = \{P, Q \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$
-the set of pairs of transportation plans whose corresponding marginal distributions are equal.
-Clearly, we have
-\begin{equation}
-    \text{LB-FUGW} (\cX^s, \cX^t) \leq \widetilde{\fugw}(\cX^s, \cX^t)
-    \leq \fugw(\cX^s, \cX^t).
-\end{equation}
-This inequality indicates that the difference between FUGW and LB-FUGW might be potentially large.
-However, this gap can be tightened (or even closed) in some cases.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{corollary} \label{ugw_uCOOT}
-    If the matrices of geodesic distances $D^s$ and $D^t$ satisfy the conditions
-    in \Cref{coot_gw_equiv}, then we have
-    $\text{LB-FUGW} (\cX^s, \cX^t) = \widetilde{\fugw}(\cX^s, \cX^t)$. Furthermore, if
-    the definiteness holds, then the optimal solution satisfies $P^* = Q^*$, meaning that
-    $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
-\end{corollary}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In our experiments, while the geodesic distances do not necessarily meet the conditions
-in \Cref{coot_gw_equiv}, we still observe that $\text{LB-FUGW} (\cX^s, \cX^t)$ and
-$\fugw(\cX^s, \cX^t)$ are numerically equal and that the optimal solution $(P^*, Q^*)$ of
-$\text{LB-FUGW} (\cX^s, \cX^t)$ satisfy that $P^*$ and $Q^*$ are also numerically equal.
+In particular, we have $L_{\theta}(P, P) = L_{\theta}(P)$,
+which is the objective function of FUGW introduced in Equation \eqref{eq:fugw_obj_func}.
+% It is difficult to study when equality holds between FUGW and its lower bound.
+% Here, we aim to understand the potential gap between them.
+% First, let us introduce the following problem
+% \begin{equation}
+%   \widetilde{\fugw}(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
+% \end{equation}
+% where $\cE = \{P, Q \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
+% the set of pairs of transportation plans whose corresponding marginal distributions are equal.
+% Clearly, we have
+% \begin{equation}
+%     \text{LB-FUGW} (\cX^s, \cX^t) \leq \widetilde{\fugw}(\cX^s, \cX^t)
+%     \leq \fugw(\cX^s, \cX^t).
+% \end{equation}
+% This inequality indicates that the difference between FUGW and LB-FUGW might be potentially large.
+% However, this gap can be tightened (or even closed) in some cases.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{corollary} \label{coro:ugw_ucoot}
+%     If the distances $D^s$ and $D^t$ are of the forms: $D^s_{ij} = f_i + f_j + A_{ij}$ and
+%     $D^t_{kl} = g_k + g_l + B_{kl}$, where $f, g$ are vectors in $\bbR^n, \bbR^p$, respectively,
+%     and the matrices $A, B$ are both conditionally positive (or negative) semi-definite, then we have
+%     $\text{LB-FUGW} (\cX^s, \cX^t) = \widetilde{\fugw}(\cX^s, \cX^t)$. Furthermore, if
+%     the definiteness holds, then the optimal solution satisfies $P^* = Q^*$, meaning that
+%     $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
+% \end{corollary}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In our experiments, while the geodesic distances do not necessarily meet these conditions,
+In our experiments, we observe that the two couplings of LB-FUGW are numerically equal.
+So it is enough to choose, for example, the first one, as alignment between source and target signals.
 
 \paragraph{Optimization}
 
@@ -348,59 +303,7 @@ with respect to the other. This allows us to always be dealing with linear probl
 instead of a quadratic one. Eventually, each BCD iteration consists in alternatively solving
 two entropic unbalanced OT problems, whose solutions can be approximated using
 the Sinkhorn algorithm \citep{Sejourne19}. Details of the BCD iteration can be found
-in Alg.~\ref{alg:lbfugw}.
-\begin{algorithm}[th]
-    \caption{Approximation scheme for LB-FUGW}
-    \label{alg:lbfugw}
-    \begin{algorithmic}[1]
-        \STATE \textbf{Input:} $\cX^s, \cX^t, \rho, \alpha, \varepsilon$.
-        \STATE \textbf{Output:} Pair of optimal couplings $(P, Q)$.
-        \STATE Initialize: $P = Q = w^s \otimes w^t / \sqrt{m(w^s) m(w^t)}$.
-        \WHILE{$(P, Q)$ has not converged}
-            \STATE Calculate: $c_P = \text{Cost}(P,  G, C, w^s, w^t, \rho, \alpha, \varepsilon)$.
-            \STATE Update: $Q \gets \text{Sinkhorn}(c_P, w^s, w^t, \rho m(P), \varepsilon m(P))$.
-            % % \Comment{fixed P}
-            \STATE Rescale: $Q \gets \sqrt{\frac{m(P)}{m(Q)}} Q$.
-            \STATE Calculate: $c_Q = \text{Cost}(Q,  G, C, w^s, w^t, \rho, \alpha, \varepsilon)$.
-            \STATE Update: $P \gets \text{Sinkhorn}(c_Q, w^s, w^t, \rho m(Q), \varepsilon m(Q))$.
-            % % \Comment{fixed Q}
-            \STATE Rescale: $P \gets \sqrt{\frac{m(Q)}{m(P)}} P$.
-        \ENDWHILE
-    \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[th]
-    \caption{Sinkhorn algorithm \citep{Sejourne19}}
-    \label{alg:sinkhorn}
-    \begin{algorithmic}[1]
-        \STATE \textbf{Input:} $C, w^s, w^t, \rho, \varepsilon$.
-        \STATE \textbf{Output:} Optimal coupling $P$.
-        \STATE Initialize dual vectors: $f = 0_n \in \bbR^n, g = 0_p \in \bbR^p$.
-        \WHILE{$(f,g)$ has not converged}
-            \STATE Update: $f = -\frac{\rho}{\rho + \varepsilon} \log \sum_j \exp \big( g_j + \log w^t_j - \frac{C_{\cdot,j}}{\varepsilon} \big)$.
-	        \STATE Update: $g = -\frac{\rho}{\rho + \varepsilon} \log \sum_i \exp \big( f_i + \log w^s_i - \frac{C_{i,\cdot}}{\varepsilon} \big)$.
-        \ENDWHILE
-        \STATE Calculate: $P = (w^s \otimes w^t) \exp \big(f \oplus g - \frac{C}{\varepsilon} \big)$.
-    \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[th]
-    \caption{Cost}
-    \label{alg:local_cost}
-    \begin{algorithmic}[1]
-        \STATE \textbf{Input:} $P, G, C, w^s, w^t, \rho, \alpha, \varepsilon$.
-        \STATE \textbf{Output:} Local cost $c$.
-        \STATE Calculate: $G \otimes P := \left( \sum_{i,j} G_{i,j,k,l} P_{i,j} \right)_{k,l}$.
-        \STATE Calculate:
-        \begin{align*}
-            c := \alpha \; G \otimes P + \frac{1 - \alpha}{2} \; C +
-            \rho \; \langle \log \frac{P_{\#1}}{w^s}, P_{\#1} \rangle +
-            \rho \; \langle \log \frac{P_{\#2}}{w^t}, P_{\#2} \rangle +
-            \varepsilon \; \langle \log \frac{P}{w^s \otimes w^t}, P \rangle
-        \end{align*}
-    \end{algorithmic}
-\end{algorithm}
-Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively. The exponential, division and logarithm operations are all element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
+in \Cref{alg:lbfugw}.
 
 \paragraph{Toy example illustrating the unbalancing property}
 
@@ -412,7 +315,7 @@ In this example, for each of the $n=p=3200$ vertices, the feature is simply a sc
 On the source mesh, the signal is constituted of two von Mises density functions that differ
 by their concentration (large and small), while on the target mesh, only the large one is present,
 but at a different location.
-We use the optimal coupling matrix $P$ obtained from Equation \ref{eq:fugw} to transport
+We use the optimal coupling matrix $P$ obtained from Equation \eqref{eq:fugw} to transport
 the source signal on the target mesh.
 As shown in \Cref{fig:toy_example}.B, the parameter $\rho$ allows to control
 the mass transferred from source to target.
@@ -460,16 +363,16 @@ using a Block-Coordinate Descent (BCD) algorithm that consists in alternatively
 \textit{(i)} minimizing the OT plans $P^{s,B}$ for each FUGW computation
 in \eqref{eq:barycenter} with fixed $\cX^B$ and \textit{(ii)}
 updating the barycenter $\cX^B$ through a closed form with fixed $P^{s,B}$.
-See Alg. \ref{alg:fugw_barycenter} for more details.
+See \Cref{alg:fugw_barycenter} for more details.
 The first step simply uses the previously introduced solver.
 The second one takes advantage of the fact that the objective function introduced
-in \ref{eq:lbfugw} is differentiable in $F^B$ and $D^B$, and the two couplings of
+in \eqref{eq:lbfugw} is differentiable in $F^B$ and $D^B$, and the two couplings of
 LB-FUGW are numerically equal. This yields a closed form for $F^B$ and $D^B$,
 as a function of $P^{s,B}$ and $\cX^s$. We note that, during the barycenter estimation,
 the weight $w^B$ is always fixed as uniform distribution.
 
 \begin{algorithm}[th]
-    \caption{LB-FUGW barycenter for Problem \ref{eq:barycenter}}
+    \caption{LB-FUGW barycenter for Problem \eqref{eq:barycenter}}
     \label{alg:fugw_barycenter}
     \begin{algorithmic}[1]
         \STATE \textbf{Input:} $(\cX^s)_{s \in \cS}, \rho, \alpha, \varepsilon$.
@@ -587,14 +490,14 @@ Since it is very difficult to estimate the barycentric mesh, we force it to be e
 the \emph{fsaverage5} template. Empirically, this we force the distance matrix $D^B$
 to be equal to that of \emph{fsaverage5}, and only estimate the functional barycenter $F^B$.
 We initialize it with the mean of $(F^s)_{s \in S}$
-and derive $F^B$ and $(P^{s,B})_{s \in S}$ from problem \ref{eq:barycenter}.
+and derive $F^B$ and $(P^{s,B})_{s \in S}$ from Problem \eqref{eq:barycenter}.
 Then, for a given stimulus $c$, we compute its projection onto the barycenter for each subject.
 We use these projections to compute two maps of interest:
 \textit{(i)} $M_{B,c}$ the mean of projected contrast maps across subjects
 and \textit{(ii)} $T_{B,c}$ the t-statistic (for each vertex) of projected maps.
 We compare these two maps with their unaligned counterparts $M_{0,c}$ and $T_{0,c}$ respectively.
 \begin{figure}[ht]
-    \begin{minipage}{.5\linewidth}
+    \begin{minipage}{.4\linewidth}
         \begin{equation*}
             M_{B,c} \triangleq \frac{1}{|S|} \sum_{s \in S} \phi_{s \rightarrow t}(F^s_{\cdot, c})
         \end{equation*}
@@ -609,7 +512,7 @@ We compare these two maps with their unaligned counterparts $M_{0,c}$ and $T_{0,
 \end{figure}
 % \vspace*{-0.5\baselineskip}
 \begin{figure}[ht]
-    \begin{minipage}{.5\linewidth}
+    \begin{minipage}{.4\linewidth}
         \begin{equation*}
             M_{0,c} \triangleq \frac{1}{|S|} \sum_{s \in S} F^s_{\cdot, c}
         \end{equation*}
@@ -636,7 +539,7 @@ with and without alignment respectively.
 We set $\alpha = 0.5$, $\rho = 1$ and $\varepsilon = 10^{-3}$.
 Pearson correlation between source and target contrast maps is systematically and
 significantly increased when aligned using FUGW, as illustrated in
-Figure \ref{fig:gain_comparisions_fsaverage5} where correlation grows by almost $40\%$
+\Cref{fig:gain_comparisions_fsaverage5} where correlation grows by almost $40\%$
 from $0.258$ to $0.356$.
 
 \begin{figure}[ht!]
@@ -653,8 +556,10 @@ from $0.258$ to $0.356$.
     }
     \label{fig:gain_comparisions_fsaverage5}
 \end{figure}
-We also varied training sets by selecting subsets of training contrasts and find that similar performance
-on the test set can be achieved regardless of the training data (see Supplementary section \ref{sec:control_experiments} and in particular Supplementary Table \ref{tab:varying_training_sets}).
+We also varied training sets by selecting subsets of training contrasts and find that
+similar performance on the test set can be achieved regardless of the training data
+(see Supplementary \Cref{sec:control_experiments} and in particular Supplementary
+\Cref{tab:varying_training_sets}).
 
 \paragraph{Hyper-parameters selection}
 \label{par:params_selection}
@@ -662,8 +567,11 @@ on the test set can be achieved regardless of the training data (see Supplementa
 Hyper-parameters used to obtain these results were chosen
 after running a grid search on $\alpha$, $\varepsilon$ and $\rho$
 and evaluating it on the validation dataset.
-Computation took about 100 hours using 4 Tesla V100-DGXS-32GB GPUs. More precisely, it takes about 4 minutes to compute one coupling between a source and target 10k-vertex hemisphere on a single GPU, when the solver was set to run 10 BCD and 400 Sinkhorn iterations. In comparison, MSM takes about the same time on Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz CPUs.
-Results are reported in Figure \ref{fig:cv_metrics} and provide multiple insights concerning FUGW.
+Computation took about 100 hours using 4 Tesla V100-DGXS-32GB GPUs. More precisely,
+it takes about 4 minutes to compute one coupling between a source and target 10k-vertex
+hemisphere on a single GPU, when the solver was set to run 10 BCD and 400 Sinkhorn iterations.
+In comparison, MSM takes about the same time on Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz CPUs.
+Results are reported in \Cref{fig:cv_metrics} and provide multiple insights concerning FUGW.
 
 Firstly, without anatomical constraint ($\alpha = 0$),
 source vertices can be matched with target vertices
@@ -694,7 +602,7 @@ for human data one might consider that it should not exceed $20mm$.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1.05\columnwidth]{./Chapitre4/figures/cv_all_metrics_hcp_left_fugw.pdf}
+    \includegraphics[width=1\columnwidth]{./Chapitre4/figures/cv_all_metrics_hcp_left_fugw.pdf}
     \caption{
         \textbf{Exploring hyper-parameter space to find relevant couplings}
         Given a transport plan aligning a source and target subject,
@@ -711,7 +619,7 @@ for human data one might consider that it should not exceed $20mm$.
 
 \paragraph{Mass redistribution in unbalanced couplings}
 Unbalanced couplings provide additional information about how functional areas might differ
-in size between pairs of individuals. This is illustrated in Figure \ref{fig:transported_mass},
+in size between pairs of individuals. This is illustrated in \Cref{fig:transported_mass},
 where we observe variation in size of the auditory area between a given pair of individuals.
 This feature is indeed captured by the difference of mass between subjects
 (although the displayed contrast was not part of the training set).
@@ -739,16 +647,16 @@ This feature is indeed captured by the difference of mass between subjects
     \label{fig:gain_comparisions_individual}
 \end{figure}
 
-As shown in Figure \ref{fig:gain_comparisions_individual},
+As shown in \Cref{fig:gain_comparisions_individual},
 we obtain correlation gains which are comparable to that of Experiment 1 (about 35\% gain)
 while working on individual meshes.
 This tends to show that FUGW can compute meaningful alignments between pairs of individuals
 without the use of an anatomical template, which helps bridge most conceptual impediments listed
-in Section \ref{sec:introduction}.
+in \Cref{sec:introduction}.
 Moreover, this opens the way for computation of simple statistics in cohorts of individuals
 in the absence of a template. Indeed, one can pick an individual of the cohort and use it
 as a reference subject on which to transport all other individuals.
-We give an example in Figure \ref{fig:individual_projections},
+We give an example in \Cref{fig:individual_projections},
 showing that FUGW correctly preserved idiosyncrasies of each subject while
 transporting their functional signal in an anatomically sound way.
 \begin{figure}[H]
@@ -767,10 +675,10 @@ transporting their functional signal in an anatomically sound way.
 
 In the absence of a proper metric to quantify the correctness of a barycenter,
 we first qualitatively compare the functional templates obtained with and without alignment.
-In Figure \ref{fig:barycenter_vs_group_average}.A, we do so using brain maps taken from the test set.
+In \Cref{fig:barycenter_vs_group_average}.A, we do so using brain maps taken from the test set.
 We can see that the barycenter obtained with FUGW yields sharper contrasts and
 more fine-grained details than the barycenter obtained by per-vertex averaging.
-We also display in Figure \ref{fig:barycenter_vs_group_average}.B
+We also display in \Cref{fig:barycenter_vs_group_average}.B
 the result of a one-sample test for the same contrast, which can readily be used for inference.
 The one-sample test map obtained after alignment to the FUGW template exhibits
 the same supra-threshold clusters as the original approach, but also some additional spots
@@ -779,13 +687,13 @@ This approach is thus very useful to increase power in group inference.
 We quantify this result by counting the number of supra-threshold vertices
 with and without alignment for each contrast map of the test set.
 Our alignment method significantly finds more such vertices of interest,
-as shown in Figure \ref{fig:barycenter_vs_group_average}.C.
+as shown in \Cref{fig:barycenter_vs_group_average}.C.
 \begin{figure}[t]
     \centering
     \includegraphics[width=1\columnwidth]{./Chapitre4/figures/barycenter_group_analysis.pdf}
     \caption{
         \textbf{FUGW barycenter yields much finer-grained maps than group averages}
-        We study the same statistical map as in Figure \ref{fig:intro}, which contrasts
+        We study the same statistical map as in \Cref{fig:intro}, which contrasts
         areas of the brain involved in mathematical reasoning.
         \textbf{A}. These complex maps projected onto the barycenter and averaged
         show more specific activation patterns than simple group averages,
