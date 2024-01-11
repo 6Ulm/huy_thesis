@@ -879,15 +879,15 @@ There are two interesting features of the squared $l_2$-norm. First, thanks to t
 the iterate matrix can be made sparse from the very first iteration,
 which further accelerates the matrix operations. Second, similar to the entropic UOT problem
 \eqref{eq:discrete_ent_uot}, it is also possible to express the minimum of Problem \eqref{uot_l2}
-as a linear function of its minimizer.
+as a quadratic function of its minimizer.
 \begin{corollary}
   \label{coro:uot_l2_minimizer}
 Denote $P^*$ the solution of Problem \eqref{uot_l2}. Then
 \begin{align}
   \uot_{\varepsilon, \rho} = \frac{1}{2} \Big( \rho_1 ||\mu||^2
   + \rho_2 ||\nu||^2 + \varepsilon ||\gamma||^2 \Big)
-  - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
-  + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big).
+  - \frac{1}{2} \Big( \rho_1 ||P^*_{\# 1}||^2 \rangle
+  + \rho_2 || P^*_{\# 2} ||^2 \rangle + \varepsilon ||P^*||^2 \rangle \Big).
 \end{align}
 \end{corollary}
 To conclude, MM is a very appealing alternative to the Sinkhorn-based algorithms,
