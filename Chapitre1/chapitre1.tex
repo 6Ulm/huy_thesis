@@ -320,7 +320,7 @@ one has that $| \text{SD}_{\varepsilon}(\mu, \nu) - W_2^2(\mu, \nu) | = O(\varep
 \paragraph{Properties} The entropic OT has many interesting properties. First, it is a
 good and scalable approximation of OT distance,
 where the approximation error can be quantified in some settings \citep{Genevay19,Luise18}.
-Moreover, the convergence behaviors of minima and minimizer are also well understood
+Moreover, the convergence behaviors of minimum and minimizer are also well understood
 \citep{Leonard12,Carlier17} and the convergence rate exists in some practical situations
 \citep{Genevay19,Cominetti94,Weed18}.
 Second, since entropic OT is a convex problem, strong duality holds and one has that
@@ -630,7 +630,7 @@ since $\kl(P | 1_{m \times n}) = \langle P, \log P \rangle - m(P) + mn = H(P) + 
 
 An interesting property of Problem \eqref{eq:discrete_ent_uot}, which does not exist in the
 balanced OT or for other Csiszár divergences,
-is that the minimum can be explicitly expressed as a function of minimizer.
+is that the minimum can be expressed as a \textbf{linear} function of minimizer.
 This proves to be particularly helpful when studying the computational complexity of
 Sinkhorn algorithm \citep{Khiem20}.
 \begin{lemma}[Slight generalization of Lemma 4 in \citep{Khiem20}]
@@ -651,10 +651,10 @@ Denote $P^*$ is the minimizer of Problem \eqref{eq:discrete_ent_uot}. Then,
 While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
 (\textit{i.e.} $\varepsilon = 0$). Interestingly, this result can be easily extended
 to other unbalanced divergences, namely
-the squared $l_2$-regularized UOT problem \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
-the unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
+squared $l_2$-regularized UOT problem \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
+unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
 and unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
-Now, we discuss some existing approaches to Problem \eqref{eq:discrete_ent_uot}.
+Now, we discuss some existing approaches to solve Problem \eqref{eq:discrete_ent_uot}.
 
 \paragraph{Sinkhorn algorithm} The Sinkhorn algorithm can be extended easily to the entropic UOT.
 \footnote{When the regularizer is the negative entropy, the Sinkhorn algorithm is also called
@@ -695,7 +695,7 @@ More generally, the Sinkhorn algorithm is applicable to all Csiszár divergences
 as long as the regularizer is the KL divergence (see Definition 3 in \citep{Sejourne19}).
 We leave the convergence analysis to the discussion of the next method.
 In practice, the Sinkhorn algorithm also suffers from slow convergence for small regularization
-and can be accelerated using the similar workarounds in the balanced setting.
+and can be accelerated using similar workarounds in the balanced setting.
 
 \begin{algorithm}[t]
   \caption{Sinkhorn algorithm for Problem \eqref{eq:discrete_ent_uot}.}
@@ -755,7 +755,7 @@ is summarized in the following result.
 \begin{proposition}
   [Theorem 1 in \citep{Sejourne21}] Denote $(f^*, g^*)$ the optimal solution of
   the dual problem \eqref{eq:dual_uot}. Given initialization $f_0$, suppose
-  $(f_t, g_t), (\overline{f}_t, \overline{g}_t)$ are the iterates
+  $(f^{(t)}, g^{(t)}), (\overline{f}^{(t)}, \overline{g}^{(t)})$ are the iterates
   of the Sinkhorn and TI-Sinkhorn algorithms at iteration $t$, respectively. Denote
   $\kappa = \left( 1 + \frac{\varepsilon}{\rho_1} \right)^{-1}
   \left( 1 + \frac{\varepsilon}{\rho_2} \right)^{-1}$
@@ -803,9 +803,9 @@ TI-Sinkhorn still suffers from small regularization and remains slow in such sit
 \end{algorithmic}
 \end{algorithm}
 
-\cite{Sejourne21} also propose a variant of TI-Sinkhorn, whose details can be found in
-\Cref{alg:TI_Sinkhorn_variant}. The idea is to apply alternative optimization scheme to the problem
-$\sup_{f, g, \lambda} F_{\varepsilon}(f + \lambda, g - \lambda)$, which guarantees
+\citep{Sejourne21} also propose a variant of TI-Sinkhorn, whose details can be found in
+\Cref{alg:TI_Sinkhorn_variant}. The idea is to directly apply alternative optimization scheme
+to the problem $\sup_{f, g, \lambda} F_{\varepsilon}(f + \lambda, g - \lambda)$, which guarantees
 the convergence to a stationary point \citep{Tseng01}. In practice,
 we observe that both TI algorithms work comparatively well.
 \begin{algorithm}[t]
@@ -829,7 +829,7 @@ we observe that both TI algorithms work comparatively well.
 \end{algorithm}
 
 \paragraph{Majorization-minimization algorithm} Interestingly, Problem \eqref{eq:discrete_ent_uot}
-can be reformulated as a nonnegative penalized linear regression problem \citep{Chapel21},
+can also be reformulated as a nonnegative penalized linear regression problem \citep{Chapel21},
 whose objective function comprises of a linear term and a KL divergence as penalization.
 Moreover, since the KL divergence is a Bregman divergence, one can apply the
 majorization-minimization (MM) approach (see, for example \citep{Hunter04,Sun17}) and obtain
@@ -877,8 +877,9 @@ the MM iterate can also be computed explicitly in this case.
 \end{corollary}
 There are two interesting features of the squared $l_2$-norm. First, thanks to the max operation,
 the iterate matrix can be made sparse from the very first iteration,
-which further accelerates the matrix operations. Second, similar to the entropic UOT problem,
-it is also possible to express the minimum of Problem \eqref{uot_l2} in terms of its minimizer.
+which further accelerates the matrix operations. Second, similar to the entropic UOT problem
+\eqref{eq:discrete_ent_uot}, it is also possible to express the minimum of Problem \eqref{uot_l2}
+as a linear function of its minimizer.
 \begin{corollary}
   \label{coro:uot_l2_minimizer}
 Denote $P^*$ the solution of Problem \eqref{uot_l2}. Then
@@ -890,25 +891,23 @@ Denote $P^*$ the solution of Problem \eqref{uot_l2}. Then
 \end{align}
 \end{corollary}
 To conclude, MM is a very appealing alternative to the Sinkhorn-based algorithms,
-especially when the regularization is too small. However, it also has several practical concerns.
-\begin{enumerate}
-  \item When the relaxation is too large relative to the regularization and
-  the magnitude of the cost matrix, MM may converge very slowly if the initialization is
-  not carefully chosen. Indeed, suppose that $\rho_1 \gg ||C||_{\infty}$ and $\rho_1 \gg \varepsilon$.
-  Then, $\exp(-C / \lambda) \approx 1_{m \times n}$ and $r \approx 0$. So,
-  \begin{align}
-    P^{(t+1)} \approx \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
-    \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot P^{(t)}.
-  \end{align}
-  If one initializes with the solution of the balanced OT problem, then $P^{(1)} \approx P^{(0)}$.
-  By induction, we obtain that $P^{(t+1)} \approx P^{(t)}$.
+especially when the regularization is too small. However,
+when the relaxation is too large relative to the regularization and
+the magnitude of the cost matrix, MM may converge very slowly if the initialization is
+not carefully chosen. Indeed, suppose that $\rho_1 \gg ||C||_{\infty}$ and $\rho_1 \gg \varepsilon$.
+Then, $\exp(-C / \lambda) \approx 1_{m \times n}$ and $r \approx 0$. So,
+\begin{align}
+  P^{(t+1)} \approx \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
+  \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot P^{(t)}.
+\end{align}
+If one initializes with the solution of the balanced OT problem, then $P^{(1)} \approx P^{(0)}$.
+By induction, we obtain that $P^{(t+1)} \approx P^{(t)}$.
 
-  \item Regarding the case of squared $l_2$-norm, one needs to carefully choose
-  the hyperparameters, so that the matrix
-  $\max \Big(0, (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma - C \Big)$ is
-  neither too dense (which fails to achieve sparsity), nor too sparse (which may incur division error).
-  For this reason, the tuning may be quite troublesome.
-\end{enumerate}
+Regarding the case of squared $l_2$-norm, one needs to carefully choose
+the hyperparameters, so that the matrix
+$\max \Big(0, (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma - C \Big)$ is
+neither too dense (which fails to achieve sparsity), nor too sparse (which may incur division error).
+For this reason, the tuning may be quite troublesome.
 
 \paragraph{Discussion} We can consider a more general UOT formulation:
 given a cost matrix $C \in \bbR^{m \times n}$, the positive measures
@@ -1257,7 +1256,7 @@ given its well-established theory, computational feasibility, strong performance
 handy OT plan.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Properties of GW} \label{subsec:prop_gw}
+\subsection{Properties of GW distance} \label{subsec:prop_gw}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Isomorphism between mm-spaces}
 Isomorphism is a central concept in the study of GW distance between the mm-spaces.
@@ -1275,7 +1274,7 @@ bounded Schatten $l_2$-norm, one can recover the GW from the Wasserstein distanc
 
 \paragraph{Isomorphism between measure networks}
 By definition, the mm-space is a separable metric space. In particular, the distance is
-a measurable function. Moreover, in practice, the distance matrix may represent the
+a measurable function. In practice, the distance matrix may represent the
 pairwise dissimilarity rather than similarity, or not even necessarily be symmetric,
 typically in a directed graph.
 Thus, the notion of distance in the mm-space can be relaxed and replaced
@@ -1295,7 +1294,7 @@ some forms of isomorphism. First, let us start with a useful concept in \citep{M
   A network $\cZ = (Z, c_Z, \mu_Z)$ is a \textbf{mass splitting}
   of a network $\cX = (X, c_X, \mu_X)$ if there exists
   a measure-preserving map $\varphi: Z \to X$ such that the pullback equality
-  $c_X = \varphi^*c_Z$ holds $\mu_Z$-almost everywhere in $Z$.
+  $c_X = \varphi^*c_Z$ holds $\mu_Z \otimes \mu_Z$-almost everywhere.
   We denote $\ms(\cX)$ the set of all mass splittings of $\cX$.
 \end{definition}
 Clearly, $\cX \in \ms(\cX)$, so $\ms(\cX)$ is always non-empty. Now, we define three forms of
@@ -1312,7 +1311,7 @@ isomorphism.
 \end{definition}
 There are several immediate observations from this definition.
 \begin{enumerate}
-  \item \Cref{def:isomorphic} can also adapted to the mm-space. In this case,
+  \item \Cref{def:isomorphic} can be easily adapted to the mm-space setting. In this case,
   by Lemma 1.10 in \citep{Sturm12}, the three forms are equivalent.
 
   \item The strong isomorphism is a very strict condition. First,
@@ -1322,7 +1321,7 @@ There are several immediate observations from this definition.
   \textbf{everywhere}, rather than only almost-everywhere.
 
   \item To the best of our knowledge, the semi-strong isomorphism has never been discussed in the literature.
-  However, as we will see, it is useful to characterize the Gromov-Monge distance.
+  However, it can be useful to characterize the Gromov-Monge distance.
 \end{enumerate}
 Similar to the Wasserstein distance, a Monge version of the GW distance,
 known as \textit{Gromov-Monge} (GM) distance, is defined as
@@ -1371,7 +1370,7 @@ since $\cZ$ is the common mass splitting. The equivalence between semi-strong is
 GM follows immediately from the definition.
 \end{proof}
 \Cref{prop:GW_iso} allows us to characterize the equivalence classes of GW distance in the
-setting of networks. In particular,
+setting of networks. More precisely,
 \begin{proposition}
   [Theorems 2.3 and 2.4 in \citep{Chowdhury19}]
   GW distance defines a metric on the space of networks, up to weak isomorphism.
@@ -1499,7 +1498,7 @@ In what follows, we briefly discuss several solvers using this principle.
 We note that, however, in some particular situations, it is possible to achieve the
 global convergence. For example, when $p=2$ and $C^x, C^y$ are squared Euclidean distance,
 \citep{Ryner23} propose to apply the cutting-plane method to a tractable relaxation of the GW problem
-and show that this algorithm converges to the global optimum.
+and show that this algorithm converges to the global optimum of the GW problem.
 
 \paragraph{1. Condition gradient descent} \citep{Vayer19b} directly estimate the GW problem by using
 the Frank-Wolfe algorithm, also known as \textit{condition gradient descent}
@@ -1507,7 +1506,7 @@ the Frank-Wolfe algorithm, also known as \textit{condition gradient descent}
 solving an unregularized OT problem, whose cost $C \otimes P^{(t)}$ is the gradient
 involving the previous OT plan, then interpolating betweeen the newly acquired OT plan and
 the previous one using a certain line search strategy. Since the objective function is nonconvex,
-the Frank-Wolfe algorithm only guarantee the convergence to a local stationary point \citep{Julien16}.
+the Frank-Wolfe algorithm only guarantees the convergence to a local stationary point \citep{Julien16}.
 
 \paragraph{2. Projected gradient descent} Similar to the Wasserstein distance,
 one can also approximate the GW distance with entropic regularization.
@@ -1520,13 +1519,13 @@ To solve this problem, \citep{Peyre16,Solomon16} propose to use projected gradie
 where each iteration boils down to solving an entropic OT problem. More precisely,
 \begin{lemma}[Generalization of Proposition 2 in \citep{Peyre16}]
   \label{lemma:fgw_pgd}
-  Given a matrix $M \in \bbR^{m \times n}$, consider the (entropic fused GW) problem
+  Given a matrix $M \in \bbR^{m \times n}$, consider the entropic (fused) GW problem
   \begin{align}
     \label{eq:fused_egw}
     \min_{\substack{P \in U(\mu_X, \mu_Y)}} \langle C \otimes P, P \rangle
-    + \langle M, P \rangle + \varepsilon \kl(P | \gamma),
+    + \langle M, P \rangle + \varepsilon \kl(P | \gamma).
   \end{align}
-  Then the PGD iteration reads: for any learning rate $\eta > 0$,
+  Then, the PGD iteration reads: for any learning rate $\eta > 0$,
   \begin{align}
     P^{(t+1)} = \argmin_{P \in U(\mu_X, \mu_Y)}
     \eta \; \langle C \otimes P^{(t)} + M, P \rangle
@@ -1534,8 +1533,9 @@ where each iteration boils down to solving an entropic OT problem. More precisel
   \end{align}
 \end{lemma}
 As observed in \citep{Peyre19}, $\eta = 1$ usually works well in practice,
-where the sequence $(P^{(t)})_t$ converges empirically. However, the convergence analysis remains
-unexplored. As a side note, adding regularization to the GW distance also incurs bias,
+where the sequence $(P^{(t)})_t$ converges empirically. However, the theoretical
+convergence analysis remains unexplored. As a side note,
+adding regularization to the GW distance also incurs bias,
 similar to the entropic OT. Inspired by the Sinkhorn divergence,
 \citep{Bunne19} apply the same strategy to debiase the entropic GW,
 but there is no theoritical guarantee with their approach.
@@ -1566,11 +1566,11 @@ this algorithm can only guarantee the convergence to a stationary point \citep{T
 This lower-bound strategy can also be easily extended to the general problem \eqref{eq:fused_egw},
 where it is enough to rewrite the objective function as
 \begin{align}
-  \min_{\substack{P, Q \in U(\mu_X, \mu_Y)}} \langle C \otimes P, Q \rangle
+  \min_{\substack{P, Q \in U(\mu_X, \mu_Y) \\ P = Q}} \langle C \otimes P, Q \rangle
   + \langle \frac{M}{2}, P + Q \rangle + \frac{\varepsilon}{2} \kl(P | \gamma)
-  + \frac{\varepsilon}{2} \kl(Q | \gamma),
+  + \frac{\varepsilon}{2} \kl(Q | \gamma).
 \end{align}
-with $P = Q$. Moreover, one can ignore the equality constraint without impacting the minimum,
+Moreover, one can ignore the equality constraint without impacting the minimum,
 under exactly the same conditions as in Problem \eqref{eq:coot}.
 
 \paragraph{5. Bregman alternating projected gradient}
@@ -1686,8 +1686,10 @@ Lemma 4 in \citep{Khiem20} to show that, if $\pi^*$ is the solution of UGW, then
 \begin{align}
   \label{eq:ugw_minimizer_minimum}
   \text{UGW}_{\lambda}(\cX, \cY) = \lambda_1 \; m(\mu_X)^2 + \lambda_2 \; m(\mu_Y)^2
-  - (\lambda_1 + \lambda_2) \; m(\pi^*)^2.
+  - (\lambda_1 + \lambda_2) \; m(\pi^*)^2,
 \end{align}
+meaning that the minimum is a \textbf{quadratic} function of the minimizer.
+
 \citep{Zhang21} introduce the unbalanced bidirectional Gromov-Monge divergence defined as:
 for $\lambda_x, \lambda_y > 0$,
 \begin{align}
@@ -1769,7 +1771,7 @@ In practice, the exact BPP may not be an efficient algorithm to solve the UOT pr
 it requires solving \textbf{exactly} many entropic subproblems. This can be computationally expensive,
 especially when the learning rate is small.
 
-While the inexact method has recently been applied to the balanced OT \citep{Xie20,Yang22},
+While the inexact BPP scheme has recently been applied to the balanced OT \citep{Xie20,Yang22},
 we are not aware of any extension to the unbalanced counterpart.
 Our proposed method follows directly from \citep{Xie20}, which is simple to implement and
 usually performs well in practice. In particular,
@@ -1798,7 +1800,7 @@ The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
 
 \subsection{Convergence analysis in the exact setting}
 
-Let us start with the convergence analysis in case of BPP iteration \ref{eq:bpp_uot}.
+Let us start with the convergence analysis in case of exact BPP iteration \ref{eq:bpp_uot}.
 Thanks to Lemma 3.3 and Theorem 3.4 in \citep{Chen93}, if $P^*$ is a minimizer of
 Problem \eqref{eq:discrete_ent_uot}, then
 \begin{enumerate}
@@ -1836,7 +1838,7 @@ strong convexity \citep{Lu18} of a function with respect to the KL divergence.
 The following result is a simple generalization of Theorem 3.1 in \citep{Lu18}.
 \begin{proposition}[Convergence rate of exact BPP for Problem \eqref{eq:discrete_ent_uot}]
   \label{prop:convergence-exact-sppa}
-  For every $\eta > 0$, exact BPP decreases the value of $F(\cdot)$ with each iteration $t$:
+  For every $\eta > 0$, exact BPP scheme decreases the value of $F(\cdot)$ with each iteration $t$:
   the sequence $\big( F(\pi^{(t)}) \big)_t$ is monotonically decreasing.
   Moreover, if $\varepsilon \leq \eta \leq \lambda_1 + \lambda_2 + \varepsilon$,
   then we have
@@ -1863,8 +1865,8 @@ Despite the simplicity, it is difficult to analyze the convergence of INPUT.
 In particular, while it is an immediate extension of the work of \citep{Xie20} on the balanced OT,
 their proof techniques of the convergence can not be adapted to the unbalanced setting.
 This is because they rely on the property of the set of admissible couplings,
-which is not available in the UOT. Moreover, the assumptions and conditions are also
-not trivial to verify in practice, thus their convergence results are mostly of theoretical interest.
+which is not available in the UOT. Moreover, their assumptions and conditions are also
+not trivial to verify in practice, thus the convergence results are mostly of theoretical interest.
 
 The convergence analysis of the inexact BPP has already been studied at the same time
 as the exact one. Typically, one can control the approximation error using
@@ -1983,8 +1985,7 @@ even though this advantage quickly diminishes when regularization is small.
 \subsection{Discussion}
 
 While this experiment is mainly for the proof-of-concept purpose,
-it shows strong performance of INPUT over other existing approaches.
-This indicates that INPUT is a promising alternative solver for the UOT problem.
+it shows that INPUT is a promising alternative solver for the UOT problem.
 
 \paragraph{Strengths of INPUT}
 INPUT has two very appealing features. First, it overcomes the limitations of
@@ -2012,7 +2013,7 @@ This can be computationally expensive and prevents INPUT from being scalable.
 Second, while tuning the learning rate is neither too tricky nor difficult,
 it may take some effort to find an appropriate value. One possible workaround,
 which usually works well in practice, is to start with $\eta$ small and not too far from $\varepsilon$.
-The intuition of this heuristic comes from \Cref{prop:convergence-exact-sppa} of exact BPP,
+The intuition of this heuristic comes from \Cref{prop:convergence-exact-sppa} of exact BPP scheme,
 which indicates that, for fixed initialization, the smaller the learning rate, the smaller
 the potential gap between the estimation and the minimum.
 \begin{table}[t]
