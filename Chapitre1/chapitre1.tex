@@ -354,8 +354,7 @@ This algorithm is very easy to implement and available in the Python Optimal Tra
 It is well known that it converges globally to the optimal dual vectors of the dual problem
 \citep{Sinkhorn67}, at a linear rate in variation semi-norm \citep{Franklin89}.
 The OT plan then can be retrieved from the optimal solution $(u, v)$ by
-$P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$,
-where $\otimes$ is the element-wise multiplication.
+$P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$, where $\odot$ is the element-wise multiplication.
 
 % Note that, as Sinkhorn algorithm is nothing but a coordinate ascent algorithm,
 % \footnote{Note that the "one-at-a-time" scheme must be used
