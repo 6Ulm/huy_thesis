@@ -433,13 +433,13 @@ and achieves superior performance to other existing methods.
 
 Third, the recent improvements on the Sinkhorn algorithm,
 namely the over-relaxation method \citep{Lehmann21,Thibault21}, the screening strategy \citep{Alaya19},
-or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, usually focus on careful elaboration
+or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, usually focus on careful manipulation
 of the iterates. There are also gradient-based solvers for the entropic OT, notably
 the adaptive primal-dual accelerated mirror descent \citep{Dvurechensky18,Lin22},
 or the stochastic gradient descent \citep{Abid18,Genevay16,Seguy18}.
 
 Last, while entropy is the most popular and well-studied regularizer,
-there exist other alternatives summarized in \Cref{t:ot_variation}, which aim to
+there exist other alternatives summarized in \Cref{t:ot_variation}, which allow to
 integrate the prior knowledge on the data, or the structure of the transport matrix.
 \begin{table}[t]
 	\centering
@@ -585,7 +585,7 @@ Thanks to the marginal relaxation, if the outlier is too impactful,
 its impact will quickly saturate to $0$, meaning that it receives no mass from other points.
 By contrast, this is not the case for balanced OT, since every point (including outliers)
 must be aligned regardless of its cost, due to the marginal constraints. The right-hand side of
-Inequality \ref{eq:ot_robust} can be made arbitrarily large by taking outliers "far" enough
+Inequality \eqref{eq:ot_robust} can be made arbitrarily large by taking outliers "far" enough
 from the clean data.
 
 \subsubsection{Optimization and algorithm} \label{sub:uot_optim}
@@ -605,7 +605,7 @@ can be referred to two different regularizers: the negative entropy \citep{Frogn
 the KL divergence \citep{Sejourne19}. We cover both cases by considering a
 more general formulation: given the hyperparameters
 $\rho_1, \rho_2 \geq 0, \varepsilon > 0$, the cost matrix $C \in \bbR^{m \times n}$
-and the positive measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
+and the positive measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n_{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
 we want to solve the problem
 \begin{align}
   \label{eq:discrete_ent_uot}
