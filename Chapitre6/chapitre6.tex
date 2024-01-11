@@ -50,43 +50,60 @@ $\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{coro:uot_l2_minimizer}]
-We follow the same proof technique of Lemma 4 in \citep{Khiem20}. The $l^2$-squared norm satisfies
-$D_{\varphi}(p, q) = \varphi(p) + \varphi(q) - \langle p, q \rangle$. So, for any $t \in \bbR$,
+We follow the same proof technique of Lemma 4 in \citep{Khiem20}.
+Let us consider a slightly more general regularized UOT problem
 \begin{align}
-  \frac{\partial D_{\varphi}(tp, q)}{\partial t}
-  &= 2 t \; \varphi(p) - \langle p, q \rangle \\
-  &= 2t \left[ \varphi(p) + \varphi(q) - \langle p, q \rangle \right]
-  - 2t \; \varphi(q) + (2t-1) \langle p, q \rangle \\
-  &= 2t \; D_{\varphi}(p, q) - 2t \; \varphi(q) + (2t - 1) \langle p, q \rangle.
+  \label{eq:uot_bregman}
+  \uot_{\varepsilon, \rho} = \inf_{P \geq 0} \langle C, P \rangle
+  + \rho_1 D_{\varphi_1}(P_{\# 1} | \mu_1) +
+  \rho_2 D_{\varphi_2}(P_{\# 2} | \mu_2) + \varepsilon D_{\varphi}(P | \gamma),
 \end{align}
-For $t \in \bbR$, denote
+where $D_{\varphi_1}, D_{\varphi_2}, D_{\varphi}$ are Bregman divergences.
+For any $t \in \bbR$ such that $tp \in \text{dom}(\varphi)$, we have
 \begin{align}
-  g(tP) = t^2 \langle C, P \rangle + \rho_1 D_{\varphi}(t P_{\# 1}, \mu) +
-  \rho_2 D_{\varphi}(t P_{\# 2}, \nu) + \varepsilon D_{\varphi}(t P, \gamma)
+  D_{\varphi}(t p | q)
+  &= \varphi(tp) - \varphi(q) - \langle \nabla\varphi(q), tp - q \rangle \\
+  &= \varphi(tp) - \varphi(q) - \Big[
+    t \langle \nabla \varphi(q), p - q \rangle + (t-1) \langle \nabla \varphi(q), q \rangle
+  \Big] \\
+  &= \varphi(tp) - \varphi(q) + t \Big[ D_{\varphi}(p | q) + \varphi(q) - \varphi(p) \Big]
+  - (t-1) \langle \nabla \varphi(q), q \rangle \\
+  &= t D_{\varphi}(p | q) + \big[ \varphi(tp) - t \varphi(p) \big]
+  + (t-1) \big[ \varphi(q) - \langle \nabla \varphi(q), q \rangle \big].
 \end{align}
-Then, we have
+Denote $g$ the objective function of Problem \eqref{eq:uot_bregman}. We have,
 \begin{align}
-  \frac{\partial g(tP)}{\partial t} &= 2t \langle C, P \rangle
-  + \rho_1 \Big[ 2t \; D_{\varphi}(P_{\# 1}, \mu) - 2t \; \varphi(\mu)
-  + (2t - 1) \langle P_{\# 1}, \mu \rangle \Big] \\
-  &+ \rho_2 \Big[ 2t \; D_{\varphi}(P_{\# 2}, \nu) - 2t \; \varphi(\nu)
-  + (2t - 1) \langle P_{\# 2}, \nu \rangle \Big] \\
-  &+ \varepsilon \Big[ 2t \; D_{\varphi}(P, \gamma) - 2t \; \varphi(\gamma)
-  + (2t - 1) \langle P, \gamma \rangle \Big] \\
-  &= 2t \; g(P) - 2t \Big[ \rho_1 \varphi(\mu)
-  + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma) \Big] \\
-  &+ (2t - 1) \Big[ \rho_1 \langle P_{\# 1}, \mu \rangle
-  + \rho_2 \langle P_{\# 2}, \nu \rangle + \varepsilon \langle P, \gamma \rangle \Big]
+  g(tP) &= t g(P) +
+  \underbrace{\Big( \sum_{k=1}^2 \rho_k \big[ \varphi_k(tP_{\# k}) - t \varphi_k(P_{\# k}) \big]
+  + \varepsilon \big[ \varphi(tP) - t \varphi(P) \big] \Big)}_{A(t)} \\
+  &+ (t-1) \underbrace{\Big(
+    \sum_{k=1}^2 \rho_k \big[ \varphi_k(\mu_k) - \langle \nabla \varphi_k(\mu_k), \mu_k \rangle \big]
+    + \varepsilon \big[ \varphi(\gamma) - \langle \nabla \varphi(\gamma), \gamma \rangle \big]
+    \Big)}_{B} \\
+    &= t g(P) + A(t) + (t-1) B.
 \end{align}
-If $P^*$ is the minimizer, then $\min_{t \in \bbR} g(tP^*) = g(P^*)$ and the minimum is attained
+If $P^*$ is the minimizer, then $\min_t g(tP^*) = g(P^*)$ and the minimum is attained
 when $t=1$. This means $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$. So,
 \begin{align}
-  g(P^*) = \rho_1 \varphi(\mu)
-  + \rho_2 \varphi(\nu) + \varepsilon \varphi(\gamma)
-  - \frac{1}{2} \Big( \rho_1 \langle P^*_{\# 1}, \mu \rangle
-  + \rho_2 \langle P^*_{\# 2}, \nu \rangle + \varepsilon \langle P^*, \gamma \rangle \Big)
+  g(P^*) &= - B - \frac{\partial A(t)}{\partial t} \bigg|_{t=1} \\
+  &=
+  \sum_{k=1}^2 \rho_k \Big[ \langle \nabla \varphi_k(\mu_k), \mu_k \rangle - \varphi_k(\mu_k) \Big]
+  + \varepsilon \Big[ \langle \nabla \varphi(\gamma), \gamma \rangle - \varphi(\gamma) \Big] \\
+  &+ \sum_{k=1}^2
+  \rho_k \Bigg( \varphi_k(P^*_{\# k}) - \frac{\partial \varphi_k(tP^*_{\# k})}{\partial t} \bigg|_{t=1} \Bigg)
+  + \varepsilon \Bigg( \varphi(P^*) - \frac{\partial \varphi(tP^*)}{\partial t} \bigg|_{t=1} \Bigg).
 \end{align}
-The result then follows.
+We consider two special cases.
+\begin{enumerate}
+  \item If $D_{\varphi}$ is squared $l_2$-norm, then $\varphi(tP) = t^2 \; \varphi(P)$. So,
+  $\langle \nabla \varphi(q), q \rangle - \varphi(q) = \varphi(q)$ and
+  $\varphi(p) - \frac{\partial \varphi(tp)}{\partial t} \Big|_{t=1} = -\varphi(p)$.
+
+  \item If $D_{\varphi}$ is the KL divergences, then
+  $\varphi(tP) = t \; \varphi(P) + t \log t \; m(P) - t + 1$.
+  So, $\langle \nabla \varphi(q), q \rangle - \varphi(q) = m(q) - 1$ and
+  $\varphi(p) - \frac{\partial \varphi(tp)}{\partial t} \Big|_{t=1} = 1 - m(p)$.
+\end{enumerate}
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -345,6 +362,25 @@ Now, \Cref{prop:convergence-exact-sppa} follows immediately from \Cref{lemma:bpp
 
 \subsection{Discrete Co-Optimal Transport}
 
+One can rewrite the problem as
+\begin{align}
+  \vect{P}^T C^x \otimes C^y \vect{P}
+\end{align}
+\begin{proposition}
+  (Theorem 1 in \citep{Maron18}) Denote
+\begin{equation}
+    \text{lin(DS)} = \{X \in \bbR^{m \times n}: X 1_n = 0, X^T 1_m = 0 \}
+\end{equation}
+the linear part of the affine-hull of the doubly-stochastic matrices. If the matrices $A \in \bbR^{m \times m}$ and
+  $B \in \bbR^{n \times n}$ are both conditionally negative (or positive) semi-definite, then $\text{vec}(X)^T (B \otimes A) \text{vec}(X) \geq 0$, for every $X \in \text{lin(DS)}$.
+\end{proposition}
+\begin{proof}
+    By lemma above, it's enough to show for any $X = u v^T$, where $u \in 1^{\perp}_m$
+    and $v \in 1^{\perp}_n$. In this case, as
+    $(U \otimes V)^T (A \otimes B) (U \otimes V) = (U^T A U) \otimes (V^T B V)$, we have
+    $\text{vec}(u v^T)^T (B \otimes A) \text{vec}(u v^T) = (u^T A u) (v^T B v) \geq 0$.
+\end{proof}
+
 First, let us define three following reshaping operations.
 \begin{itemize}
   \item[$\bullet$] Vectorization: concatenates rows of a matrix into a vector.
@@ -438,7 +474,58 @@ if and only if there exist two non-negative vectors $u,v$ such that
 $A = u v^T$. Thus, the factorization constraint is equivalent to
 $\text{rank}_+\big( \text{mat}(P) \big) = 1$.
 
-\subsection{MMOT-DC}
+\subsection{MMOT-DC} \label{appendix:subsec_mmot_dc}
+
+\paragraph{Derivation of the Sinkhorn algorithm in entropic MMOT.} The corresponding entropic dual problem of the primal problem
+\ref{MMOT_primal} reads
+\begin{equation}
+  \sup_{f_n \in \bbR^{a_n}} \sum_{n=1}^N \langle f_n, \mu_n \rangle -
+  \varepsilon \sum_{i_1,...,i_N} \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big) + \varepsilon.
+\end{equation}
+For each $n \in [N]$ and $i_n \in [a_n]$, the first order optimality condition reads
+\begin{equation}
+  0 = (\mu_n)_{i_n} - \exp\big( \frac{(f_n)_{i_n}}{\varepsilon} \big)
+  \sum_{i_{-n}} \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
+\end{equation}
+where, with some abuse of notation, we write $i_{-n} = (i_1, ..., i_{n-1}, i_{n+1}, ..., i_N)$. Or, equivalently
+\begin{equation}
+  (f_n)_{i_n} = \varepsilon \log (\mu_n)_{i_n} - \varepsilon \log \sum_{i_{-n}}
+  \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
+\end{equation}
+or even more compact form
+\begin{equation}
+  f_n = \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
+  \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{\cdot, i_{-n}}}{\varepsilon} \Big).
+\end{equation}
+Using the primal-dual relation, we obtain the minimiser of the primal problem \ref{MMOT_primal} by
+\begin{equation}
+  P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big),
+\end{equation}
+for $i_n \in [a_n]$, with $n \in [N]$.
+
+Similar to the entropic OT, the Sinkhorn algorithm \ref{algo:dual_mmot} is also usually implemented in log-domain to avoid numerical instability.
+\begin{algorithm}[h]
+  \caption{Sinkhorn algorithm for the entropic MMOT problem \ref{MMOT_primal} from \citep{Benamou14}.}
+  \textbf{Input.} Histograms $\mu_1,...,\mu_N$, hyperparameter $\varepsilon > 0$, cost tensor $C$ and
+  tuple of initial dual vectors $(f^{(0)}_1, ... f^{(0)}_N)$.
+
+  \textbf{Output.} Optimal transport plan $P$ and tuple of dual vectors $(f_1, ... f_N)$ (optional).
+  \begin{enumerate}
+    \item While not converge: for $n = 1, ..., N$,
+    \begin{equation}
+      \begin{split}
+        f^{(t+1)}_n &= \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
+        \Big[ \exp\Big( \frac{\sum_{j < n} (f^{(t+1)}_j)_{i_j} + \sum_{j > n} (f^{(t)}_j)_{i_j} -
+        C_{\cdot, i_{-n}}}{\varepsilon} \Big) \Big].
+      \end{split}
+    \end{equation}
+    \item Return tensor $P$, where for $i_n \in [a_n]$, with $n \in [N]$,
+    \begin{equation}
+      P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big).
+    \end{equation}
+  \end{enumerate}
+  \label{algo:dual_mmot}
+\end{algorithm}
 
 \subsection{Continuous Co-Optimal Transport} \label{annex:cont_coot}
 
