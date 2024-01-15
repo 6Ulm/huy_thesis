@@ -142,6 +142,8 @@
 \newcommand{\ms}{\text{MS}}
 \newcommand{\diam}{\text{diam}}
 \newcommand{\wrt}{w.r.t. }
+\newcommand{\mmotdc}{\text{MMOT-DC}}
+\newcommand{\mmot}{\text{MMOT}}
 
 \newcommand{\bbE}{\mathbb E}
 \newcommand{\bbN}{\mathbb N}
