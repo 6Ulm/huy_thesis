@@ -151,11 +151,9 @@ we will mostly follow the terminology and concepts of the published work of \cit
 
 \subsection{From discrete to continuous Co-Optimal Transport}
 
-Recall that by rewriting the measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$ as
-$\widetilde{\cX} = ((X_1, \mu_1^X), (X_2, \mu_2^X), c_X)$ and
-$\widetilde{\cY} = ((Y_1, \mu_1^Y), (Y_2, \mu_2^Y), c_Y)$, respectively, with
-$X_1 = X_2 = X, Y_1 = Y_2 = Y$ and
-$\mu_1^X = \mu^X_2 = \mu_X, \mu_1^Y = \mu^Y_2 = \mu_X$, one can reformulate the GW problem as
+By rewriting a measure network $\cX = (X, c_X, \mu_X)$ as
+$\widetilde{\cX} = \big((X_1, \mu_1^X), (X_2, \mu_2^X), c_X \big)$, with
+$X_1 = X_2 = X$ and $\mu_1^X = \mu^X_2 = \mu_X$, one can reformulate the GW problem as
 \begin{equation}
   \begin{split}
     \inf_{\pi_1, \pi_2}
@@ -186,7 +184,7 @@ in the context of GW \citep{Chowdhury19}.
 When $X_1$ and $X_2$ are finite spaces (so $\mu_1^X$ and $\mu_2^X$ are histograms),
 we call $\cX$ a finite measure hypernetwork. For convenience, we also refer the index $1$ as "sample"
 and $2$ as "feature", for example, $X_1$ is the sample space, $\pi_2$ is the feature coupling.
-\begin{definition}[\citep{Chowdhury21b}]
+\begin{definition}[COOT distance between measure hypernetworks \citep{Chowdhury21b}]
   \label{def:cont_coot}
   For $p \geq 1$, the COOT distance between two measure hypernetworks $\cX$ and $\cY$ is defined as
   \begin{align} \label{eq:cont_coot}
@@ -212,19 +210,24 @@ First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
 % \end{figure}
 \begin{proposition}[Lemma 35 in \citep{Chowdhury21b}]
   \label{prop:exist_coot}
-  The COOT problem always admits a minimizer and the minimum is finite.
+  The COOT problem always admits a minimizer.
 \end{proposition}
+We provide the proof in Appendix \ref{annex:cont_coot}.
 While the proofs of our result and of Lemma 35 in \citep{Chowdhury21b} use the same proof technique of
 Theorem 2.2 in \citep{Chowdhury19}, ours is slightly different. More precisely,
-we exploit a different aspect of COOT, where it can be rewritten as a multi-marginal OT problem
-with additional factorization constraint on the coupling (see Appendix \ref{annex:cont_coot}
-for more details). Later, we will see that, this observation also allows to establish the
-convergence result of entropic COOT.
+we exploit a different reformulation of COOT, where it can be rewritten as a multi-marginal OT problem
+with additional factorization constraint on the coupling. Later, we will see that,
+this observation also allows to establish the convergence result of entropic COOT.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Metric properties}
-The framework on the isomorphism of GW distance presented in \Cref{subsec:prop_gw}
-can be extended easily to COOT setting as follows.
+
+The framework on the GW isomorphism presented in \Cref{subsec:prop_gw}
+can be extended immediately to the COOT setting. In particular, while our
+presentation is different to that of \citep{Chowdhury21b}, we still come up with the
+same metric properties.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{definition}[Relaxed mass splitting]
   A measure hypernetwork $\cZ$ is a \textbf{relaxed mass splitting} (RMS) of a
@@ -250,9 +253,9 @@ as follows.
     \item weakly isomorphic if they have a common RMS.
   \end{enumerate}
 \end{definition}
-Clearly, this is an immediate relaxation of the isomorphism induced by the GW distance.
-In case of measure networks, isomorphism in GW sense implies COOT-isormorphism.
-The following result summarizes the relations amongst the three types of COOT-isomorphism.
+This is an immediate relaxation of the GW isomorphism. In particular,
+in case of measure networks, isomorphism in GW sense implies COOT isormorphism.
+The following result summarizes the relations amongst the three types of COOT isomorphism.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{corollary} \label{prop:strong_weak_iso}
   Given two measure hypernetworks $\cX$ and $\cY$. Consider three statements
@@ -288,8 +291,8 @@ but not necessarily bounded. However, all previous results on the existence of m
 metric property remain unchanged if one replaces measure hypernetworks by mm-spaces,
 as long as COOT is finite. Moreover,
 \begin{corollary}
-For $p=2$, all forms of COOT-isomorphisms are equivalent and
-they are also equivalent with the isomorphism in GW sense.
+For $p=2$, all forms of COOT isomorphisms are equivalent and
+they are also equivalent to the isomorphism in GW sense.
 \end{corollary}
 This indicates that, both GW distance and COOT can be used to compare isometric objects,
 namely those transformed by reflection, rotation or translation.
@@ -312,37 +315,37 @@ the entropic COOT. It also bears similarity with the \textit{quadratic divergenc
 \citep{Sejourne20} defined by $\kl^{\otimes 2}(\mu, \nu):= \kl(\mu \otimes \mu | \nu \otimes \nu)$,
 which is used to define the unbalanced GW divergence. Note that, in the balanced setting,
 the joint penalization in terms of KL divergence is in fact equivalent to the
-independent KL-penalization. Indeed, when $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
+independent KL-penalization. Indeed, given any $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
 \begin{equation}
   \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big)
   = \kl(\pi_1 \vert \mu^X_1 \otimes \mu^Y_1) + \kl(\pi_2 \vert \mu^X_2 \otimes \mu^Y_2).
 \end{equation}
 In practice, since the couplings may not have the same nature (for example,
 when working directly with the input data, rather than via the similarity matrix),
-they can be regularized by different values of regularization.
+they can be penalized by different values of regularization.
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}
 The entropic COOT problem always admits a minimizer.
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%
-Now, to study the convergence behavior when $\varepsilon \to 0$, first,
-we introduce the following assumption on the measure hypernetwork.
+One major practical interest of entropic COOT is that, for sufficiently small regularization,
+it provides a good proxy for unregularized COOT. To formalize this observation, first,
+we need to introduce the following assumption on the measure hypernetwork.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{assumption}
   \label{assump:ent_coot}
   Given a measure hypernetwork, we assume that
   \begin{enumerate}
     \item[A1] The sample and feature spaces are finite-dimensional vector spaces.
-    \item[A2] Their associated Borel probability measures have finite $p$-th moment,
-    \textit{i.e.} $\int ||x||^p \; d\mu(x) < \infty$, and are absolutely continuous
+    \item[A2] Their associated Borel probability measures are absolutely continuous
     with respect to the Lebesgue measure.
-    \item[A3] The interaction is continuous.
   \end{enumerate}
 \end{assumption}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition} \label{conv_ent_coot}
-  Under the assumptions A1-A3, $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$
-  when $\varepsilon \to 0$. Moreover, let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
+  Under \Cref{assump:ent_coot}, if the interactions are continuous, then
+  $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$ when $\varepsilon \to 0$. Moreover,
+  let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
   positive regularizations such that $\varepsilon_n \to 0$.
   Denote $\pi_n := (\pi_{1, n}, \pi_{2, n})$ the solution of the entropic problem
   $\coot_{\varepsilon_n} (\cX, \cY)$. Then, any cluster point of the sequence $(\pi_n)_n$ is
@@ -351,32 +354,32 @@ we introduce the following assumption on the measure hypernetwork.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The above result is similar to the one known in entropic OT \citep{Carlier17}. This is due to the fact
 that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
-thus the block approximation and $\Gamma$-convergence techniques can be applied. Moreover,
-similar to \citep{Genevay19}, when working with the bounded subsets in finite-dimensional vector spaces,
-we can further quantify the approximation error as follows.
+thus the block approximation and $\Gamma$-convergence techniques can be applied.
+
+Furthermore, still under \Cref{assump:ent_coot}, if the measure network is bounded,
+then we can quantify the approximation error as follows.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition} \label{prop:quant_bound_ent}
-  Suppose that $X_1, X_2$ are bounded subsets of $\bbR^{d_x}$ and $Y_1, Y_2$ are bounded subsets
-  of $\bbR^{d_y}$, where $\diam(X_k), \diam(Y_k) \leq D$, for every $k=1,2$.
-  Denote $d = \max(d_x, d_y)$. Suppose there exist two constants $q, L > 0$ such that
-  $0 \leq c_X(x_1, x_2) \leq (L \vert\vert x_1 - x_2 \vert\vert)^q$,
-  for every $(x_1,x_2) \in X_1 \times X_2$, and
-  $0 \leq c_Y(y_1, y_2) \leq (L \vert\vert y_1 - y_2 \vert\vert)^q$,
-  for every $(y_1,y_2) \in Y_1 \times Y_2$. Then,
+  Given two measure networks $\cX = (X, \mu_X, c_X)$ and $\cY = (Y, \mu_Y, c_Y)$.
+  Suppose that $X$ is bounded subset of $\bbR^{d_x}$ and $Y$ is a bounded subset
+  of $\bbR^{d_y}$, where $\diam(X), \diam(Y) \leq D$.
+  Denote $d = \max(d_x, d_y)$. Suppose there exist a constants $q > 0$ such that
+  $c_X(x_1, x_2) = \vert\vert x_1 - x_2 \vert\vert^q$, for every $(x_1,x_2) \in X^2$, and
+  $c_Y(y_1, y_2) = \vert\vert y_1 - y_2 \vert\vert^q$, for every $(y_1,y_2) \in Y^2$. Then,
   \begin{equation}
     \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \leq
-    \frac{2d \varepsilon}{pq} \log\Big( \frac{pq (2DLd^{1/p})^{pq}}{2d \varepsilon} \Big).
+    \frac{2d \varepsilon}{pq} \log\Big( \frac{pq (2D d^{1/p})^{pq}}{2d \varepsilon} \Big).
   \end{equation}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 This bound is very similar to the one in Wasserstein setting \citep{Genevay19}.
 Let us consider two special cases of \Cref{prop:quant_bound_ent}.
 \begin{itemize}
-  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\textit{i.e.} $q=L=1$),
+  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\textit{i.e.} $q=1$),
   the upper bound becomes $d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big)$.
 
   \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are squared Euclidean distances
-  (\textit{i.e.} $q=2, L=1$), the upper bound becomes
+  (\textit{i.e.} $q=2$), the upper bound becomes
   $\frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big)$.
 \end{itemize}
 In both situations, the dependence of the bound on the maximal distance $D$ between points
@@ -387,206 +390,273 @@ by comparing these two bounds, we deduce that if $\log(2d \varepsilon) \leq 1$,
 then the squared Euclidean distances generates a provably better (smaller) upper bound.
 
 With little modification of the proof, exactly the same upper bound in \Cref{prop:quant_bound_ent}
-remains true for GW distance. We note that \citep{Zhang23} also establish a similar
+holds for GW distance. We note that \citep{Zhang23} also establish a similar
 $O(\varepsilon \log \varepsilon)$-approximation error between the unregularized and entropic GW,
 but they rely on different assumptions to ours. In particular, their result only holds
 for $2$-GW distance, when the distance function is the squared-Euclidean norm. By contrast,
 \Cref{prop:quant_bound_ent} holds for any $p$-GW distance and any $L^q$-norm as distance function.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Three shades of discrete Co-Optimal Transport}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Co-Optimal Transport as low non-negative rank OT}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Co-Optimal Transport as low non-negative rank OT}
 
-Recently, low non-negative rank OT \citep{Meyer21a} and extended to the GW and unbalanced settings
-\citep{Meyer21b,Meyer23}. The idea is based on the \citep{Joel93} and first applied to OT by
-\citep{Forrow18}, then more complete analysis in \citep{Meyer22}.
-\begin{definition}
-  [\citep{Joel93}]
-  Given a non-negative matrix $A$, we define its non-negative rank by
-  \begin{equation}
-    \rank_{+}(A):= \min \big\{ r \geq 1: A = \sum_{i=1}^r M_i,
-    \text{ where } \rank(M_i) = 1, M_i \geq 0, \forall i \big\}.
-  \end{equation}
-  By convention, zero matrix has zero (thus non-negative) rank.
-\end{definition}
-To estimate how large can the non-negative rank be, Lemma 2.3 in \citep{Joel93} states that
-$\rank(A) \leq \rank_+(A) \leq \min(m, n)$, for any nonnegative matrix $A \in \bbR^{m \times n}$.
-Now, the low non-negative rank OT (LROT) is defined as
-\begin{align}
-  \min_{P \in U(\mu, \nu)} &\langle C, P \rangle \\
-  \text{ s.t. } &\rank_+(P) \leq r.
-\end{align}
-Now, we will show that COOT is in fact as a variation of the LROT.
+% Recently, low non-negative rank OT \citep{Meyer21a} and extended to the GW and unbalanced settings
+% \citep{Meyer21b,Meyer23}. The idea is based on the \citep{Joel93} and first applied to OT by
+% \citep{Forrow18}, then more complete analysis in \citep{Meyer22}.
+% \begin{definition}
+%   [\citep{Joel93}]
+%   Given a non-negative matrix $A$, we define its non-negative rank by
+%   \begin{equation}
+%     \rank_{+}(A):= \min \big\{ r \geq 1: A = \sum_{i=1}^r M_i,
+%     \text{ where } \rank(M_i) = 1, M_i \geq 0, \forall i \big\}.
+%   \end{equation}
+%   By convention, zero matrix has zero (thus non-negative) rank.
+% \end{definition}
+% To estimate how large can the non-negative rank be, Lemma 2.3 in \citep{Joel93} states that
+% $\rank(A) \leq \rank_+(A) \leq \min(m, n)$, for any nonnegative matrix $A \in \bbR^{m \times n}$.
+% Now, the low non-negative rank OT (LROT) is defined as
+% \begin{align}
+%   \min_{P \in U(\mu, \nu)} &\langle C, P \rangle \\
+%   \text{ s.t. } &\rank_+(P) \leq r.
+% \end{align}
+% Now, we will show that COOT is in fact as a variation of the LROT.
 
-Now, denote $L= \text{mat}(C)$ and $M = n_1 n_2, N = n_3 n_4$. COOT can be rewritten as
-\begin{equation}
-  \begin{split}
-    \min_{Q \in \bbR^{M \times N}_{\geq 0}} &\langle L, Q \rangle \\
-    \text{ such that } & A_{12}^T Q 1_N = \mu_{12} \\
-    &A_{34}^T Q^T 1_M = \mu_{34} \\
-    &\text{rank}_{+}(Q) = 1,
-  \end{split}
-\end{equation}
-which is a variation of the non-negative rank-$1$ OT problem.
+% Now, denote $L= \text{mat}(C)$ and $M = n_1 n_2, N = n_3 n_4$. COOT can be rewritten as
+% \begin{equation}
+%   \begin{split}
+%     \min_{Q \in \bbR^{M \times N}_{\geq 0}} &\langle L, Q \rangle \\
+%     \text{ such that } & A_{12}^T Q 1_N = \mu_{12} \\
+%     &A_{34}^T Q^T 1_M = \mu_{34} \\
+%     &\text{rank}_{+}(Q) = 1,
+%   \end{split}
+% \end{equation}
+% which is a variation of the non-negative rank-$1$ OT problem.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Co-Optimal Transport as factored multi-marginal OT} \label{subsec:MMOT_DC}
+\section{Factored couplings in Multi-marginal Optimal
+Transport via Difference of Convex programming} \label{subsec:MMOT_DC}
 
-considers a relaxation of the
-CO-Optimal Transport problem. OT theory underlies many emerging machine learning
-methods nowadays solving a wide range of tasks.
-These latter works, however, usually build upon a traditional OT setup with two distributions,
-while leaving a more general multi-marginal OT formulation somewhat
-unexplored. In this paper, we study the multi-marginal OT (MMOT) problem and unify several
-popular OT methods under its umbrella
-by promoting structural information on the coupling. We show that incorporating such structural
-information into MMOT results in an instance of a difference of convex (DC) programming problem allowing us to solve it numerically.
-Despite high computational cost of the latter procedure, the solutions provided by DC optimization are usually as qualitative as
-those obtained using currently employed optimization schemes.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Introduction}
 
-Note that we can rewrite COOT as a variation of multi-marginal OT (MMOT) problem.
-To see this, first, we recall some related concepts.
-Given an integer $N \geq 1$, for any positive integers $a_1,..., a_N$, we call
-$P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. In particular,
-a $1$-D tensor is a vector and $2$-D tensor is a matrix.
-A tensor is a probability tensor if its entries are non-negative and the sum of all entries is $1$.
-Given $N$ probability vectors $\mu_1, ..., \mu_N$, we write $\mu = (\mu_n)_{n=1}^N$.
-We denote $\Sigma$ the set of $N$-D probability tensors and $U(\mu) \subset \Sigma$ the set of non-negative tensors whose $N$
-marginal distributions are $\mu_1, ..., \mu_N$. In this case, any coupling in $U(\mu)$ is said to be \textit{admissible}.
+Broadly speaking, the classic OT problem provides a principled approach for transporting one probability distribution onto another
+following the principle of the least effort. Such a problem, and the distance on the space of probability distributions derived from it,
+arise in many areas of machine learning (ML) including generative modeling, transfer learning and information retrieval, where OT has
+been successfully applied. A natural extension of classic OT, in which the admissible transport plan (a.k.a coupling) can have more
+than two prescribed marginal distributions, is called the multi-marginal optimal transport (MMOT) \citep{Gangbo98}.
+The latter has several attractive properties: it enjoys a duality theory \citep{Kellerer84} and finds connections with the
+probabilistic graphical models \citep{Haasler20} and the Wasserstein barycenter problem \citep{Agueh11} used for data averaging.
+While being less popular than the classic OT with two marginals, MMOT is a very useful framework on its own with some notable recent
+applications in generative adversarial networks \citep{Cao19}, clustering \citep{Mi21} and domain adaptation
+\citep{HuiLCHY18,HeZKSC19}, to name a few.
 
-Given a collection of $N$ histograms $\mu = (\mu_n \in \bbR^{a_n})_{n=1}^N$
-and a $N$-D cost tensor $C \in \bbR^{a_1 \times ... \times a_N}$, the MMOT problem reads
-\begin{equation}
-  \text{MMOT}(\mu) = \inf_{P \in U(\mu)} \langle C, P \rangle.
-\end{equation}
-In practice, such a formulation is intractable to optimize in a discrete setting as it results in a linear program where the number
-of constraints grows exponentially in $N$. A more tractable strategy for solving MMOT is to consider the following entropic
-regularization problem
-\begin{equation} \label{MMOT_primal}
-  \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon H(P).
-\end{equation}
-which can be solved using Sinkhorn's algorithm \citep{Benamou14}.
-We refer the interested reader to Appendix \ref{appendix:subsec_mmot_dc} for algorithmic details.
-Now, it is easy to see that COOT can be rewritten as
-\begin{align}
-  \inf_{\gamma \in U_2} \langle C, \gamma \rangle
-\end{align}
-where $U_2 = {\gamma \in U(\mu): \gamma = \pi^s }$
+The recent success of OT in ML is often attributed to the entropic regularization \citep{Cuturi13} where the authors imposed a
+constraint on the coupling matrix forcing it to be closer to the independent coupling given by the rank-one product of the marginals.
+Such a constraint leads to the appearance of the strongly convex entropy term in the objective function and allows the entropic
+OT problem to be solved efficiently using simple Sinkhorn-Knopp matrix balancing algorithm. In addition to this, it was also noticed
+that structural constraints on the coupling and cost matrices allow to reduce the high computational cost and sample complexity
+of the classic OT problem \citep{Genevay19,Forrow18,Chiheng21,Meyer21a}. However, none of these works considered a much more
+challenging case of doing so in a multi-marginal setting. On the other hand, while the work of \citep{Haasler20} considers the MMOT
+problem in which the cost tensor induced by a graphical structure, it does not naturally promote the factorizability of
+transportation plans.
 
-\paragraph{Contributions} We define and study a general MMOT problem with structural penalization on the coupling matrix.
+\paragraph{Contributions} In this paper, we define and study a general MMOT problem with structural penalization on the coupling matrix.
 We start by showing that a such formulation includes several popular OT methods as special cases and allows to gain deeper insights
 into them. We further consider a relaxed problem where the hard constraint is replaced by a regularization term and show that it leads
 to an instance of the difference of convex programming problem. A numerical study of the solutions obtained when solving the latter
 in cases of interest highlights their competitive performance when compared to solutions provided by the optimization
 strategies used previously.
 
-\subsubsection*{Factored MMOT and its relaxation}
+% Note that we can rewrite COOT as a variation of multi-marginal OT (MMOT) problem.
+% To see this, first, we recall some related concepts.
+% Given an integer $N \geq 1$, for any positive integers $a_1,..., a_N$, we call
+% $P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. In particular,
+% a $1$-D tensor is a vector and $2$-D tensor is a matrix.
+% A tensor is a probability tensor if its entries are non-negative and the sum of all entries is $1$.
+% Given $N$ probability vectors $\mu_1, ..., \mu_N$, we write $\mu = (\mu_n)_{n=1}^N$.
+% We denote $\Sigma$ the set of $N$-D probability tensors and $U(\mu) \subset \Sigma$ the set of non-negative tensors whose $N$
+% marginal distributions are $\mu_1, ..., \mu_N$. In this case, any coupling in $U(\mu)$ is said to be \textit{admissible}.
+
+% Given a collection of $N$ histograms $\mu = (\mu_n \in \bbR^{a_n})_{n=1}^N$
+% and a $N$-D cost tensor $C \in \bbR^{a_1 \times ... \times a_N}$, the MMOT problem reads
+% \begin{equation}
+%   \mmot(\mu) = \inf_{P \in U(\mu)} \langle C, P \rangle.
+% \end{equation}
+% In practice, such a formulation is intractable to optimize in a discrete setting as it results in a linear program where the number
+% of constraints grows exponentially in $N$. A more tractable strategy for solving MMOT is to consider the following entropic
+% regularization problem
+% \begin{equation} \label{MMOT_primal}
+%   \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon H(P).
+% \end{equation}
+% which can be solved using Sinkhorn's algorithm \citep{Benamou14}.
+% We refer the interested reader to Appendix \ref{appendix:subsec_mmot_dc} for algorithmic details.
+% Now, it is easy to see that COOT can be rewritten as
+% \begin{align}
+%   \inf_{\gamma \in U_2} \langle C, \gamma \rangle
+% \end{align}
+% where $U_2 = {\gamma \in U(\mu): \gamma = \pi^s }$
+
+% \paragraph{Contributions} We define and study a general MMOT problem with structural penalization on the coupling matrix.
+% We start by showing that a such formulation includes several popular OT methods as special cases and allows to gain deeper insights
+% into them. We further consider a relaxed problem where the hard constraint is replaced by a regularization term and show that it leads
+% to an instance of the difference of convex programming problem. A numerical study of the solutions obtained when solving the latter
+% in cases of interest highlights their competitive performance when compared to solutions provided by the optimization
+% strategies used previously.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Preliminary knowledge}
+
+\paragraph{Notations.} For each integer $n \geq 1$, we write $[n] := \{1,...,n\}$. For any discrete probability measure
+$\mu$ with finite support, its negative entropy is defined as $H(\mu) = \langle \mu, \log \mu \rangle$, where the logarithm
+operator is element-wise, with the convention that $0 \log 0 = 0$. Here, $\langle \cdot, \cdot \rangle$ denotes the Frobenius
+inner product. The generalized Kullback-Leibler divergence between two positive vectors
+$p, q \in \bbR^n_{> 0}$ is defined as
+$\kl(p | q) = \sum_i p_i \log \frac{p_i}{q_i} - \sum_i p_i + \sum_i q_i$.
+
+In what follows, given an integer $N \geq 1$, for any positive integers $a_1,..., a_N$, we call
+$P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. In particular, a $1$-D tensor is a vector and $2$-D tensor is a matrix.
+A tensor is a probability tensor if its entries are nonnegative and the sum of all entries is $1$.
+Given $N$ probability vectors $\mu_1, ..., \mu_N$, we write $\mu = (\mu_n)_{n=1}^N$
+and $\mu^{\otimes} := \mu_1 \otimes ... \otimes \mu_N$.
+We denote $\Sigma$ the set of $N$-D probability tensors and $U(\mu) \subset \Sigma$ the set of nonnegative tensors whose $N$
+marginal distributions are $\mu_1, ..., \mu_N$. In this case, any coupling in $U(\mu)$ is said to be \textit{admissible}.
+
+\paragraph{Multi-marginal OT problem.} Given a collection of $N$ probability vectors $\mu = (\mu_n \in \bbR^{a_n})_{n=1}^N$
+and a $N$-D cost tensor $C \in \bbR^{a_1 \times ... \times a_N}$, the MMOT problem reads
+\begin{equation*}
+  \mmot(\mu) = \inf_{P \in U(\mu)} \langle C, P \rangle.
+\end{equation*}
+In practice, such a formulation is intractable to optimize in a discrete setting as it results in a linear program where the number
+of constraints grows exponentially in $N$. A more tractable strategy for solving MMOT is to consider the following entropic
+regularization problem
+\begin{equation} \label{MMOT_primal}
+  \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon \kl(P | \mu^{\otimes}).
+\end{equation}
+which can be solved using Sinkhorn's algorithm \citep{Benamou14}.
+We refer the interested reader to Appendix for algorithmic details.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Factored Multi-marginal Optimal Transport}
+
+In this section, we first define a factored MMOT (F-MMOT) problem where we seek to promote a structure on the optimal coupling
+given such as a factorization into a tensor product. Interestingly, such a formulation can be shown to include several other
+OT problems as special cases. Then, we introduce a relaxed version called MMOT-DC where the factorization constraint is
+smoothly promoted through a Kullback-Leibler penalty.
+
+\subsubsection{Motivation}
+
+Before a formal statement of our problem, we first give a couple of motivating examples showing why and when structural constraints on the coupling matrix can be beneficial. To this end, first note that a trivial example of the usefulness of such constraints in OT is the famous entropic regularization. Indeed, while most of the works define the latter by adding negative entropy of the coupling to the classic OT objective function directly, the original idea was to constraint the sought coupling to remain close (to some extent) to a rank-one product of the two marginal distributions. The appearance of negative entropy in the final objective function is then only a byproduct of such constraint due to the decomposition of the KL divergence into a sum of three terms with two of them being constant. Below we give two more examples of real-world applications related to MMOT problem where a certain decomposition imposed on the coupling tensor can be desirable.
+\paragraph{Multi-source multi-target translation.} A popular task in computer vision is to match images across different domains in order to perform the so-called image translation. Such tasks are often tackled within the GAN framework where one source domain from which the translation is performed, is matched with multiple target domains modeled using generators. While MMOT was applied in this context by \citep{Cao19} when only one source was considered, its application in a multi-source setting may benefit from structural constraints on the coupling tensor incorporating the human prior on what target domains each source domain should be matched to.
+\paragraph{Multi-task reinforcement learning.} In this application, the goal is to learn individual policies for a set of agents while taking into account the similarities between them and hoping that the latter will improve the individual policies. A common approach is to consider an objective function consisting of two terms where the first term is concerned with learning individual policies, while the second forces a consensus between them. Similar to the example considered above, MMOT problem was used to promote the consensus across different agents' policies in \citep{Cohen21}, even though such a consensus could have benefited from a prior regarding the semantic relationships between the learned tasks.
+%
+%We can cite other examples motivating the introduction of structural constraints in MMOT problem but the bottom line of it remains unchanged: imposing a certain structure on the optimal coupling tensor is a way of incorporating the human-based priors to the MMOT problem that reflect the domain knowledge about the problem at hand. We now proceed to the formal introduction of this idea.
+
+\subsubsection{Factored MMOT and its relaxation}
 We start by giving several definitions used in the following parts of the paper.
 %We call $P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. When $N=1$, we simply call it a vector and when $N=2$,
 %it is a matrix.
 \begin{definition}[Tuple partition]
- Given two integers $N \geq M \geq 2$, a sequence of tuples $\mathcal T = (\mathcal T_m)_{m=1}^M$, is called a
- \underline{tuple partition} of the $N$-tuple $(1,...,N)$ if the tuples $\mathcal T_1, ..., \mathcal T_M$ are nonempty and disjoint,
+ Given two integers $N \geq M \geq 2$, a sequence of tuples $\cT = (\cT_m)_{m=1}^M$, is called a
+ \underline{tuple partition} of the $N$-tuple $(1,...,N)$ if the tuples $\cT_1, ..., \cT_M$ are nonempty and disjoint,
  and their concatenation in this order gives $(1,...,N)$.
 \end{definition}
 Here, we implicitly take into account the order of the tuple, which is not the case for the partition of the set $[N]$. If
-there exists a tuple in $\mathcal T$ which contains only one element, then we say $\mathcal T$ is \textit{degenerate}.
+there exists a tuple in $\cT$ which contains only one element, then we say $\cT$ is \textit{degenerate}.
 
 \begin{definition}[Marginal tensor]
-  Given a tensor $P \in \bbR^{a_1 \times ... \times a_N}$ and a tuple partition $\mathcal T = (\mathcal T_m)_{m=1}^M$,
-  we call $P_{\# \mathcal T_m}$ its \underline{$\mathcal T_m$-marginal tensor}, by summing $P$ over all dimensions not in $\mathcal T_m$.
-  We write $P_{\# \mathcal T} = P_{\# \mathcal T_1} \otimes ... \otimes P_{\# \mathcal T_M} \in \bbR^{a_1 \times ... \times a_N}$
+  Given a tensor $P \in \bbR^{a_1 \times ... \times a_N}$ and a tuple partition $\cT = (\cT_m)_{m=1}^M$,
+  we call $P_{\# \cT_m}$ its \underline{$\cT_m$-marginal tensor}, by summing $P$ over all dimensions not in $\cT_m$.
+  We write $P_{\# \cT} = P_{\# \cT_1} \otimes ... \otimes P_{\# \cT_M} \in \bbR^{a_1 \times ... \times a_N}$
   the tensor product of its marginal tensors.
 \end{definition}
-For example, for $M=N=2$, we have $\mathcal T_1 = (1)$ and $\mathcal T_2 = (2)$. So, given a matrix
-$P \in \bbR^{a_1 \times a_2}$, its marginal tensors $P_{\# \mathcal T_1}$ and $P_{\# \mathcal T_2}$ are simply vectors in
-$\bbR^{a_1}$ and $\bbR^{a_2}$, respectively, defined by $(P_{\# \mathcal T_1})_i = \sum_j P_{ij}$ and
-$(P_{\# \mathcal T_2})_j = \sum_i P_{ij}$ for $(i,j) \in [a_1] \times [a_2]$. The tensor product
-$P_{\# \mathcal T} \in \bbR^{a_1 \times a_2}$ is then defined by
-$(P_{\#\mathcal T})_{ij} = (P_{\# \mathcal T_1})_i (P_{\# \mathcal T_2})_j$.
-
+For example, for $M=N=2$, we have $\cT_1 = (1)$ and $\cT_2 = (2)$. So, given a matrix
+$P \in \bbR^{a_1 \times a_2}$, its marginal tensors $P_{\# \cT_1}$ and $P_{\# \cT_2}$ are simply vectors in
+$\bbR^{a_1}$ and $\bbR^{a_2}$, respectively, defined by $(P_{\# \cT_1})_i = \sum_j P_{ij}$ and
+$(P_{\# \cT_2})_j = \sum_i P_{ij}$ for $(i,j) \in [a_1] \times [a_2]$. The tensor product
+$P_{\# \cT} \in \bbR^{a_1 \times a_2}$ is then defined by
+$(P_{\#\cT})_{ij} = (P_{\# \cT_1})_i (P_{\# \cT_2})_j$.
 Clearly, if $P$ is a probability tensor, then so are its marginal tensors and tensor product.
 
-Suppose $\mathcal T_m = (p,...,q)$ for some $m \in [M]$ and $1 \leq p \leq q \leq N$. We denote
-$\Sigma_{\mathcal T_m}$ the set of probability tensors in $\bbR^{a_p \times ... \times a_q}$ and
-$U_{\mathcal T_m} \subset \Sigma_{\mathcal T_m}$ the set
-of probability tensors in $\bbR^{a_p \times ... \times a_q}$ whose $(r)$-marginal vector is $\mu_r$, for every $r = p,...,q$.
+Suppose $\cT_m = (p,...,q)$ for some $m \in [M]$ and $1 \leq p \leq q \leq N$. We denote
+$\Sigma_{\cT_m}$ the set of probability tensors in $\bbR^{a_p \times ... \times a_q}$ and
+$U_{\cT_m} \subset \Sigma_{\cT_m}$ the set
+of probability tensors in $\bbR^{a_p \times ... \times a_q}$ whose
+$r^{\text{th}}$-marginal vector is $\mu_r$, for every $r = p,...,q$.
+We also define $\mu^{\otimes}_{\cT_m} := \mu_p \otimes ... \otimes \mu_q$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{definition}[Factored MMOT]
-  Given a collection of histograms $\mu = (\mu_n)_{n=1}^N$ and a tuple partition $\mathcal T = (\mathcal T_m)_{m=1}^M$,
+  Given a collection of histograms $\mu = (\mu_n)_{n=1}^N$ and a tuple partition $\cT = (\cT_m)_{m=1}^M$,
   we consider the following OT problem
   \begin{equation} \label{factor_mmot}
-    \text{F-MMOT}( \mathcal T, \mu) = \inf_{P \in U_{\mathcal T}} \langle C, P \rangle,
+    \text{F-MMOT}( \cT, \mu) = \inf_{P \in U_{\cT}} \langle C, P \rangle,
   \end{equation}
-  where $U_{\mathcal T} \subset U(\mu)$ is the set of admissible couplings which can be factorized as a tensor product of $M$
-  component probability tensors in $\Sigma_{\mathcal T_1}, ..., \Sigma_{\mathcal T_M}$.
+  where $U_{\cT} \subset U(\mu)$ is the set of admissible couplings which can be factorized as a tensor product of $M$
+  component probability tensors in $\Sigma_{\cT_1}, ..., \Sigma_{\cT_M}$.
 \end{definition}
 Several remarks are in order here. First, one should note that the partition considered above is in general not degenerate meaning
 that the decomposition can involve tensors of an arbitrary order $<N$. Second, the decomposition in this setting depicts the prior
 knowledge regarding the tuples of measures which should be independent: the couplings for the measures from different tuples will
 be degenerate and the optimal coupling tensor will be reconstructed from couplings of each tuple separately.
-Third, suppose the partition $(\mathcal T_m)_{m=1}^M$ is not degenerate and $M=2$, i.e. the tensor is factorized as product of
-two tensors, the problem \cref{factor_mmot} is equivalent to a variation of low non-negative rank OT problem (see Appendix for a proof).
+Third, suppose the partition $(\cT_m)_{m=1}^M$ is not degenerate and $M=2$, i.e. the tensor is factorized as product of
+two tensors, the problem \eqref{factor_mmot} is equivalent to a variation of low non-negative rank OT problem (see Appendix for a proof).
 
-As for the existence of the solution to this problem, we have that $U_{\mathcal T}$ is compact because it is a close subset of the
-compact set $U(\mu)$, which implies that the problem \cref{factor_mmot} always admits a solution. Furthermore, observe that
+As for the existence of the solution to this problem, we have that $U_{\cT}$ is compact because it is a close subset of the
+compact set $U(\mu)$, which implies that the problem \eqref{factor_mmot} always admits a solution. Furthermore, observe that
 \begin{equation}
   \begin{split}
-    U_{\mathcal T} &= \{ P \in U(\mu): P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in \Sigma_{\mathcal T_m}, \forall m = 1,...,M \} \\
-    &= \{ P \in \Sigma: P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in U_{\mathcal T_m}, \forall m = 1,...,M \}.
+    U_{\cT} &= \{ P \in U(\mu): P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in \Sigma_{\cT_m}, \forall m = 1,...,M \} \\
+    &= \{ P \in \Sigma: P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in U_{\cT_m}, \forall m = 1,...,M \}.
   \end{split}
 \end{equation}
 Thus, the problem F-MMOT can be rewritten as
 \begin{equation}
-  \text{F-MMOT}( \mathcal T, \mu) = \inf_{\substack{P_m \in U_{\mathcal T_m} \\ \forall m = 1,...,M}}
+  \text{F-MMOT}( \cT, \mu) = \inf_{\substack{P_m \in U_{\cT_m} \\ \forall m = 1,...,M}}
   \langle C, P_1 \otimes ... \otimes P_M \rangle.
 \end{equation}
-So, if $\mathcal T_1,...,\mathcal T_M$ are $2$-tuples and two marginal distributions corresponding to each $U_{\mathcal T_m}$ are
-identical and uniform, then by Birkhoff's theorem \citep{Birkhoff46}, the problem \ref{factor_mmot} admits an optimal solution in
+So, if $\cT_1,...,\cT_M$ are $2$-tuples and two marginal distributions corresponding to each $U_{\cT_m}$ are
+identical and uniform, then by Birkhoff's theorem \citep{Birkhoff46}, Problem \eqref{factor_mmot} admits an optimal solution in
 which each component tensor $P_m$ is a permutation matrix.
 
-\paragraph{Two special cases.} When $N = 4$ and $M=2$ with $\mathcal T_1 = (1,2)$ and $\mathcal T_2 = (3,4)$, the problem
-\ref{factor_mmot} becomes the CO-Optimal transport (COOT), where the two component tensors are known as
+\paragraph{Two special cases.} When $N = 4$ and $M=2$ with $\cT_1 = (1,2)$ and $\cT_2 = (3,4)$, Problem
+\eqref{factor_mmot} becomes the CO-Optimal transport (COOT), where the two component tensors are known as
 \textit{sample} and \textit{feature} couplings. If furthermore, $a_1 = a_3, a_2=a_4$, and $\mu_1 = \mu_3, \mu_2=\mu_4$, it becomes a
 lower bound of the discrete Gromov-Wasserstein (GW) distance \citep{Memoli11}. This means that our formulation can be seen as a
 generalization of several OT formulations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Observe that if a probability tensor $P$ can be factorized as a tensor product of probability tensors, i.e.
-$P = P_1 \otimes ... \otimes P_M$, then each $P_m$ is also the $\mathcal T_m$-marginal tensor of $P$. In this case,
-we have $P = P_{\# \mathcal T}$. This prompts us to consider the following relaxation of factored MMOT, where the hard constraint
-$U_{\mathcal T}$ is replaced by a regularization term.
+$P = P_1 \otimes ... \otimes P_M$, then each $P_m$ is also the $\cT_m$-marginal tensor of $P$. In this case,
+we have $P = P_{\# \cT}$. This prompts us to consider the following relaxation of factored MMOT, where the hard constraint
+$U_{\cT}$ is replaced by a regularization term.
 \begin{definition}[Relaxed Factored MMOT]
-  Given $\varepsilon \geq 0$, a collection of measures $\mu$ and a tuple partition $\mathcal T$,
+  Given $\varepsilon \geq 0$, a collection of measures $\mu$ and a tuple partition $\cT$,
   we define the following problem:
   \begin{equation} \label{relax_mmot}
-    \text{MMOT-DC}_{\varepsilon}( \mathcal T, \mu) =
-    \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon \kl(P \vert P_{\# \mathcal T}).
+    \mmotdc_{\varepsilon}( \cT, \mu) =
+    \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon \kl(P \vert P_{\# \cT}).
   \end{equation}
 \end{definition}
 From the exposition above, one can guess that this relaxation is reminiscent of the entropic regularization in MMOT and
 coincides with it when $M = N$. As such, it also recovers the classical entropic OT. One should note that the choice of the KL
 divergence is not arbitrary and its advantage will become clear when it comes to the algorithm. %A well known
-A special case of the problem \ref{relax_mmot} is when $M = N$, we recover the entropic-regularized MMOT problem, up to a constant.
+A special case of Problem \eqref{relax_mmot} is when $M = N$, we recover the entropic-regularized MMOT problem, up to a constant.
 
 After having defined the two optimization problems, we now set on exploring their theoretical properties.
 
-\subsubsection*{Theoretical properties}
-%The following properties are direct consequences of the definition.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Theoretical properties}
 Intuitively, the relaxed problem is expected to allow for solutions with a lower value of the final objective function. We formally prove the validity of this intuition below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}[Preliminary properties]
   \label{MMOT_dc_prop}
-  Given a collection of histograms $\mu$ and a tuple partition $\mathcal T$,
+  Given a collection of histograms $\mu$ and a tuple partition $\cT$,
   \begin{enumerate}
-    \item For every $\varepsilon \geq 0$, we have $\text{MMOT}(\mu) \leq
-    \text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu) \leq \text{F-MMOT}( \mathcal T, \mu)$.
-    \item For every $\varepsilon > 0, \text{MMOT-DC}_{\varepsilon}( \mathcal T, \mu ) = 0$ if and only if
-    $\text{F-MMOT} (\mathcal T, \mu) = 0$.
+    \item For every $\varepsilon \geq 0$, we have $\mmot(\mu) \leq
+    \mmotdc_{\varepsilon}(\cT, \mu) \leq \text{F-MMOT}( \cT, \mu)$.
+    \item For every $\varepsilon > 0, \mmotdc_{\varepsilon}( \cT, \mu ) = 0$ if and only if
+    $\text{F-MMOT} (\cT, \mu) = 0$.
   \end{enumerate}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -597,24 +667,24 @@ The result below formalizes this intuition.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}[Interpolation between MMOT and F-MMOT]
   \label{interpolation_prop}
-  For any tuple partition $\mathcal T$ and for $\varepsilon > 0$,
-  let $P_{\varepsilon}$ be a minimiser of the problem $\text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu)$.
+  For any tuple partition $\cT$ and for $\varepsilon > 0$,
+  let $P_{\varepsilon}$ be a minimiser of the problem $\mmotdc_{\varepsilon}(\cT, \mu)$.
   \begin{enumerate}
-    \item When $\varepsilon \to \infty$, one has $\text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu) \to
-    \text{F-MMOT}(\mathcal T, \mu)$. In this case, any cluster point of the sequence of minimisers
-    $(P_{\varepsilon})_{\varepsilon}$ is a minimiser of $\text{F-MMOT}(\mathcal T, \mu)$.
+    \item When $\varepsilon \to \infty$, one has $\mmotdc_{\varepsilon}(\cT, \mu) \to
+    \text{F-MMOT}(\cT, \mu)$. In this case, any cluster point of the sequence of minimisers
+    $(P_{\varepsilon})_{\varepsilon}$ is a minimiser of $\text{F-MMOT}(\cT, \mu)$.
 
-    \item When $\varepsilon \to 0$, then $\text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu) \to \text{MMOT}(\mu)$.
+    \item When $\varepsilon \to 0$, then $\mmotdc_{\varepsilon}(\cT, \mu) \to \mmot(\mu)$.
     In this case, any cluster point of the sequence of minimisers $(P_{\varepsilon})_{\varepsilon}$ is a minimiser of
-    $\text{MMOT}(\mu)$.
+    $\mmot(\mu)$.
   \end{enumerate}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{GW distance revisited.} Somewhat surprisingly, the relaxation \ref{relax_mmot} also allows us to prove the equality
-between GW distance and COOT in the discrete setting. Let $\mathcal X$ be a
+\paragraph{GW distance revisited.} Somewhat surprisingly, the relaxation \eqref{relax_mmot} also allows us to prove the equality
+between GW distance and COOT in the discrete setting. Let $\cX$ be a
 finite subset (of size $m$) of a certain metric space. Denote $C_x \in \bbR^{m \times m}$ its similarity matrix (e.g. distance
-matrix). We define similarly the set $\mathcal Y$ of size $n$ and the corresponding similarity matrix $C_y \in \bbR^{n \times n}$.
-We also assign two discrete probability measures $\mu_x \in \bbR^m$ and $\mu_y \in \bbR^n$ to $\mathcal X$ and $\mathcal Y$,
+matrix). We define similarly the set $\cY$ of size $n$ and the corresponding similarity matrix $C_y \in \bbR^{n \times n}$.
+We also assign two discrete probability measures $\mu_x \in \bbR^m$ and $\mu_y \in \bbR^n$ to $\cX$ and $\cY$,
 respectively. The GW distance is then defined as
 \begin{equation}
   \gw(C_x, C_y) = \inf_{Q \in U(\mu_x, \mu_y)} \langle L(C_x, C_y), Q \otimes Q \rangle,
@@ -632,65 +702,62 @@ to the COOT. This is also true when $L(C_x, C_y)$ is a negative definite kernel 
 Here, we establish a weaker case where this equality still holds.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{corollary} \label{kernel_gw_coot}
-  If $L(C_x, C_y)$ defines a conditionally negative definite kernel on $(\mathcal X \times \mathcal Y)^2$, then we have the equality
+  If $L(C_x, C_y)$ defines a conditionally negative definite kernel on $(\cX \times \cY)^2$, then we have the equality
   between GW distance and COOT. Furthermore, if $(Q_s^*,Q_f^*)$ is a solution of the COOT problem, then $Q_s^*$ and $Q_f^*$ are
   two solutions of the GW problem. In particular, when $L(C_x, C_y)$ induces a strictly positive definite kernel
   $\exp \big( -\frac{L(C_x, C_y)}{\varepsilon} \big)$, for every $\varepsilon > 0$, we have $Q_s^* = Q_f^*$.
 \end{corollary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The proof relies on the connection between MMOT-DC and COOT shown in the \cref{interpolation_prop},
-and given a
-$4$-D solution of MMOT-DC, we can construct another $4$-D solutions whose
-$\mathcal T_1$ and $\mathcal T_2$-marginal matrices are identical,
+The proof relies on the connection between MMOT-DC and COOT shown in \Cref{interpolation_prop},
+and given a $4$-D solution of MMOT-DC, we can construct another $4$-D solutions whose
+$\cT_1$ and $\cT_2$-marginal matrices are identical,
 under the assumption of the cost tensor. The proof of the second claim is deferred to the Appendix.
 Note that, this result is more general than the one in the previous section, where
 
-\subsubsection*{Numerical solution} \label{sec:algo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
+\subsection{Numerical solution} \label{sec:algo}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We now turn to the computational aspect of the problem \ref{relax_mmot}. First, note that for any tuple partition
-$\mathcal T = (\mathcal T_m)_{m=1}^M$ and probability tensor $P$, the KL divergence term can be decomposed as
+We now turn to the computational aspect of Problem \eqref{relax_mmot}. First, note that for any tuple partition
+$\cT = (\cT_m)_{m=1}^M$ and probability tensor $P$, the KL divergence term can be decomposed as
 \begin{equation}
-  \kl(P \vert P_{\# \mathcal T}) = H(P) - \sum_{m=1}^m H_m(P),
+  \kl(P \vert P_{\# \cT}) = \kl(P | \mu^{\otimes}) - \sum_{m=1}^m \kl_m(P),
 \end{equation}
-where the function $H_m$ defined by $H_m(P) := H(P_{\# \mathcal T_m})$ is continuous and convex with respect to $P$.
-Now, the problem \ref{relax_mmot} becomes
+where the function $\kl_m$ defined by $\kl_m(P) := \kl(P_{\# \cT_m} | \mu^{\otimes}_{\cT_m})$
+is continuous and convex with respect to $P$. Now, Problem \eqref{relax_mmot} becomes
 \begin{equation} \label{relax}
-  \text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu) = \inf_{P \in U(\mu)}
-  \langle C, P \rangle + \varepsilon H(P) - \varepsilon \sum_{m=1}^M H_m(P).
+  \mmotdc_{\varepsilon}(\cT, \mu) = \inf_{P \in U(\mu)}
+  \langle C, P \rangle + \varepsilon \kl(P | \mu^{\otimes}) - \varepsilon \sum_{m=1}^m \kl_m(P).
 \end{equation}
 This is nothing but a Difference of Convex (DC) programming problem (which explains the name MMOT-DC),
 thanks to the convexity of the set $U(\mu)$ and the entropy function $H$. Thus, it can be solved
 by the classic DC algorithm
-\footnote{The DC algorithm is very closely related to Convex-concave procedure, majorization-minimization algorithm, Successive Linear
+\footnote{The DC algorithm is very closely related to Convex-concave procedure,
+majorization-minimization algorithm, Successive Linear
 Approximation. For a detailed discussion on the subtle distinction amongst these name, see
-\citep{}} \citep{Tao86,Tao97} as follows: at the iteration $t$,
+\citep{Le18}} \citep{Tao86,Tao97} as follows: at the iteration $t$,
 \begin{enumerate}
-  \item Calculate $G^{(t)} \in \partial(\sum_{m=1}^M H_m)(P^{(t)})$.
-  \item Solve $P^{(t+1)} \in \arg\min_{P \in U(\mu)} \langle C -
-  \varepsilon G^{(t)}, P \rangle + \varepsilon H(P)$.
+  \item Calculate $G^{(t)} \in \partial(\sum_{m=1}^M \kl_m)(P^{(t)})$.
+  \item Solve $P^{(t+1)} \in \argmin_{P \in U(\mu)} \langle C -
+  \varepsilon G^{(t)}, P \rangle + \varepsilon \kl(P | \mu^{\otimes})$.
 \end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This algorithm is very easy to implement. Indeed, the second step is an entropic-regularized MMOT problem, which admits a unique
-solution, thanks to the strict convexity of the objective function. Such solution can be found by the Sinkhorn algorithm
+solution, thanks to the strict convexity of the objective function.
+Such solution can be found by the Sinkhorn algorithm
 \ref{algo:dual_mmot}. In the first step, the gradient can be calculated explicitly.
 For the sake of simplicity, we illustrate the calculation in a simple case, where $M=2$ and $N=4$ with
-$\mathcal T_1$ and $\mathcal T_2$ are two $2$-tuples. The function $H_1 + H_2$ is continuous, so
-$G^{(t)} = \nabla_P (H_1 + H_2)(P^{(t)})$. Given a $4$-D probability tensor $P$, we have
-\begin{equation}
-  H_1(P) + H_2(P) = \sum_{i,j,k,l} P_{i,j,k,l}
-  \log\big( \sum_{i,j} P_{i,j,k,l} \big) + P_{i,j,k,l} \log\big( \sum_{k,l} P_{i,j,k,l} \big).
-\end{equation}
-So,
+$\cT_1$ and $\cT_2$ are two $2$-tuples. The function $\kl_1 + \kl_2$ is continuous, so
+$G^{(t)} = \nabla_P (\kl_1 + \kl_2)(P^{(t)})$. Given a $4$-D probability tensor $P$, we have
 \begin{equation} \label{optim_condition}
-  \frac{\partial (H_1 + H_2)}{\partial P_{i,j,k,l}} = \log \left( \sum_{i,j} P_{i,j,k,l} \right) +
-  \frac{P_{i,j,k,l}}{\sum_{i,j} P_{i,j,k,l}} +
-  \log \left( \sum_{k,l} P_{i,j,k,l} \right) + \frac{P_{i,j,k,l}}{\sum_{k,l} P_{i,j,k,l}}.
+  \frac{\partial (\kl_1 + \kl_2)}{\partial P_{i,j,k,l}} =
+  \log \left( \frac{\sum_{k,l} P_{i,j,k,l}}{(\mu_1)_i (\mu_2)_j} \right) +
+  \log \left( \frac{\sum_{i,j} P_{i,j,k,l}}{(\mu_3)_k (\mu_4)_l} \right).
 \end{equation}
-The complete DC algorithm for the problem \ref{relax} can be found in the algorithm \ref{algo:dc_MMOT}.
+The complete DC algorithm for Problem \eqref{relax} can be found in \Cref{algo:dc_MMOT}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{algorithm}[h]
-  \caption{DC algorithm for the problem \ref{relax_mmot}.}
-  \textbf{Input.} Cost tensor $C$, tuple partition $(\mathcal T_m)_{m=1}^M$, collection of histograms $\mu = (\mu_n)_{n=1}^N$,
+  \caption{DC algorithm for Problem \eqref{relax_mmot}.}
+  \textbf{Input.} Cost tensor $C$, tuple partition $(\cT_m)_{m=1}^M$, collection of histograms $\mu = (\mu_n)_{n=1}^N$,
   hyperparameter $\varepsilon > 0$, initialization $P^{(0)}$, tuple of initial dual vectors for the
   Sinkhorn step $(f_1^{(0)},...,f_N^{(0)})$.
 
@@ -698,10 +765,10 @@ The complete DC algorithm for the problem \ref{relax} can be found in the algori
 
   While not converge
   \begin{enumerate}
-    \item Gradient step: compute the gradient of the convex term $G^{(t)} = \sum\limits_{m=1}^M \nabla_P H_m(P^{(t)})$.
+    \item Gradient step: compute the gradient of the convex term $G^{(t)} = \sum\limits_{m=1}^M \nabla_P \kl_m(P^{(t)})$.
     \item Sinkhorn step: solve
     \begin{equation}
-      P^{(t+1)} = \arg\min_{P \in U(\mu)} \langle C - \varepsilon G^{(t)}, P \rangle + \varepsilon H(P),
+      P^{(t+1)} = \argmin_{P \in U(\mu)} \langle C - \varepsilon G^{(t)}, P \rangle + \varepsilon \kl(P | \mu^{\otimes}),
     \end{equation}
     using the Sinkhorn algorithm \ref{algo:dual_mmot}, with the tuple of initial dual vectors $(f_1^{(0)},...,f_N^{(0)})$.
   \end{enumerate}
@@ -709,22 +776,22 @@ The complete DC algorithm for the problem \ref{relax} can be found in the algori
 \end{algorithm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 We observed that initialization is crucial to the convergence of algorithm, which
-is not surprising for a non-convex problem. To accelerate the algorithm for large $\varepsilon$,
+is not surprising for a non-convex problem. To accelerate the algorithm for small $\varepsilon$,
 we propose to use the warm-start strategy, which is similar to the one used in the entropic OT problem with very
 small regularization parameter \citep{Schmitzer19}. Its idea is simple: we consider an increasing finite sequence
 $(\varepsilon_n)_{n=0}^N$ approaching $\varepsilon$ such that the solution $P_{\varepsilon_0}$ of the problem
-$\text{MMOT-DC}_{\varepsilon_0}(\mathcal T, \mu)$ can be estimated quickly and accurately using the initialization $P^{(0)}$. Then we solve each
-successive problem $\text{MMOT-DC}_{\varepsilon_n}(\mathcal T, \mu)$ using the previous solution $P_{\varepsilon_{n-1}}$ as initialization. Finally,
-the problem $\text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu)$ is solved using the solution $P_{\varepsilon_N}$ as initialization.
+$\mmotdc_{\varepsilon_0}(\cT, \mu)$ can be estimated quickly and accurately using the initialization $P^{(0)}$. Then we solve each
+successive problem $\mmotdc_{\varepsilon_n}(\cT, \mu)$ using the previous solution $P_{\varepsilon_{n-1}}$ as initialization. Finally,
+the problem $\mmotdc_{\varepsilon}(\cT, \mu)$ is solved using the solution $P_{\varepsilon_N}$ as initialization.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Experimental evaluation} \label{sec:exp}
+\subsection{Experimental evaluation} \label{sec:exp}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In this section, we illustrate the use of MMOT-DC on simulated data. Rather than performing experiments in full generality,
-we choose the setting where $N = 4$ and $M=2$ with $\mathcal T_1 = (1,2)$ and $\mathcal T_2 = (3,4)$,
+we choose the setting where $N = 4$ and $M=2$ with $\cT_1 = (1,2)$ and $\cT_2 = (3,4)$,
 so that we can compare MMOT-DC with other popular solvers of COOT and GW distance. Given two matrices $X$ and $Y$, we always consider the $4$-D cost tensor $C$,
 where $C_{i,j,k,l} = \vert X_{i,k} - Y_{j,l} \vert^2$. On the other hand, we are not interested in the $4$-D minimiser of MMOT-DC,
-but only in its two $\mathcal T_1, \mathcal T_2$-marginal matrices.
+but only in its two $\cT_1, \cT_2$-marginal matrices.
 
 \paragraph{Solving COOT on a toy example.} We generate a random matrix $X \in \bbR^{30 \times 25}$, whose entries are drawn independently
 from the uniform distribution on the interval $[0,1)$. We equip the rows and columns of $X$ with two discrete uniform distributions
@@ -733,10 +800,10 @@ $Q_f \in \bbR^{25 \times 25}$ (called feature permutation), then calculate $Y = 
 with two discrete uniform distributions on $[30]$ and $[25]$.
 
 It is not difficult to see that $\coot(X,Y) = 0$ because $(Q_s, Q_f)$ is a solution. As COOT is a special case of F-MMOT,
-we see that $\text{MMOT-DC}_{\varepsilon}(\mathcal T, \mu) = 0$, for every $\varepsilon > 0$,
-by proposition \ref{MMOT_dc_prop}. In this experiment, we will check if marginalizing the minimizer of MMOT-DC allows us to recover
+we see that $\mmotdc_{\varepsilon}(\cT, \mu) = 0$, for every $\varepsilon > 0$,
+by \Cref{MMOT_dc_prop}. In this experiment, we will check if marginalizing the minimizer of MMOT-DC allows us to recover
 the permutation matrices $Q_s$ and $Q_f$.
-As can be seen from the figure \ref{fig:permu}, MMOT-DC can recover the permutation positions, for various
+As can be seen from \Cref{fig:permu}, MMOT-DC can recover the permutation positions, for various
 values of $\varepsilon$. On the other hand, it can not recover the true sparse permutation matrices because the Sinkhorn algorithm
 applied to the MMOT problem implicitly results in a dense tensor, thus having dense marginal matrices. For this reason,
 the loss only remains very close to zero, but never exactly.
@@ -751,7 +818,7 @@ the loss only remains very close to zero, but never exactly.
 We also plot, with some abuse of notation, the histograms of the difference between
 the $(1,3), (1,4), (2,3), (2,4)$-marginal matrices of MMOT-DC and their corresponding counterparts from F-MMOT.
 In this example, in theory, as the optimal tensor $P$ of F-MMOT can be factorized as
-$P = P_{\# \mathcal T_1} \otimes P_{\# \mathcal T_2} = Q_s \otimes Q_f$,
+$P = P_{\# \cT_1} \otimes P_{\# \cT_2} = Q_s \otimes Q_f$,
 it is immediate to see that $P_{\# (1,3)} = P_{\# (1,4)} = P_{\# (2,3)} = P_{\# (2,4)} \in \bbR^{30 \times 25}$
 are uniform matrices whose entries are $\frac{1}{750}$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -759,7 +826,7 @@ are uniform matrices whose entries are $\frac{1}{750}$.
   \centering
   \includegraphics[width=1.\textwidth,height=1.\textheight,keepaspectratio]{./Chapitre2/fig/other_marginals.pdf}
   \caption{Histograms of difference between true independent marginal matrices and their approximations. We see that the marginal matrices obtained
-  by the algorithm \ref{algo:dc_MMOT} approximate well the theoretical uniform matrices.}
+  by \Cref{algo:dc_MMOT} approximate well the theoretical uniform matrices.}
   \label{fig:other_marg}
 \end{figure}
 
@@ -797,14 +864,14 @@ We compare four solvers:
   where $0$ means that there is no regularization term for the corresponding coupling
   and we pick the pair whose COOT loss is the smallest.
 
-  \item The algorithm \ref{algo:dc_MMOT} to solve the MMOT-DC. We tune
+  \item \Cref{algo:dc_MMOT} to solve the MMOT-DC. We tune
   $\varepsilon \in \{1, 1.4, 1.8, 2.2, 2.6\}$ and we pick the one which corresponds to smallest COOT loss.
 \end{enumerate}
 For GW-FW and EGW-PGD, we use the implementation from the library \texttt{PythonOT} \citep{Flamary21}.
 
 Given two random matrices, we record the COOT loss corresponding to the solution generated by each method.
-We simulate this process $70$ times and compare their overall performance. We can see in Table \ref{tab:gw} the average value and
-standard deviation and the comparison for the values of the loss between the different algorithms in Figure \ref{fig:gw}.
+We simulate this process $70$ times and compare their overall performance. We can see in \Cref{tab:gw} the average value and
+standard deviation and the comparison for the values of the loss between the different algorithms in \Cref{fig:gw}.
 The performance is quite similar across methods with a  slight advantage for EGW-PGD. This is in itself a very
 interesting result that has never been noted, to the best of our knowledge: the reason that the entropic version of GW can
 provide better solution than solving the exact problem, may be due to the "convexification" of the problem, thanks to the entropic
@@ -829,7 +896,6 @@ finding better solutions despite the non-convexity of the problem.
   \caption{Average and standard deviation of COOT loss of the solvers. MMOT-DC is competitive to other solvers,
   except for EGW-PGD and EGW-BCD.
   \label{tab:gw}}
-  % \vskip -0.1in
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -844,21 +910,21 @@ finding better solutions despite the non-convexity of the problem.
 
 \paragraph{An empirical variation.} Intuitively, for sufficiently large $\varepsilon$, the minimisation of the KL divergence is prioritised
 over the linear term in the objective function of the MMOT-DC problem, which implies that the optimal tensor $P^*$ is "close" to its
-corresponding tensor product $P^*_{\# \mathcal T}$. So, instead of calculating the gradient at $P$, one may calculate at
-$P_{\# \mathcal T}$. In this case, the gradient reads
+corresponding tensor product $P^*_{\# \cT}$. So, instead of calculating the gradient at $P$, one may calculate at
+$P_{\# \cT}$. In this case, the gradient reads
 \begin{equation}
   \begin{split}
-    \sum_{m=1}^M \nabla_P H_m(P_{\# \mathcal T}) =
-    \big[ \log P_{\# \mathcal T_1} + P_{\# \mathcal T_1} \big] \oplus ... \oplus \big[ \log P_{\# \mathcal T_M} + P_{\# \mathcal T_M} \big],
+    \sum_{m=1}^M \nabla_P \kl_m(P_{\# \cT}) =
+    \log \frac{P_{\# \cT_1}}{\mu^{\otimes}_{\cT_1}} \oplus ... \oplus \log \frac{P_{\# \cT_m}}{\mu^{\otimes}_{\cT_m}} ,
   \end{split}
 \end{equation}
 where $\oplus$ represents the tensor sum operator between two arbitrary-size tensors: $(A \oplus B)_{i,j}:= A_i + B_j$, where with some
 abuse of notation, $i$ or $j$ can be understood as a tuple of indices. Thus, we avoid storing the $N$-D gradient tensor (as in the
-algorithm \ref{algo:dc_MMOT}) and only need to store $M$ smaller-size tensors. Not only saving the memory,
-this variation also seems to be empirically competitive with the original algorithm \ref{algo:dc_MMOT}, if not sometimes better,
+\Cref{algo:dc_MMOT}) and only need to store $M$ smaller-size tensors. Not only saving the memory,
+this variation also seems to be empirically competitive with the original \Cref{algo:dc_MMOT}, if not sometimes better,
 in terms of COOT loss. The underlying reason might be related to the approximate DCA scheme \citep{Thanh15}, where one replaces both
 steps in each DC iteration by their approximation. We leave the formal theoretical justification of this variation to the future work.
-We call this variation \textit{MMOT-DC-v1} and use the same setup as in the experiment \ref{expe:2}.
+We call this variation \textit{MMOT-DC-v1} and use the same setup as in Experiment \ref{expe:2}.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{./Chapitre2/fig/all_vs_MMOT-DC-v1.pdf}
@@ -889,28 +955,85 @@ We call this variation \textit{MMOT-DC-v1} and use the same setup as in the expe
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion and future work}
+\subsection{Conclusion and future work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Can be used to study the sample complexity of COOT and GW distances.
+\begin{equation}
+  | \coot(\cX, \cY) - \coot(\cX_n, \cY_n) |
+\end{equation}
+The idea is as follows: under some mild (practical) conditions, COOT and GW are equivalent.
+So, we prefer COOT to GW as it is less (unnecessarily) constrained.
+Inspired by the DC algo (or also convex-concave procedure),
+we linearize COOT and construct a "nice" lower bound, which:
+\begin{enumerate}
+  \item Is an entropic MMOT problem (up to a constant). In this case, one can reuse the technique
+  used to study sample complexity of entropic OT in \citep{Genevay19} and extend to the entropic MMOT.
+  \item Approaches COOT for suitable choice of inputs.
+\end{enumerate}
+\begin{definition}
+  For each $\pi \in \cU_4$, denote
+  $G(\pi) := \kl(\pi_{\# 12} | \mu) + \kl(\pi_{\# 34} | \mu)
+  = \kl(\pi_{\#} | \mu^{\otimes 2})$.
+\end{definition}
+\begin{lemma}
+  $G$ is convex and differentiable. In particular, for any $\pi \in \mathcal{U}_4$, we have
+  $G(\pi) = \langle \nabla G(\pi), \pi \rangle$.
+\end{lemma}
+Now, we have
+\begin{align}
+  \langle c, \gamma \rangle + \varepsilon \kl(\gamma | \gamma_{\#}) &\leq
+  \langle c, \gamma \rangle + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+  - \varepsilon \Big[ G(\pi) + \langle \nabla G(\pi), \gamma - \pi \rangle \Big] \\
+  &= \langle c - \varepsilon \nabla G(\pi), \gamma \rangle
+  + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+\end{align}
+So,
+\begin{align}
+  \mmotdc_{\varepsilon} \leq
+  \inf_{\gamma \in \cU_4} \langle c - \varepsilon \nabla G(\pi), \gamma \rangle
+  + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+\end{align}
+Now replace $G(\gamma)$ by its linear approximation
+$G(\pi) + \langle \nabla G(\pi), \gamma - \pi \rangle = \langle \nabla G(\pi), \gamma \rangle$,
+\begin{definition}
+  (Surrogate function) For $\gamma, \pi \in \cU_4$, define
+  \begin{equation}
+      \begin{split}
+          F_{\varepsilon}(\gamma, \pi)
+          &:= \langle c, \gamma \rangle + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+          - \varepsilon \Big[ G(\pi) + \langle \nabla G(\pi), \gamma - \pi \rangle \Big] \\
+          &= \langle c - \varepsilon \nabla G(\pi), \gamma \rangle
+          + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+      \end{split}
+  \end{equation}
+  and define
+  \begin{equation}
+      \begin{split}
+          L_{\varepsilon}(\pi) &:= \inf_{\gamma \in \cU_4} F_{\varepsilon}(\gamma, \pi)
+          = \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big)
+      \end{split}
+  \end{equation}
+\end{definition}
+
 
 % \subsection{Stability of Co-Optimal Transport}
 
 % COOT setting: given two sample-feature spaces
-% $\mathcal X_1 = ((X_1^s, \mu_1^s), (X_1^f, \mu_1^f), \xi_1)$ and
-% $\mathcal X_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$. COOT reads
+% $\cX_1 = ((X_1^s, \mu_1^s), (X_1^f, \mu_1^f), \xi_1)$ and
+% $\cX_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$. COOT reads
 % \begin{equation}
-%     \coot(\mathcal X_1, \mathcal X_2) =
+%     \coot(\cX_1, \cX_2) =
 %     \inf_{\substack{\pi^s \in U() \\ \pi^f \in U()}}
 %     \int |\xi_1 - \xi_2|^2 d\pi^s d\pi^f
 % \end{equation}
 % Consider the "semi-empirical" spaces:
-% $\widehat{\mathcal X}_i := ((\widehat{X}_i^s, \widehat{\mu}_i^s), (X_i^f, \mu_i^f), \xi_i))$, where
+% $\widehat{\cX}_i := ((\widehat{X}_i^s, \widehat{\mu}_i^s), (X_i^f, \mu_i^f), \xi_i))$, where
 % we fix the dimension $f$ and only consider the empirical version of sample measures.
 % Now, how does the feature coupling behave when $\widehat{\mu}^s \to \mu^s$?, i.e. when $n \to \infty$,
 % quantify
 % \begin{equation}
-%     | \coot(\mathcal X_1, \mathcal X_2) -
-%     \coot(\widehat{\mathcal X}_1, \widehat{\mathcal X}_2) |
+%     | \coot(\cX_1, \cX_2) -
+%     \coot(\widehat{\cX}_1, \widehat{\cX}_2) |
 % \end{equation}
 % We can first start with finite-dimensional feature spaces (so the feature coupling is a matrix).
-
-\subsection{Sample complexity of Co-Optimal Transport and GW distance}
