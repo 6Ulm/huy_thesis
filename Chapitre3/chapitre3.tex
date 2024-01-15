@@ -140,14 +140,14 @@ $X_1^s$ and $X_2^s$ belong to some common metric space $(\cE, d)$.
 Classical (unbalanced) optimal transport infers one alignment (or joint distribution)
 $\pi^s \in \cM^+(X_1^{s} \times X_2^s)$ with marginals $(\pi^{s}_{\#1}, \pi^{s}_{\#2})$
 close to $(\mu_1^s, \mu_2^s)$ according to some appropriate divergence $D$ such that
-the cost $\int c(x_1, x_2) \mathrm d\pi^{(s)}(x_1, x_2) + D(\pi^{s}_{\#1} | \mu_1^s)
+the cost $\int c(x_1, x_2) \; \mathrm d\pi^{s}(x_1, x_2) + D(\pi^{s}_{\#1} | \mu_1^s)
 + D(\pi^{s}_{\#2} | \mu_2^s)$ is minimal. For instance, in balanced (resp. unbalanced) OT,
 $D$ corresponds to the indicator divergence (resp. KL divergence or TV).
 To define a generalized OT beyond one single alignment, we must first introduce
 a new pair of measure spaces $(X_1^{f}, \mu_1^f)$ and $(X_2^{f}, \mu_2^f)$.
 Intuitively,  the two transport plans that must be inferred: $\pi^s$ across \emph{samples}
 and $\pi^f$ across \emph{features}, must minimize a cost of the form
-$\iint c((x_1^s, x_1^f), (x_2^s, x_2^f))\mathrm d\pi^s(x_1^s, x_2^s)\mathrm d \pi^f(x_1^f, x_2^f)$
+$\iint c((x_1^s, x_1^f), (x_2^s, x_2^f)) \; \mathrm d\pi^s(x_1^s, x_2^s)\; \mathrm d \pi^f(x_1^f, x_2^f)$
 where $c((x_1^s, x_1^f), (x_2^s, x_2^f))$ is the \emph{joint} cost of aligning
 the sample-feature pairs $(x_1^s, x_1^f)$ and $(x_2^s, x_2^f)$.
 
@@ -176,11 +176,10 @@ $\mathbb{X}_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$ by:
 \begin{equation}
 \label{eq:ucoot}
   \begin{split}
-    %   \ucoot_{\lambda}(\cX_1, \cX_2) :=
   \inf_{\substack{\pi^s \in \cM^+(X_1^s \times X_2^s) \\
   \pi^f \in \cM^+(X_1^f \times X_2^f) \\ m(\pi^s) = m(\pi^f)}}
   &\underbrace{\iint |\xi_1(x_1^s, x_1^f) - \xi_2(x_2^s, x_2^f)|^p
-  \mathrm d\pi^s\mathrm d \pi^f}_{\text{transport cost of sample-feature pairs}}
+  \; \mathrm d\pi^s \; \mathrm d \pi^f}_{\text{transport cost of sample-feature pairs}}
   + \underbrace{\sum_{k=1}^2\lambda_k D_k(\pi^s_{\#k} \otimes \pi^f_{\#k} |
   \mu^s_k \otimes \mu^f_k)}_{\text{mass destruction / creation penalty}},
   \end{split}
@@ -188,7 +187,7 @@ $\mathbb{X}_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$ by:
 for $\lambda_1, \lambda_2 >0$ and $p \geq 1$.
 \end{definition}
 As the multiplicative nature between $\pi^s$ and $\pi^f$ leads to an invariance by the scaling map
-$\alpha \mapsto (\alpha \pi^s, \frac{1}{\alpha}\pi^f)$, for $\alpha > 0$,
+$\alpha \mapsto (\alpha \pi^s, \frac{1}{\alpha} \pi^f)$, for $\alpha > 0$,
 we further impose the equal mass constraint $m(\pi^s) = m(\pi^f)$.
 
 It is worth mentioning that Formulation \eqref{eq:ucoot} is not the only way to
