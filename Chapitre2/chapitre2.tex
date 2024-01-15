@@ -5,61 +5,50 @@
 
 \chaptermark{\textbf{Contribution to CO-Optimal Transport}}
 
-\section{Introduction}
+This chapter presents two contributions to the CO-Optimal Transport (COOT).
+The first one is summarized in the paper \citep{Tran21},
+which studies a relaxation of COOT via multi-marginal OT (MMOT).
+It unifies several popular OT methods under its umbrella by promoting structural information
+on the coupling. We show that incorporating such information into MMOT results in an
+instance of a difference of convex (DC) programming problem allowing us to solve it numerically.
+Despite high computational cost, the solutions provided by DC optimization are usually
+as qualitative as those obtained using currently employed optimization schemes.
 
-This chapter is based on the paper \citep{Tran21} and my personal work.
+The second contribution is on the continuous COOT and its entropic approximation.
+We consider a generalization of measure network called \textit{measure hypernetwork}
+and show that continuous COOT can be used to compare such objects.
+We then study the convergence behavior of the entropic approximation of COOT in the finite-dimensional
+setting. Furthermore, under the GW framework, we can quantify the approximation error of
+entropic COOT and easily extend this analysis to the GW distance.
 
+\textbf{Important note:} \textit{This second contribution is based on my unpublished working paper
+on continuous COOT in November 2021 and bears similarity with two concurrent works.
+The first one is the hypergraph COOT \citep{Chowdhury21b} published in December 2021.
+Their work and ours are based on the same mathematical framework of \citep{Chowdhury19},
+which results in the same metric property. Apart from that, they pursue different research objectives,
+where COOT is used to explore the categorical properties of the space of measure hypernetworks.
+By contrast, we consider continuous COOT as the first step towards the analysis of
+entropic approximation, unbalanced extension and sample complexity.}
 
-considers a relaxation of the
-CO-Optimal Transport problem. OT theory underlies many emerging machine learning
-methods nowadays solving a wide range of tasks.
-These latter works, however, usually build upon a traditional OT setup with two distributions,
-while leaving a more general multi-marginal OT formulation somewhat
-unexplored. In this paper, we study the multi-marginal OT (MMOT) problem and unify several
-popular OT methods under its umbrella
-by promoting structural information on the coupling. We show that incorporating such structural
-information into MMOT results in an instance of a difference of convex (DC) programming problem allowing us to solve it numerically.
-Despite high computational cost of the latter procedure, the solutions provided by DC optimization are usually as qualitative as
-those obtained using currently employed optimization schemes.
+\textit{Our study on the entropic COOT also shares some resemblance to the approximation error of
+entropic GW in the paper of \citep{Zhang23} published in December 2022.
+Their analysis and ours use the block approximation technique \citep{Carlier17}
+to show the convergence of the minimum and minimizer, and to quantify the approximation error.
+In particular, our result can be immediately extended to the GW setting. However,
+we consider different assumptions on the mm-spaces,
+which imply different upper bound of the approximation error.}
 
-Recall that, when the supports of the probability measures lie in the same ground metric space,
-it is natural to use the distance defined by the metric
-to induce the cost, which leads to the famous Wasserstein distance \citep{Villani03}.
-When they do not, one can rely on the idea of Gromov-Hausdorff distance \citep{Gromov81}
-and its equivalent reformulations \citep{Gromov99,Kalton99,Burago01},
-and adapt them to the setting of metric measure spaces \citep{Gromov99}.
-This results in, for example, the celebrated Gromov-Wasserstein distance
-\citep{Memoli07,Memoli11,Sturm12}. By construction, the GW distance can only provide
-the sample alignment that best preserves the intrinsic geometry of the distributions and,
-as such, compares square pairwise relationship matrices.
+\section{Background on CO-Optimal Transport}
 
-The CO-Optimal transport (COOT) \citep{Redko20,Chowdhury21b} goes beyond these limits by
-simultaneously learning two independent (feature and sample) correspondences,
-thus provides greater flexibility over the GW distance in terms of usage and interpretability.
-First, it allows to measure similarity between arbitrary-size matrices. An interesting use case is,
-for instance, on tabular data, which is usually expressed as a matrix whose rows represent samples
-and columns represent features. For the GW distance, the similarity or distance matrix
-(or any square matrix derived from the data) must be calculated in advance and
-the effect of the individual variables is lost during this computation. By contrast,
-COOT can bypass this step as it can use either the tabular data directly or
-the similarity matrices as inputs. Second, COOT provides both sample and feature correspondences.
-These feature alignments are unique to COOT and prove to be particularly useful,
-for example in single-cell multi-omics \citep{Demetci20b}
-are also interpretable and allow to recover relations between the features of
-two different datasets even when they do not lie in the same space.
-COOT has shown superior performance in heterogeneous domain adaptaion \citep{Redko20},
-
-Given a matrix $X \in \bbR^{n \times d}$,
-we equip its samples (rows) with the histogram $\mu^s \in \Delta_n$ and features (columns)
-with the histogram $\mu^f \in \Delta_d$.
-We call the triplet $\bbX = (X, \mu^s, \mu^f)$ a sample-feature (s.f.) space.
-For $p \geq 1$, we define the COOT distance between two s.f. spaces
-$\bbX = (X, \mu_x^s, \mu_x^f)$ and $\bbY = (Y, \mu_y^s, \mu_y^f)$ as
+We define the weighted matrix $\cX = (X, \mu_1^X, \mu_2^X)$
+as the triplet comprised of a matrix $X \in \bbR^{n \times d}$
+equipped with the histograms $\mu_1^X \in \Sigma_n$ and $\mu_2^X \in \Sigma_d$ on its rows and columns,
+respectively. For $p \geq 1$, we define the COOT distance between weighted matrices
+$\cX = (X, \mu_1^X, \mu_2^X)$ and $\cY = (Y, \mu_1^Y, \mu_2^Y)$ as
 \begin{align}
-    \coot(\bbX, \bbY) :=
-    \inf_{\substack{\pi^s \in U(\mu_x^s, \mu_y^s) \\ \pi^f \in U(\mu_x^f, \mu_y^f)}}
-    \sum_{i,j,k,l} (X_{ij} - Y_{kl})^p \pi^s_{ik} \pi^f_{jl}
-    = \langle |X - Y|^p, \pi^s \otimes \pi^f \rangle.
+    \coot(\cX, \cY) :=
+    \inf_{\substack{P \in U(\mu_1^X, \mu_1^Y) \\ Q \in U(\mu_2^X, \mu_2^Y)}}
+    \sum_{i,j,k,l} (X_{ij} - Y_{kl})^p P_{ik} Q_{jl} = \langle |X - Y|^p, P \otimes Q \rangle.
 \end{align}
 Here, for convenience, we write $|X - Y|^p$ the $4$-D tensor defined by
 $(|X - Y|^p)_{i,k,j,l} = (X_{ij} - Y_{kl})^p$. We summarize the versatility of COOT for practical
@@ -79,23 +68,22 @@ usage in \Cref{t:comparisons}
 		\caption{but also robust to outliers.
     \label{t:comparisons}}
 \end{table}
+By Proposition 1 in \citep{Redko20}, if the weights are uniforms,
+then COOT defines a distance on the space of weighted matrices,
+up to permutation of the matrix coordinates.
+
 In the following sections, we will explore some aspects of COOT.
 
 COOT can be generalized to the multi-coupling setting \citep{Kerdoncuff22}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Three shades of discrete Co-Optimal Transport}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Co-Optimal Transport as lower bound of GW distance} \label{subsec:GWLB}
-
+\paragraph{Co-Optimal Transport as lower bound of GW distance} \label{subsec:GWLB}
 Since COOT is applicable to matrices of arbitrary-size, it is readily applicable to the GW setting,
 where inputs are similarity matrices. In this case, since there is no difference between
 the feature and sample distributions, we simply write $\bbX = (C^x, \mu_x)$,
 where $C^x$ is the similarity matrix and $\mu_x$ is the sample distribution.
 Note that GW distance can be formulated as
 \begin{align}
-  \gw(\bbX, \bbY) =
+  \gw(\bbX, \cY) =
   \inf_{\substack{\pi, \gamma \in U(\mu_x, \mu_y) \\ \pi = \gamma }}
   \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \gamma_{jl},
 \end{align}
@@ -104,7 +92,7 @@ under the additional constraint that they must be equal. If it is relaxed, then
 one recovers the COOT distance. We also stress that it should not
 be confused with the third lower bound of the GW distance \citep{Memoli07,Memoli11} defined as
 \begin{equation}
-  \text{TLB}(\bbX, \bbY) :=
+  \text{TLB}(\bbX, \cY) :=
   \inf_{\gamma \in U(\mu_x, \mu_y)}
   \Big( \inf_{\pi \in U(\mu_x, \mu_y)} \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \Big)
   \gamma_{jl}
@@ -112,8 +100,8 @@ be confused with the third lower bound of the GW distance \citep{Memoli07,Memoli
 In particular, it is not difficult to see that
 \begin{equation}
   \label{gw_tlb_COOT}
-  \gw(\bbX, \bbY) \geq \coot(\bbX, \bbY)
-  \geq \text{TLB}(\bbX, \bbY).
+  \gw(\bbX, \cY) \geq \coot(\bbX, \cY)
+  \geq \text{TLB}(\bbX, \cY).
 \end{equation}
 This formulation is intimately related to the \textit{bilinear assignment problem}.
 The equivalence between BAP and QAP has been studied in \citep{Konno76}.
@@ -133,30 +121,11 @@ let us recall that.
   $C^x_{ij} = f_i + f_j + A_{ij}$ and $C^y_{kl} = g_k + g_l + B_{kl}$,
   where $f, g$ are vectors in $\bbR^m, \bbR^n$, respectively,
   and the matrices $A, B$ are both conditionally positive (or negative) semi-definite.
-  Then $\gw(\bbX, \bbY) = \coot(\bbX, \bbY)$.
+  Then $\gw(\bbX, \cY) = \coot(\bbX, \cY)$.
   Furthermore, if $(\pi_1^*, \pi_2^*)$ is a solution of the COOT problem, then $\pi_1^*$ and $\pi_2^*$
   are two solutions of the GW problem. In particular,
   if the semi-definiteness is replaced by the definiteness, then $\pi_1^* = \pi_2^*$.
 \end{proposition}
-The idea relies on \citep{Maron18}, which allows to exploit the structure of the cost tensor.
-One can rewrite the problem as
-\begin{align}
-  \vect{P}^T C^x \otimes C^y \vect{P}
-\end{align}
-\begin{proposition}
-  (Theorem 1 in \citep{Maron18}) Denote
-\begin{equation}
-    \text{lin(DS)} = \{X \in \bbR^{m \times n}: X 1_n = 0, X^T 1_m = 0 \}
-\end{equation}
-the linear part of the affine-hull of the doubly-stochastic matrices. If the matrices $A \in \bbR^{m \times m}$ and
-  $B \in \bbR^{n \times n}$ are both conditionally negative (or positive) semi-definite, then $\text{vec}(X)^T (B \otimes A) \text{vec}(X) \geq 0$, for every $X \in \text{lin(DS)}$.
-\end{proposition}
-\begin{proof}
-    By lemma above, it's enough to show for any $X = u v^T$, where $u \in 1^{\perp}_m$
-    and $v \in 1^{\perp}_n$. In this case, as
-    $(U \otimes V)^T (A \otimes B) (U \otimes V) = (U^T A U) \otimes (V^T B V)$, we have
-    $\text{vec}(u v^T)^T (B \otimes A) \text{vec}(u v^T) = (u^T A u) (v^T B v) \geq 0$.
-\end{proof}
 \Cref{prop:coot_gw_equiv} implies that, under certain conditions, removing
 the equality constraint does not change the minimum,
 thus the rationale behind the alternative minimization procedure of GW distance is justified.
@@ -164,13 +133,269 @@ In practice, this idea of using COOT to approximate the GW distance has been use
 solve the unbalanced GW problem \citep{Sejourne20,Thual22}. It can also be extended
 easily to the setting of fused GW. To see this, first, observe that
 \begin{align}
-  \text{FGW}_{\alpha}(\bbX, \bbY) =
+  \text{FGW}_{\alpha}(\bbX, \cY) =
   \inf_{\substack{\pi, \gamma \in U(\mu_x, \mu_y) \\ \pi = \gamma }}
   \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \gamma_{jl} +
   \frac{\alpha}{2} \langle D, \pi \rangle + \frac{\alpha}{2} \langle D, \gamma \rangle.
 \end{align}
 Under exactly the same conditions, one can drop the equality constraint during the optimization.
 This result justifies the use of Block Coordinate Descent to estimate the FGW distance.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Continuous Co-Optimal Transport}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
+In order to avoid introducing unnecessary notational complication,
+we will mostly follow the terminology and concepts of the published work of \citep{Chowdhury21b}.
+
+\subsection{From discrete to continuous Co-Optimal Transport}
+
+Recall that by rewriting the measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$ as
+$\widetilde{\cX} = ((X_1, \mu_1^X), (X_2, \mu_2^X), c_X)$ and
+$\widetilde{\cY} = ((Y_1, \mu_1^Y), (Y_2, \mu_2^Y), c_Y)$, respectively, with
+$X_1 = X_2 = X, Y_1 = Y_2 = Y$ and
+$\mu_1^X = \mu^X_2 = \mu_X, \mu_1^Y = \mu^Y_2 = \mu_X$, one can reformulate the GW problem as
+\begin{equation}
+  \begin{split}
+    \inf_{\pi_1, \pi_2}
+    &\int_{X_1 \times Y_1} \int_{X_2 \times Y_2}
+    \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2). \\
+    \text{ subject to: } &\pi_k \in U(\mu_k^X, \mu_k^Y), \forall k = 1,2, \\
+    &\pi_1 = \pi_2.
+  \end{split}
+\end{equation}
+When the equality constraint on the two couplings is relaxed,
+we obtain a lower bound of the GW distance. Under this relaxation,
+we can further allow that either $X_1 \neq X_2$ or $Y_1 \neq Y_2$.
+The interest of such situation can be found, for example, in heterogenous domain adaptation,
+where $X_1$ and $Y_1$ represent the "sample" spaces in the source and target domains, respectively,
+and $X_2$ and $Y_2$ represent the "feature" spaces in the source and target domains, respectively.
+As a result, the corresponding "sample" and "feature" couplings are also different in their natures.
+
+\begin{definition}[Measure hypernetwork \citep{Chowdhury21b}]
+Suppose $(X_1, \mu_1^X)$ and $(X_2, \mu_2^X)$ are two Polish measure spaces,
+and $c_X$ is a bounded measurable function on $X_1 \times X_2$.
+We call the triplet $\cX = \big((X_1, \mu_1^X), (X_2, \mu_2^X), c_X \big)$
+a \textbf{measure hypernetwork}. We also say $c_X$ is the \textbf{interaction}
+between $X_1$ and $X_2$.
+\end{definition}
+Without risk of confusion, when $X_1 = X_2 = X$ and $\mu_1^X = \mu_2^X = \mu_X$,
+we use interchangeably "measure hypernetwork" and "measure network"
+in the context of GW \citep{Chowdhury19}.
+When $X_1$ and $X_2$ are finite spaces (so $\mu_1^X$ and $\mu_2^X$ are histograms),
+we call $\cX$ a finite measure hypernetwork. For convenience, we also refer the index $1$ as "sample"
+and $2$ as "feature", for example, $X_1$ is the sample space, $\pi_2$ is the feature coupling.
+\begin{definition}[\citep{Chowdhury21b}]
+  \label{def:cont_coot}
+  For $p \geq 1$, the COOT distance between two measure hypernetworks $\cX$ and $\cY$ is defined as
+  \begin{align} \label{eq:cont_coot}
+    \coot(\cX, \cY) =
+    \inf_{\substack{\pi_1 \in U(\mu^X_1, \mu^Y_1) \\
+    \pi_2 \in U(\mu^X_2, \mu^Y_2)}} \iint
+    \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2).
+  \end{align}
+\end{definition}
+It is not difficult to see that \Cref{def:cont_coot} generalizes the discrete COOT \citep{Redko20}.
+In practice, the input data is usually expressed as matrix,
+whose rows represent samples and columns represent features.
+In this case, the interaction value is precisely the coordinate of the data matrix.
+On the other hand, the sample and feature spaces are unknown and have little interest and importance.
+
+First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.9\textwidth, keepaspectratio]{./Chapitre2/fig/coot_diagram.pdf}
+%   \caption{Scatter plots of MMOT-DC-v1 versus other solvers. In all three plots, the points tend to concentrate around the line $y=x$,
+%   which indicates the comparable performance of MMOT-DC-v1. On the other hand, the top-right plot shows the clear superiority of EGW-PGD.}
+%   \label{fig:continuous_coot}
+% \end{figure}
+\begin{proposition}[Lemma 35 in \citep{Chowdhury21b}]
+  \label{prop:exist_coot}
+  The COOT problem always admits a minimizer and the minimum is finite.
+\end{proposition}
+While the proofs of our result and of Lemma 35 in \citep{Chowdhury21b} use the same proof technique of
+Theorem 2.2 in \citep{Chowdhury19}, ours is slightly different. More precisely,
+we exploit a different aspect of COOT, where it can be rewritten as a multi-marginal OT problem
+with additional factorization constraint on the coupling (see Appendix \ref{annex:cont_coot}
+for more details). Later, we will see that, this observation also allows to establish the
+convergence result of entropic COOT.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Metric properties}
+The framework on the isomorphism of GW distance presented in \Cref{subsec:prop_gw}
+can be extended easily to COOT setting as follows.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{definition}[Relaxed mass splitting]
+  A measure hypernetwork $\cZ$ is a \textbf{relaxed mass splitting} (RMS) of a
+  measure hypernetwork $\cX$ if there exist two measure-preserving maps
+  $\varphi_k: Z_k \to X_k$, for $k=1,2$, such that the pullback equality
+  $c_Z = (\varphi_1, \varphi_2)^*c_X$ holds $\mu^Z_1 \otimes \mu_2^Z$-almost everywhere
+  in $Z_1 \times Z_2$. We denote $\ms(\cX)$ the set of all mass splittings
+  of $\cX$. This pair of maps $(\varphi_1, \varphi_2)$ is also called
+  \textbf{basic weak isomorphism} in \citep{Chowdhury21b}.
+\end{definition}
+We denote $\rms(\cX)$ the set of all relaxed mass splittings of $\cX$. Clearly,
+$\cX \in \rms(\cX)$, so $\rms(\cX)$ is not empty.
+In particular, in the GW setting, if $\cZ \in \ms(\cX)$, then $\cZ \in \rms(\cX)$, meaning that
+$\ms(\cX) \subset \rms(\cX)$. Now, we can define the isomorphism between the measure hypernetworks
+as follows.
+\begin{definition}[COOT-isomorphism] \label{coot_isomorphic}
+  Two measure hypernetworks are
+  \begin{enumerate}
+    \item strongly isomorphic if there exist two \textbf{bijective}
+    measure-preserving map from one hypernetwork to the other such that the pullback equality holds
+    \textbf{everywhere}.
+    \item semi-strongly isomorphic if one is the RMS of the other and vice versa.
+    \item weakly isomorphic if they have a common RMS.
+  \end{enumerate}
+\end{definition}
+Clearly, this is an immediate relaxation of the isomorphism induced by the GW distance.
+In case of measure networks, isomorphism in GW sense implies COOT-isormorphism.
+The following result summarizes the relations amongst the three types of COOT-isomorphism.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{corollary} \label{prop:strong_weak_iso}
+  Given two measure hypernetworks $\cX$ and $\cY$. Consider three statements
+  \begin{enumerate}
+    \item[(1)] $\cX$ and $\cY$ are strongly isomorphism.
+    \item[(2)] $\cX$ and $\cY$ are semi-strongly isomorphism.
+    \item[(3)] $\cX$ and $\cY$ are weakly isomorphism.
+  \end{enumerate}
+  Then, the following relations hold
+  \begin{enumerate}
+    \item $(1) \implies (2) \implies (3)$.
+    \item If $\cX$ and $\cY$ are finite, then $(2) \implies (1)$.
+    \item If $\cX$ and $\cY$ are finite such that $|X_k| = |Y_k|$
+    and $\mu_k^X, \mu_k^Y$ are uniform distributions, for $k = 1,2$, then
+    $(3) \implies (2)$. This means all three forms are equivalent.
+  \end{enumerate}
+\end{corollary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Now, we can characterize the weak isomorphism by
+\begin{proposition} \label{prop:coot_iso}
+  Two measure hypernetworks $\cX$ and $\cY$ are COOT-weakly isomorphic if and only if
+  $\coot(\cX, \cY) = 0$.
+\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proposition}[Theorem 1 in \citep{Chowdhury21b}] \label{prop:metric_prop}
+  $\coot^{1/p}$ defines a metric on the space of measure hypernetworks, up to COOT-weak isomorphism.
+\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Discussion on the setting of mm-space}
+While the measure network can fit in the COOT framework, this is usually not the case for
+the mm-space since the distance function is only measurable in Polish space,
+but not necessarily bounded. However, all previous results on the existence of minimizer and
+metric property remain unchanged if one replaces measure hypernetworks by mm-spaces,
+as long as COOT is finite. Moreover,
+\begin{corollary}
+For $p=2$, all forms of COOT-isomorphisms are equivalent and
+they are also equivalent with the isomorphism in GW sense.
+\end{corollary}
+This indicates that, both GW distance and COOT can be used to compare isometric objects,
+namely those transformed by reflection, rotation or translation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Entropic regularization and approximation error}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Similar to the Wasserstein and GW distances, one can approximate the COOT with entropic regularization.
+In this thesis, we are interested in the following formulation of entropic COOT:
+for $\varepsilon > 0$,
+\begin{align}
+  \coot_{\varepsilon} (\cX, \cY) =
+  \inf_{\substack{\pi_1 \in U(\mu^X_1, \mu^Y_1) \\
+  \pi_2 \in U(\mu^X_2, \mu^Y_2)}} &\iint
+  \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2) \\
+  &+ \varepsilon \; \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big).
+\end{align}
+Note that, this structure of the KL divergence term is particularly handy to prove all results related to
+the entropic COOT. It also bears similarity with the \textit{quadratic divergence}
+\citep{Sejourne20} defined by $\kl^{\otimes 2}(\mu, \nu):= \kl(\mu \otimes \mu | \nu \otimes \nu)$,
+which is used to define the unbalanced GW divergence. Note that, in the balanced setting,
+the joint penalization in terms of KL divergence is in fact equivalent to the
+independent KL-penalization. Indeed, when $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
+\begin{equation}
+  \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big)
+  = \kl(\pi_1 \vert \mu^X_1 \otimes \mu^Y_1) + \kl(\pi_2 \vert \mu^X_2 \otimes \mu^Y_2).
+\end{equation}
+In practice, since the couplings may not have the same nature (for example,
+when working directly with the input data, rather than via the similarity matrix),
+they can be regularized by different values of regularization.
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proposition}
+The entropic COOT problem always admits a minimizer.
+\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%
+Now, to study the convergence behavior when $\varepsilon \to 0$, first,
+we introduce the following assumption on the measure hypernetwork.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{assumption}
+  \label{assump:ent_coot}
+  Given a measure hypernetwork, we assume that
+  \begin{enumerate}
+    \item[A1] The sample and feature spaces are finite-dimensional vector spaces.
+    \item[A2] Their associated Borel probability measures have finite $p$-th moment,
+    \textit{i.e.} $\int ||x||^p \; d\mu(x) < \infty$, and are absolutely continuous
+    with respect to the Lebesgue measure.
+    \item[A3] The interaction is continuous.
+  \end{enumerate}
+\end{assumption}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proposition} \label{conv_ent_coot}
+  Under the assumptions A1-A3, $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$
+  when $\varepsilon \to 0$. Moreover, let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
+  positive regularizations such that $\varepsilon_n \to 0$.
+  Denote $\pi_n := (\pi_{1, n}, \pi_{2, n})$ the solution of the entropic problem
+  $\coot_{\varepsilon_n} (\cX, \cY)$. Then, any cluster point of the sequence $(\pi_n)_n$ is
+  a solution of the unregularized COOT problem.
+\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The above result is similar to the one known in entropic OT \citep{Carlier17}. This is due to the fact
+that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
+thus the block approximation and $\Gamma$-convergence techniques can be applied. Moreover,
+similar to \citep{Genevay19}, when working with the bounded subsets in finite-dimensional vector spaces,
+we can further quantify the approximation error as follows.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proposition} \label{prop:quant_bound_ent}
+  Suppose that $X_1, X_2$ are bounded subsets of $\bbR^{d_x}$ and $Y_1, Y_2$ are bounded subsets
+  of $\bbR^{d_y}$, where $\diam(X_k), \diam(Y_k) \leq D$, for every $k=1,2$.
+  Denote $d = \max(d_x, d_y)$. Suppose there exist two constants $q, L > 0$ such that
+  $0 \leq c_X(x_1, x_2) \leq (L \vert\vert x_1 - x_2 \vert\vert)^q$,
+  for every $(x_1,x_2) \in X_1 \times X_2$, and
+  $0 \leq c_Y(y_1, y_2) \leq (L \vert\vert y_1 - y_2 \vert\vert)^q$,
+  for every $(y_1,y_2) \in Y_1 \times Y_2$. Then,
+  \begin{equation}
+    \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \leq
+    \frac{2d \varepsilon}{pq} \log\Big( \frac{pq (2DLd^{1/p})^{pq}}{2d \varepsilon} \Big).
+  \end{equation}
+\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+This bound is very similar to the one in Wasserstein setting \citep{Genevay19}.
+Let us consider two special cases of \Cref{prop:quant_bound_ent}.
+\begin{itemize}
+  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\textit{i.e.} $q=L=1$),
+  the upper bound becomes $d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big)$.
+
+  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are squared Euclidean distances
+  (\textit{i.e.} $q=2, L=1$), the upper bound becomes
+  $\frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big)$.
+\end{itemize}
+In both situations, the dependence of the bound on the maximal distance $D$ between points
+within each space (even only at logarithmic scale) and on the dimension $d$ indicates
+that either high dimensional space, or large intra-space distance (for example, due to outliers)
+can have negative impact on the approximation error. On the other hand,
+by comparing these two bounds, we deduce that if $\log(2d \varepsilon) \leq 1$,
+then the squared Euclidean distances generates a provably better (smaller) upper bound.
+
+With little modification of the proof, exactly the same upper bound in \Cref{prop:quant_bound_ent}
+remains true for GW distance. We note that \citep{Zhang23} also establish a similar
+$O(\varepsilon \log \varepsilon)$-approximation error between the unregularized and entropic GW,
+but they rely on different assumptions to ours. In particular, their result only holds
+for $2$-GW distance, when the distance function is the squared-Euclidean norm. By contrast,
+\Cref{prop:quant_bound_ent} holds for any $p$-GW distance and any $L^q$-norm as distance function.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Three shades of discrete Co-Optimal Transport}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Co-Optimal Transport as low non-negative rank OT}
@@ -210,6 +435,18 @@ which is a variation of the non-negative rank-$1$ OT problem.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Co-Optimal Transport as factored multi-marginal OT} \label{subsec:MMOT_DC}
 
+considers a relaxation of the
+CO-Optimal Transport problem. OT theory underlies many emerging machine learning
+methods nowadays solving a wide range of tasks.
+These latter works, however, usually build upon a traditional OT setup with two distributions,
+while leaving a more general multi-marginal OT formulation somewhat
+unexplored. In this paper, we study the multi-marginal OT (MMOT) problem and unify several
+popular OT methods under its umbrella
+by promoting structural information on the coupling. We show that incorporating such structural
+information into MMOT results in an instance of a difference of convex (DC) programming problem allowing us to solve it numerically.
+Despite high computational cost of the latter procedure, the solutions provided by DC optimization are usually as qualitative as
+those obtained using currently employed optimization schemes.
+
 Note that we can rewrite COOT as a variation of multi-marginal OT (MMOT) problem.
 To see this, first, we recall some related concepts.
 Given an integer $N \geq 1$, for any positive integers $a_1,..., a_N$, we call
@@ -231,59 +468,8 @@ regularization problem
 \begin{equation} \label{MMOT_primal}
   \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon H(P).
 \end{equation}
-which can be solved using Sinkhorn's algorithm \citep{Benamou14}. We refer the interested reader to Supplementary materials for algorithmic details.
-
-\paragraph{Derivation of the Sinkhorn algorithm in entropic MMOT.} The corresponding entropic dual problem of the primal problem
-\ref{MMOT_primal} reads
-\begin{equation}
-  \sup_{f_n \in \bbR^{a_n}} \sum_{n=1}^N \langle f_n, \mu_n \rangle -
-  \varepsilon \sum_{i_1,...,i_N} \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big) + \varepsilon.
-\end{equation}
-For each $n \in [N]$ and $i_n \in [a_n]$, the first order optimality condition reads
-\begin{equation}
-  0 = (\mu_n)_{i_n} - \exp\big( \frac{(f_n)_{i_n}}{\varepsilon} \big)
-  \sum_{i_{-n}} \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
-\end{equation}
-where, with some abuse of notation, we write $i_{-n} = (i_1, ..., i_{n-1}, i_{n+1}, ..., i_N)$. Or, equivalently
-\begin{equation}
-  (f_n)_{i_n} = \varepsilon \log (\mu_n)_{i_n} - \varepsilon \log \sum_{i_{-n}}
-  \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
-\end{equation}
-or even more compact form
-\begin{equation}
-  f_n = \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
-  \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{\cdot, i_{-n}}}{\varepsilon} \Big).
-\end{equation}
-Using the primal-dual relation, we obtain the minimiser of the primal problem \ref{MMOT_primal} by
-\begin{equation}
-  P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big),
-\end{equation}
-for $i_n \in [a_n]$, with $n \in [N]$.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Similar to the entropic OT, the Sinkhorn algorithm \ref{algo:dual_mmot} is also usually implemented in log-domain to avoid numerical instability.
-\begin{algorithm}[h]
-  \caption{Sinkhorn algorithm for the entropic MMOT problem \ref{MMOT_primal} from \citep{Benamou14}.}
-  \textbf{Input.} Histograms $\mu_1,...,\mu_N$, hyperparameter $\varepsilon > 0$, cost tensor $C$ and
-  tuple of initial dual vectors $(f^{(0)}_1, ... f^{(0)}_N)$.
-
-  \textbf{Output.} Optimal transport plan $P$ and tuple of dual vectors $(f_1, ... f_N)$ (optional).
-  \begin{enumerate}
-    \item While not converge: for $n = 1, ..., N$,
-    \begin{equation}
-      \begin{split}
-        f^{(t+1)}_n &= \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
-        \Big[ \exp\Big( \frac{\sum_{j < n} (f^{(t+1)}_j)_{i_j} + \sum_{j > n} (f^{(t)}_j)_{i_j} -
-        C_{\cdot, i_{-n}}}{\varepsilon} \Big) \Big].
-      \end{split}
-    \end{equation}
-    \item Return tensor $P$, where for $i_n \in [a_n]$, with $n \in [N]$,
-    \begin{equation}
-      P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big).
-    \end{equation}
-  \end{enumerate}
-  \label{algo:dual_mmot}
-\end{algorithm}
-
+which can be solved using Sinkhorn's algorithm \citep{Benamou14}.
+We refer the interested reader to Appendix \ref{appendix:subsec_mmot_dc} for algorithmic details.
 Now, it is easy to see that COOT can be rewritten as
 \begin{align}
   \inf_{\gamma \in U_2} \langle C, \gamma \rangle
@@ -599,13 +785,17 @@ We compare four solvers:
 \begin{enumerate}
   \item The Frank-Wolfe algorithm to solve the GW distance (GW-FW).
 
-  \item The projected gradient algorithm to solve the entropic GW distance \citep{Peyre16} (EGW-PGD). We choose the regularization
-  parameter from $\{0.0008, 0.0016, 0.0032, 0.0064, 0.0128, 0.0256 \}$ and pick the one which corresponds to smallest COOT loss.
+  \item The projected gradient algorithm to solve the entropic GW distance \citep{Peyre16} (EGW-PGD).
+  We choose the regularization parameter from the set
+  $\{0.0008, 0.0016, 0.0032, 0.0064, 0.0128, 0.0256 \}$
+  and pick the one which corresponds to smallest COOT loss.
 
   \item The Block Coordinate Descent algorithm to approximate the entropic COOT \citep{Redko20}
   (EGW-BCD), where two additional KL divergences corresponding to two couplings are introduced.
-  Both regularization parameters are tuned from $\{0, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1 \}$,
-  where $0$ means that there is no regularization term for the corresponding coupling and we pick the pair whose COOT loss is the smallest.
+  The regularization parameters are tuned from the set
+  $\{0, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1 \}$,
+  where $0$ means that there is no regularization term for the corresponding coupling
+  and we pick the pair whose COOT loss is the smallest.
 
   \item The algorithm \ref{algo:dc_MMOT} to solve the MMOT-DC. We tune
   $\varepsilon \in \{1, 1.4, 1.8, 2.2, 2.6\}$ and we pick the one which corresponds to smallest COOT loss.
@@ -697,276 +887,6 @@ We call this variation \textit{MMOT-DC-v1} and use the same setup as in the expe
   very similar.}
   % \vskip -0.1in
 \end{table}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continuous Co-Optimal Transport}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\textbf{Important note:} \textit{this section is based on my unpublished working paper
-on continuous COOT (including the entropic regularization and unbalanced extension) in November 2021.
-It bears similarity with two concurrent works. The first one has been published
-by \citep{Chowdhury21b} in December 2021. Their work and ours are based on the same
-mathematical framework of \citep{Chowdhury19}, which results in the same metric property.
-Apart from that, they pursue different research objectives,
-where COOT is used to explore the categorical properties of the space of measure hypernetworks.}
-
-\textit{Our study on the entropic COOT also shares some resemblance to
-entropic GW in the paper of \citep{Zhang23} published in December 2022.
-Their analysis and ours use the block approximation technique \citep{Carlier17}
-to show the convergence of the minimum and minimizer, and to quantify the approximation error.
-In particular, our result can be immediately extended to the GW setting. However,
-we consider different assumptions on the mm-spaces,
-which imply different upper bound of the approximation error.}
-
-In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
-In order to avoid introducing unnecessary notational complication,
-we will mostly follow the terminology and concepts of the published works.
-
-\subsection{From discrete to continuous Co-Optimal Transport}
-
-\paragraph{Motivation and formulation} Recall that in GW distance,
-by rewriting the measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$ as
-$\widetilde{\cX} = ((X_1, \mu_1^X), (X_2, \mu_2^X), c_X)$ and
-$\widetilde{\cY} = ((Y_1, \mu_1^Y), (Y_2, \mu_2^Y), c_Y)$, respectively, with
-$X_1 = X_2 = X, Y_1 = Y_2 = Y$ and
-$\mu_1^X = \mu^X_2 = \mu_X, \mu_1^Y = \mu^Y_2 = \mu_X$, one can reformulate the GW problem as
-\begin{equation}
-  \begin{split}
-    \inf_{\pi_1, \pi_2}
-    &\int_{X_1 \times Y_1} \int_{X_2 \times Y_2}
-    \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2). \\
-    \text{ subject to: } &\pi_k \in U(\mu_k^X, \mu_k^Y), \forall k = 1,2, \\
-    &\pi_1 = \pi_2.
-  \end{split}
-\end{equation}
-When the equality constraint on the two couplings is relaxed,
-we obtain a lower bound of the GW distance. Under this relaxation,
-we can further allow that either $X_1 \neq X_2$ or $Y_1 \neq Y_2$.
-The interest of such situation can be found, for example, in heterogenous domain adaptation,
-where $X_1$ and $Y_1$ represent the "sample" spaces in the source and target domains, respectively,
-and $X_2$ and $Y_2$ represent the "feature" spaces in the source and target domains, respectively.
-As a result, the corresponding "sample" and "feature" couplings are also different in their natures.
-
-\begin{definition}[Measure hypernetwork \citep{Chowdhury21b}]
-Suppose $(X_1, \mu_1^X)$ and $(X_2, \mu_2^X)$ are two Polish measure spaces,
-and $c_X$ is a bounded measurable function on $X_1 \times X_2$.
-We call the triplet $\cX = \big((X_1, \mu_1^X), (X_2, \mu_2^X), c_X \big)$
-a \textbf{measure hypernetwork}. We also say $c_X$ is the \textbf{interaction}
-between $X_1$ and $X_2$.
-\end{definition}
-Without risk of confusion, when $X_1 = X_2 = X$ and $\mu_1^X = \mu_2^X = \mu_X$,
-we use interchangeably "measure hypernetwork" and "measure network"
-in the context of GW \citep{Chowdhury19}.
-When $X_1$ and $X_2$ are finite spaces (so $\mu_1^X$ and $\mu_2^X$ are histograms),
-we call $\cX$ a finite measure hypernetwork. For convenience, we also refer the index $1$ as "sample"
-and $2$ as "feature", for example, $X_1$ is the sample space, $\pi_2$ is the feature coupling.
-\begin{definition}[\citep{Chowdhury21b}]
-  \label{def:cont_coot}
-  For $p \geq 1$, the COOT distance between two measure hypernetworks $\cX$ and $\cY$ is defined as
-  \begin{align} \label{eq:cont_coot}
-    \coot(\cX, \cY) =
-    \inf_{\substack{\pi_1 \in U(\mu^X_1, \mu^Y_1) \\
-    \pi_2 \in U(\mu^X_2, \mu^Y_2)}} \iint
-    \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2).
-  \end{align}
-\end{definition}
-It is not difficult to see that \Cref{def:cont_coot} generalizes the discrete COOT \citep{Redko20}.
-In practice, the input data is usually expressed as matrix,
-whose rows represent samples and columns represent features.
-In this case, the interaction value is precisely the coordinate of the data matrix.
-On the other hand, the sample and feature spaces are unknown and have little interest and importance.
-
-First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
-% \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=0.9\textwidth, keepaspectratio]{./Chapitre2/fig/coot_diagram.pdf}
-%   \caption{Scatter plots of MMOT-DC-v1 versus other solvers. In all three plots, the points tend to concentrate around the line $y=x$,
-%   which indicates the comparable performance of MMOT-DC-v1. On the other hand, the top-right plot shows the clear superiority of EGW-PGD.}
-%   \label{fig:continuous_coot}
-% \end{figure}
-\begin{proposition}[Lemma 35 in \citep{Chowdhury21b}]
-  \label{prop:exist_coot}
-  The COOT problem always admits a minimizer and the minimum is finite.
-\end{proposition}
-While using the proof technique of Lemma 35 in \citep{Chowdhury21b}, we provide a slightly different
-proof in Appendix \ref{annex:cont_coot}. More precisely,
-we exploit a different aspect of COOT, where it can be rewritten as a multi-marginal OT problem
-with additional factorization constraint on the coupling.
-Later, we will see that, this observation also allows to establish the
-convergence result of entropic COOT.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Metric properties}
-The framework on the isomorphism of GW distance presented in \Cref{subsec:prop_gw}
-can be extended easily to COOT setting.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{definition}[Relaxed mass splitting]
-  A measure hypernetwork $\cZ$ is a \textbf{relaxed mass splitting} (RMS) of a
-  measure hypernetwork $\cX$ if there exist two measure-preserving maps
-  $\varphi_k: Z_k \to X_k$, for $k=1,2$, such that the pullback equality
-  $c_Z = (\varphi_1, \varphi_2)^*c_X$ holds $\mu^Z_1 \otimes \mu_2^Z$-almost everywhere
-  in $Z_1 \times Z_2$. We denote $\ms(\cX)$ the set of all mass splittings
-  of $\cX$. This pair of maps $(\varphi_1, \varphi_2)$ is also called
-  \textbf{basic weak isomorphism} in \citep{Chowdhury21b}.
-\end{definition}
-We denote $\rms(\cX)$ the set of all relaxed mass splittings of $\cX$. Clearly,
-$\cX \in \rms(\cX)$, so $\rms(\cX)$ is not empty.
-In particular, in the GW setting, if $\cZ \in \ms(\cX)$, then $\cZ \in \rms(\cX)$, meaning that
-$\ms(\cX) \subset \rms(\cX)$. Now, we can define the isomorphism between the measure hypernetworks
-as follows.
-\begin{definition}[COOT-isomorphism] \label{coot_isomorphic}
-  Two measure hypernetworks are
-  \begin{enumerate}
-    \item strongly isomorphic if there exist two \textbf{bijective}
-    measure-preserving map from one hypernetwork to the other such that the pullback equality holds
-    \textbf{everywhere}.
-    \item semi-strongly isomorphic if one is the RMS of the other and vice versa.
-    \item weakly isomorphic if they have a common RMS.
-  \end{enumerate}
-\end{definition}
-Clearly, this is an immediate relaxation of the isomorphism induced by the GW distance.
-In case of measure networks, isomorphism in GW sense implies COOT-isormorphism.
-The following result summarizes the relations amongst the three types of COOT-isomorphism.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{corollary} \label{prop:strong_weak_iso}
-  Given two measure hypernetworks $\cX$ and $\cY$. Consider three statements
-  \begin{enumerate}
-    \item[(1)] $\cX$ and $\cY$ are strongly isomorphism.
-    \item[(2)] $\cX$ and $\cY$ are semi-strongly isomorphism.
-    \item[(3)] $\cX$ and $\cY$ are weakly isomorphism.
-  \end{enumerate}
-  Then, the following relations hold
-  \begin{enumerate}
-    \item $(1) \implies (2) \implies (3)$.
-    \item If $\cX$ and $\cY$ are finite, then $(2) \implies (1)$.
-    \item If $\cX$ and $\cY$ are finite such that $|X_k| = |Y_k|$
-    and $\mu_k^X, \mu_k^Y$ are uniform distributions, for $k = 1,2$, then
-    $(3) \implies (2)$. This means all three forms are equivalent.
-  \end{enumerate}
-\end{corollary}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Now, we can characterize the weak isomorphism by
-\begin{proposition} \label{prop:coot_iso}
-  Two measure hypernetworks $\cX$ and $\cY$ are COOT-weakly isomorphic if and only if
-  $\coot(\cX, \cY) = 0$.
-\end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition}[Theorem 1 in \citep{Chowdhury21b}] \label{prop:metric_prop}
-  $\coot^{1/p}$ defines a metric on the space of measure hypernetworks, up to COOT-weak isomorphism.
-\end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Discussion on the setting of mm-space}
-While the measure network can fit in the COOT framework, this is usually not the case for
-the mm-space since the distance function is only measurable in Polish space,
-but not necessarily bounded. However, all previous results on the existence of minimizer and
-metric property remain unchanged if one replaces measure hypernetworks by mm-spaces,
-as long as COOT is finite. Moreover,
-\begin{corollary}
-For $p=2$, all forms of COOT-isomorphisms are equivalent and
-they are also equivalent with the isomorphism in GW sense.
-\end{corollary}
-This indicates that, both GW distance and COOT can be used to compare isometric objects,
-namely those transformed by reflection, rotation or translation.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Entropic regularization and approximation error}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Similar to the Wasserstein and GW distances, one can approximate the COOT with entropic regularization.
-In this thesis, we are interested in the following formulation of entropic COOT:
-for $\varepsilon > 0$,
-\begin{align}
-  \coot_{\varepsilon} (\cX, \cY) =
-  \inf_{\substack{\pi_1 \in U(\mu^X_1, \mu^Y_1) \\
-  \pi_2 \in U(\mu^X_2, \mu^Y_2)}} &\iint
-  \big\vert c_X(x_1, x_2) - c_Y(y_1, y_2) \big\vert^p \; d\pi_1(x_1, y_1) \; d\pi_2(x_2, y_2) \\
-  &+ \varepsilon \; \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big).
-\end{align}
-Note that, this structure of the KL divergence term is particularly handy to prove all results related to
-the entropic COOT. It also bears similarity with the \textit{quadratic divergence}
-\citep{Sejourne20} defined by $\kl^{\otimes 2}(\mu, \nu):= \kl(\mu \otimes \mu | \nu \otimes \nu)$,
-which is used to define the unbalanced GW divergence. Note that, in the balanced setting,
-the joint penalization in terms of KL divergence is in fact equivalent to the
-independent KL-penalization. Indeed, when $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
-\begin{equation}
-  \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big)
-  = \kl(\pi_1 \vert \mu^X_1 \otimes \mu^Y_1) + \kl(\pi_2 \vert \mu^X_2 \otimes \mu^Y_2).
-\end{equation}
-In practice, since the couplings may not have the same nature (for example,
-when working directly with the input data, rather than via the similarity matrix),
-they can be regularized by different values of regularization.
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition}
-The entropic COOT problem always admits a minimizer.
-\end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%
-Now, to study the convergence behavior when $\varepsilon \to 0$, first,
-we introduce the following assumption on the measure hypernetwork.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{assumption}
-  \label{assump:ent_coot}
-  Given a measure hypernetwork, we assume that
-  \begin{enumerate}
-    \item[A1] The sample and feature spaces are finite-dimensional vector spaces.
-    \item[A2] Their associated Borel probability measures have finite $p$-th moment,
-    \textit{i.e.} $\int ||x||^p \; d\mu(x) < \infty$, and are absolutely continuous
-    with respect to the Lebesgue measure such that the negative entropy is finite,
-    \textit{i.e.} $\int \mu(x) \log(\mu(x)) \; dx < \infty$.
-    \item[A3] The interaction is continuous.
-  \end{enumerate}
-\end{assumption}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition} \label{conv_ent_coot}
-  Under the assumptions A1-A3, $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$
-  when $\varepsilon \to 0$. Moreover, let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
-  positive regularizations such that $\varepsilon_n \to 0$.
-  Denote $\pi_n := (\pi_{1, n}, \pi_{2, n})$ the solution of the entropic problem
-  $\coot_{\varepsilon_n} (\cX, \cY)$. Then, any cluster point of the sequence $(\pi_n)_n$ is
-  a solution of the unregularized COOT problem.
-\end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The above result is similar to the one known in entropic OT \citep{Carlier17}. This is due to the fact
-that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
-thus the block approximation and $\Gamma$-convergence techniques can be applied. Moreover,
-similar to \citep{Genevay19}, when working with the bounded subsets in finite-dimensional vector spaces,
-we can further quantify the approximation error as follows.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition} \label{prop:quant_bound_ent}
-  Suppose that $X_1, X_2$ are bounded subsets of $\bbR^{d_x}$ and $Y_1, Y_2$ are bounded subsets
-  of $\bbR^{d_y}$, where $\diam(X_k), \diam(Y_k) \leq D$, for every $k=1,2$.
-  Denote $d = \max(d_x, d_y)$. Suppose there exist two constants $q, L > 0$ such that
-  $0 \leq c_X(x_1, x_2) \leq (L \vert\vert x_1 - x_2 \vert\vert)^q$,
-  for every $(x_1,x_2) \in X_1 \times X_2$, and
-  $0 \leq c_Y(y_1, y_2) \leq (L \vert\vert y_1 - y_2 \vert\vert)^q$,
-  for every $(y_1,y_2) \in Y_1 \times Y_2$. Then,
-  \begin{equation}
-    \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \leq
-    \frac{2d \varepsilon}{pq} \log\Big( \frac{pq (2DLd^{1/p})^{pq}}{2d \varepsilon} \Big).
-  \end{equation}
-\end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%
-This bound is very similar to the one in Wasserstein setting \citep{Genevay19}.
-Let us consider two special cases of \Cref{prop:quant_bound_ent}.
-\begin{itemize}
-  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\textit{i.e.} $q=L=1$),
-  the upper bound becomes $d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big)$.
-
-  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are squared Euclidean distances
-  (\textit{i.e.} $q=2, L=1$), the upper bound becomes
-  $\frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big)$.
-\end{itemize}
-In both situations, the dependence of the bound on the maximal distance $D$ between points
-within each space (even only at logarithmic scale) and on the dimension $d$ indicates
-that either high dimensional space, or large intra-space distance (for example, due to outliers)
-can have negative impact on the approximation error. On the other hand,
-by comparing these two bounds, we deduce that if $\log(2d \varepsilon) \leq 1$,
-then the squared Euclidean distances generates a provably better (smaller) upper bound.
-
-With little modification of the proof, exactly the same upper bound in \Cref{prop:quant_bound_ent}
-remains true for GW distance. We note that \citep{Zhang23} also establish a similar
-$O(\varepsilon \log \varepsilon)$-approximation error between the unregularized and entropic GW,
-but they rely on different assumptions to ours. In particular, their result only holds
-for $2$-GW distance, when the distance function is the squared-Euclidean norm. By contrast,
-\Cref{prop:quant_bound_ent} holds for any $p$-GW distance and any $L^q$-norm as distance function.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and future work}
