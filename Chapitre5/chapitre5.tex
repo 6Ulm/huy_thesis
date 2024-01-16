@@ -5,6 +5,17 @@
 
 \chaptermark{\textbf{Augmented Gromov-Wasserstein}}
 
+Gromov-Wasserstein distance has many applications in machine learning due to its ability
+to compare measures across metric spaces and its invariance to isometric transformations. However,
+in certain applications, this invariant property can be too flexible, thus undesirable. Moreover,
+the Gromov-Wasserstein distance solely considers pairwise sample similarities in input datasets,
+disregarding the raw feature representations. We propose a new optimal transport formulation,
+called Augmented Gromov-Wasserstein (AGW), that allows for some control over the
+level of rigidity to transformations. It also incorporates feature alignments,
+enabling us to better leverage prior knowledge on the input data for improved performance.
+We present theoretical insights into the proposed method. We then demonstrate its usefulness
+for single-cell multi-omic alignment tasks and heterogeneous domain adaptation in machine learning.
+
 \section{Introduction}
 
 Optimal transport (OT) theory provides a fundamental tool for comparing and
