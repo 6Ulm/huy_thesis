@@ -141,6 +141,7 @@
 \newcommand{\rms}{\text{RMS}}
 \newcommand{\ms}{\text{MS}}
 \newcommand{\diam}{\text{diam}}
+\newcommand{\diag}{\text{diag}}
 \newcommand{\wrt}{w.r.t. }
 \newcommand{\mmotdc}{\text{MMOT-DC}}
 \newcommand{\mmot}{\text{MMOT}}
