@@ -144,6 +144,7 @@
 \newcommand{\wrt}{w.r.t. }
 \newcommand{\mmotdc}{\text{MMOT-DC}}
 \newcommand{\mmot}{\text{MMOT}}
+\newcommand{\agw}{\text{AGW}}
 
 \newcommand{\bbE}{\mathbb E}
 \newcommand{\bbN}{\mathbb N}
