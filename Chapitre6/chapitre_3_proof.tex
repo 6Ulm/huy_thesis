@@ -310,10 +310,10 @@ where the last inequality follows from the marginal constraints.
     Given the equal-mass solution $(\pi^s, \pi^f)$ of the UCOOT problem,
     with $m(\pi^s) = m(\pi^f) = M$, consider, for $t \in (0,1)$, a pair of
     sub-optimal transport plans:
-    \begin{align*}
+    \begin{align}
       &\widetilde{\pi}^s = \alpha_s \pi^s + t (1-\alpha_s) \varepsilon_s \otimes \mu^s_2\\
       &\widetilde{\pi}^f = \alpha_f \pi^f + t (1-\alpha_f) \varepsilon_f \otimes \mu^f_2.
-    \end{align*}
+    \end{align}
     Then, for $a\in \{s, f\}$, it holds:
     \begin{itemize}
       \item $\widetilde{\pi}^a_{\#1} = \alpha_k \pi^a_{\#1} + t (1 - \alpha_a) \varepsilon_a$,
@@ -573,3 +573,203 @@ We claim that, in the discrete setting, by taking $\varepsilon$ sufficiently sma
 \end{proof}
 
 \section{Proof of Chapter }
+
+\begin{proof}[Proof of \Cref{prop:basic_prop}]
+  The proof of this proposition can be adapted directly from \citep{Vayer19b}.
+  For self-contained purpose, we give the proof here. Denote
+  \begin{itemize}
+      \item $(P^s_{\alpha}, P^v_{\alpha})$ the optimal sample and feature couplings for
+      $\agw_{\alpha}(X, Y)$.
+
+      \item $(P^s_0, P^v_0)$ the optimal sample and feature couplings for $\coot(X, Y)$.
+
+      \item $P^s_1$ the optimal sample coupling for $\gw(X, Y)$.
+  \end{itemize}
+  Due to the suboptimality of $P^s_{\alpha}$ for GW and $(P^s_1, P^v_0)$ for AGW, we have
+  \begin{align}
+      \alpha \langle L(D_X, D_Y) \otimes P^s_1, P^s_1 \rangle
+      &\leq \alpha \langle L(D_X, D_Y) \otimes P^s_{\alpha}, P^s_{\alpha} \rangle
+      + (1 - \alpha) \langle L(X, Y) \otimes P^v_{\alpha}, P^s_{\alpha} \rangle \\
+      &\leq \alpha \langle L(D_X, D_Y) \otimes P^s_1, P^s_1 \rangle
+      + (1 - \alpha) \langle L(X, Y) \otimes P^v_0, P^s_1 \rangle,
+  \end{align}
+  or equivalently
+  \begin{align}
+      \alpha \gw(X, Y) \leq \agw_{\alpha}(X, Y) \leq \alpha \gw(X, Y)
+      + (1 - \alpha) \langle L(X, Y) \otimes P^v_0, P^s_1 \rangle.
+  \end{align}
+  Similarly, we have
+  \begin{align}
+      (1 - \alpha) \coot(X, Y) \leq \agw_{\alpha}(X, Y) \leq (1 - \alpha) \coot(X, Y)
+      + \alpha \langle L(D_X, D_Y) \otimes P^s_0, P^s_0 \rangle.
+  \end{align}
+  The interpolation property then follows by the sandwich theorem.
+
+  Regarding the relaxed triangle inequality, given three triplets
+  $(X, \mu_{sx}, \mu_{fx}), (Y, \mu_{sy}, \mu_{fy})$ and $(Z, \mu_{sz}, \mu_{fz})$,
+  let $(\pi^{XY}, \gamma^{XY}), (\pi^{YZ}, \gamma^{YZ})$ and $(\pi^{XZ}, \gamma^{XZ})$
+  be solutions of the problems $\agw_{\alpha}(X, Y), \agw_{\alpha}(Y, Z)$ and
+  $\agw_{\alpha}(X, Z)$, respectively. Denote
+  $P = \pi^{XY} \diag \left( \frac{1}{\mu_{sy}} \right) \pi^{YZ}$ and
+  $Q = \gamma^{XY} \diag\left( \frac{1}{\mu_{fy}} \right) \gamma^{YZ}$. Then,
+  it is not difficult to see that $P \in U(\mu_{sx}, \mu_{sz})$ and
+  $Q \in U(\mu_{fx}, \mu_{fz})$. The suboptimality of $(P,Q)$ implies that
+  \begin{align}
+      &\frac{\agw_{\alpha}(X, Z)}{2} \\
+      &\leq \alpha \sum_{i,j,k,l} \frac{|D_X(i,j) - D_Z(k,l)|^2}{2} P_{i,k} P_{j, l}
+      + (1 - \alpha) \sum_{i,j,k,l} \frac{|X_{i,j} - Z_{k,l}|^2}{2} P_{i,k} Q_{j,l} \\
+      &= \alpha \sum_{i,j,k,l} \frac{|D_X(i,j) - D_Z(k,l)|^2}{2}
+      \left( \sum_e \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e} \right)
+      \left(\sum_o \frac{\pi^{XY}_{j,o} \pi^{YZ}_{o,l}}{(\mu_{sy})_o} \right) \\
+      &+ (1 - \alpha) \sum_{i,j,k,l} \frac{|X_{i,j} - Z_{k,l}|^2}{2}
+      \left(\sum_e \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e} \right)
+      \left( \sum_o \frac{\gamma^{XY}_{j,o} \gamma^{YZ}_{o,l}}{(\mu_{fy})_o} \right) \\
+      &\leq \alpha \sum_{i,j,k,l,e,o} |D_X(i,j) - D_Y(e,o)|^2
+      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
+      \frac{\pi^{XY}_{j,o} \pi^{YZ}_{o,l}}{(\mu_{sy})_o}
+      + (1 - \alpha) \sum_{i,j,k,l,e,o} |X_{i,j} - Y_{e,o}|^2
+      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
+      \frac{\gamma^{XY}_{j,o} \gamma^{YZ}_{o,l}}{(\mu_{fy})_o} \\
+      &+ \alpha \sum_{i,j,k,l,e,o} |D_Y(e, o) - D_Z(k,l)|^2
+      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
+      \frac{\pi^{XY}_{j,o} \pi^{YZ}_{o,l}}{(\mu_{sy})_o}
+      + (1 - \alpha) \sum_{i,j,k,l,e,o} |Y_{e, o} - Z_{k,l}|^2
+      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
+      \frac{\gamma^{XY}_{j,o} \gamma^{YZ}_{o,l}}{(\mu_{fy})_o} \\
+      &= \alpha \sum_{i,j,e,o} |D_X(i,j) - D_Y(e,o)|^2 \pi^{XY}_{i,e} \pi^{XY}_{j,o}
+      + (1 - \alpha) \sum_{i,j,e,o} |X_{i,j} - Y_{e,o}|^2 \pi^{XY}_{i,e} \gamma^{XY}_{j,o} \\
+      &+ \alpha \sum_{k, l, e, o} |D_Y(e, o) - D_Z(k,l)|^2 \pi^{YZ}_{e,k} \pi^{YZ}_{o,l}
+      + (1 - \alpha) \sum_{k,l,e,o} |Y_{e, o} - Z_{k,l}|^2 \pi^{YZ}_{e,k} \gamma^{YZ}_{o,l} \\
+      &= \agw_{\alpha}(X, Y) + \agw_{\alpha}(Y, Z).
+  \end{align}
+  where the second inequality follows from the inequality: $(x + y)^2 \leq 2(x^2 + y^2)$.
+\end{proof}
+
+
+\begin{proof}[Proof of \Cref{corr:hermitian}]
+  First, let us recall the Schwartz-Zippel lemma. Denote $F(x_1, ..., x_n)$ a multivariate polynomial.
+  Its total degree is the maximum of the sums of the powers of the variables in any monomial.
+  The Schwartz-Zippel lemma states that: let $F(x_1, ..., x_n)$ be a nonzero multivariate polynomial
+  of total degree $d$ and $S$ be a finite subset of $\bbR$. Denote
+  $Z_S := \{ (x_1, ..., x_n) \in S^n : F(x_1, ..., x_n) = 0 \}$ the zero set of $F$ on $S^n$.
+  Then $| Z_S | \leq d |S|^{n-1}$.
+
+  Note that, the set of Hermitian matrices of size $n$ forms a finite-dimensional real vector space.
+  In particular, it is isomorphic to the Euclidean space $\bbR^{n^2}$.
+  Denote $I$ set of Hermitian matrices of size $n$ with repeated eigenvalues.
+  It is enough to show that $I$ has measure zero. We have $I \simeq E$,
+  for some $E \subset \bbR^{n^2}$. Since $I$ is closed (see page 56 in \citep{Tao12}),
+  it is measurable, by Proposition 4 in \citep{Stein05}. If $I$ does not have zero measure,
+  then the intersection $E \cap [0, 1]^{n^2}$ has positive measure $p > 0$. If,
+  for each $i \in [n^2]$, we sample $m$ i.i.d coordinates uniformly in $[0, 1]$,
+  then we have $m^{n^2}$ points uniformly distributed in $[0, 1]^{n^2}$. So,
+  the expected number of points lying in $E$ is $pm^{n^2}$.
+
+  On the other hand, recall that a (Hermitian) matrix has repeated eigenvalues if and only if
+  the discriminant of its characteristic polynomial is zero. Moreover,
+  the discriminant of the characteristic polynomial is a polynomial in $n^2$ entries of the matrix.
+  Thus, the measure of $I$ (or, equivalently $E$) is the measure of the set of values of these
+  $n^2$ variables which make a certain polynomial of total degree $d$ vanish.
+  By Schwartz-Zippel lemma, on average, there are at most $d m^{n^2-1}$ points in $E$.
+  By choosing $m > d / p$, we obtain a contradiction. Thus $E$ (or equivalently $I$)
+  must have zero measure.
+\end{proof}
+
+
+\begin{proof}[Proof of \Cref{thm:invariant}]
+  Regarding the first claim, note that $Y = X Q$,
+  where $Q$ is a permutation matrix corresponding to the permutation $\sigma_c$.
+  Since $Y$ is obtained by swapping columns of $X$, it is easy to see that $\gw(X, Y) = 0$
+  and the optimal plan between $X$ and $Y$ is $P^s = \frac{1}{n^2} \id_n$.
+  Similarly, $\coot(X, Y) = 0$ and $P^s, P^v = \frac{1}{n}Q$ are the optimal sample,
+  feature couplings, respectively. In other words,
+  $\langle L(D_{X},D_{Y})\otimes P^s, P^s \rangle = 0$ and
+  $\langle L(X,Y) \otimes P^v, P^s \rangle = 0$. We deduce that $\agw_{\alpha}(X, Y) = 0$.
+
+  Now, if $\agw(X, Y) = 0$, then $\gw(X, Y) = \coot(X, Y) = 0$. In particular,
+  $X$ and $Y$ must have the same shape, assume that $X, Y \in \bbR^{n \times d}$.
+  As $\gw(X, Y) = 0$, there exists an isometry from $X \to Y$. Note that every isometry from
+  $\bbR^d$ to $\bbR^d$ is a composition of at most $d+1$ reflections
+  (see, for example, Corollary A.7 in \citep{Konrad}). So, $U \in \cO_d$
+  exists such that $Y = X U$. As $\coot(X, Y) = 0$, there exist two permutations
+  $\sigma_r$ and $\sigma_c$ such that $X_{i, j} = Y_{\sigma_r(i), \sigma_c(j)}$,
+  or equivalently $P \in \cP_n, Q_1 \in \cP_d$ such that $Y = P X Q_1$.
+  We deduce that $X U = P X Q_1$, or equivalently $X = P X Q$, for
+  $Q = Q_1 U^T \in \cO_d$. From this equation, we now aim to deduce the property of $Q$.
+
+  To do this, consider the singular value decomposition of $X$, \textit{\textit{i.e.}}
+  $X = U \Sigma V^T$, where $U \in \bbR^{n \times d}$ s.t. $U^T U = I_d$,
+  $V \in \cO_d$ and $\Sigma \in \bbR^{d \times d}$ is a diagonal matrix
+  whose diagonal contains $d$ strictly decreasing singular values. Since $X = P X Q$,
+  we have $U \Sigma V^T = (PU) \Sigma (V^T Q)$. For $i \in [d]$, let $u_i \in \bbR^n$
+  and $v_i \in \bbR^d$ be columns of $U$ and $V$, respectively.
+  As the singular values are positive and distinct, the columns are unique up to
+  the sign change of both columns in $U$ and $V$. This means $u_i = \pm Pu_i$ and
+  $v_i = \pm Q^T v_i$. In other words, $\pm 1$ are eigenvalues of $P$ and $Q^T$, and
+  $u_i, v_i$ are their corresponding eigenvectors, respectively. Denote $D \in \bbR^d$
+  any diagonal matrix whose diagonal contains only $\pm 1$, then $Q^T = V D V^{-1} = V D V^T = Q$.
+  So, $Q$ is symmetric. \Cref{thm:invariant} then follows by observing that $U = Q^T Q_1$.
+  \end{proof}
+
+
+\subsubsection{Weak invariant to translation}
+While enjoying the interpolation and metric properties, AGW does not inherit the invariance
+to the translation of the GW distance. However, we find that it satisfies a relaxed version
+of this invariant defined as follows.
+\begin{definition}
+    We call $D = \inf_{\pi \in U} F(\pi, X, Y)$, where $X, Y$ are input data and $U$
+    is a set of feasible couplings and $F$ is a real-valued functional, an OT-based divergence.
+    Then $D$ is weakly invariant to translation if for every $a, b \in \bbR$, we have
+    $\inf_{\pi \in \Pi} F(\pi, X, Y) = C + \inf_{\pi \in \Pi} F(\pi, X + a, Y+b)$,
+    for some constant $C$ depending on $a, b, X, Y$ and $\Pi$.
+\end{definition}
+Here, we denote the translation of $X$ as $X + a$, whose elements are of the form $X_{ij} + a$.
+In other words, an OT-based divergence is weakly invariant to translation if only
+the optimal transport plan is preserved under translation, but not necessarily the divergence itself.
+In practice, we would argue that the ability to preserve the optimal plan under translation
+is much more important than preserving the distance itself. In other words,
+the translation only shifts the minimum but has no impact on the optimization procedure,
+meaning that the minimizer remains unchanged. Now, we can show that
+\begin{corollary}
+\label{prop:coot_invariant}
+    COOT is weakly invariant to translation.
+\end{corollary}
+\begin{proof}[Proof of \Cref{prop:coot_invariant}]
+It is enough to show that, for any $c \in \bbR$, we have $\coot(X, Y + c) = \coot(X, Y) + C$,
+for some constant $C$. Indeed, given $P^s \in U(\mu, \nu), P^v \in U(\mu', \nu')$,
+for any $c \in \bbR$,
+\begin{align}
+    \sum_{ijkl} (X_{ik} - Y_{jl} - c)^2 P^s_{ij} P^v_{kl}
+    &= \sum_{ijkl} (X_{ik} - Y_{jl})^2 P^s_{ij} P^v_{kl}
+    - 2c \sum_{ijkl} (X_{ik} - Y_{jl}) P^s_{ij} P^v_{kl} + c^2
+\end{align}
+Now,
+\begin{align}
+    \sum_{ijkl} (X_{ik} - Y_{jl}) P^s_{ij} P^v_{kl}
+    &= \sum_{ijkl} X_{ik} P^s_{ij} P^v_{kl} - \sum_{ijkl} Y_{jl} P^s_{ij} P^v_{kl} \\
+    &= \sum_{ik} X_{ik} \left( \sum_j P^s_{ij} \right) \left( \sum_l P^v_{kl} \right)
+    - \sum_{jl} Y_{jl} \left( \sum_i P^s_{ij} \right) \left( \sum_k P^v_{kl} \right) \\
+    &= \sum_{ik} X_{ik} \mu_i \mu'_k - \sum_{jl} Y_{jl} \nu_j \nu'_l \\
+    &= \mu ^T \X \mu' - \nu ^T Y \nu'.
+\end{align}
+So,
+\begin{align}
+    \coot(X, Y + c) = \coot(X, Y) - 2 c \left( \mu^T X \mu' - \nu^T Y \nu' \right) + c^2.
+\end{align}
+This implies that COOT is weakly invariant to translation.
+\end{proof}
+
+AGW inherits the weak invariant to translation from COOT.
+\begin{proposition}
+\label{prop:invariant}
+AGW is weakly invariant to translation.
+\end{proposition}
+\begin{proof}[Proof of \Cref{prop:invariant}]
+Note that the GW term in AGW remains unchanged by translation.
+By adapting the proof of \Cref{prop:coot_invariant}, we obtain
+\begin{align}
+    \agw_{\alpha}(X, Y + c) = \agw_{\alpha}(X, Y) + (1 - \alpha) \left[ c^2
+    - 2 c \left( \mu^T X \mu' - \nu^T Y \nu' \right) \right].
+\end{align}
+The result then follows.
+\end{proof}
