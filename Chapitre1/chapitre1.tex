@@ -2,9 +2,10 @@
 \label{chap:1}
 
 % \localtableofcontents
-\addcontentsline{tot}{chapter}{section}
+\localtableofcontents*
 \chaptermark{\textbf{Technical Background on Optimal Transport}}
 
+\hfill \break
 In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
 The general structure for each topic includes the motivation, the theoritical and numerical aspects.
@@ -966,9 +967,12 @@ embeddings of different dimensions. Even worse, in graph,
 such vectorial representation of the node may not even exist by default
 (though it can be learned), and only within-domain similarity matrix is available.
 We also note that, in the finite-dimensional setting,
-one can still manipulate the formulation of the Wasserstein distance,
+one can still manipulate the formulation of the OT problem,
 in order to adapt the unequal-dimension supports of the measures \citep{Cai22,McCann20}.
 However, it is not clear how such methods are applied into practical situations.
+Until very recently, \citep{Sebbouh23} propose to learn simultaneously the transport plan and
+a cost matrix of the form $c(x, y) = \langle M x, y \rangle$, and show the effectiveness
+of this approach in the single-cell spatial transcriptomics and multiomics matching tasks.
 
 In this section, we present a metric which can be used to compare incomparable spaces,
 termed \textbf{Gromov-Wasserstein} (GW) distance introduced by \citep{Memoli07,Memoli11}
@@ -1219,7 +1223,7 @@ Recently, \citep{Zhang21} adapt this fourth formulation to the mm-space and prop
 the bi-directional Gromov-Monge (BGM) distance defined as
 \begin{align}
   \text{BGM}_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
-  \inf_{\substack{f: X \to Y, f_{\#}\mu_X = \mu_Y \\ g: Y \to X, g_{\#} \mu_Y = \mu_X}}
+  \inf_{\substack{f \in \cT(\mu_X, \mu_Y) \\ g \in \cT(\mu_Y, \mu_X)}}
   \Delta_{p}(f,X) + \Delta_{p}(g,Y) + \Delta_{p}(f,g, X, Y),
 \end{align}
 where
@@ -1490,7 +1494,7 @@ We also stress that, exploiting the decomposability is not the only way to reduc
 complexity. For an overview of more complicated strategies,
 interested readers may consult Table 1 in \citep{Li23} and the reference therein.
 
-\subsubsection{Approximation technique}
+\subsubsection{Approximation technique} \label{subsec:gw_approx}
 The common principle behind many current methods for solving the GW problem
 is the linearization of the objective function,
 so that each iteration boils down to solving a (possibly regularized)
