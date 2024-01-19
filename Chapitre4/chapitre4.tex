@@ -4,6 +4,7 @@
 \addcontentsline{tot}{chapter}{section}
 \chaptermark{\textbf{Fused Unbalanced Gromov-Wasserstein}}
 
+\hfill \break
 This paper presents the results from the paper \citep{Thual22} and addresses the unbalanced extension
 of Co-Optimal transport with application in brains.
 Individual brains vary in both anatomy and functional organization, even within a given species.
@@ -157,7 +158,6 @@ provides a PyTorch \citep{NEURIPS2019_9015} solver with a scikit-learn \citep{sc
 compatible API}.
 
 \paragraph{Formulation}
-
 We denote $F^s \in \bbR^{n \times c}$ the matrix of features per vertex for the source subject.
 In the proposed application, they correspond to $c$ functional activation maps,
 sampled on a mesh with $n$ vertices representing the source subject's cortical surface.
@@ -228,7 +228,45 @@ This can be seen as a natural combination of the fused GW \citep{Vayer19b}
 and the unbalanced GW \citep{Sejourne20} distances. To the best of our knowledge,
 it has never been considered in the literature.
 
-\paragraph{Approximation of FUGW}
+
+\paragraph{Toy example illustrating the unbalancing property}
+
+As exemplified in \Cref{fig:intro}, brain responses elicited by the same stimulus
+vary greatly between individuals.
+\Cref{fig:toy_example} illustrates a similar yet simplified version of this problem,
+where the goal is to align two different signals  supported on the same spherical meshes.
+In this example, for each of the $n=p=3200$ vertices, the feature is simply a scalar.
+On the source mesh, the signal is constituted of two von Mises density functions that differ
+by their concentration (large and small), while on the target mesh, only the large one is present,
+but at a different location.
+We use the optimal coupling matrix $P$ obtained from Equation \eqref{eq:fugw} to transport
+the source signal on the target mesh.
+As shown in \Cref{fig:toy_example}.B, the parameter $\rho$ allows to control
+the mass transferred from source to target.
+When $\rho=100$, we approach the solution of the fused GW problem. Consequently,
+we observe the second mode on the target when transporting the source signal.
+When the mass control is weaker ($\rho=1$), the smaller blob is partly removed because
+it has no counterpart in the target configuration, making the transport ill-posed.
+\iffalse This corresponds to a mass destruction, as depicted on the right of the Figure,
+whereas the larger blob in the target distribution is also a place of mass creation. \fi
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\columnwidth]{./Chapitre4/figures/toy_example.pdf}
+    \caption{
+        \textbf{Unbalancing helps accounting for idiosyncrasies of the source and target signals}
+        When trying to align the source and target signals (Panel A),
+        the classical balanced setup (Panel B, top row) transports all parts of
+        the source signal even if they have no counterpart in the target signal.
+        In the unbalanced setup (Panel B, bottom row), less source-only signal is transported:
+        in particular, less mass is transported from the source's small blob onto the target
+        (Panel B, middle column).
+    }
+    \label{fig:toy_example}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimization}
 
 Estimating the unbalanced Gromov Wasserstein loss is numerically sensitive to initialization,
 due to the non-convexity of the problem.
@@ -295,8 +333,6 @@ which is the objective function of FUGW introduced in Equation \eqref{eq:fugw_ob
 In our experiments, we observe that the two couplings of LB-FUGW are numerically equal.
 So it is enough to choose, for example, the first one, as alignment between source and target signals.
 
-\paragraph{Optimization}
-
 The lower bound of FUGW involves solving a minimization problem with respect to two independent couplings:
 Using a Block-Coordinate Descent (BCD) scheme, we fix a coupling and minimize
 with respect to the other. This allows us to always be dealing with linear problems
@@ -305,43 +341,8 @@ two entropic unbalanced OT problems, whose solutions can be approximated using
 the Sinkhorn algorithm \citep{Sejourne19}. Details of the BCD iteration can be found
 in \Cref{alg:lbfugw}.
 
-\paragraph{Toy example illustrating the unbalancing property}
-
-As exemplified in \Cref{fig:intro}, brain responses elicited by the same stimulus
-vary greatly between individuals.
-\Cref{fig:toy_example} illustrates a similar yet simplified version of this problem,
-where the goal is to align two different signals  supported on the same spherical meshes.
-In this example, for each of the $n=p=3200$ vertices, the feature is simply a scalar.
-On the source mesh, the signal is constituted of two von Mises density functions that differ
-by their concentration (large and small), while on the target mesh, only the large one is present,
-but at a different location.
-We use the optimal coupling matrix $P$ obtained from Equation \eqref{eq:fugw} to transport
-the source signal on the target mesh.
-As shown in \Cref{fig:toy_example}.B, the parameter $\rho$ allows to control
-the mass transferred from source to target.
-When $\rho=100$, we approach the solution of the fused GW problem. Consequently,
-we observe the second mode on the target when transporting the source signal.
-When the mass control is weaker ($\rho=1$), the smaller blob is partly removed because
-it has no counterpart in the target configuration, making the transport ill-posed.
-\iffalse This corresponds to a mass destruction, as depicted on the right of the Figure,
-whereas the larger blob in the target distribution is also a place of mass creation. \fi
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=1\columnwidth]{./Chapitre4/figures/toy_example.pdf}
-    \caption{
-        \textbf{Unbalancing helps accounting for idiosyncrasies of the source and target signals}
-        When trying to align the source and target signals (Panel A),
-        the classical balanced setup (Panel B, top row) transports all parts of
-        the source signal even if they have no counterpart in the target signal.
-        In the unbalanced setup (Panel B, bottom row), less source-only signal is transported:
-        in particular, less mass is transported from the source's small blob onto the target
-        (Panel B, middle column).
-    }
-    \label{fig:toy_example}
-\end{figure}
-
-\paragraph{Barycenters}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Barycenters}
 Barycenters represent common patterns across samples.
 Their role is instrumental in identifying a unique target for aligning a given group of individuals.
 As seen in \Cref{fig:intro}, the vertex-wise group average does not usually provide
@@ -397,6 +398,7 @@ the weight $w^B$ is always fixed as uniform distribution.
     \end{algorithmic}
 \end{algorithm}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
 \section{Numerical experiments}
 
 We design three experiments to assess the performance of FUGW.
