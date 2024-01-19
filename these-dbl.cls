@@ -136,7 +136,7 @@
 \newcommand{\id}{\text{Id}}
 \newcommand{\tr}{\text{tr}}
 \newcommand{\supp}{\text{supp}}
-\newcommand{\ie}{\text{i.e.}}
+\newcommand{\ie}{\textit{i.e.}}
 \newcommand{\smin}{\text{Smin}}
 \newcommand{\rms}{\text{RMS}}
 \newcommand{\ms}{\text{MS}}
