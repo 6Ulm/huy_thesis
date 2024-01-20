@@ -5,6 +5,7 @@
 
 \chaptermark{\textbf{Contribution to CO-Optimal Transport}}
 
+\hfill \break
 This chapter presents two contributions to the CO-Optimal Transport (COOT).
 The first one is summarized in the paper \citep{Tran21},
 which studies a relaxation of COOT via multi-marginal OT (MMOT).
@@ -38,79 +39,97 @@ In particular, our result can be immediately extended to the GW setting. However
 we consider different assumptions on the mm-spaces,
 which imply different upper bound of the approximation error.}
 
-\section{Background on CO-Optimal Transport}
+\section{Background on discrete CO-Optimal Transport}
 
-We define the weighted matrix $\cX = (X, \mu_1^X, \mu_2^X)$
-as the triplet comprised of a matrix $X \in \bbR^{n \times d}$
-equipped with the histograms $\mu_1^X \in \Sigma_n$ and $\mu_2^X \in \Sigma_d$ on its rows and columns,
-respectively. For $p \geq 1$, we define the COOT distance between weighted matrices
-$\cX = (X, \mu_1^X, \mu_2^X)$ and $\cY = (Y, \mu_1^Y, \mu_2^Y)$ as
+In many practical applications, the tabular data are usually expressed as a matrix whose rows
+represent samples and columns represent features.
+In general, the usual OT-based divergences, notably the Wasserstein and GW distances, mostly make
+use of the pairwise distances, either within or across domains, to construct the cost matrix
+or tensor. This approach has two consequences. First, only sample correspondences are of interest,
+By contrast, one completely discards the feature alignments, which can be also interpretable,
+for example, in single-cell multi-omics tasks \citep{Demetci20b}.
+\footnote{In case of Wasserstein distance, there is no interest of feature correspondences
+because intuitively, they are equivalent to the identity matrix. However,
+it is no longer clear how to identify the such matching in the GW setting.}.
+Second, the distance aggregates the features, thus incurs information loss. This can be problematic,
+for example, in the high-dimensional setting, where the Euclidean distance is usually not a good
+metric
+\footnote{For more informative discussion,
+see \url{https://stats.stackexchange.com/questions/99171/why-is-euclidean-distance-not-a-good-metric-in-high-dimensions}.}.
+
+One way to overcome these limitations is to use the \textit{Co-Optimal Transport} (COOT)
+\citep{Redko20}, which learns simultaneously the sample and feature alignments.
+In what follows, we denote by $\Delta_{n}=\{w \in \bbR_{> 0}^n: \sum_{i=1}^{n} w_{i}=1\}$
+the simplex histogram with $n$ bins. We call $\cX = (X, \mu_1^X, \mu_2^X)$ a \textit{weighted matrix}
+defined by a triplet comprised of a matrix $X \in \bbR^{n \times d}$
+equipped with the histograms $\mu_1^X \in \Delta_n$ and $\mu_2^X \in \Delta_d$
+on its rows and columns, respectively. For $p \geq 1$, we define the COOT between two
+weighted matrices $\cX = (X, \mu_1^X, \mu_2^X)$ and $\cY = (Y, \mu_1^Y, \mu_2^Y)$ as
 \begin{align}
+  \label{eq:discrete_coot}
     \coot(\cX, \cY) :=
     \inf_{\substack{P \in U(\mu_1^X, \mu_1^Y) \\ Q \in U(\mu_2^X, \mu_2^Y)}}
-    \sum_{i,j,k,l} (X_{ij} - Y_{kl})^p P_{ik} Q_{jl} = \langle |X - Y|^p, P \otimes Q \rangle.
+    \sum_{i,j,k,l} (X_{ij} - Y_{kl})^p P_{ik} Q_{jl}.
 \end{align}
-Here, for convenience, we write $|X - Y|^p$ the $4$-D tensor defined by
-$(|X - Y|^p)_{i,k,j,l} = (X_{ij} - Y_{kl})^p$. We summarize the versatility of COOT for practical
-usage in \Cref{t:comparisons}
-\begin{table}[h]
-	\centering
-		\begin{tabular}{|l|l|}
-    \hline
-    Distance & Input matrices \\
-    \hline
-    Frobenius & Same-size matrices \\
-    Wasserstein & Matrices with the same number of features (columns) \\
-    GW & Square (mostly symmetric) matrices \\
-    COOT & Arbitrary-size matrices \\
-    \hline
-		\end{tabular}
-		\caption{but also robust to outliers.
-    \label{t:comparisons}}
-\end{table}
 By Proposition 1 in \citep{Redko20}, if the weights are uniforms,
 then COOT defines a distance on the space of weighted matrices,
-up to permutation of the matrix coordinates.
+up to permutation of the matrix coordinates. We note that the formulation \eqref{eq:discrete_coot}
+can be easily extended to the multi-coupling setting, for example, in \citep{Kerdoncuff22}.
+% They show has shown strong performance of the proposed method in
+% heterogeneous domain adaptation.
 
-In the following sections, we will explore some aspects of COOT.
-
-COOT can be generalized to the multi-coupling setting \citep{Kerdoncuff22}.
+From the perspective of matrix-comparison, COOT provides a principled way
+to compare any two arbitrary-size matrices. By contrast,
+this is not the case for many other existing divergences,
+whose applicability is summarized in \Cref{t:comparisons}.
+\begin{table}[h]
+	\centering
+		\begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Divergences} & \textbf{Input matrices} & \textbf{Requirement on histograms} \\
+    \hline
+    Matrix norms & Same-size matrices & Not applicable \\
+    \hline
+    OT, UOT & \makecell[l]{Matrices with the same \\ number of columns}
+    & Only requires histogram on rows \\
+    \hline
+    GW, FGW, UGW & Square matrices & \makecell[l]{Histograms on rows and columns \\ must be the same} \\
+    \hline
+    COOT & Arbitrary-size matrices & \makecell[l]{Any histograms on rows and columns} \\
+    \hline
+		\end{tabular}
+		\caption{Applicablility of some popular divergences. COOT is much more flexible than
+    other OT-based divergences.
+    \label{t:comparisons}}
+\end{table}
 
 \paragraph{Co-Optimal Transport as lower bound of GW distance} \label{subsec:GWLB}
-Since COOT is applicable to matrices of arbitrary-size, it is readily applicable to the GW setting,
-where inputs are similarity matrices. In this case, since there is no difference between
-the feature and sample distributions, we simply write $\bbX = (C^x, \mu_x)$,
-where $C^x$ is the similarity matrix and $\mu_x$ is the sample distribution.
-Note that GW distance can be formulated as
+Under the framework of discrete GW, where the inputs are similarity matrices, for simplicity,
+we write $\cX = (C^x, \mu_X)$, where $C^x$ is the similarity matrix and
+$\mu_X$ is the sample histogram. Now, the GW distance can be reformulated as
 \begin{align}
-  \gw(\bbX, \cY) =
-  \inf_{\substack{\pi, \gamma \in U(\mu_x, \mu_y) \\ \pi = \gamma }}
-  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \gamma_{jl},
+  \label{eq:discrete_gw_coot}
+  \gw(\cX, \cY) =
+  \inf_{\substack{P, Q \in U(\mu_X, \mu_Y) \\ P=Q}}
+  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} Q_{jl},
 \end{align}
 meaning that we optimize with respect to two independent couplings
 under the additional constraint that they must be equal. If it is relaxed, then
-one recovers the COOT distance. We also stress that it should not
+one recovers the COOT distance between $\cX$ and $\cY$. We also stress that COOT should not
 be confused with the third lower bound of the GW distance \citep{Memoli07,Memoli11} defined as
 \begin{equation}
-  \text{TLB}(\bbX, \cY) :=
-  \inf_{\gamma \in U(\mu_x, \mu_y)}
-  \Big( \inf_{\pi \in U(\mu_x, \mu_y)} \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \Big)
-  \gamma_{jl}
+  \text{TLB}(\cX, \cY) :=
+  \inf_{Q \in U(\mu_X, \mu_Y)}
+  \Big( \inf_{P \in U(\mu_X, \mu_Y)} \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} \Big) Q_{jl}.
 \end{equation}
-In particular, it is not difficult to see that
-\begin{equation}
-  \label{gw_tlb_COOT}
-  \gw(\bbX, \cY) \geq \coot(\bbX, \cY)
-  \geq \text{TLB}(\bbX, \cY).
-\end{equation}
-This formulation is intimately related to the \textit{bilinear assignment problem}.
-The equivalence between BAP and QAP has been studied in \citep{Konno76}.
-In case of the Euclidean and squared Euclidean distances, equality holds between
-COOT and GW distances \citep{Sejourne20,Redko20}. Before summarizing these results,
-let us recall that.
+In particular, we have $\gw(\cX, \cY) \geq \coot(\cX, \cY) \geq \text{TLB}(\cX, \cY)$.
+
+% The equivalence between BAP and QAP has already been studied in \citep{Konno76}.
+If the inputs are the Euclidean, or squared Euclidean distances, then equality holds between
+COOT and GW distances \citep{Sejourne20,Redko20}. These results are based on the prior works
+of \citep{Konno76,Maron18} and summarized in the folllowing proposition.
 \begin{definition}
-  [Conditionally positive matrix] A square matrix $A \in \bbR^{n \times n}$ is
-  conditionally positive (or negative) semi-definite
+  A square matrix $A \in \bbR^{n \times n}$ is conditionally positive (or negative) semi-definite
   if it is symmetric and for any $c \in \bbR^n$ such that $\sum_i c_i = 0$, we have
   $c^T A c \geq 0$ (or $c^T A c \leq 0$).
 \end{definition}
@@ -121,25 +140,30 @@ let us recall that.
   $C^x_{ij} = f_i + f_j + A_{ij}$ and $C^y_{kl} = g_k + g_l + B_{kl}$,
   where $f, g$ are vectors in $\bbR^m, \bbR^n$, respectively,
   and the matrices $A, B$ are both conditionally positive (or negative) semi-definite.
-  Then $\gw(\bbX, \cY) = \coot(\bbX, \cY)$.
-  Furthermore, if $(\pi_1^*, \pi_2^*)$ is a solution of the COOT problem, then $\pi_1^*$ and $\pi_2^*$
+  Then $\gw(\cX, \cY) = \coot(\cX, \cY)$.
+  Furthermore, if $(P_1^*, P_2^*)$ is a solution of the COOT problem, then $P_1^*$ and $P_2^*$
   are two solutions of the GW problem. In particular,
-  if the semi-definiteness is replaced by the definiteness, then $\pi_1^* = \pi_2^*$.
+  if the semi-definiteness is replaced by the definiteness, then $P_1^* = P_2^*$.
 \end{proposition}
-\Cref{prop:coot_gw_equiv} implies that, under certain conditions, removing
-the equality constraint does not change the minimum,
-thus the rationale behind the alternative minimization procedure of GW distance is justified.
-In practice, this idea of using COOT to approximate the GW distance has been used to
-solve the unbalanced GW problem \citep{Sejourne20,Thual22}. It can also be extended
-easily to the setting of fused GW. To see this, first, observe that
-\begin{align}
-  \text{FGW}_{\alpha}(\bbX, \cY) =
-  \inf_{\substack{\pi, \gamma \in U(\mu_x, \mu_y) \\ \pi = \gamma }}
-  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p \pi_{ik} \gamma_{jl} +
-  \frac{\alpha}{2} \langle D, \pi \rangle + \frac{\alpha}{2} \langle D, \gamma \rangle.
-\end{align}
-Under exactly the same conditions, one can drop the equality constraint during the optimization.
-This result justifies the use of Block Coordinate Descent to estimate the FGW distance.
+Roughly speaking, if the similarity matrices is "approximately" conditionally positive
+(or negative) semi-definite, then one can safely remove the equality constraint
+without changing the minimum. Thus, \Cref{prop:coot_gw_equiv} justifies the rationale behind
+the alternative minimization procedure for GW distance presented in \Cref{subsec:gw_approx}.
+This scheme is easily adapted to the entropic fused GW problem, by observing that,
+for any reference histogram $\mu \in \bbR_{> 0}^{m \times n}$, we have
+\begin{equation}
+  \begin{split}
+    &\inf_{\substack{P \in U(\mu_X, \mu_Y)}}
+  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} P_{jl}
+  + \alpha \langle D, P \rangle + \varepsilon \; \kl(P | \mu) \\
+  &= \inf_{\substack{P \in U(\mu_X, \mu_Y) \\ Q \in U(\mu_X, \mu_Y) \\ P = Q }}
+  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} Q_{jl}
+  + \frac{\alpha}{2} \langle D, P \rangle + \frac{\alpha}{2} \langle D, Q \rangle
+  + \frac{\varepsilon}{2} \kl(P | \mu) + \frac{\varepsilon}{2} \kl(Q | \mu).
+  \end{split}
+\end{equation}
+Again, under exactly the same conditions on the similarity matrices in \Cref{prop:coot_gw_equiv},
+one can safely drop the equality constraint during the optimization.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Continuous Co-Optimal Transport}
@@ -149,9 +173,10 @@ In this section, we present our unpublished work on the continuous COOT and its 
 In order to avoid introducing unnecessary notational complication,
 we will mostly follow the terminology and concepts of the published work of \citep{Chowdhury21b}.
 
-\subsection{From discrete to continuous Co-Optimal Transport}
+\subsection{Formulation and preliminary results}
 
-By rewriting a measure network $\cX = (X, c_X, \mu_X)$ as
+As already seen in discrete GW problem \eqref{eq:discrete_gw_coot},
+by rewriting a measure network $\cX = (X, c_X, \mu_X)$ as
 $\widetilde{\cX} = \big((X_1, \mu_1^X), (X_2, \mu_2^X), c_X \big)$, with
 $X_1 = X_2 = X$ and $\mu_1^X = \mu^X_2 = \mu_X$, one can reformulate the GW problem as
 \begin{equation}
@@ -171,6 +196,9 @@ where $X_1$ and $Y_1$ represent the "sample" spaces in the source and target dom
 and $X_2$ and $Y_2$ represent the "feature" spaces in the source and target domains, respectively.
 As a result, the corresponding "sample" and "feature" couplings are also different in their natures.
 
+% Before defining the continuous extension of COOT, we need to specify the
+% To this extent, we need to extend the prior work of \citep{Chowdhury19} on measure network.
+
 \begin{definition}[Measure hypernetwork \citep{Chowdhury21b}]
 Suppose $(X_1, \mu_1^X)$ and $(X_2, \mu_2^X)$ are two Polish measure spaces,
 and $c_X$ is a bounded measurable function on $X_1 \times X_2$.
@@ -179,8 +207,8 @@ a \textbf{measure hypernetwork}. We also say $c_X$ is the \textbf{interaction}
 between $X_1$ and $X_2$.
 \end{definition}
 Without risk of confusion, when $X_1 = X_2 = X$ and $\mu_1^X = \mu_2^X = \mu_X$,
-we use interchangeably "measure hypernetwork" and "measure network"
-in the context of GW \citep{Chowdhury19}.
+we use interchangeably "measure hypernetwork" and "measure network" in
+the context of GW \citep{Chowdhury19}.
 When $X_1$ and $X_2$ are finite spaces (so $\mu_1^X$ and $\mu_2^X$ are histograms),
 we call $\cX$ a finite measure hypernetwork. For convenience, we also refer the index $1$ as "sample"
 and $2$ as "feature", for example, $X_1$ is the sample space, $\pi_2$ is the feature coupling.
@@ -443,7 +471,7 @@ Transport via Difference of Convex programming} \label{subsec:MMOT_DC}
 Broadly speaking, the classic OT problem provides a principled approach for transporting one probability distribution onto another
 following the principle of the least effort. Such a problem, and the distance on the space of probability distributions derived from it,
 arise in many areas of machine learning (ML) including generative modeling, transfer learning and information retrieval, where OT has
-been successfully applied. A natural extension of classic OT, in which the admissible transport plan (a.k.a coupling) can have more
+been successfully applied. A natural extension of classic OT, in which the admissible transport plan can have more
 than two prescribed marginal distributions, is called the multi-marginal optimal transport (MMOT) \citep{Gangbo98}.
 The latter has several attractive properties: it enjoys a duality theory \citep{Kellerer84} and finds connections with the
 probabilistic graphical models \citep{Haasler20} and the Wasserstein barycenter problem \citep{Agueh11} used for data averaging.
@@ -507,12 +535,11 @@ strategies used previously.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Preliminary knowledge}
 
-\paragraph{Notations.} For each integer $n \geq 1$, we write $[n] := \{1,...,n\}$. For any discrete probability measure
-$\mu$ with finite support, its negative entropy is defined as $H(\mu) = \langle \mu, \log \mu \rangle$, where the logarithm
-operator is element-wise, with the convention that $0 \log 0 = 0$. Here, $\langle \cdot, \cdot \rangle$ denotes the Frobenius
-inner product. The generalized Kullback-Leibler divergence between two positive vectors
-$p, q \in \bbR^n_{> 0}$ is defined as
-$\kl(p | q) = \sum_i p_i \log \frac{p_i}{q_i} - \sum_i p_i + \sum_i q_i$.
+\paragraph{Notations.} For each integer $n \geq 1$, we write $[n] := \{1,...,n\}$.
+We denote $\langle \cdot, \cdot \rangle$ denotes the Frobenius inner product.
+The generalized Kullback-Leibler divergence between two positive vectors $p, q \in \bbR^n_{> 0}$
+is defined as $\kl(p | q) = \sum_i p_i \log \frac{p_i}{q_i} - \sum_i p_i + \sum_i q_i$,
+with the convention that $0 \log 0 = 0$.
 
 In what follows, given an integer $N \geq 1$, for any positive integers $a_1,..., a_N$, we call
 $P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. In particular, a $1$-D tensor is a vector and $2$-D tensor is a matrix.
@@ -712,7 +739,6 @@ The proof relies on the connection between MMOT-DC and COOT shown in \Cref{inter
 and given a $4$-D solution of MMOT-DC, we can construct another $4$-D solutions whose
 $\cT_1$ and $\cT_2$-marginal matrices are identical,
 under the assumption of the cost tensor. The proof of the second claim is deferred to the Appendix.
-Note that, this result is more general than the one in the previous section, where
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
 \subsection{Numerical solution} \label{sec:algo}
@@ -729,12 +755,12 @@ is continuous and convex with respect to $P$. Now, Problem \eqref{relax_mmot} be
   \langle C, P \rangle + \varepsilon \kl(P | \mu^{\otimes}) - \varepsilon \sum_{m=1}^m \kl_m(P).
 \end{equation}
 This is nothing but a Difference of Convex (DC) programming problem (which explains the name MMOT-DC),
-thanks to the convexity of the set $U(\mu)$ and the entropy function $H$. Thus, it can be solved
+thanks to the convexity of the set $U(\mu)$ and the KL divergence. Thus, it can be solved
 by the classic DC algorithm
 \footnote{The DC algorithm is very closely related to Convex-concave procedure,
 majorization-minimization algorithm, Successive Linear
-Approximation. For a detailed discussion on the subtle distinction amongst these name, see
-\citep{Le18}} \citep{Tao86,Tao97} as follows: at the iteration $t$,
+Approximation. For a detailed discussion on the subtle distinction amongst these algorithms, see
+\citep{Le18}.} \citep{Tao86,Tao97} as follows: at the iteration $t$,
 \begin{enumerate}
   \item Calculate $G^{(t)} \in \partial(\sum_{m=1}^M \kl_m)(P^{(t)})$.
   \item Solve $P^{(t+1)} \in \argmin_{P \in U(\mu)} \langle C -
@@ -755,7 +781,7 @@ $G^{(t)} = \nabla_P (\kl_1 + \kl_2)(P^{(t)})$. Given a $4$-D probability tensor 
 \end{equation}
 The complete DC algorithm for Problem \eqref{relax} can be found in \Cref{algo:dc_MMOT}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{algorithm}[h]
+\begin{algorithm}[t]
   \caption{DC algorithm for Problem \eqref{relax_mmot}.}
   \textbf{Input.} Cost tensor $C$, tuple partition $(\cT_m)_{m=1}^M$, collection of histograms $\mu = (\mu_n)_{n=1}^N$,
   hyperparameter $\varepsilon > 0$, initialization $P^{(0)}$, tuple of initial dual vectors for the
@@ -774,15 +800,6 @@ The complete DC algorithm for Problem \eqref{relax} can be found in \Cref{algo:d
   \end{enumerate}
   \label{algo:dc_MMOT}
 \end{algorithm}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We observed that initialization is crucial to the convergence of algorithm, which
-is not surprising for a non-convex problem. To accelerate the algorithm for small $\varepsilon$,
-we propose to use the warm-start strategy, which is similar to the one used in the entropic OT problem with very
-small regularization parameter \citep{Schmitzer19}. Its idea is simple: we consider an increasing finite sequence
-$(\varepsilon_n)_{n=0}^N$ approaching $\varepsilon$ such that the solution $P_{\varepsilon_0}$ of the problem
-$\mmotdc_{\varepsilon_0}(\cT, \mu)$ can be estimated quickly and accurately using the initialization $P^{(0)}$. Then we solve each
-successive problem $\mmotdc_{\varepsilon_n}(\cT, \mu)$ using the previous solution $P_{\varepsilon_{n-1}}$ as initialization. Finally,
-the problem $\mmotdc_{\varepsilon}(\cT, \mu)$ is solved using the solution $P_{\varepsilon_N}$ as initialization.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Experimental evaluation} \label{sec:exp}
@@ -859,10 +876,11 @@ We compare four solvers:
 
   \item The Block Coordinate Descent algorithm to approximate the entropic COOT \citep{Redko20}
   (EGW-BCD), where two additional KL divergences corresponding to two couplings are introduced.
+
   The regularization parameters are tuned from the set
   $\{0, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1 \}$,
   where $0$ means that there is no regularization term for the corresponding coupling
-  and we pick the pair whose COOT loss is the smallest.
+  and we pick the pair corresponding to the smallest COOT loss.
 
   \item \Cref{algo:dc_MMOT} to solve the MMOT-DC. We tune
   $\varepsilon \in \{1, 1.4, 1.8, 2.2, 2.6\}$ and we pick the one which corresponds to smallest COOT loss.
@@ -958,64 +976,100 @@ We call this variation \textit{MMOT-DC-v1} and use the same setup as in Experime
 \subsection{Conclusion and future work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Can be used to study the sample complexity of COOT and GW distances.
-\begin{equation}
-  | \coot(\cX, \cY) - \coot(\cX_n, \cY_n) |
-\end{equation}
-The idea is as follows: under some mild (practical) conditions, COOT and GW are equivalent.
-So, we prefer COOT to GW as it is less (unnecessarily) constrained.
-Inspired by the DC algo (or also convex-concave procedure),
-we linearize COOT and construct a "nice" lower bound, which:
-\begin{enumerate}
-  \item Is an entropic MMOT problem (up to a constant). In this case, one can reuse the technique
-  used to study sample complexity of entropic OT in \citep{Genevay19} and extend to the entropic MMOT.
-  \item Approaches COOT for suitable choice of inputs.
-\end{enumerate}
-\begin{definition}
-  For each $\pi \in \cU_4$, denote
-  $G(\pi) := \kl(\pi_{\# 12} | \mu) + \kl(\pi_{\# 34} | \mu)
-  = \kl(\pi_{\#} | \mu^{\otimes 2})$.
-\end{definition}
+In this paper, we present a novel relaxation of the factorized MMOT problem called \textit{MMOT-DC}.
+More precisely, we replace the
+hard constraint on factorization constraint by a smooth regularization term. The resulting problem
+not only enjoys an interpolation property between MMOT and factorized MMOT, but also is a DC problem,
+which can be solved easily by the DC algorithm. We illustrate the use of MMOT-DC the via some simulated experiments and show that
+it is competitive with the existing popular solvers of COOT and GW distance.
+One limitation of the current DC algorithm is that, it is not scalable because
+it requires storing a full-size tensor in the gradient step computation. Thus, future
+work may focus on more efficiently designed algorithms, in terms of both time and memory footprint.
+Moreover, incorporating additional structure on the cost tensor may also be computationally and practically beneficial.
+
+From a theoretical viewpoint, one potential application of MMOT-DC is on the study of the sample complexity of GW distance.
+More precisely, given two measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$,
+we want to quantify $| \gw(\cX, \cY) - \gw(\cX_n, \cY_n)|$. Note that, \citep{Zhang23} has also
+established the convergence rate for the case of $2$-GW distance, in which the cost function
+is the squared Euclidean distance. Our proposed approach, if works, would be able to handle any
+conditionally negative (or positive) semi-definite kernel.
+
+The idea is as follows: by \Cref{prop:coot_gw_equiv}, COOT and GW distance are equivalent
+\footnote{Note that one needs to properly extend \Cref{prop:coot_gw_equiv} to the continuous setting
+(of measure networks).}. So, we can replace GW by COOT, as it is less (unnecessarily) constrained.
+Next, we extend MMOT-DC to the continuous setting and show that the interpolation property
+still holds, notably MMOT-DC converges to COOT as regularization tends to the infinity.
+Thanks to the DC algo, we can linearize the MMOT-DC and obtain an entropic MMOT problem.
+This problem has two advantages. First, one can reuse the technique for entropic OT
+in \citep{Genevay19} and extend to the entropic MMOT. Second, for suitable choice of input,
+it approximates COOT.
+
+Note that, this is still an ongoing work as we have not yet fully resolved all
+technical difficulties. Nevertheless, we report the sketch of the proof and leave most of
+mathematical details in Appendix.
+
+\paragraph{Assumptions} We assume that the measure networks
+$\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$. $X$ and $Y$ are compact
+subsets of $\bbR^{d_x}$ and $\bbR^{d_y}$, respectively. The probability measures
+$\mu_X$ and $\mu_Y$ are absolutely continuous with respect to the Lebesgue measures
+on $\bbR^{d_x}$ and $\bbR^{d_y}$, respectively.
+With some abuse of notation, we also use $\mu_X, \mu_Y$ to denote their density functions.
+
+\paragraph{Sketch of proof}
+For convenience, denote $\cU_4 = U(\mu_X, \mu_Y, \mu_X, \mu_Y)$ and $\mu = \mu_X \otimes \mu_Y$.
+We write $c = |c_X - c_Y|^2$ defined by $c(x, y, x', y') = |c_X(x, x') - c_Y(y, y') |^2$.
+Recall that, for any $\pi \in \cU_4$, we denote $\pi_{\#} = \pi_{\# 12} \otimes \pi_{\# 34}$.
 \begin{lemma}
-  $G$ is convex and differentiable. In particular, for any $\pi \in \mathcal{U}_4$, we have
-  $G(\pi) = \langle \nabla G(\pi), \pi \rangle$.
+  For each $\pi \in \cU_4$, denote
+  $G(\pi) := \kl(\pi_{\# 12} | \mu) + \kl(\pi_{\# 34} | \mu) = \kl(\pi_{\#} | \mu^{\otimes 2})$.
+  Then $G$ is convex and differentiable. In particular, $G(\pi) = \int \nabla G(\pi) \; d \pi$,
+  for $\pi \in \cU_4$.
 \end{lemma}
 Now, we have
 \begin{align}
-  \langle c, \gamma \rangle + \varepsilon \kl(\gamma | \gamma_{\#}) &\leq
-  \langle c, \gamma \rangle + \varepsilon \kl(\gamma | \mu^{\otimes 2})
-  - \varepsilon \Big[ G(\pi) + \langle \nabla G(\pi), \gamma - \pi \rangle \Big] \\
-  &= \langle c - \varepsilon \nabla G(\pi), \gamma \rangle
-  + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+  \int c \; d\gamma + \varepsilon \kl(\gamma | \gamma_{\#})
+  &\leq \int c \; d\gamma + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+  - \varepsilon \Big[ G(\pi) + \int \nabla G(\pi) \; d \gamma - \int \nabla G(\pi) \; d \pi \Big] \\
+  &= \int \big[ c - \varepsilon \nabla G(\pi) \big] \; d \gamma
+  + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
 \end{align}
-So,
+By taking infimum over $\cU_4$, we obtain
 \begin{align}
   \mmotdc_{\varepsilon} \leq
-  \inf_{\gamma \in \cU_4} \langle c - \varepsilon \nabla G(\pi), \gamma \rangle
-  + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+  \inf_{\gamma \in \cU_4} \int \big[ c - \varepsilon \nabla G(\pi) \big] d \gamma
+  + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
 \end{align}
-Now replace $G(\gamma)$ by its linear approximation
-$G(\pi) + \langle \nabla G(\pi), \gamma - \pi \rangle = \langle \nabla G(\pi), \gamma \rangle$,
+Now, we define the following MMOT problem.
 \begin{definition}
-  (Surrogate function) For $\gamma, \pi \in \cU_4$, define
-  \begin{equation}
-      \begin{split}
-          F_{\varepsilon}(\gamma, \pi)
-          &:= \langle c, \gamma \rangle + \varepsilon \kl(\gamma | \mu^{\otimes 2})
-          - \varepsilon \Big[ G(\pi) + \langle \nabla G(\pi), \gamma - \pi \rangle \Big] \\
-          &= \langle c - \varepsilon \nabla G(\pi), \gamma \rangle
-          + \varepsilon \kl(\gamma | \mu^{\otimes 2})
-      \end{split}
-  \end{equation}
-  and define
-  \begin{equation}
-      \begin{split}
-          L_{\varepsilon}(\pi) &:= \inf_{\gamma \in \cU_4} F_{\varepsilon}(\gamma, \pi)
-          = \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big)
-      \end{split}
-  \end{equation}
+  For $\pi \in \cU_4$, define
+  \begin{align}
+    \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big) :=
+    \inf_{\gamma \in \cU_4} \int \big[ c - \varepsilon \nabla G(\pi) \big] \; d \gamma
+      + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
+  \end{align}
 \end{definition}
-
+There exists $\pi \in \cU_4$ such that $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big)$
+approximates COOT. For example, denote $\pi_{\varepsilon}$
+the solution of the entropic COOT problem $\coot_{\varepsilon}(\cX, \cY)$, we can show that
+\begin{corollary}
+  For every $\varepsilon > 0$, we have
+  $\coot_{1 / \varepsilon}(\cX, \cY) \geq
+  \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi_{1 / \varepsilon}) \big) \geq \mmotdc_{\varepsilon}$.
+  As a consequence,
+  $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi_{1 / \varepsilon}) \big) \to \coot(\cX, \cY)$,
+  when $\varepsilon \to \infty$.
+\end{corollary}
+Now, suppose $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)$ can approximate COOT,
+for some $\pi^* \in \cU_4$. Then, by the triangle inequality, we have
+\begin{align}
+  | \coot_(\cX, \cY) - \coot_(\cX_n, \cY_n)|
+  &\leq |\coot_(\cX, \cY) - \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)| \\
+  &+ |\mmot_{\varepsilon, n}\big( c - \varepsilon \nabla G(\pi^*) \big) - \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)| \\
+  &+ |\coot(\cX_n, \cY_n) - \mmot_{\varepsilon, n}\big( c - \varepsilon \nabla G(\pi^*) \big)|,
+\end{align}
+Now, it is enough to bound each term and obtain the final rate. However, the main difficulties
+lie on finding the appropriate choice of $\pi^*$ and on how to control
+it in the entropic MMOT problem.
 
 % \subsection{Stability of Co-Optimal Transport}
 
