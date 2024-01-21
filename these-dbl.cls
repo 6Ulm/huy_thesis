@@ -130,22 +130,24 @@
 \newcommand{\kl}{\text{KL}}
 \newcommand{\uot}{\text{UOT}}
 \newcommand{\gw}{\text{GW}}
+\newcommand{\mmotdc}{\text{MMOT-DC}}
+\newcommand{\mmot}{\text{MMOT}}
+\newcommand{\agw}{\text{AGW}}
 \newcommand{\vect}{\text{vec}}
 \newcommand{\rank}{\text{rank}}
 \newcommand{\gh}{\text{GH}}
 \newcommand{\id}{\text{Id}}
 \newcommand{\tr}{\text{tr}}
 \newcommand{\supp}{\text{supp}}
-\newcommand{\ie}{\textit{i.e.}}
 \newcommand{\smin}{\text{Smin}}
 \newcommand{\rms}{\text{RMS}}
 \newcommand{\ms}{\text{MS}}
 \newcommand{\diam}{\text{diam}}
 \newcommand{\diag}{\text{diag}}
+
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
 \newcommand{\wrt}{w.r.t. }
-\newcommand{\mmotdc}{\text{MMOT-DC}}
-\newcommand{\mmot}{\text{MMOT}}
-\newcommand{\agw}{\text{AGW}}
 
 \newcommand{\bbE}{\mathbb E}
 \newcommand{\bbN}{\mathbb N}
