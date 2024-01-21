@@ -42,7 +42,14 @@ domain adaptation \citep{Yan18}, computational biology
 \citep{Nitzan2019,Pamona,UniPort,SpaOTsc,Demetci20,Demetci22,PASTE},
 generative modeling \citep{Bunne19}, and reinforcement learning \citep{GW-VAE}.
 
-\paragraph{Limitations of prior work} Successful applications of GW distance are often attributed to its invariance to distance-preserving transformations (also called ``isometries'') of the input domains. Since GW considers only intra-domain distances, it is naturally invariant to any transformation that does not alter them. While this is a blessing in many applications, for example, comparing graphs with the unknown ordering of nodes, it may become a curse when one has to choose the ``right'' isometry among many that yield the same GW distance. How could one break such ties while keeping the attractive properties of the GW distance? This question remains to be addressed in the field.
+\paragraph{Limitations of prior work} Successful applications of GW distance are often
+attributed to its invariance to distance-preserving transformations (also called ``isometries'')
+of the input domains. Since GW considers only intra-domain distances, it is naturally invariant
+to any transformation that does not alter them. While this is a blessing in many applications,
+for example, comparing graphs with the unknown ordering of nodes, it may become a curse
+when one has to choose the ``right'' isometry among many that yield the same GW distance.
+How could one break such ties while keeping the attractive properties of the GW distance?
+This question remains to be addressed in the field.
 
 Additionally, GW distances are often used in tasks where one may have some
 \textit{a priori} knowledge about the mapping between the two considered spaces.
@@ -82,85 +89,15 @@ the heterogeneous domain adaptation task. We conclude our paper in Section 5 wit
 a discussion of potential future work.
 
 \paragraph{Notations} In what follows, we denote by
-$\Delta_{n}=\{ w \in \bbR_{> 0}^n: \sum_{i=1}^{n} w_{i}=1\}$
+$\Delta_{n}=\{ p \in \bbR_{> 0}^n: \sum_{i=1}^{n} p_{i}=1\}$
 the simplex histogram with $n$ bins. We use $\otimes$ for tensor-matrix multiplication,
-\ie, $L \otimes B$ is the matrix $(\sum_{k,l} L_{i,j,k,l} B_{k,l})_{i,j}$ for a tensor
-$L =(L_{i,j,k,l})_{i,j,k,l}$ and a matrix $B = (B_{i,j})_{i,j}$.
-We use $\langle \cdot, \cdot \rangle$ for the matrix scalar product associated with
+\ie, $L \otimes B$ is the matrix $(\sum_{k,l} L_{ijkl} B_{kl})_{i,j}$ for a $4$D-tensor $L$ and
+a matrix $B$. We use $\langle \cdot, \cdot \rangle$ for the matrix scalar product associated with
 the Frobenius norm $\|\cdot\|_{F}$. We write $1_d \in \bbR^d$ for a
 $d$-dimensional vector of ones. We use the terms ``coupling matrix'', ``transport plan''
 and ``correspondence matrix'' interchangeably.
 A point in the space can also be called ``an example'' or ``a sample''.
 Given an integer $n \geq 1$, denote $[n] := \{ 1, ..., n\}$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Technical background}
-
-This section briefly presents some background knowledge,
-including the Kantorovich's formulation of the OT problem and two relevant OT-based distances
-proposed to match samples across incomparable spaces.
-
-\paragraph{Kantorovich's problem and Wasserstein distance}
-Let $X \in \bbR^{m \times d}$ and $Y \in \bbR^{n \times d}$ be two input matrices,
-$C \in \bbR^{m \times n}$ be a cost (or ground) matrix.
-Given two discrete probability measures $\mu \in \Delta_m$ and $\nu \in \Delta_n$,
-Kantorovich's formulation of OT seeks a coupling $P$ minimizing the following quantity:
-\begin{equation}
-  W_C(\mu,\nu) = \min_{P \in U(\mu, \nu)} \langle C, P \rangle,
-  \label{eq:wasserstein}
- \end{equation}
-where $U(\mu,\nu)$ is the set of probability distributions over
-$\Delta_{m \times n}$ with marginals $\mu$ and $\nu$. When $C_{ij} = ||x_i - y_j||^p$, for $p \geq 1$,
-such an optimization problem defines a proper metric on the space of
-probability distributions called the Wasserstein distance.
-
-\paragraph{Gromov-Wasserstein distance}
-Samples of input matrices in different spaces, \ie, $X \in \bbR^{m \times d}$
-and $Y \in \bbR^{n \times d'}$ with $d \neq d'$, are incomparable since
-it is not possible to define a cost function as the distance between points across
-the input spaces. To circumvent this limitation of the Wasserstein distance, \citep{Memoli11}
-proposed the Gromov-Wasserstein (GW) distance, defined as follows:
-\begin{align}
-% \label{eq:gw}
-    \gw((X, \mu_X, d_X), (Y, \mu_Y, d_Y)) := \min_{P \in U(\mu_X, \mu_Y)} L_{\gw} (P),
-\end{align}
-where
-\begin{align*}
-\label{eq:gw_func}
-    L_{\gw} (P) &:=
-    \sum_{i,j,k,l} \big( d_X(x_i,x_k) - d_Y(y_j,y_l) \big)^2 P_{i,j}P_{k,l}
-    = \langle L(D_X, D_Y) \otimes P, P \rangle.
-\end{align*}
-Here, $\big( L(D_X, D_Y) \big)_{i,j,k,l} = \big( d_X(x_i,x_k) - d_Y(y_j,y_l) \big)^2$,
-where $(x_i, x_k) \in \bbR^d \times \bbR^d$ and $(y_j, y_k) \in \bbR^{d'} \times \bbR^{d'}$
-are tuples of samples in $X$ and $Y$, respectively. The divergences
-$d_X$ and $d_Y$ form the similarity matrices defined by $(D_X)_{i,k} = d_X(x_i,x_k)$ and
-$(D_Y)_{j,l} = d_Y(y_j,y_l)$, respectively.
-
-\paragraph{CO-Optimal transport}
-\citep{Redko20} introduced an alternative to GW distance, termed CO-Optimal transport (COOT),
-that rather than relying on the intra-domain distance matrices $D_X$ and $D_Y$,
-instead takes into account the raw feature information
-(\textit{i.e.} the coordinates of the samples) and jointly learns two couplings,
-corresponding to the sample and feature alignments. More precisely,
-COOT assigns two histograms $\mu' \in \Delta_d$ and $\nu' \in \Delta_{d'}$ to the
-features (columns) of $X$ and $Y$, respectively, and defines the distance between two matrices
-$X$ and $Y$ as
-\begin{equation*}
-  \label{eq:co-optimal-transport}
- \begin{split}
-     \coot((X, \mu_1^X, \mu_2^X), (Y, \mu_1^Y, \mu_2^Y)) :=
-     \min_{\substack{P_1 \in U(\mu_1^X, \mu_1^Y) \\ P_2 \in U(\mu_1,\nu')}} L_{\coot} (P^s, P^v).
-    \end{split}
- \end{equation*}
-where
-\begin{align*}
-    L_\coot (P^s, P^v) &:=  \sum_{i,j,k,l} L(x_{ik},y_{jl})P^s_{i,j} P^v_{k,l}
-    =\langle L(X,Y) \otimes P^v,  P^s \rangle.
-\end{align*}
-In what follows, we consider $L(x_{ik}, y_{jl}) = (x_{ik} - y_{jl})^2$ and write simply
-$\gw(X, Y)$ and $\coot(X, Y)$ when $\mu, \nu, \mu', \nu'$
-are uniform and when the choice of $d_X$ and $d_Y$ is of no importance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Augmented Gromov-Wasserstein}
@@ -171,7 +108,7 @@ are uniform and when the choice of $d_X$ and $d_Y$ is of no importance.
 \caption{Aligning digits from MNIST and USPS datasets. \textbf{(A)}
 Confusion matrices of GW, AGW with $\alpha=0.5$ and COOT.
 (*) denote pair alignments ;
-\textbf{(B)} Feature coupling $P^v$ of AGW compared to COOT;
+\textbf{(B)} Feature coupling $Q$ of AGW compared to COOT;
 \textbf{(C)} Illustration of a case from where GW's and COOT's invariants are
 detrimental for obtaining a meaningful comparison, while AGW remains informative.
 \textbf{(D)} Example showing improved digit alignment with feature-level supervision
@@ -199,8 +136,7 @@ the two digits apart.
 \paragraph{Invariants of COOT} Unlike GW, COOT has fewer degrees of freedom
 in terms of invariance to global isometric transformations as it is limited to
 permutations of rows and columns of the two matrices, and not all isometric transformations
-can be achieved via such permutations. For example, Figure S1 shows the effect of the sign change
-and image rotation in a handwritten digit matching task, to which GW is invariant while COOT is not.
+can be achieved via such permutations.
 
 Additionally, COOT is strictly positive for any two datasets of different sizes either
 in terms of features or samples, making it much more restrictive than GW.
@@ -213,46 +149,49 @@ that can be achieved via permutations of a subset of features.
 Given the above discussion on the invariants of COOT and GW distance,
 interpolating between them will restrict each other's invariants. Additionally,
 interpolating with COOT is a natural way to introduce raw feature alignments in GW,
-which allows for leveraging priors on them.
-We call this interpolation \textbf{Augmented GW} (AGW) and define it as follows:
-% \begin{align}
-% \label{eq:scootr}
-% \agw_{\alpha}(X, Y) &:= \min_{ \scriptsize{\begin{matrix} P^s \inU(\mu,\nu),\\ P^v \in U(\mu',\nu')\end{matrix}}} \alpha L_{\gw} (P^s) \notag \\ & + (1-\alpha) L_{\coot} (P^s, P^v) \notag \\ & =\min_{ \scriptsize{\begin{matrix}P^s \inU(\mu,\nu),\\ P^v \in U(\mu',\nu')\end{matrix}}} \langle \alpha L(D_X,D_Y)\otimes P^s \notag \\ & + (1-\alpha) L(X,Y) \otimes P^v,  P^s \rangle.
-% \end{align}
+which allows for leveraging priors on them. We call this interpolation \textbf{Augmented GW} (AGW).
+Recall that a weighted matrix is the triplet $\cX = (X, \mu_1^X, \mu_2^X)$, where
+$X \in \bbR^{n_x \times d_x}, \mu_1^X \in \Delta_{n_x}$ and $\mu_2^X \in \Delta_{d_x}$.
+Given $\alpha \in [0,1]$, we define the AGW between two weighted matrices $\cX$ and $\cY$ as
 \begin{align}
 \label{eq:scootr}
-\agw_{\alpha}(X, Y) &:=
-\min_{\substack{P^s \in U(\mu,\nu) \\ P^v \in U(\mu',\nu')}} L_{\alpha}(P^s, P^v),
+\agw_{\alpha}(\cX, \cY) &:=
+\min_{\substack{P \in U(\mu_1^X, \mu_1^Y) \\ Q \in U(\mu_2^X,\mu_2^Y)}} \quad
+\alpha \; \langle L(C^x,C^y) \otimes P, P \rangle + (1-\alpha) \; \langle L(X,Y) \otimes P, Q \rangle,
 \end{align}
 where
-\begin{align*}
-    L_{\alpha}(P^s, P^v) &= \alpha \; L_{\gw} (P^s) + (1-\alpha) \; L_{\coot} (P^s, P^v) \\
-    =& \alpha \; \langle L(D_X,D_Y)\otimes P^s,P^s \rangle \\
-    &+ (1-\alpha) \; \langle L(X,Y) \otimes P^v,P^s \rangle
-\end{align*}
+\begin{itemize}
+    \item[$\bullet$] $\langle L(C^x,C^y) \otimes P, P \rangle
+    = \sum_{i,j,k,l} \; (C^x_{ik} - C^y_{jl})^2 P_{ij} P_{kl}$ is the objective function of
+    the GW distance. Here, the matrices $C^x \in \bbR^{n_x \times n_x}$ and
+    $C^y \in \bbR^{n_y \times n_y}$
+    contain the intra-domain pairwise distances between the rows of $X$ and $Y$, respectively.
 
+    \item[$\bullet$] $\langle L(X,Y) \otimes P, Q \rangle =
+    \sum_{i,j,k,l} \; (X_{ik} - Y_{jl})^2 P_{ij} Q_{kl}$ is the objective function of the COOT.
+\end{itemize}
 The AGW problem always admits a solution. Indeed, as the objective function is continuous
 and the sets of admissible couplings are compact, the existence of minimum and minimizer
 is guaranteed.
 
-Our interpolation offers several important benefits. First, COOT term ensures that AGW
-will take different values for any two isometries whenever $d \neq d'$. Intuitively,
+When $\alpha = 1$, we recover the GW distance, whereas $\alpha = 0$ corresponds to the
+COOT. Our interpolation offers several important benefits. First, COOT term ensures that AGW
+will take different values for any two isometries whenever $d_x \neq d_y$. Intuitively,
 AGW's value will then depend on how ``far'' a given isometry is from a permutation of rows
 and columns of the inputs. Thus, we restrict a broad class of (infinitely many) transformations
 that GW cannot distinguish and we tell them apart by assessing whether they
 can be approximately obtained by simply swapping 1D elements in input matrices.
-%[can mention local isometries here]
 
 Second, combining the objective functions of COOT and GW distance allows us to
-effectively influence the optimization of $P^s$ by introducing priors on feature matchings
-through $P^v$ and vice versa. This can be achieved by penalizing the costs of matching
-certain features in the COOT term to influence the optimization of $P^v$. This prior knowledge
+effectively influence the optimization of $P$ by introducing priors on feature matchings
+through $Q$ and vice versa. This can be achieved by penalizing the costs of matching
+certain features in the COOT term to influence the optimization of $Q$. This prior knowledge
 guides how the two metric spaces should be compared and improves empirical performance.
 These key properties explain our choice of calling it ``augmented'':
 we equip GW distance with an ability to provide finer-grained object comparisons by
 breaking isometric ties and/or guiding the matching using available prior knowledge.
 
-\paragraph{Illustrations} We illustrate $\agw$'s properties on a task of aligning handwritten digits
+\paragraph{Illustrations} We illustrate AGW's properties on a task of aligning handwritten digits
 from MNIST \citep{lecun10} (28$\times$28 pixels) and USPS datasets (16$\times$16 pixels)
 \citep{Hull94} in \Cref{fig:mnist}, where AGW with $\alpha=0.5$ outperforms both GW and COOT
 in alignment accuracy (Panel A). The black asterisks show the digit pairs that most benefit
@@ -281,28 +220,29 @@ The 2D projection of alignments in Panel B shows that GW sometimes completely sw
 the cell type clusters when they have a similar number of cells, whereas AGW is more robust
 to this phenomenon.
 
-\paragraph{Optimization} For simplicity, let $n = m$ and $d = d'$.
+\paragraph{Optimization} For simplicity, let $n_x = n_y = n$ and $d_x = d_y = d$.
 With the squared loss in both GW and COOT terms, the computational trick by \citep{Peyre16}
-can be applied, which reduces the complexity of $\agw$ from $O(n^4 + n^2 d^2)$
+can be applied, which reduces the complexity of AGW from $O(n^4 + n^2 d^2)$
 to $O(n^3 + dn^2 + nd^2)$. For optimization, we use the block coordinate descent (BCD) algorithm,
 where we alternatively fix one coupling and minimize AGW with respect to the other (\Cref{alg:bcd_agw}).
 Each iteration then consists of solving two OT problems. To further accelerate the optimization,
-entropic regularization can be used \citep{Cuturi13} on either $P^s$, $P^v$, or both.
+entropic regularization can be used \citep{Cuturi13} on either $P$, $Q$, or both.
 In practice, we rely on the built-in functions of the POT package \citep{Flamary21}.
 
-\begin{algorithm}[!t]
+\begin{algorithm}[t]
     \caption{BCD algorithm to solve AGW \label{alg:bcd_agw}}
-    \begin{algorithmic}[t]
-      % \STATE {\textbf{Input:}} $\bA \in \bbR^{n_1, d_1}, \bB \in \bbR^{n_2, d_2}$, $\lambda_1, \lambda_2, \varepsilon$
-      \STATE Initialize $P^s$ and $P^v$
+    \begin{algorithmic}[1]
+      \STATE Initialize $P^*$ and $Q^*$.
       \REPEAT
-      \STATE Calculate $L_v = L(X, Y) \otimes P^s$.
-      \STATE For fixed $P^s$, solve the OT problem:
-      $P^v \in \arg\min_{P \in U(\mu', \nu')} \langle L_v, P \rangle$.
-      \STATE Calculate $L_s = L(X, Y) \otimes P^v$.
-      \STATE For fixed $P^v$, solve the fused GW problem:
-      $P^s \in \arg\min_{P \in U(\mu, \nu)} \alpha \; L_{\gw} (P^s)
-      + (1-\alpha) \langle L_s, P^s \rangle$.
+      \STATE Calculate $L_Q = L(X, Y) \otimes P^*$.
+      \STATE For fixed $P$, solve the OT problem:
+      $Q^* \in \argmin_{Q \in U(\mu_2^X, \mu_2^Y)} \langle L_Q, Q \rangle$.
+      \STATE Calculate $L_P = L(X, Y) \otimes Q^*$.
+      \STATE For fixed $Q$, solve the fused GW problem:
+      \begin{align}
+        P^* \in \argmin_{P \in U(\mu_1^X, \mu_1^Y)}
+        \alpha \; \langle L(D_X,D_Y) \otimes P, P \rangle + (1-\alpha) \langle L_P, P \rangle.
+      \end{align}
       \UNTIL{convergence}
 \end{algorithmic}
 \end{algorithm}
@@ -320,24 +260,17 @@ Appendix.
 \label{prop:basic_prop}
 For every $\alpha \in [0, 1]$, given two input matrices $X$ and $Y$,
 \begin{enumerate}
-    \item When $\alpha \to 0$ (or $1$), one has $\agw_{\alpha}(X, Y) \to \coot(X, Y)$ (or $\gw(X, Y)$).
+    \item When $\alpha \to 0$ (or $1$), one has $\agw_{\alpha}(\cX, \cY) \to \coot(\cX, \cY)$
+    (or $\gw(\cX, \cY)$).
 
-    \item $\agw$ satisfies the relaxed triangle inequality: for any input matrices $X, Y, Z$,
-    one has $\agw_{\alpha}(X, Y) \leq 2 \big( \agw_{\alpha}(X, Z) + \agw_{\alpha}(Z, Y) \big)$.
+    \item AGW satisfies the relaxed triangle inequality: for any weighted matrices $\cX, \cY$
+    and $\cZ$, one has $\agw_{\alpha}(\cX, \cY) \leq 2 \big( \agw_{\alpha}(\cX, \cZ)
+    + \agw_{\alpha}(\cZ,  \cY) \big)$.
 \end{enumerate}
 \end{proposition}
 
-% As $\alpha$ tends to zero, the $\agw_{\alpha}(\mathbb X, \mathbb Y)$ approaches $\coot(\mathbb X, \mathbb Y)$ and as $\alpha$ tends to 1, it approaches $\gw\left((X, \mu_{sx}), (Y, \mu_{sy}) \right)$:
-% \begin{align*}
-%     \lim_{\alpha \rightarrow 0} \text{GWC}_{\alpha}(\hat{\mu}, \hat{\nu}, \hat{\mu'}, \hat{\nu'}) &= \coot(\hat{\mu}, \hat{\nu}, \hat{\mu'}, \hat{\nu'})\\
-%     \lim_{\alpha \rightarrow 1} \text{GWC}_{\alpha}(\hat{\mu}, \hat{\nu}, \hat{\mu'}, \hat{\nu'}) &= \gw(\hat{\mu}, \hat{\nu})
-% \end{align*}
-% These basic properties ensure that our new divergence is well-posed.
-
 \paragraph{Invariants of AGW}
 A more intriguing question is about the invariants that AGW exhibits.
-% Intuitively, we expect that AGW inherits the common invariants of both.
-% We leave a more detailed understanding of the isometries induced by AGW to future work.
 We denote $\cO_d$ and $\cP_d$ the sets of orthogonal and permutation matrices of size $d$,
 respectively. Given a matrix $X \in \bbR^{n \times d}$, we assume that
 \begin{assumption}
@@ -357,18 +290,17 @@ Since the singular values of $X$ are determined by the symmetric matrix $X X^T$,
 with repeated eigenvalues. With these, we present:
 \begin{theorem}
 \label{thm:invariant}
-Given two matrices $X$ and $Y$.
+Given two weighted matrices $\cX$ and $\cY$.
 \begin{enumerate}
-    \item If $\mu = \nu$ and $Y$ is obtained by permuting columns of
-    $X$ via the permutation $\sigma_c$ (so $\nu' = (\sigma_c)_{\#} \mu'$),
-    then $\agw_{\alpha}(X, Y) = 0$.
+    \item If $\mu_1^X = \mu_1^Y$ and $Y$ is obtained by permuting columns of
+    $X$ via the permutation $\sigma_c$ (so $\mu_2^Y = (\sigma_c)_{\#} \mu_2^X$),
+    then $\agw_{\alpha}(\cX, \cY) = 0$.
     \item Suppose $X \in \bbR^{n \times d}$, where $n \geq d$, satisfies \Cref{assumption:1}.
-    For any $0 < \alpha < 1$, if $\agw_{\alpha}(X, Y) = 0$,
+    For any $0 < \alpha < 1$, if $\agw_{\alpha}(\cX, \cY) = 0$,
     then there exist a symmetric orthogonal matrix $O \in \cO_d$ and
     a permutation matrix $P \in \cP_d$ such that $Y = X OP$.
 \end{enumerate}
 \end{theorem}
-% It is well known that, in Euclidean space, there are only three types of isometry: translation, rotation, and reflection (see \citep{Konrad}, for example).
 Despite the simplicity of the interpolation structure, the invariants induced by AGW
 present novel and non-trivial challenges for theoretical analysis.
 While sharing basic invariants, such as feature swaps, AGW covers much fewer isometries than
@@ -397,80 +329,38 @@ is much more important than preserving the distance itself. In other words,
 the translation only shifts the minimum but has no impact on the optimization procedure,
 meaning that the minimizer remains unchanged. This is indeed the case of AGW.
 \begin{proposition}
-    \label{prop:invariant}
-    AGW is weakly invariant to translation.
+    \label{prop:invariant} For any $\alpha \in [0,1]$, AGW is weakly invariant to translation.
 \end{proposition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
 \subsection{Related work}
 
-% In optimal transport, a common approach to incorporate prior knowledge is integrating it into the cost function. For example, when all classification labels are available, \citep{Melis20} proposed the Optimal Transport Dataset Distance to compare two datasets by adding the Wasserstein distance between the histograms associated with the labels, to the transport cost. However, this approach is only applicable when the data lives in the same ground spaces. Given some known matchings between samples across domains, \citep{Gu2022} used the Keypoint-Guided Optimal Transport to capture more efficiently the discrepancy between two datasets, by attaching a mask matrix containing alignment information to the transport plan via the element-wise multiplication.
-
 Most related to our work is the Fused Gromov-Wasserstein (FGW) distance \citep{Vayer19b}
 that compares structured objects. Its objective function is a convex combination of
 the GW term defined based on the pairwise intra-domain distances and the Wasserstein term
 defined over additional features that live in the same space for both input matrices.
-%that considers the features associated with the corresponding structural elements.
-
 Despite the resemblance to FGW, AGW fundamentally differs from it in several ways.
 Firstly, AGW uses explicit control over the invariants of GW to provide more meaningful
 cross-domain matchings. No other OT-based metric in the literature (including FGW)
 leverages a similar idea. As such, \Cref{thm:invariant} is the first result of its kind
-aiming at characterizing the invariances resulting from such interpolation. Secondly,
-FGW is mostly used for structured objects endowed with additional information living
+aiming at characterizing the invariances resulting from such interpolation.
+
+Secondly, FGW is mostly used for structured objects endowed with additional information living
 in the same space, for example, two graphs where each node may be colored by
 a specific color (``additional'' feature). On the other hand, AGW can be used on
 empirical measures defined for any set of objects across domains, including ones
-from different dimensional spaces, and requires no additional information. Finally,
-the notion of feature space in FGW does not have the same meaning as in AGW.
+from different dimensional spaces, and requires no additional information.
+
+Finally, the notion of feature space in FGW does not have the same meaning as in AGW.
 The feature space in FGW is associated with the sample space, whereas in AGW (and also in COOT),
 the two spaces are independent. Each element of the former is
 associated with a point in the sample space. By contrast, the features in AGW are
 precisely the coordinates of a point, in addition to its representation in the
 original and dissimilarity-induced spaces.
 
-% Overall, our proposed cross-domain OT divergence takes the following form:
-% \begin{equation}
-% \label{eq:scootr}
-% \min_{ \scriptsize{\begin{matrix}P \inU(\w,\w'),\\ \P \in U(\v,\v')\end{matrix}}}  \langle \alpha \L(\Kbf_{X},\Kbf_{Y})\otimes P + (1-\alpha) \L(X,Y) \otimes \P,  P \rangle.
-% \end{equation}
-
-%The intuition behind this formulation is to relax the invariant of the GW problem by adding a non-invariant term that defines a cost tensor directly from the input datasets $X$ and $Y$. The matrix $\P$ that multiplies the added cost term directly influences the costs associated to matching the dimensions of $Xbb$ and $Ybb$ using the available prior knowledge. The choice of the space $\mathbb{P}$ to which $\P$ belongs is extremely important as it needs to provide a meaningful way of inferring the correspondences between the features of $X$ and $Y$ when those are not observed.
-
-%\paragraph{Choice of $\mathbb P$ and } In practice, our choice of $\P$ should allow for two possible use cases. First one is to consider a situation when one wants a divergence with relaxed invariant and when no prior knowledge on $\P$ is available. Second is when we want to provide some level of supervision for matrix $\P$ and optimize over the remaining elements to infer them in a meaningful way. In this paper, we propose to cover these scenarios by considering $\mathbb{P}$ as a convex set of doubly stochastic matrices $U(\one_d/d, \one_{d'}/d')$. Our intuition behind this is that in practice the relationships between the dimensions of $Xbb$ and $Ybb$ are either 1-to-1 correspondences, or they admit a more coarse relationship with each dimension of $Xbb$ a subset of possible candidate matchings in $Ybb$.
-
-% \paragraph{Illustration} We illustrate the po
-% \iffalse
-% While COOT is not invariant to translation, it satisfies a weaker condition, which we call \textit{weak invariant to translation}.
-% \begin{definition}
-%     An OT-based divergence is weakly invariant to translation if under translation, only the optimal transport plan is preserved, but not necessarily the divergence itself.
-% \end{definition}
-% For example, GW and Wasserstein distances are clearly weakly invariant to translation. It can be shown that COOT is also weakly invariant to translation  (see Appendix for proof). In particular, whenever the data is translated, the COOT distance is also shifted by a constant depending on the the input data and the amount of translation.
-% In practice, we would argue that the ability to preserve the optimal plan under translation is much more important than preserving the distance itself. In other words, the translation only shifts the minimum but have no impact on the optimization procedure, meaning that the minimizer remains unchanged.
-
-% %The entropic version of this problem can be defined as before but with respect to both couplings $P^v$ and $P^s$.
-
-
-% \subsection{Motivation: strong invariant and human priors}
-% % The invariant of GW described above arises from the use of distances (or similarity) matrices in its formulation. Indeed, let $k_Xbb$ and $k_Ybb$ be two valid metrics or similarity measures inversely proportional to them (???) and let $f: Xbb \rightarrow Xbb$ and $g: Ybb \rightarrow Ybb$ be two distance-preserving mappings such that $f_{\# \widehat{\mu}}(f(x)) = \widehat{\mu}(x)$, for every $x \in \mathbb X$ and $g_{\# \widehat{\nu}}(g(y)) = \widehat{\nu}(y)$, for every $y \in \mathbb Y$. Then, it is easy to see that:
-% % $$L(\Kbf_{X_{i,k}},\Kbf_{Y_{j,l}}) = L(\Kbf_{f(X)_{i,k})},\Kbf_{g(Y)_{j,l}})$$
-% % so that $\gw(\Kbf_X,\Kbf_Y, \hat{\mu}, \hat{\nu}) = \gw(\Kbf_{f(X)},\Kbf_{g(Y)}, \hat{\mu}, \hat{\nu})$.
-% One may argue that breaking the invariant to GW distance can be achieved by using $k_Xbb$ and $k_Ybb$ that are sensitive to distance-preserving transformations. However, this modification does not offer an explicit way to introduce prior knowledge describing how the two spaces $Xbb$ and $Ybb$ are related in the GW problem. Such prior knowledge can be expressed, for instance, using a (partially observed) matrix $\P \in \mathbb{P}$ where $\mathbb{P} \subseteq \R^{d \times d'}$ is a set of $d \times d'$ matrices that we specify later.
-
-% Moreover, one downside of using the distance (or similarity) matrix is that all dimensions are usually treated equally (except when one has prior knowledge on the features) and aggregated into a single scalar, typically a distance. This has two consequences, first, every aggregation will cause information loss, and second, the usual Euclidean distance itself may not be enough meaningful and relevant, especially in the high-dimensional setting.
-
-% \begin{equation}
-% \label{eq:scootr2}
-% \min_{ \scriptsize{\begin{matrix}P^s \inU(\w,\w'),\\ P^v\inU(\v,\v')\end{matrix}}} \alpha L(\mathbf{D}^{X},\mathbf{D}^{X'})\otimes P^sP^s + (1-\alpha) L(X,X') \otimesP^v  P^s + \epsilon_s H(P^s) + \epsilon_v H(P^v),
-% \end{equation}
-% where $\mathbf{D^{X}} \in \mathbb{R}^{n\times n}$ and $\mathbf{D^{X'}}\in \mathbb{R}^{n'\times n'}$ denote pairwise dissimilarity matrices for each dataset. The first loss term matches the samples using pairwise dissimilarity information, handling potential complex relationships between them. The second loss term is the simple COOT formulation. The hyperparameter $\alpha$ controls which loss term -- with dissimilarity or original data representation -- will have more weight when matching the samples from the two datasets with $P^s$. Our motivation to fuse the loss term defined over dissimilarity matrices with COOT loss is inspired by the results showing that this particular term leads to state-of-the-art results in single-cell multi-omic alignment tasks \citep{Demetci2020,Demetci2022}.
-% In fact, our method generalizes the previous works \citep{Demetci2020,redko2018optimal} and adds two new degrees of freedom to them: (1) It allows for recovering the feature couplings, which enables us to study multi-omic feature relationships. (2) Depending on the dataset, the dissimilarity kernels may contain richer information than the cost calculated from the original data, which may be more informative. Our formulation allows for tuning the flexibility between the two.
-
-% We solve the problem in \eqref{eq:scootr} using an alternating optimization procedure, similar to the one employed by Redko \textit{et al.} \citep{COOT} (see Algorithm \ref{FGCOOTalgorithm}). In this procedure, we alternate between solving for the sample coupling matrix, $P^s$ (shared by the two loss terms), and solving for the feature coupling matrix, $P^v$. Following Vayer \textit{et al} \citep{vay2019fgw}, we use generalized conditional gradient descent to solve for the sample coupling matrix  $P^s$, and use an off-shelf OT solver (Sinkhorn algorithm) when solving for the feature coupling matrix, $P^v$.
-% \fi
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Experimental evaluations}
+
 \begin{table}[t]
 \begin{center}
 \resizebox{1.0\linewidth}{!}{
@@ -491,8 +381,6 @@ as quantified by the average `fraction of samples closer than true match'
 (FOSCTTM) metric (lower values are better, see Appendix Section 6.4.2).
 For each dataset, the size of the two domains they contain are expression in the format
 (number of samples x number of features) in the second row.
-% N/A indicate cases where bindSC is not applicable due to its requirement of an input matrix with prior knowledge relating features across domains.
-%Cell alignment performance of AGW is compared against the alignments by GW (SCOT), COOT, and bindSC, which performs bi-order canonical correlation analysis for alignment (detailed in the next section). It requires prior information on feature relationships, which we do not have for the first three simulations (thus the N/A).
 }
 \end{table}
 
@@ -501,11 +389,6 @@ Overall, we aim to empirically answer:
 \textbf{(1)} Does tightening invariances improve upon GW's performance in tasks where
 it has been previously used? \textbf{(2)} Does prior knowledge introduced in AGW help
 in obtaining better cross-domain matchings?
-
-% \begin{enumerate}
-%     \item[Q1.] Does tightening the invariances improve upon GW's performance in tasks where it was previously used?
-%     \item[Q2.] Does prior knowledge introduced in AGW help in obtaining better cross-domain matchings?
-% \end{enumerate}
 
 \paragraph{Baselines} We pick other cross-domain OT methods as baselines, namely COOT, GW,
 and their unbalanced counterparts, UCOOT \citep{Tran23} and UGW \citep{Sejourne20}.
@@ -543,7 +426,7 @@ This information allows us to assess the effect of guiding cross-domain matching
 or full prior knowledge of these relationships.
 
 \paragraph{Single-cell alignment} We follow the first GW application in this domain
-\citep{Demetci20} and align samples (\textit{i.e.}, cells) of simulated and real-world datasets
+\citep{Demetci20} and align samples (\ie, cells) of simulated and real-world datasets
 from different measurement types. We have ground-truth information on cell-cell alignments
 for all datasets, which we only use for benchmarking. We demonstrate in \Cref{table:scCells}
 that AGW consistently yields higher quality cell alignments (with lower alignment error)
@@ -562,7 +445,7 @@ thus the ``N/A'' entries in \Cref{table:scCells}.
 
 \paragraph{Aligning genomic features} AGW augments GW formulation with a feature coupling matrix.
 Therefore, we jointly align features and see whether AGW reveals relevant biological relationships.
-All current single-cell alignment methods only align samples (\textit{i.e.}, cells),
+All current single-cell alignment methods only align samples (\ie, cells),
 except for bindSC as discussed above.
 
 Among the real-world datasets in \Cref{table:scCells}, CITE-seq \citep{CITEseq}
@@ -616,10 +499,7 @@ descend from a common ancestor and maintain similar biological functions in both
 We also have domain knowledge on cells that belong to similar cell types across the two species.
 Thus, we expect AGW to recover these relationships.
 
-\setlength{\columnsep}{10pt}%
-\setlength{\intextsep}{0pt}
-% \begin{wrapfigure}[15]{r}{\linewidth}
-\begin{figure*}[!t]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.85\linewidth]{./Chapitre5/fig/xSp_full.png}
 \caption{\label{fig:xsp} \textbf{Aligning cross-species dataset.}
@@ -628,21 +508,13 @@ B. Providing supervision on one level of alignment (\textit{e.g.}, features)
 boosts alignments on the other. Standard errors computed over 10 random runs.
 Dashed line indicates the sample alignment performance of GW and bindSC
 (orthologous gene used in input).}
-\end{figure*}
-
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.8\linewidth]{figures/xSp_cellAlign.png}
-% \caption{\textbf{Cell-type alignment results on cross-species dataset.}}
-% \label{fig:crossAlignments}
-% \end{figure}
-%\end{wrapfigure}
+\end{figure}
 
 \Cref{fig:xsp}A visualizes the cell-type alignment probabilities yielded by AGW
 when full supervision is provided on the $10,816$ orthologous genes.
 The green boxes indicate alignment between similar types of cells.
 This matrix is obtained by averaging the sample alignment matrix
-(\textit{i.e.}, cell-cell alignments) into cell-type groups. We observe that
+(\ie, cell-cell alignments) into cell-type groups. We observe that
 AGW yields biologically plausible alignments, as all the six cell types that
 have a natural match across the two species are correctly matched.
 We also show in \Cref{fig:xsp}B that providing supervision on one alignment level (\textit{e.g.},
@@ -667,9 +539,9 @@ and CaffeNet \citep{Jia14} (vectors in $\bbR^{1024}$) neural network architectur
 In semi-supervised settings, we incorporate prior knowledge on a few target labels
 by adding an extra cost matrix to the training of sample coupling, so that
 a source sample will be penalized if it transfers mass to the target samples from different classes.
-Once the sample coupling $P^s$ is learned, we obtain the final prediction using label propagation:
+Once the sample coupling $P$ is learned, we obtain the final prediction using label propagation:
 $\widehat{y}_t = \argmax_k L_{k\cdot}$,
-where $L = D_s P^s$ and $D_s$ denotes one-hot encodings of the source labels $y_s$.
+where $L = D_s P$ and $D_s$ denotes one-hot encodings of the source labels $y_s$.
 All hyperparameters are tuned on a validation set based on accuracy (Appendix ).
 
 \Cref{tab:hda_agw} presents the performance of each method averaged across ten runs in
@@ -702,114 +574,8 @@ one can consider low-rank coupling and cost matrix \citep{Meyer21b} or
 use the divide and conquer strategy \citep{Chowdhury21a},
 which allows one to scale the GW distance up to a million points.
 
-% Table 4 shows that AGW consistently performs well compared to the state-of-the-art baselines, which supports our claim about its capacity to properly adjust the invariance of the datasets at hand.
-
-%except for the baseline, for each method, we use the learned sample coupling between source and  target data to predict the labels in the target domain via label propagation \citep{Redko19a}.
-% More precisely, for each pair of domains, we randomly choose $20$ samples per class (thus $n_s = n_t = 200$) and
-% perform adaptation from CaffeNet to GoogleNet features, then calculate the accuracy of the generated predictions on the target domain.
-% We repeat this process $10$ times and calculate the average and standard deviation of the performance. Without prior knowledge, we assign uniform distributions to the samples and features in the source and target domains.
-
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-
-
-
-% \iffalse
-% More precisely, we introduce the masked target label $\tilde{y}^{(t)} \in \bbR^{n_t}$
-% defined by randomly keeping $\tilde{n}_t \in \{1,3,5\}$ samples in each class in the target label $y^{(t)}$ and masking all other
-% labels in $y^{(t)}$ by $-1$. Then the additional cost $M \in \bbR^{n_s \times n_t}$ between $y^{(s)}$ and $\tilde{y}^{(t)}$ is defined by
-% \begin{equation}
-%   M_{ij} =
-%   \begin{cases}
-%     0, \text{ if } y^{(s)}_i = \tilde{y}^{(t)}_j, \text{ or } \tilde{y}^{(t)}_j = -1 \\
-%     v, \text{ otherwise}.
-%   \end{cases}
-% \end{equation}
-% Here, $v > 0$ is a fixed value and we choose $v = 100$ in this experiment.
-
-% Once the sample coupling $P$ is learned, the label propagation works as follows:
-% suppose the labels contain $K$ different classes,
-% we apply the one-hot encoding to the source label $y^{(s)}$ to obtain
-% $D^{(s)} \in \bbR^{K \times n_s}$ where $D^{(s)}_{ki} = 1_{\{y^{(s)}_i = k\}}$.
-% The label proportions on the target data are estimated by: $L = D^{(s)} P \in \bbR^{K \times n_t}$.
-% Then the prediction can be generated by choosing the
-% label with the highest proportion, i.e. $\widehat{y}^{(t)}_j = \argmax_k L_{kj}$.
-
-% Note that, while the prediction is performed on the whole target samples,
-% only those whose labels are masked as $-1$ during the
-% training, are used in the calculation of accuracy. For the $k$-NN only,
-% we train a classifier on the labeled target samples,
-% then perform prediction on the unlabelled ones.
-% \fi
-
- %We also note that the naive choice of $\alpha=0.5$ already provides a strong baseline that improves
-% \setlength{\tabcolsep}{8pt}
-
-
-
-%first apply our formulation to three machine learning benchmarks. In the first, we
-%and demonstrate that (1) the degree of invariant to local or global isometric transformations can be regulated through the proposed interpolation, as well as through prior information supplied on the feature coupling, and (2) different interpolation strenghs lead to
-
-% {\color{red} This is a very rough first draft: I am jolting down some thoughts on how we could use the current experiments to sell the benefits of FGCOOT. -Pinar.}\\
-
-% We show the following merits of \textsc{FGCOOT} through various experiments:
-% \begin{itemize}
-%     \item \textsc{FGCOOT} interpolates the two optimal transport distances that can be computed between datasets across different metric spaces, namely, \textsc{COOT} and \textsc{GW} \ref{Theorem1}. As these distances show .. We demonstrate through applications on hand-written digit alignment and heterogeneous domain adaptation tasks that in certain cases,
-%     \item \textsc{FGCOOT}
-% \end{itemize}
-
-% \iffalse
-% \subsection{Control over invariants}
-
-% We observe that the interpolation
-% Through two mechanisms: (1) interpolation between the GW and COOT terms (different coefficients of interpolation perform best for different cases -- HDA also demonstrates this), and (2)
-% \begin{figure}[h]
-% \centering
-% \includegraphics[width=\linewidth]{figures/mnist1.png}
-% \caption{\label{fig:mnist}\textbf{} }
-% \end{figure}
-
-% %\subsection{Heterogeneous domain adaptation}
-% % Please add the following required packages to your document preamble:
-% % \usepackage{booktabs}
-
-% %\paragraph{Dataset} We consider the Caltech-Office dataset \citep{Saenko10} widely used in domain adaptation experiments. It contains three domains:  Amazon (A), Caltech-$256$ (C) and Webcam (W), whose images are embeddings extracted from the second last layer in the Google Net \citep{Szegedy15} (vectors in $\bbR^{4096}$) and Caffe Net \citep{Jia14} (vectors in $\bbR^{1024}$) neural network architectures.
-
-% %\paragraph{Competing methods} We compare $2$ OT-based methods: GW, COOT. The details about the choice of hyperparameters  for each method can be found in the Appendix \ref{sec_app:exp}. For the semi-supervised HDA task, we use $k$-NN, with $k=3$ as baseline method, which corresponds to the situation where there is no adaptation.
-% %\paragraph{Experimental setting}
-
-% \subsection{Cross-domain imitation learning}
-% In \citep{FickingerC0A22}, the authors used GW distance to solve a very challenging cross-domain imitation learning (IL) task. In general, the goal of IL is to learn a policy for an agent from expert state-action observations. In cross-domain setting, the agent additionally learns a different task in a different environment from that in which the expert operates. \citep{FickingerC0A22} proposed GWIL: an IL algorithm that uses GW distance between state-action pairs of the agent and the expert as a proxy for the reward that is then used in soft-actor critic (SAC) \citep{sac} algorithm to learn agent's policy. As our work intends to improve upon GW distance, below we provide the experimental results comparing our IL algorithm based on AGW to GWIL.
-
-% \begin{wrapfigure}[15]{r}{.42\linewidth}
-% \centering
-% \includegraphics[width=.8\linewidth]{figures/rewards_vs_proxy_fgcoot_False_false_0.5.png}
-%     \captionof{figure}{AGW values and true agents rewards for pendulum to cartpole task. AGW divergence exhibits a strong correlation with the true rewards.}
-% \end{wrapfigure}
-
-
-% \begin{table}
-%     \centering
-%     \caption{Best average reward attained by each method during evaluation.\label{tab:RL} }
-%     \begin{tabular}{l|cc}
-%        \textbf{Task}  &  \textbf{AGW} & \textbf{GWIL}\\
-%        \hline
-%        Pendulum $\rightarrow$ Cartpole & \textbf{187.47$\pm$10.05} & 109.66$\pm$ 2.7\\
-%        Cheetah $\rightarrow$ Walker & \textbf{124.84$\pm$2.71} & 51.67$\pm$ 9.15
-%     \end{tabular}
-
-% \end{table}
-
-% Following \citep{FickingerC0A22}, we consider two scenarios. First one is to learn agent's policy for cartpole swingup task from one demonstration of expert's state-action pairs for pendulum swingup task. Second is to learn a walker to walk from a demonstration of a running cheetah. As in \citep{FickingerC0A22}, we use simulated continuous control tasks implemented in Mujoco
-% \citep{todorov} and the DeepMind control suite \citep{tassa}. For the first task, we use AGW with $\alpha=0.9$. We present the results for other values of $\alpha$ in the Supplementary materials. which favours GW term in our formulation. For the second task, we set $\alpha=0.5$ and run the evaluation over 3 seeds for the two scenarios. Table ~\ref{tab:RL} reports the highest average reward obtained by each method for both cases.
-
-
-% Our results on the two cross-domain tasks show ...
-% \fi
-
 \section{Discussion and conclusion}
 
-% We present Augmented Gromov-Wasserstein (AGW), a new OT-based divergence for incomparable spaces. AGW relies on the GW distance and CO-Optimal transport. This novel metric narrows down
 We present Augmented Gromov-Wasserstein (AGW), a new OT-based divergence for incomparable spaces.
 It interpolates between GW and CO-Optimal transport and allows to narrow down the
 choices of isometries induced by GW, while efficiently exploiting the prior knowledge
@@ -819,4 +585,3 @@ Future work will focus on refining the theoretical analysis of the AGW invariant
 better understand their performance in practice. We will also extend AGW to the unbalanced
 and/or continuous setting, and other tasks where feature supervision by domain experts
 may be incorporated in OT framework.
-
