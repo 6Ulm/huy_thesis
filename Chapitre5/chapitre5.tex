@@ -248,7 +248,7 @@ In practice, we rely on the built-in functions of the POT package \citep{Flamary
 \end{algorithm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Theoretical analysis}
+\subsection{Theoretical analysis} \label{subsec:agw_property}
 
 \paragraph{Preliminary results}
 Intuitively, we expect that AGW interpolates between GW and COOT and shares similar properties
@@ -378,7 +378,7 @@ original and dissimilarity-induced spaces.
 \end{center}
 \caption{\label{table:scCells} \textbf{Single-cell alignment error},
 as quantified by the average `fraction of samples closer than true match'
-(FOSCTTM) metric (lower values are better, see Appendix Section 6.4.2).
+(FOSCTTM) metric (lower values are better).
 For each dataset, the size of the two domains they contain are expression in the format
 (number of samples x number of features) in the second row.
 }
@@ -397,9 +397,9 @@ We consider entropic regularization for all methods on both sample and
 (when applicable) feature couplings. We keep the hyperparameter values considered
 for all regularization coefficients consistent across all methods. We report the results of
 the best-performing hyperparameter combination after tuning on a validation set for each method
-in each experiment. We detail our experimental setup in Appendix Section 6.4 and
-report empirical runtimes in Appendix Section 6.3. Our source code and scripts can be found at
-\url{https://anonymous.4open.science/r/AGW-2023}.
+in each experiment. We detail our experimental setup in Appendix \ref{subsec:appendix_expe_agw} and
+report empirical runtimes in Appendix \ref{subsec:chap5_runtime}.
+Our source code and scripts can be found at \url{https://anonymous.4open.science/r/AGW-2023}.
 
 \begin{figure}[t]
 \centering
@@ -453,10 +453,7 @@ is the only one with ground-truth information on feature correspondences.
 This dataset has paired single-cell measurements on the abundance levels of
 25 antibodies and activity (i.e., ``expression'') levels of genes,
 including the genes that encode these 25 antibodies. So, we first present
-unsupervised feature alignment results on the CITE-seq dataset. For completion,
-we also report the biological relevance of our feature alignments on SNARE-seq \citep{SNAREseq}
-and scGEM \citep{scGEM} datasets in Appendix Section 6.2.2. However, note that
-these datasets (unlike CITE-seq) do not have clear ground-truth feature correspondences.
+unsupervised feature alignment results on the CITE-seq dataset.
 We compare our feature alignments with bindSC, COOT, and UCOOT in \Cref{fig:cite}.
 The entries in the feature alignment matrices are arranged such that
 the ``ground-truth'' correspondences lie in the diagonal, marked by green squares.
@@ -519,10 +516,10 @@ AGW yields biologically plausible alignments, as all the six cell types that
 have a natural match across the two species are correctly matched.
 We also show in \Cref{fig:xsp}B that providing supervision on one alignment level (\eg,
 features) improves the quality on the other alignment level (\eg, samples).
-The supervision scheme is detailed in Appendix Section 6.4.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Heterogeneous domain adaptation}
+
 Finally, we demonstrate the generalizability of our approach on a popular ML task,
 heterogeneous domain adaptation, where COOT and GW were previously successfully used.
 Domain adaptation (DA) refers to the problem in which a classifier learned on one domain
@@ -542,34 +539,21 @@ a source sample will be penalized if it transfers mass to the target samples fro
 Once the sample coupling $P$ is learned, we obtain the final prediction using label propagation:
 $\widehat{y}_t = \argmax_k L_{k\cdot}$,
 where $L = D_s P$ and $D_s$ denotes one-hot encodings of the source labels $y_s$.
-All hyperparameters are tuned on a validation set based on accuracy (Appendix ).
+All hyperparameters are tuned on a validation set based on accuracy
+(see Appendix \ref{subsec:appendix_expe_agw} for details).
 
 \Cref{tab:hda_agw} presents the performance of each method averaged across ten runs in
 the unsupervised setting, where AGW yields favorable results in 6 out of 9 cases. In two cases,
 UGW, and in one case, UCOOT, outperform AGW despite the lower performance of
 their balanced counterparts. In these cases, unbalanced formulations prove beneficial,
 and support extending AGW to unbalanced scenarios as future work.
-Appendix Section 6.4 presents the semi-supervised experiments,
-which show the same trend where AGW tends to outperform other baselines.
-
-In domain adaptation and transfer learning applications, the key is to perform
-successful dataset comparisons. To more directly check if AGW yields improved object comparison,
-we compute the correlation between AGW distance versus Optimal Transport Dataset Distance (OTDD)
-\citep{Melis20}, an OT metric specifically developed to quantify dataset dissimilarities
-for transfer learning applications. We replicate the original experiment comparing
-USPS and MNIST datasets and three MNIST extensions: Fashion-MNIST, KMNIST, and EMNIST
-(Appendix Section 6.4.3). AGW shows a Pearson's correlation of $>0.965$
-with OTDD with p-value $<0.0001$ across varying levels of alpha, while for COOT, it is 0.7578
-(p-value: 0.011), and for GW, -0.155 (p-value: 0.67).
-This evaluation further supports that AGW interpolation leads to more informative dataset comparisons.
-Note that AGW solely uses input data while OTDD also leverages labels when comparing datasets.
 
 \paragraph{Empirical runtime} As described in \Cref{subsec:agw_formulation},
 the theoretical complexity of AGW is $O(n^3 + dn^2 + nd^2)$. When $d<n$,
 the dominating term of $n^3$ is due to the computational burden of computing the GW distance.
 However, in practice, we observe that AGW converges in much fewer iterations than GW
 (about $1/5$ of the number of iterations on average) thus having a shorter runtime
-(further detailed in Appendix Section 6.3). To further speed up optimization,
+(further detailed in Appendix \ref{subsec:chap5_runtime}). To further speed up optimization,
 one can consider low-rank coupling and cost matrix \citep{Meyer21b} or
 use the divide and conquer strategy \citep{Chowdhury21a},
 which allows one to scale the GW distance up to a million points.
