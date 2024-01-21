@@ -31,18 +31,18 @@ See Appendix A in \citep{Chapel21} for more details of $M_r, M_c$.
 Remark that if $A \in \bbR^{m \times n}$ and $B \in \bbR^{m \times p}$, then
 \begin{align}
     (A, B) \begin{pmatrix}
-        A^T \\
+        X^T \\
         B^T
     \end{pmatrix}
-    = A A^T + B B^T
+    = X X^T + B B^T
 \end{align}
 Following Equation 23 in \citep{Chapel21},  we have
 \begin{align}
     t^{(k+1)}_i = t^{(k)}_i \frac{\max( 0, [M^T y]_i - c_i)}{[M^T M t^{(k)}]_i}
 \end{align}
 Now, $\text{mat}(M^T y) = (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma$.
-Here, matrization is the inverse operation of vectorization. Also,
-$M^T M = \rho_1 M_r^T M_r + \rho_2 M_c^T M_c + \varepsilon I_{mn}$, so
+Here, matrization is the inverse operation of vectorization. Since,
+$M^T M = \rho_1 M_r^T M_r + \rho_2 M_c^T M_c + \varepsilon I_{mn}$, we obtain
 $\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k)})
 + \varepsilon P^{(k)} $. The result then follows.
 \end{proof}
@@ -183,13 +183,13 @@ Indeed, $\nabla g(\pi) = \log \pi - \log \mu$, so for any positive measure $\pi,
 This means $g$ is $1$-strongly convex \wrt the KL divergence.
 To conclude the proof of strong convexity, note that if $f$ is $\sigma$-strongly convex \wrt
 some divergence $D$ and $g$ is convex, then the composite function $h = f + g$ is
-$\sigma$-strongly convex \wrt $D$. Indeed, for $a \in [0,1]$,
+$\sigma$-strongly convex \wrt $D$. Indeed, for $t \in [0,1]$,
 \begin{align}
-    h \big( a \pi + (1-a) \gamma \big)
-    &= f \big( a \pi + (1-a) \gamma \big) + g \big( a \pi + (1-a) \gamma \big) \\
-    &\leq a f(\pi) + (1 - a) f(\gamma) - \sigma \frac{a (1 - a)}{2} D(\pi, \gamma)
-    + a g(\pi) + (1 - a) g(\gamma) \\
-    &= a h(\pi) + (1 - a) h(\gamma) - \sigma \frac{a (1 - a)}{2} D(\pi, \gamma).
+    h \big( t \pi + (1-t) \gamma \big)
+    &= f \big( t \pi + (1-t) \gamma \big) + g \big( t \pi + (1-t) \gamma \big) \\
+    &\leq t f(\pi) + (1 - t) f(\gamma) - \sigma \frac{t (1 - t)}{2} D(\pi, \gamma)
+    + t g(\pi) + (1 - t) g(\gamma) \\
+    &= t h(\pi) + (1 - t) h(\gamma) - \sigma \frac{t (1 - t)}{2} D(\pi, \gamma).
 \end{align}
 Regarding the relative smoothness, denote $h(\pi) = \kl(\pi_{\#1} | \alpha)$,
 then $(\nabla h(\pi))_{ij} = \log (\pi_{\#1})_i - \log \alpha_i$, for every $j$. So,
@@ -321,7 +321,7 @@ In particular, by choosing $x = x^{(t)}$, we have
 This means $\big(F(x^{(t)}) \big)_t$ is a (nonnegative) decreasing sequence.
 Now, for every $x \in C$ and $l \leq \eta \leq L$,
 \begin{align}
-    F(x^{(t+1)})
+    &F(x^{(t+1)}) \\
     &\leq F(x^{(t)}) + \langle \nabla F(x^{(t)}), x^{(t+1)} - x^{(t)} \rangle
     + L D_{\varphi}(x^{(t+1)}, x^{(t)}) \\
     &\leq F(x^{(t)}) + \langle \nabla F(x^{(t)}), x - x^{(t)} \rangle
@@ -353,8 +353,8 @@ By applying \Cref{lemma:bound_seq} and choosing $x = x^*$, we deduce that
 \end{align}
 The result then follows.
 \end{proof}
-Now, \Cref{prop:convergence-exact-sppa} follows immediately from \Cref{lemma:bppa_conv} and
-\Cref{lemma:convex-smoothness}.
+Now, \Cref{prop:convergence-exact-sppa} follows immediately from
+\Cref{lemma:bppa_conv,lemma:convex-smoothness}.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -440,7 +440,7 @@ For $(i,j) \in [n_1] \times [n_2]$, we have
 The result then follows.
 \end{proof}
 Now, let $(e_i)_{i=1}^{n_1 n_2}$ be the standard basis vectors of $\bbR^{(n_1 n_2)}$,
-\ie $(e_i)_k = 1_{\{i=k\}}$. For each $P \in U(\mu)$, denote $\pi$ its matrisation,
+\ie, $(e_i)_k = 1_{\{i=k\}}$. For each $P \in U(\mu)$, denote $\pi$ its matrisation,
 then by \Cref{vec_mat}, we have, for $i \in [n_1]$,
 \begin{equation*}
   (\mu_1)_i = \sum_j \sum_{k,l} P_{i,j,k,l} = \sum_{j = 1}^{n_2} \sum_{n=1}^{n_3 n_4} \pi_{(i-1) n_2 + j, n},
@@ -1096,7 +1096,9 @@ For self-contained purpose, we provide the complete proof here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Proofs in Chapter 3}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 For later convenience, we define the function
 $\vert \xi_1 - \xi_2 \vert^p: (X_1^s \times X_2^s) \times (X_1^f \times X_2^f) \to \bbR_{\geq 0}$ by
@@ -1646,7 +1648,7 @@ where the last inequality follows from the marginal constraints.
   \end{enumerate}
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Proof in Chapter 4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1739,95 +1741,102 @@ So,
 \end{align}
 where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Proofs in Chapter 5}
 
 \begin{proof}[Proof of \Cref{prop:basic_prop}]
   The proof of this proposition can be adapted directly from \citep{Vayer19b}.
-  For self-contained purpose, we give the proof here. Denote
+  For self-contained purpose, we reproduce the proof here. Denote
   \begin{itemize}
-      \item[$\bullet$] $(P^s_{\alpha}, P^v_{\alpha})$ the optimal sample and feature couplings for
-      $\agw_{\alpha}(X, Y)$.
+      \item[$\bullet$] $(P_{\alpha}, Q_{\alpha})$ the optimal sample and feature couplings for
+      $\agw_{\alpha}(\cX, \cY)$.
 
-      \item[$\bullet$] $(P^s_0, P^v_0)$ the optimal sample and feature couplings for $\coot(X, Y)$.
+      \item[$\bullet$] $(P_0, Q_0)$ the optimal sample and feature couplings for
+      $\coot(\cX, \cY)$ (corresponding to $\alpha = 0$).
 
-      \item[$\bullet$] $P^s_1$ the optimal sample coupling for $\gw(X, Y)$.
+      \item[$\bullet$] $P_1$ the optimal sample coupling for $\gw(\cX, \cY)$
+      (corresponding to $\alpha = 1$).
   \end{itemize}
-  Due to the suboptimality of $P^s_{\alpha}$ for GW and $(P^s_1, P^v_0)$ for AGW, we have
+  Due to the suboptimality of $P_{\alpha}$ for GW and $(P_1, Q_0)$ for AGW, we have
   \begin{align}
-      \alpha \langle L(D_X, D_Y) \otimes P^s_1, P^s_1 \rangle
-      &\leq \alpha \langle L(D_X, D_Y) \otimes P^s_{\alpha}, P^s_{\alpha} \rangle
-      + (1 - \alpha) \langle L(X, Y) \otimes P^v_{\alpha}, P^s_{\alpha} \rangle \\
-      &\leq \alpha \langle L(D_X, D_Y) \otimes P^s_1, P^s_1 \rangle
-      + (1 - \alpha) \langle L(X, Y) \otimes P^v_0, P^s_1 \rangle,
+      \alpha \langle L(D_X, D_Y) \otimes P_1, P_1 \rangle
+      &\leq \alpha \langle L(D_X, D_Y) \otimes P_{\alpha}, P_{\alpha} \rangle
+      + (1 - \alpha) \langle L(X, Y) \otimes Q_{\alpha}, P_{\alpha} \rangle \\
+      &\leq \alpha \langle L(D_X, D_Y) \otimes P_1, P_1 \rangle
+      + (1 - \alpha) \langle L(X, Y) \otimes Q_0, P_1 \rangle,
   \end{align}
   or equivalently
   \begin{align}
-      \alpha \gw(X, Y) \leq \agw_{\alpha}(X, Y) \leq \alpha \gw(X, Y)
-      + (1 - \alpha) \langle L(X, Y) \otimes P^v_0, P^s_1 \rangle.
+      \alpha \gw(\cX, \cY) \leq \agw_{\alpha}(\cX, \cY) \leq \alpha \gw(\cX, \cY)
+      + (1 - \alpha) \langle L(X, Y) \otimes Q_0, P_1 \rangle.
   \end{align}
   Similarly, we have
   \begin{align}
-      (1 - \alpha) \coot(X, Y) &\leq \agw_{\alpha}(X, Y) \\
-      &\leq (1 - \alpha) \coot(X, Y) + \alpha \langle L(D_X, D_Y) \otimes P^s_0, P^s_0 \rangle.
+      (1 - \alpha) \coot(\cX, \cY) &\leq \agw_{\alpha}(\cX, \cY) \\
+      &\leq (1 - \alpha) \coot(\cX, \cY) + \alpha \langle L(D_X, D_Y) \otimes P_0, P_0 \rangle.
   \end{align}
   The interpolation property then follows by the sandwich theorem.
 
-  Regarding the relaxed triangle inequality, given three triplets
-  $(X, \mu_{sx}, \mu_{fx}), (Y, \mu_{sy}, \mu_{fy})$ and $(Z, \mu_{sz}, \mu_{fz})$,
-  let $(\pi^{XY}, \gamma^{XY}), (\pi^{YZ}, \gamma^{YZ})$ and $(\pi^{XZ}, \gamma^{XZ})$
-  be solutions of the problems $\agw_{\alpha}(X, Y), \agw_{\alpha}(Y, Z)$ and
-  $\agw_{\alpha}(X, Z)$, respectively. Denote
-  $P = \pi^{XY} \diag \left( \frac{1}{\mu_{sy}} \right) \pi^{YZ}$ and
-  $Q = \gamma^{XY} \diag \left( \frac{1}{\mu_{fy}} \right) \gamma^{YZ}$. Then,
-  it is not difficult to see that $P \in U(\mu_{sx}, \mu_{sz})$ and
-  $Q \in U(\mu_{fx}, \mu_{fz})$. The suboptimality of $(P,Q)$ implies that
+  Regarding the relaxed triangle inequality, given three weighted matrices $\cX, \cY$ and $\cZ$,
+  denote $(P^{XY}, Q^{XY}), (P^{YZ}, Q^{YZ})$ and $(P^{XZ}, Q^{XZ})$
+  the solutions of $\agw_{\alpha}(\cX, \cY), \agw_{\alpha}(\cY, \cZ)$ and
+  $\agw_{\alpha}(\cX, \cZ)$, respectively. We define
+  $P = P^{XY} \diag \left( \frac{1}{\mu_1^Y} \right) P^{YZ}$ and
+  $Q = Q^{XY} \diag \left( \frac{1}{\mu_2^Y} \right) Q^{YZ}$. Then,
+  $P \in U(\mu_1^X, \mu_1^Z)$ and $Q \in U(\mu_2^X, \mu_2^Z)$.
+  The suboptimality of $(P,Q)$ implies that
   \begin{align}
-      &\frac{\agw_{\alpha}(X, Z)}{2} \\
+      &\frac{\agw_{\alpha}(\cX, \cZ)}{2} \\
       &\leq \alpha \sum_{i,j,k,l} \frac{|D_X(i,j) - D_Z(k,l)|^2}{2} P_{i,k} P_{j, l}
       + (1 - \alpha) \sum_{i,j,k,l} \frac{|X_{i,j} - Z_{k,l}|^2}{2} P_{i,k} Q_{j,l} \\
       &= \alpha \sum_{i,j,k,l} \frac{|D_X(i,j) - D_Z(k,l)|^2}{2}
-      \left( \sum_e \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e} \right)
-      \left(\sum_o \frac{\pi^{XY}_{j,o} \pi^{YZ}_{o,l}}{(\mu_{sy})_o} \right) \\
+      \left( \sum_e \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e} \right)
+      \left(\sum_o \frac{P^{XY}_{j,o} P^{YZ}_{o,l}}{(\mu_1^Y)_o} \right) \\
       &+ (1 - \alpha) \sum_{i,j,k,l} \frac{|X_{i,j} - Z_{k,l}|^2}{2}
-      \left(\sum_e \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e} \right)
-      \left( \sum_o \frac{\gamma^{XY}_{j,o} \gamma^{YZ}_{o,l}}{(\mu_{fy})_o} \right) \\
+      \left(\sum_e \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e} \right)
+      \left( \sum_o \frac{Q^{XY}_{j,o} Q^{YZ}_{o,l}}{(\mu_2^Y)_o} \right) \\
       &\leq \alpha \sum_{i,j,k,l,e,o} |D_X(i,j) - D_Y(e,o)|^2
-      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
-      \frac{\pi^{XY}_{j,o} \pi^{YZ}_{o,l}}{(\mu_{sy})_o} \\
+      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
+      \frac{P^{XY}_{j,o} P^{YZ}_{o,l}}{(\mu_1^Y)_o} \\
       &+ (1 - \alpha) \sum_{i,j,k,l,e,o} |X_{i,j} - Y_{e,o}|^2
-      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
-      \frac{\gamma^{XY}_{j,o} \gamma^{YZ}_{o,l}}{(\mu_{fy})_o} \\
+      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
+      \frac{Q^{XY}_{j,o} Q^{YZ}_{o,l}}{(\mu_2^Y)_o} \\
       &+ \alpha \sum_{i,j,k,l,e,o} |D_Y(e, o) - D_Z(k,l)|^2
-      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
-      \frac{\pi^{XY}_{j,o} \pi^{YZ}_{o,l}}{(\mu_{sy})_o} \\
+      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
+      \frac{P^{XY}_{j,o} P^{YZ}_{o,l}}{(\mu_1^Y)_o} \\
       &+ (1 - \alpha) \sum_{i,j,k,l,e,o} |Y_{e, o} - Z_{k,l}|^2
-      \frac{\pi^{XY}_{i,e} \pi^{YZ}_{e,k}}{(\mu_{sy})_e}
-      \frac{\gamma^{XY}_{j,o} \gamma^{YZ}_{o,l}}{(\mu_{fy})_o} \\
-      &= \alpha \sum_{i,j,e,o} |D_X(i,j) - D_Y(e,o)|^2 \pi^{XY}_{i,e} \pi^{XY}_{j,o}
-      + (1 - \alpha) \sum_{i,j,e,o} |X_{i,j} - Y_{e,o}|^2 \pi^{XY}_{i,e} \gamma^{XY}_{j,o} \\
-      &+ \alpha \sum_{k, l, e, o} |D_Y(e, o) - D_Z(k,l)|^2 \pi^{YZ}_{e,k} \pi^{YZ}_{o,l}
-      + (1 - \alpha) \sum_{k,l,e,o} |Y_{e, o} - Z_{k,l}|^2 \pi^{YZ}_{e,k} \gamma^{YZ}_{o,l} \\
-      &= \agw_{\alpha}(X, Y) + \agw_{\alpha}(Y, Z).
+      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
+      \frac{Q^{XY}_{j,o} Q^{YZ}_{o,l}}{(\mu_2^Y)_o} \\
+      &= \alpha \sum_{i,j,e,o} |D_X(i,j) - D_Y(e,o)|^2 P^{XY}_{i,e} P^{XY}_{j,o}
+      + (1 - \alpha) \sum_{i,j,e,o} |X_{i,j} - Y_{e,o}|^2 P^{XY}_{i,e} Q^{XY}_{j,o} \\
+      &+ \alpha \sum_{k, l, e, o} |D_Y(e, o) - D_Z(k,l)|^2 P^{YZ}_{e,k} P^{YZ}_{o,l}
+      + (1 - \alpha) \sum_{k,l,e,o} |Y_{e, o} - Z_{k,l}|^2 P^{YZ}_{e,k} Q^{YZ}_{o,l} \\
+      &= \agw_{\alpha}(\cX, \cY) + \agw_{\alpha}(\cY, \cZ).
   \end{align}
   where the second inequality follows from the inequality: $(x + y)^2 \leq 2(x^2 + y^2)$.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{corr:hermitian}]
+  This proof is based on the personal communication with Professor Will Sawin at Princeton University
+  on his discussion on \url{https://mathoverflow.net/questions/420319/why-is-the-set-of-hermitian-matrices-with-repeated-eigenvalue-of-measure-zero}.
+  We thank him for his very prompt and detailed support during the submission of our paper.
+
   First, let us recall the Schwartz-Zippel lemma. Denote $F(x_1, ..., x_n)$ a multivariate polynomial.
   Its total degree is the maximum of the sums of the powers of the variables in any monomial.
   The Schwartz-Zippel lemma states that: let $F(x_1, ..., x_n)$ be a nonzero multivariate polynomial
   of total degree $d$ and $S$ be a finite subset of $\bbR$. Denote
-  $Z_S := \{ (x_1, ..., x_n) \in S^n : F(x_1, ..., x_n) = 0 \}$ the zero set of $F$ on $S^n$.
+  $Z_S := \{ (x_1, ..., x_n) \in S^n : F(x_1, ..., x_n) = 0 \}$ the set of zeros of $F$ on $S^n$.
   Then $| Z_S | \leq d |S|^{n-1}$.
 
   Note that, the set of Hermitian matrices of size $n$ forms a finite-dimensional real vector space.
   In particular, it is isomorphic to the Euclidean space $\bbR^{n^2}$.
   Denote $I$ set of Hermitian matrices of size $n$ with repeated eigenvalues.
   It is enough to show that $I$ has measure zero. We have $I \simeq E$,
-  for some $E \subset \bbR^{n^2}$. Since $I$ is closed (see page 56 in \citep{Tao12}),
-  it is measurable, by Proposition 4 in \citep{Stein05}. If $I$ does not have zero measure,
+  for some $E \subset \bbR^{n^2}$. By Proposition 4 in \citep{Stein05},
+  since $I$ is closed (see page 56 in \citep{Tao12}), it is measurable.
+  If $I$ does not have zero measure,
   then the intersection $E \cap [0, 1]^{n^2}$ has positive measure $p > 0$. If,
   for each $i \in [n^2]$, we sample $m$ i.i.d coordinates uniformly in $[0, 1]$,
   then we have $m^{n^2}$ points uniformly distributed in $[0, 1]^{n^2}$. So,
@@ -1847,139 +1856,72 @@ where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
 \begin{proof}[Proof of \Cref{thm:invariant}]
   Regarding the first claim, note that $Y = X Q$,
   where $Q$ is a permutation matrix corresponding to the permutation $\sigma_c$.
-  Since $Y$ is obtained by swapping columns of $X$, it is easy to see that $\gw(X, Y) = 0$
-  and the optimal plan between $X$ and $Y$ is $P^s = \frac{1}{n^2} \id_n$.
-  Similarly, $\coot(X, Y) = 0$ and $P^s, P^v = \frac{1}{n}Q$ are the optimal sample,
+  Since $Y$ is obtained by swapping columns of $X$, it is easy to see that $\gw(\cX, \cY) = 0$
+  and the optimal plan between $X$ and $Y$ is $P^* = \frac{1}{n^2} \id_n$.
+  Similarly, $\coot(\cX, \cY) = 0$, where $P^*$ and $Q^* = \frac{1}{n} Q$ are the optimal sample and
   feature couplings, respectively. In other words,
-  $\langle L(D_X,D_Y)\otimes P^s, P^s \rangle = 0$ and
-  $\langle L(X,Y) \otimes P^v, P^s \rangle = 0$. We deduce that $\agw_{\alpha}(X, Y) = 0$.
+  $\langle L(D_X,D_Y)\otimes P^*, P^* \rangle = 0$ and
+  $\langle L(X,Y) \otimes Q^*, P^* \rangle = 0$. We deduce that $\agw_{\alpha}(\cX, \cY) = 0$.
 
-  Now, if $\agw(X, Y) = 0$, then $\gw(X, Y) = \coot(X, Y) = 0$. In particular,
-  $X$ and $Y$ must have the same shape, assume that $X, Y \in \bbR^{n \times d}$.
-  As $\gw(X, Y) = 0$, there exists an isometry from $X \to Y$. Note that every isometry from
+  Now, for $0 < \alpha < 1$, if $\agw_{\alpha}(\cX, \cY) = 0$, then
+  $\gw(\cX, \cY) = \coot(\cX, \cY) = 0$. In particular,
+  $X$ and $Y$ must have the same shape, so $X, Y \in \bbR^{n \times d}$.
+  As $\gw(\cX, \cY) = 0$, there exists an isometry from $X$ to $Y$. Note that every isometry from
   $\bbR^d$ to $\bbR^d$ is a composition of at most $d+1$ reflections
-  (see, for example, Corollary A.7 in \citep{Konrad}). So, $U \in \cO_d$
-  exists such that $Y = X U$. As $\coot(X, Y) = 0$, there exist two permutations
+  (see, for example, Corollary A.7 in \citep{Konrad}). So, $Y = X O$, for some $O \in \cO_d$.
+  As $\coot(\cX, \cY) = 0$, there exist two permutations
   $\sigma_r$ and $\sigma_c$ such that $X_{i, j} = Y_{\sigma_r(i), \sigma_c(j)}$,
-  or equivalently $P \in \cP_n, Q_1 \in \cP_d$ such that $Y = P X Q_1$.
-  We deduce that $X U = P X Q_1$, or equivalently $X = P X Q$, for
-  $Q = Q_1 U^T \in \cO_d$. From this equation, we now aim to deduce the property of $Q$.
+  or equivalently two permutation matrices $P \in \cP_n, Q_1 \in \cP_d$ such that $Y = P X Q_1$.
+  We deduce that $X O = P X Q_1$, or equivalently $X = P X Q$, for
+  $Q = Q_1 O^T \in \cO_d$. We will show that $Q$ is symmetric.
 
-  To do this, consider the singular value decomposition of $X$, \textit{\textit{i.e.}}
-  $X = U \Sigma V^T$, where $U \in \bbR^{n \times d}$ s.t. $U^T U = I_d$,
+  Indeed, consider the singular value decomposition of $X$, \ie,
+  $X = U \Sigma V^T$, where $U \in \bbR^{n \times d}$ such that $U^T U = I_d$,
   $V \in \cO_d$ and $\Sigma \in \bbR^{d \times d}$ is a diagonal matrix
-  whose diagonal contains $d$ strictly decreasing singular values. Since $X = P X Q$,
+  whose diagonal contains $d$ strictly decreasing singular values (since $n \geq d$). As $X = P X Q$,
   we have $U \Sigma V^T = (PU) \Sigma (V^T Q)$. For $i \in [d]$, let $u_i \in \bbR^n$
   and $v_i \in \bbR^d$ be columns of $U$ and $V$, respectively.
   As the singular values are positive and distinct, the columns are unique up to
   the sign change of both columns in $U$ and $V$. This means $u_i = \pm Pu_i$ and
   $v_i = \pm Q^T v_i$. In other words, $\pm 1$ are eigenvalues of $P$ and $Q^T$, and
-  $u_i, v_i$ are their corresponding eigenvectors, respectively. Denote $D \in \bbR^d$
-  any diagonal matrix whose diagonal contains only $\pm 1$, then $Q^T = V D V^{-1} = V D V^T = Q$.
-  So, $Q$ is symmetric. \Cref{thm:invariant} then follows by observing that $U = Q^T Q_1$.
+  $u_i, v_i$ are their corresponding eigenvectors, respectively. Denote $D \in \bbR^{d \times d}$
+  any diagonal matrix whose diagonal values are in $\{ \pm 1 \}$, then
+  $Q^T = V D V^{-1} = V D V^T = Q$. So, $Q$ is symmetric.
+  \Cref{thm:invariant} then follows by observing that $O = Q^T Q_1$.
 \end{proof}
 
-\paragraph{Alternative proof.} Suppose $n > d$, then $P A A^T = A Q A^T$. As $P \in \cP_n$, we have
-\begin{align}
-  A Q^T (A^T A) Q A^T = A A^T P^T P A A^T = A (A^T A) A^T.
-\end{align}
-Multiplying both sides on the left and right with $A^T$ and $A$, respectively, we obtain
-$(A^T A) Q^T (A^T A) Q (A^T A) = (A^T A) (A^T A) (A^T A)$. Let $S = A^T A \in \bbR^{d \times d}$, then
-$S Q^T S Q S = S^3$, or equivalently $S (Q^T S Q - S) S = 0$. Note that $\rank(S) = \rank(A) = \min(n,d) = d$.
-Now, the Sylvester's inequality indicates that
-\begin{align*}
-    d = d + \rank\big( S (S - Q^T S Q) S \big) &\geq \rank(S) + \rank\big( S (S - Q^T S Q) \big) \\
-    &= d + \rank \big( S (S - Q^T S Q) \big).
-\end{align*}
-We deduce that $\rank \big(S (S - Q^T S Q) \big) = 0$. Applying the Sylvester's inequality again,
-we have $\rank(S - Q^T S Q) = 0$, meaning that $S = Q^T S Q$, or equivalently $QS = SQ$ since $Q \in \cO_d$.
-
-Recall that a squared matrix is symmetric iff it has real eigenvalues and orthogonally diagonalizable, and that
-any PDS and orthogonal matrices are diagonalizable. So, $Q$ and $S$ commute iff there exists an invertible matrix
-$U$ such that $U^{-1} Q U = \Sigma$ and $U^{-1} S U = D$, where $D$ and $\Sigma$ are diagonal.
-
-Since $S$ has distinct eigenvalues, we can show that $U^T U$ is diagonal.
-Indeed, $U D U^{-1} = S = S^T = (U^{-1})^T D U^T$, so $D (U^T U) = (U^T U) D$, i.e. $D$ and $U^T U$ commute. But
-we can show that $\text{spec}(S) = \text{diag}(D)$. So, the diagonal of $D$ contains distinct
-eigenvalues. Denote $M = U^T U$, then $DM = MD$. We have $(DM)_{ij} = \sum_k D_{ik} M_{kj} = D_{ii} M_{ij}$ and
-$(MD)_{ij} = \sum_k M_{ik} D_{kj} = M_{ij} D_{jj}$. So, when $i \neq j, M_{ij} = 0$ because
-$D_{ii} \neq D_{jj}$. This means $M = U^T U$ is diagonal.
-
-As $U$ has orthogonal columns, show that the columns have unit norm, so $U$ is orthogonal, i.e. $U^T = U^{-1}$.
-Now, $Q = U \Sigma U^T$, so $Q$ has only real eigenvalues because it is symmetric.
-But we know that the eigenvalues of an orthogonal matrix lie on
-the unit cirle. So, $Q$ only has $\pm 1$ as eigenvalues. $Q$ is a also called an involutary matrix, i.e. $Q^2 = I_d$.
-
-In summary, we can determine $Q \in \cO_d$ such that $QS = SQ$ as follows: since $S$ is orthogonally diagonalizable,
-we have $S = V D V^T$, where $V \in \cO_d$. Pick any diagonal matrix $D$ of dimension $d$, whose
-diagonal contains only $\pm 1$. Then $Q = V D V^T$ satisfies that $Q \in \cO_n$ and $QS = SQ$.
-
-\paragraph*{Remark.} we can show that there are many orthogonal matrices $P \in \cO_n$ which have $\pm 1$ as eigenvalues and
-$u_1, \dots, u_d$ are the corresponding eigenvectors. For example, pick a diagonal matrix $\Sigma$ of size $n$,
-whose diagonal contains only $\pm 1$, then complete the basis for $u_1, ..., u_d$
-(for example, by Gram-Schmidt process) and form an orthogonal matrix $U$ of size $n$.
-Then $P = U \Sigma U^T$ is one orthogonal matrix we look for.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection{Weak invariant to translation}
-While enjoying the interpolation and metric properties, AGW does not inherit the invariance
-to the translation of the GW distance. However, we find that it satisfies a relaxed version
-of this invariant defined as follows.
-\begin{definition}
-    We call $D = \inf_{\pi \in U} F(\pi, X, Y)$, where $X, Y$ are input data and $U$
-    is a set of feasible couplings and $F$ is a real-valued functional, an OT-based divergence.
-    Then $D$ is weakly invariant to translation if for every $a, b \in \bbR$, we have
-    $\inf_{\pi \in U} F(\pi, X, Y) = C + \inf_{\pi \in U} F(\pi, X + a, Y+b)$,
-    for some constant $C$ depending on $a, b, X, Y$ and $U$.
-\end{definition}
-Here, we denote the translation of $X$ as $X + a$, whose elements are of the form $X_{ij} + a$.
-In other words, an OT-based divergence is weakly invariant to translation if only
-the optimal transport plan is preserved under translation, but not necessarily the divergence itself.
-In practice, we would argue that the ability to preserve the optimal plan under translation
-is much more important than preserving the distance itself. In other words,
-the translation only shifts the minimum but has no impact on the optimization procedure,
-meaning that the minimizer remains unchanged. Now, we can show that
-\begin{corollary}
+\begin{lemma}
 \label{prop:coot_invariant}
     COOT is weakly invariant to translation.
-\end{corollary}
+\end{lemma}
 \begin{proof}[Proof of \Cref{prop:coot_invariant}]
-It is enough to show that, for any $c \in \bbR$, we have $\coot(X, Y + c) = \coot(X, Y) + C$,
-for some constant $C$. Indeed, given $P^s \in U(\mu, \nu), P^v \in U(\mu', \nu')$,
-for any $c \in \bbR$,
+For any $P \in U(\mu_1^X, \mu_1^Y), Q \in U(\mu_2^X, \mu_2^Y)$ and $c \in \bbR$, we have
 \begin{align}
-    \sum_{ijkl} (X_{ik} - Y_{jl} - c)^2 P^s_{ij} P^v_{kl}
-    &= \sum_{ijkl} (X_{ik} - Y_{jl})^2 P^s_{ij} P^v_{kl}
-    - 2c \sum_{ijkl} (X_{ik} - Y_{jl}) P^s_{ij} P^v_{kl} + c^2
+    \sum_{i,j,k,l} (X_{ik} - Y_{jl} - c)^2 P_{ij} Q_{kl}
+    &= \sum_{i,j,k,l} (X_{ik} - Y_{jl})^2 P_{ij} Q_{kl}
+    - 2c \sum_{i,j,k,l} (X_{ik} - Y_{jl}) P_{ij} Q_{kl} + c^2
 \end{align}
 Now,
 \begin{align}
-    \sum_{ijkl} (X_{ik} - Y_{jl}) P^s_{ij} P^v_{kl}
-    &= \sum_{ijkl} X_{ik} P^s_{ij} P^v_{kl} - \sum_{ijkl} Y_{jl} P^s_{ij} P^v_{kl} \\
-    &= \sum_{ik} X_{ik} \left( \sum_j P^s_{ij} \right) \left( \sum_l P^v_{kl} \right)
-    - \sum_{jl} Y_{jl} \left( \sum_i P^s_{ij} \right) \left( \sum_k P^v_{kl} \right) \\
-    &= \sum_{ik} X_{ik} \mu_i \mu'_k - \sum_{jl} Y_{jl} \nu_j \nu'_l \\
-    &= \mu ^T X \mu' - \nu ^T Y \nu'.
+    \sum_{i,j,k,l} (X_{ik} - Y_{jl}) P_{ij} Q_{kl}
+    &= \sum_{i,j,k,l} X_{ik} P_{ij} Q_{kl} - \sum_{ijkl} Y_{jl} P_{ij} Q_{kl} \\
+    &= \sum_{i,k} X_{ik} \left( \sum_j P_{ij} \right) \left( \sum_l Q_{kl} \right)
+    - \sum_{j,l} Y_{jl} \left( \sum_i P_{ij} \right) \left( \sum_k Q_{kl} \right) \\
+    &= \sum_{i,k} X_{ik} (\mu_1^X)_i (\mu_2^X)_j \mu'_k - \sum_{j,l} Y_{jl} (\mu_1^Y)_j (\mu_2^Y)_l \\
+    &= (\mu_1^X)^T X \mu_2^X - (\mu_1^Y)^T Y \mu_2^Y.
 \end{align}
-So,
-\begin{align}
-    \coot(X, Y + c) = \coot(X, Y) - 2 c \left( \mu^T X \mu' - \nu^T Y \nu' \right) + c^2.
-\end{align}
+So, $\coot(\cX, \cY + c) = \coot(\cX, \cY) -
+2 c \left( (\mu_1^X)^T X \mu_2^X - (\mu_1^Y)^T Y \mu_2^Y \right) + c^2$.
 This implies that COOT is weakly invariant to translation.
 \end{proof}
 
-AGW inherits the weak invariant to translation from COOT.
-\begin{proposition}
-\label{prop:invariant}
-AGW is weakly invariant to translation.
-\end{proposition}
 \begin{proof}[Proof of \Cref{prop:invariant}]
 Note that the GW term in AGW remains unchanged by translation.
 By adapting the proof of \Cref{prop:coot_invariant}, we obtain
 \begin{align}
-    \agw_{\alpha}(X, Y + c) = \agw_{\alpha}(X, Y) + (1 - \alpha) \left[ c^2
-    - 2 c \left( \mu^T X \mu' - \nu^T Y \nu' \right) \right].
+    \agw_{\alpha}(\cX, \cY + c) = \agw_{\alpha}(\cX, \cY) + (1 - \alpha) \left[ c^2
+    - 2 c \left( (\mu_1^X)^T X \mu_2^X - (\mu_1^Y)^T Y \mu_2^Y \right) \right].
 \end{align}
 The result then follows.
 \end{proof}
