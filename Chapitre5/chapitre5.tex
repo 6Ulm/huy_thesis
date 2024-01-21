@@ -415,7 +415,7 @@ Single-cell experiments measure various genomic features at the individual cell 
 Jointly studying these can give scientists insight into the mechanisms regulating cells.
 However, experimentally combining multiple types of measurements for the same cell
 is challenging for most combinations. Scientists rely on the computational integration
-of multi-modal data taken on different but related cells (\textit{e.g.}, by cell type or tissue)
+of multi-modal data taken on different but related cells (\eg, by cell type or tissue)
 to study the relationships and interactions between different aspects of the genome.
 
 We particularly focus on this task for two reasons. First, GW is used as a state-of-the-art
@@ -501,10 +501,10 @@ Thus, we expect AGW to recover these relationships.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.85\linewidth]{./Chapitre5/fig/xSp_full.png}
+\includegraphics[width=\linewidth]{./Chapitre5/fig/xSp_full.png}
 \caption{\label{fig:xsp} \textbf{Aligning cross-species dataset.}
 A. AGW's cell-type alignments.
-B. Providing supervision on one level of alignment (\textit{e.g.}, features)
+B. Providing supervision on one level of alignment (\eg, features)
 boosts alignments on the other. Standard errors computed over 10 random runs.
 Dashed line indicates the sample alignment performance of GW and bindSC
 (orthologous gene used in input).}
@@ -517,8 +517,8 @@ This matrix is obtained by averaging the sample alignment matrix
 (\ie, cell-cell alignments) into cell-type groups. We observe that
 AGW yields biologically plausible alignments, as all the six cell types that
 have a natural match across the two species are correctly matched.
-We also show in \Cref{fig:xsp}B that providing supervision on one alignment level (\textit{e.g.},
-features) improves the quality on the other alignment level (\textit{e.g.}, samples).
+We also show in \Cref{fig:xsp}B that providing supervision on one alignment level (\eg,
+features) improves the quality on the other alignment level (\eg, samples).
 The supervision scheme is detailed in Appendix Section 6.4.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
