@@ -1,7 +1,8 @@
-\chapter[Technical Background on Optimal Transport]{Technical Background on Optimal Transport}
+\chapter{Technical Background on Optimal Transport}
 \label{chap:1}
 
 % \localtableofcontents
+\renewcommand{\contentsname}{Contents}
 \localtableofcontents*
 \chaptermark{\textbf{Technical Background on Optimal Transport}}
 
@@ -20,6 +21,8 @@ which results in the unbalanced OT. The second generalization
 considers the situation where the supports of the probability measures lie in
 incomparable ground spaces. This leads to the Gromov-Wasserstein distance,
 whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein distance.
+
+\raggedbottom
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{From Wasserstein distance}
@@ -499,7 +502,7 @@ their known robustness to outliers \citep{Mukherjee21,Balaji20,Fatras21,Nietert2
 
 \paragraph{Formulation} To define the UOT problem, let us start with
 the Csiszár divergence \citep{Csiszar63}. Given an entropy function
-$\varphi : \mathbb R_{> 0} \to [0, \infty]$ (\textit{i.e.} it is convex,
+$\varphi : \mathbb R_{> 0} \to [0, \infty]$ (\ie, it is convex,
 positive and lower semi-continuous such that $\varphi(1) = 0$), we define
 the recession constant $\varphi_{\infty}' \in \mathbb R \cup \{ \infty \}$ as
 \begin{align}
@@ -612,7 +615,8 @@ and the positive measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n_{> 0}, \gamma \i
 we want to solve the problem
 \begin{align}
   \label{eq:discrete_ent_uot}
-  \uot_{\varepsilon, \rho} = \min_{P \in \bbR^{m \times n}_{\geq 0}} \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
+  \uot_{\varepsilon, \rho} = \min_{P \in \bbR^{m \times n}_{\geq 0}}
+  \; \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
   + \rho_2 \kl(P_{\# 2} | \nu) + \varepsilon \kl(P | \gamma).
 \end{align}
 Denote $m(Q) = \sum_{i, j} Q_{ij}$ the mass of measure $Q$. Observe that
@@ -621,7 +625,7 @@ Denote $m(Q) = \sum_{i, j} Q_{ij}$ the mass of measure $Q$. Observe that
   \varepsilon \left[ \sum_{i, j} P_{ij} \log P_{ij} -
   \sum_{i, j} P_{ij} \left( \log \gamma_{ij} - \frac{C_{ij}}{\varepsilon} \right)
   - \sum_{i, j} P_{ij} + \sum_{i, j} \gamma_{ij} \right] \\
-  &= \varepsilon \kl \left(P \Big| \exp \left( -\frac{C - \log \gamma}{\varepsilon} \right) \right)
+  &= \varepsilon \; \kl \left(P \Big| \exp \left( -\frac{C - \log \gamma}{\varepsilon} \right) \right)
   + \varepsilon \left[ m(\gamma) - m \big(\gamma \odot e^{-C / \varepsilon} \big) \right],
 \end{align}
 where $\odot$ is the element-wise multiplication between two matrices and the exponential operation
@@ -634,29 +638,66 @@ since $\kl(P | 1_{m \times n}) = \langle P, \log P \rangle - m(P) + mn = H(P) + 
 An interesting property of Problem \eqref{eq:discrete_ent_uot}, which does not exist in the
 balanced OT or for other Csiszár divergences,
 is that the minimum can be expressed as a \textbf{linear} function of minimizer.
-This proves to be particularly helpful when studying the computational complexity of
-Sinkhorn algorithm \citep{Khiem20}.
-\begin{lemma}[Slight generalization of Lemma 4 in \citep{Khiem20}]
-  \label{eq:uot_minimizer}
-Denote $P^*$ is the minimizer of Problem \eqref{eq:discrete_ent_uot}. Then,
+This is a special case of the following result.
+\begin{definition}[Bregman divergence]
+  Suppose $\varphi: E \to \bbR$ is a strictly convex and continuously differentiable function,
+  where $E = \dom(\varphi)$ is a closed convex set in $\bbR^d$. Then,
+  the Bregman divergence $D_{\varphi}: E \times E \to \bbR_{\geq 0}$ is defined as
+  $D_{\varphi}(x, y) = \varphi(x) - \varphi(y) - \langle \nabla \varphi(y), x - y \rangle$.
+\end{definition}
+\begin{corollary}
+  \label{prop:uot_minimizer}
+  Let $D_{\varphi_1}, D_{\varphi_2}$ and $D_{\varphi}$ be three Bregman divergences whose
+  domains are in $\bbR^m, \bbR^n$ and $\bbR^{m \times n}$, respectively. Denote
+  $\cD = \{P \in \dom(\varphi): P_{\#1} \in \dom(\varphi_1), P_{\#2} \in \dom(\varphi_2) \}$.
+  Given two matrices $C \in \bbR^{m \times n}, \gamma \in \dom(\varphi)$ and
+  two vectors $\mu_1 \in \dom(\varphi_1), \mu_2 \in \dom(\varphi_2)$,
+  consider the following regularized UOT problem: for $\rho_1, \rho_2, \varepsilon \geq 0$,
+  \begin{align}
+    \label{eq:uot_bregman}
+    \uot_{\varepsilon, \rho} = \inf_{P \in \cC} \; \langle C, P \rangle
+    + \rho_1 D_{\varphi_1}(P_{\# 1} | \mu_1) +
+    \rho_2 D_{\varphi_2}(P_{\# 2} | \mu_2) + \varepsilon D_{\varphi}(P | \gamma),
+  \end{align}
+  where $\cC \subset \cD$ satisfies: for any $P \in \cC$ and $t \in \bbR$,
+  if $tP \in \cD$, then $t P \in \cC$. Suppose Problem \eqref{eq:uot_bregman}
+  admits a solution $P^*$, then we have
+  \begin{equation}
+    \begin{split}
+      \uot_{\varepsilon, \rho} &=
+    \sum_{k=1}^2 \rho_k \Big[ \langle \nabla \varphi_k(\mu_k), \mu_k \rangle - \varphi_k(\mu_k) \Big]
+    + \varepsilon \Big[ \langle \nabla \varphi(\gamma), \gamma \rangle - \varphi(\gamma) \Big] \\
+    &+ \sum_{k=1}^2
+    \rho_k \Bigg( \varphi_k(P^*_{\# k}) - \frac{\partial \varphi_k(tP^*_{\# k})}{\partial t} \bigg|_{t=1} \Bigg)
+    + \varepsilon \Bigg( \varphi(P^*) - \frac{\partial \varphi(tP^*)}{\partial t} \bigg|_{t=1} \Bigg).
+    \end{split}
+  \end{equation}
+\end{corollary}
+We are interested in two following Bregman divergences.
+\begin{enumerate}
+  \item If $D_{\psi}$ is the squared $l_2$-norm, then $\psi(tP) = t^2 \psi(P)$. So,
+  $\langle \nabla \psi(q), q \rangle - \psi(q) = \psi(q)$ and
+  $\psi(p) - \frac{\partial \psi(tp)}{\partial t} \Big|_{t=1} = -\psi(p)$.
+
+  \item If $D_{\psi}$ is the KL divergence, then
+  $\psi(tP) = t \; \psi(P) + t \log t \; m(P) - t + 1$.
+  So, $\langle \nabla \psi(q), q \rangle - \psi(q) = m(q) - 1$ and
+  $\psi(p) - \frac{\partial \psi(tp)}{\partial t} \Big|_{t=1} = 1 - m(p)$.
+\end{enumerate}
+We note that \Cref{prop:uot_minimizer} is a generalization of Lemma 4 in \citep{Khiem20}.
+Indeed, in case of Problem \eqref{eq:discrete_ent_uot}, we have
 \begin{align}
   \uot_{\varepsilon, \rho} = \rho_1 m(\mu) + \rho_2 m(\nu) + \varepsilon m(\gamma)
   - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*).
 \end{align}
-\end{lemma}
-\begin{proof}
-  The proof follows immediately from the proof of Lemma 4 in \citep{Khiem20}. In particular,
-  it relies on two observations. First, the KL divergence has the following property:
-  for any $t > 0$, we have $\kl(t P | Q) = t \; \kl(P | Q) + (1-t) \; m(Q) + t \log t \; m(P)$.
-  Second, if we denote $G$ the objective function of Problem \eqref{eq:discrete_ent_uot}, then
-  $\uot_{\varepsilon, \rho} = \min_{t > 0} G(tP^*)$ and the minimum is attained when $t=1$.
-\end{proof}
-While trivial, we remark that, \Cref{eq:uot_minimizer} holds for unregularized UOT
-(\textit{i.e.} $\varepsilon = 0$). Interestingly, this result can be easily extended
-to other unbalanced divergences, namely
-squared $l_2$-regularized UOT problem \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
+This relation proves to be particularly helpful when studying the computational complexity of
+Sinkhorn algorithm \citep{Khiem20}.
+While trivial, we remark that, \Cref{prop:uot_minimizer} holds for unregularized UOT
+(\ie, $\varepsilon = 0$). As we will see, this result also applies to other unbalanced divergences,
+namely squared $l_2$-regularized UOT problem \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
 unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
 and unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
+
 Now, we discuss some existing approaches to solve Problem \eqref{eq:discrete_ent_uot}.
 
 \paragraph{Sinkhorn algorithm} The Sinkhorn algorithm can be extended easily to the entropic UOT.
@@ -880,9 +921,8 @@ the MM iterate can also be computed explicitly in this case.
 \end{corollary}
 There are two interesting features of the squared $l_2$-norm. First, thanks to the max operation,
 the iterate matrix can be made sparse from the very first iteration,
-which further accelerates the matrix operations. Second, similar to the entropic UOT problem
-\eqref{eq:discrete_ent_uot}, it is also possible to express the minimum of Problem \eqref{uot_l2}
-as a quadratic function of its minimizer.
+which further accelerates the matrix operations. Second, thanks to \Cref{prop:uot_minimizer},
+the minimum of Problem \eqref{uot_l2} can be expressed as a quadratic function of its minimizer.
 \begin{corollary}
   \label{coro:uot_l2_minimizer}
 Denote $P^*$ the solution of Problem \eqref{uot_l2}. Then
@@ -950,7 +990,7 @@ and regularizers, with the corresponding related works.
     \end{tabular}
 		\caption{Summary of choices of divergences and regularizers for Problem \eqref{eq:generic_uot}.
     The case N/A (not available) corresponds to the unregularized problem
-    (\textit{i.e.} $\varepsilon = 0$).
+    (\ie, $\varepsilon = 0$).
     \label{t:uot_variation}}
 \end{table}
 
@@ -1293,7 +1333,7 @@ without risk of ambiguity) \citep{Chowdhury19}.
   where $X$ is a Polish space equipped with the Borel probability
   measure $\mu_X$ and $c_X$ is a bounded measurable function on $X^2$.
 \end{definition}
-We also assume that $\mu_X$ has full support, \textit{i.e.} $\supp(\mu_X) = X$.
+We also assume that $\mu_X$ has full support, \ie, $\supp(\mu_X) = X$.
 Unlike the mm-space, to characterize the equivalence class of networks, we need to introduce
 some forms of isomorphism. First, let us start with a useful concept in \citep{Memoli21}.
 \begin{definition}[Mass splitting]
@@ -2026,7 +2066,7 @@ the potential gap between the estimation and the minimum.
 	\centering
 		\begin{tabular}{|l|c|c|c|c|}
     \hline
-    \textbf{Features} & \textbf{\makecell{Scaling}}
+    & \textbf{\makecell{Scaling}}
     & \textbf{\makecell{TI-Sinkhorn}} & \textbf{MM} & \textbf{INPUT} \\
     \hline
     \makecell[l]{Unregularized \\ setting} & \nomark & \nomark & \yesmark & \yesmark \\
@@ -2059,3 +2099,5 @@ to each BPP iteration helps accelerating the calculation
 and improving the convergence of the algorithm. By contrast,
 the case of squared $l_2$-norm does not suffer the same issue,
 but rather on the \textbf{relaxation} parameters. So, more regularization does not help.
+
+\vfill
