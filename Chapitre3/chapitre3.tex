@@ -1,8 +1,8 @@
 
 \chapter[Unbalanced Co-Optimal Transport]{Unbalanced Co-Optimal Transport}
 
+\renewcommand{\contentsname}{Contents}
 \localtableofcontents*
-
 \chaptermark{\textbf{Unbalanced Co-Optimal Transport}}
 
 \hfill \break
@@ -20,6 +20,8 @@ With this result in hand, we provide empirical evidence of this robustness
 for the challenging tasks of heterogeneous domain adaptation with and without
 varying proportions of classes and simultaneous alignment of samples and features across
 single-cell measurements.
+
+\raggedbottom
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -172,8 +174,8 @@ $\cX = ((X^s, \mu^s), (X^f, \mu^f), \xi)$ a sample-feature space and $\xi$ is ca
 \begin{definition}[Generalized COOT]
 \label{def:ucoot}
 Given two divergences $D_1$ and $D_2$, we define the generalized COOT of order $p$
-between $\mathbb{X}_1 = ((X_1^s, \mu_1^s), (X_1^f, \mu_1^f), \xi_1)$ and
-$\mathbb{X}_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$ by:
+between $\cX_1 = ((X_1^s, \mu_1^s), (X_1^f, \mu_1^f), \xi_1)$ and
+$\cX_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$ by:
 \begin{equation}
 \label{eq:ucoot}
   \begin{split}
@@ -214,7 +216,7 @@ on the \textbf{compact} Polish measure space.}
 In this work, we relax the hard constraints and consider a more flexible formulation
 with the KL divergence:
 \begin{definition}[UCOOT]
-   We define Unbalanced COOT ($\ucoot$) as in \Cref{eq:ucoot} with $D_1 = D_2 = \kl$.
+   We define Unbalanced COOT (UCOOT) as in \Cref{eq:ucoot} with $D_1 = D_2 = \kl$.
    We write $\ucoot_{\lambda}(\cX_1, \cX_2)$ to indicate the UCOOT between
    two sample-feature spaces $\cX_1$ and $\cX_2$, for a given
    pair of hyperparameters $\lambda = (\lambda_1, \lambda_2)$.
@@ -297,8 +299,7 @@ we consider an outlier scenario where the marginal data distributions are contam
 by some additive noise distribution.
 \begin{assumption}
 \label{assump:robust}
-Consider two sample-feature spaces
-$\cX_k = ((X^s_k, \mu^s_k), (X^f_k, \mu^f_k), \xi_k)$, for $k=1,2$.
+Consider two sample-feature spaces $\cX_1$ and $\cX_2$.
 Let $\varepsilon^s$ (resp. $\varepsilon^f$) be a probability measure with
 compact support $O^s$ (resp. $O^f$). For $a \in \{s, f\}$,
 define the noisy distribution $\widetilde{\mu}^a = \alpha_a \mu^a + (1-\alpha_a) \varepsilon^a$,
@@ -331,11 +332,11 @@ Thus, outliers \emph{must} be transported no matter how large their transportati
 This intuition is captured by the following result.
 %%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}[COOT is sensitive to outliers]
-Consider $\widetilde{\mathds X_1}, \mathds X_2$ as defined in \Cref{assump:robust}.
+Consider $\widetilde{\cX_1}, \cX_2$ as defined in \Cref{assump:robust}.
 Then
 \label{prop:coot_not_robust}
 \begin{equation}
-    \coot(\widetilde{\mathds X_1}, \mathds X_2) \geq (1 - \alpha_s)(1-\alpha_f)\Delta_0.
+    \coot(\widetilde{\cX_1}, \cX_2) \geq (1 - \alpha_s)(1-\alpha_f)\Delta_0.
 \end{equation}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -349,7 +350,7 @@ Relaxing the marginal constraints leads to a loss that saturates
 as outliers get further from the data:
 \begin{theorem}[UCOOT is robust to outliers]
 \label{thm:ucoot_robust}
-Consider two sample-feature spaces $\widetilde{\mathds X_1}, \mathds X_2$ as defined
+Consider two sample-feature spaces $\widetilde{\cX_1}, \cX_2$ as defined
 in \Cref{assump:robust}. Let $\delta := 2(\lambda_1 + \lambda_2)(1 - \alpha_s\alpha_f)$
 and $K = M + \frac{1}{M}\ucoot(\cX_1, \cX_2) +\delta$,
 where $M= m(\pi^s) = m(\pi^f)$ is the transported mass between clean data. Then:
@@ -395,7 +396,7 @@ This provides a theoretical explanation of the empirical observation in \citep{S
 that unlike GW, the UGW distance is also robust to outliers.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Optimization algorithm and complexity}
+\section{Optimization algorithm and complexity} \label{subsec_app:algo}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Solving COOT-type problems, in general, is not trivial. As highlighted in \citep{Redko20},
 the balanced case corresponds to a convex relaxation of the bilinear assignment problem,
@@ -405,7 +406,7 @@ in two different aspects: (1) the obtained problem is easier to solve
 through a sequence of GPU friendly iterations; (2) regularization leads to lower alignment costs
 and thus better local minima. In this section, we first describe how to compute UCOOT in practice.
 
-\paragraph{Optimization strategy.}
+\paragraph{Optimization strategy}
 We consider two tabular datasets $A \in \bbR^{n_1 \times d_1}$ and $B \in \bbR^{n_2 \times d_2}$.
 Let $u_k$ be the uniform histogram over sample-feature pairs:
 $u_k := \frac{1}{n_kd_k}\mathds 1_{n_k} \otimes \mathds 1_{d_k}$, for $k=1, 2$.
@@ -425,28 +426,24 @@ discrete UCOOT can be written as:
 \end{split}
 \end{equation}
 
-\begin{algorithm}
+\begin{algorithm}[t]
     \caption{BCD algorithm to solve UCOOT \label{alg:bcd}}
     \begin{algorithmic}
       \STATE {\bfseries Input:} $A \in \bbR^{n_1, d_1}, B \in \bbR^{n_2, d_2}$, $\lambda_1, \lambda_2, \varepsilon$
       \STATE Initialize $\pi^s$ and $\pi^f$
       \REPEAT
-      \STATE Update $\pi^s$ using Sinkhorn or NNPR
+      \STATE Update $\pi^s$ using Sinkhorn or MM
       \STATE Rescale $\pi^s = \sqrt{\frac{m(\pi^f)}{m(\pi^s)}} \pi^s$
-      \STATE Update $\pi^s$ using Sinkhorn or NNPR
+      \STATE Update $\pi^s$ using Sinkhorn or MM
       \STATE Rescale $\pi^f = \sqrt{\frac{m(\pi^s)}{m(\pi^f)}} \pi^f$
       \UNTIL{convergence}
 	\end{algorithmic}
 \end{algorithm}
-% where recall that the total transported mass $m(\pi)$ is calculated by $\sum_{ij}\pi_{ij}$. The hyperparameters $\lambda_1$ and $\lambda_2$ implicitly control how much of the ``sample-feature'' mass is transported. \huy{this seems a bit redundant because we will rewrite almost the same formulation in the next paragraph.}
-
 The only difference between $\varepsilon = 0$ and $\varepsilon > 0$
 lies in the inner-loop algorithm used to update one of transport plans $(\pi^s, \pi^f)$
-while the other one remains fixed. Note that both cases allow for
-implementations of a scaling multiplicative algorithm that can be parallelized on GPUs.
-%: Sinkhorn's algorithm ($\varepsilon > 0$) or NNPR ($\varepsilon = 0
-%$).  The main BCD scheme is summarized in \Cref{alg:bcd}.
-% ($\varepsilon > 0$ Sinkhorn's algorithm.}
+while the other one remains fixed.
+For $\varepsilon=0$, we use the Majorization-Minimization (MM) algorithm \citep{Chapel21},
+which leads to a multiplicative update on the transport plan.
 For $\varepsilon > 0$, updating each transport plan boils down to an entropic UOT problem,
 which can be solved efficiently using the unbalanced variant of Sinkhorn's algorithm \citep{Chizat18a}.
 The main benefit of entropy regularization is to reduce the number of variables
@@ -455,7 +452,7 @@ Moreover, by taking $\varepsilon$ sufficiently small, we can recover solutions
 close to those in the non-entropic case. We formalize this claim in the following result.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}
-  \label{convergence_minimiser_unbalanced}
+  \label{prop:convergence_minimiser_unbalanced}
   Let $(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f)$ be an equal-mass solution of the problem
   $\ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2)$. Denote $\mu^s = \mu_1^s \otimes \mu_2^s$
   and $\mu^f = \mu_1^f \otimes \mu_2^f$.
@@ -482,16 +479,7 @@ close to those in the non-entropic case. We formalize this claim in the followin
   \end{enumerate}
 \end{proposition}
 
-\iffalse It should also be noted that, while the proposed algorithm in \citep{Sejourne21}
-requires mass rescaling within each BCD iteration, it is not necessarily the case for the UCOOT. \fi
-For $\varepsilon=0$, the non-regularized UOT problem can be recast as a
-non-negative penalized regression (NNPR)~\citep{Chapel21}.
-This problem can be solved using a majorization-minimization algorithm
-which leads to a multiplicative update on the transport plan.
-\iffalse The NNPR was proposed and extensively studied by \citep{Chapel21}. \fi
-For the sake of reproducibility, we provide the details on the optimization scheme
-of both algorithms in the Appendix.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Experiments} \label{sec:experiments}
 \subsection{Illustration and interpretation on MNIST images}
 
@@ -541,14 +529,12 @@ while the UCOOT alignment remains unscathed.
 
 \setlength{\intextsep}{0pt}
 \begin{wrapfigure}[10]{r}{0.4\textwidth}
-  % \begin{figure}
     \centering
     \vspace{-12pt}
     \includegraphics[width=\linewidth]{./Chapitre3/fig/mnist-sigma.pdf}
     \vspace*{-9mm}
     \caption{Robustness of UCOOT vs. COOT on MNIST example, at different noise levels.
     \label{f:mnist-sigma}}
-  % \end{figure}
 \end{wrapfigure}
 One may wonder whether the performance of UCOOT would still hold for different values of $\sigma$.
 \Cref{f:mnist-sigma} answers this question positively.
@@ -923,3 +909,4 @@ sample complexity or stability analysis are needed to better understand
 the intricate relations between the two sample and feature couplings.
 %Future works may also focus on justifying how the relaxation of marginal constraints allows to cope with the class imbalance and provides empirically better initialization to the approximation scheme of COOT, as observed in the experiments. Last but not least, it is interesting to study the connection with the unbalanced GW distance, since in practice, it is estimated using its lower bound, which is in fact a special of UCOOT.
 
+\vfill

@@ -1,8 +1,8 @@
 
 \chapter[Contribution to CO-Optimal Transport]{Contribution to CO-Optimal Transport}
 
+\renewcommand{\contentsname}{Contents}
 \localtableofcontents*
-
 \chaptermark{\textbf{Contribution to CO-Optimal Transport}}
 
 \hfill \break
@@ -39,6 +39,9 @@ In particular, our result can be immediately extended to the GW setting. However
 we consider different assumptions on the mm-spaces,
 which imply different upper bound of the approximation error.}
 
+\raggedbottom
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Background on discrete CO-Optimal Transport}
 
 In many practical applications, the tabular data are usually expressed as a matrix whose rows
@@ -759,8 +762,8 @@ thanks to the convexity of the set $U(\mu)$ and the KL divergence. Thus, it can 
 by the classic DC algorithm
 \footnote{The DC algorithm is very closely related to Convex-concave procedure,
 majorization-minimization algorithm, Successive Linear
-Approximation. For a detailed discussion on the subtle distinction amongst these algorithms, see
-\citep{Le18}.} \citep{Tao86,Tao97} as follows: at the iteration $t$,
+Approximation. See \citep{Le18} for more details.} \citep{Tao86,Tao97} as follows:
+at the iteration $t$,
 \begin{enumerate}
   \item Calculate $G^{(t)} \in \partial(\sum_{m=1}^M \kl_m)(P^{(t)})$.
   \item Solve $P^{(t+1)} \in \argmin_{P \in U(\mu)} \langle C -
@@ -1091,3 +1094,5 @@ it in the entropic MMOT problem.
 %     \coot(\widehat{\cX}_1, \widehat{\cX}_2) |
 % \end{equation}
 % We can first start with finite-dimensional feature spaces (so the feature coupling is a matrix).
+
+\vfill
