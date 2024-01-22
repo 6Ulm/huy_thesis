@@ -101,13 +101,13 @@
 \setlength{\parskip}{0pt} % additional skip between paragraphs
 
 % Customize notations
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-\newtheorem{corollary}{Corollary}
-\newtheorem{definition}{Definition}
-\newtheorem{assumption}{Assumption}
-\newtheorem{claim}{Claim}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem{claim}{Claim}[section]
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
@@ -144,6 +144,7 @@
 \newcommand{\ms}{\text{MS}}
 \newcommand{\diam}{\text{diam}}
 \newcommand{\diag}{\text{diag}}
+\newcommand{\dom}{\text{dom}}
 
 \newcommand{\ie}{\textit{i.e.}}
 \newcommand{\eg}{\textit{e.g.}}
