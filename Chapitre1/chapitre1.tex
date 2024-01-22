@@ -596,9 +596,7 @@ from the clean data.
 
 In general, given any differentiable divergence and regularizer, since Problem \eqref{eq:generic_uot}
 is a bound-constrained minimization problem, it can be solved with the L-BFGS-B algorithm
-\citep{Byrd95,Zhu97}. When $D_{\varphi_1} = D_{\varphi_2} = \kl$
-\footnote{KL divergence is also the only divergence which belongs to both Csiszár and
-Bregman families \citep{Jiantao14}.}, the unregularized UOT can
+\citep{Byrd95,Zhu97}. When $D_{\varphi_1} = D_{\varphi_2} = \kl$, the unregularized UOT can
 be approximated with entropic regularization. The main advantages of this approach include
 well-understood convergence analysis \citep{Chizat18a}, statistical properties \citep{Sejourne19},
 GPU-friendly implementation, strong convexity and smoothness coming from the dual problem,
@@ -679,7 +677,9 @@ We are interested in two following Bregman divergences.
   $\langle \nabla \psi(q), q \rangle - \psi(q) = \psi(q)$ and
   $\psi(p) - \frac{\partial \psi(tp)}{\partial t} \Big|_{t=1} = -\psi(p)$.
 
-  \item If $D_{\psi}$ is the KL divergence, then
+  \item If $D_{\psi}$ is the KL divergence
+  \footnote{KL divergence is also the only divergence which belongs to both Csiszár and
+  Bregman families \citep{Jiantao14}.}, then
   $\psi(tP) = t \; \psi(P) + t \log t \; m(P) - t + 1$.
   So, $\langle \nabla \psi(q), q \rangle - \psi(q) = m(q) - 1$ and
   $\psi(p) - \frac{\partial \psi(tp)}{\partial t} \Big|_{t=1} = 1 - m(p)$.
