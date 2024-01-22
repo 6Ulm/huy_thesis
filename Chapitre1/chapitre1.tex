@@ -657,7 +657,7 @@ This is a special case of the following result.
     + \rho_1 D_{\varphi_1}(P_{\# 1} | \mu_1) +
     \rho_2 D_{\varphi_2}(P_{\# 2} | \mu_2) + \varepsilon D_{\varphi}(P | \gamma),
   \end{align}
-  where $\cC \subset \cD$ satisfies: for any $P \in \cC$ and $t \in \bbR$,
+  where the constraint set $\cC \subset \cD$ satisfies: for any $P \in \cC$ and $t \in \bbR$,
   if $tP \in \cD$, then $t P \in \cC$. Suppose Problem \eqref{eq:uot_bregman}
   admits a solution $P^*$, then we have
   \begin{equation}
@@ -691,12 +691,11 @@ Indeed, in case of Problem \eqref{eq:discrete_ent_uot}, we have
   - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*).
 \end{align}
 This relation proves to be particularly helpful when studying the computational complexity of
-Sinkhorn algorithm \citep{Khiem20}.
-While trivial, we remark that, \Cref{prop:uot_minimizer} holds for unregularized UOT
-(\ie, $\varepsilon = 0$). As we will see, this result also applies to other unbalanced divergences,
-namely squared $l_2$-regularized UOT \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
-unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
-and unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
+Sinkhorn algorithm \citep{Khiem20}. We remark that, \Cref{prop:uot_minimizer} has a broad range of
+applications, from the unregularized UOT (\ie, $\varepsilon = 0$) to other unbalanced divergences,
+namely the squared $l_2$-regularized UOT \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
+the unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
+and the unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
 
 Now, we discuss some existing approaches to solve Problem \eqref{eq:discrete_ent_uot}.
 
@@ -937,14 +936,15 @@ To conclude, MM is a very appealing alternative to the Sinkhorn-based algorithms
 especially when the regularization is too small. However,
 when the relaxation is too large relative to the regularization and
 the magnitude of the cost matrix, MM may converge very slowly if the initialization is
-not carefully chosen. Indeed, suppose that $\rho_1 \gg ||C||_{\infty}$ and $\rho_1 \gg \varepsilon$.
-Then, $\exp(-C / \lambda) \approx 1_{m \times n}$ and $r \approx 0$. So,
+not carefully chosen. To see this, suppose that $\rho_1 \gg ||C||_{\infty}$ and
+$\rho_1 \gg \varepsilon$. Then, $\exp(-C / \lambda) \approx 1_{m \times n}$ and $r \approx 0$. So,
 \begin{align}
   P^{(t+1)} \approx \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
   \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot P^{(t)}.
 \end{align}
-If one initializes with the solution of the balanced OT problem, then $P^{(1)} \approx P^{(0)}$.
-By induction, we obtain that $P^{(t+1)} \approx P^{(t)}$.
+If one initializes with the solution of the balanced OT problem, \ie,
+$P^{(0)}_{\# 1} = \mu$ and $P^{(0)}_{\# 2} = \nu$, then $P^{(1)} \approx P^{(0)}$.
+By induction, we obtain $P^{(t+1)} \approx P^{(t)}$, meaning that the convergence is very slow.
 
 Regarding the case of squared $l_2$-norm, one needs to carefully choose
 the hyperparameters, so that the matrix
@@ -1023,7 +1023,7 @@ Facundo Mémoli used it to refer to two other distances, including the now-stand
 popularized by the work of the same author \citep{Memoli11}.}. It allows to handle a more general
 object called \textit{metric-measure} space, instead of just probability measure, as in
 the Wasserstein distance. The GW distance is not only theoretically sound \citep{Memoli11,Sturm12},
-but also computationally tractable, thus has been used extensively in practice,
+but also computationally tractable. For this reason, it has been used extensively in practice,
 for example in graph \citep{Vayer19b,Xu19,Xu19b,Chowdhury20,Vincent21},
 computational biology \citep{Demetci20}, comparing kernel matrices \citep{Peyre16},
 correspondance alignment \citep{Solomon16}, heterogeneous domain adaptation \citep{Yan18},
@@ -1048,7 +1048,7 @@ for example, rotation, translation, reflection. To this extent, we are intereste
 distance-preserve transformations, which will show great interest in the study of metrics
 in the space of incomparable spaces.
 \begin{definition}[Metric measure space \citep{Gromov99}]
-A metric measure space (mm-space) is a triplet $(X, d_X, \mu_X)$, where
+A metric measure space (mm-space) $\cX$ is a triplet $(X, d_X, \mu_X)$, where
 \begin{itemize}
   \item[$\bullet$] $(X, d_X)$ is a compact metric space.
   \item[$\bullet$] $\mu_X$ is a Borel probability measure and has full support,
@@ -1095,14 +1095,14 @@ Let us first introduce the following useful notions.
   $\varphi_2: Y_2 \to X_2$, the \textit{pullback} of $c_X$ by $(\varphi_1, \varphi_2)$
   is the function $(\varphi_1, \varphi_2)^* c_X: Y_1 \times Y_2 \to \bbR$ defined by
   $(\varphi_1, \varphi_2)^*c_X (y_1,y_2) := c_X(\varphi_1(y_1), \varphi_2(y_2))$.
-  If $\varphi_1 = \varphi_2 = \varphi$ (then clearly, $Y_1 = Y_2$ and $X_1 = X_2$),
+  If $\varphi_1 = \varphi_2 = \varphi$ (then $Y_1 = Y_2$ and $X_1 = X_2$),
   then we simply write $\varphi^*c_X := (\varphi, \varphi)^*c_X$.
 \end{definition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{definition}[Isometric embedding]
   Given two metric spaces $(X,d_X)$ and $(Y,d_Y)$,
   the map $\varphi: X \to Y$ is an isometric embedding if and only if $d_X = \varphi^* d_Y$ on $X^2$.
-  An isometry is a surjective isometric embedding (i.e. $\varphi(X) = Y$).
+  An isometry is a surjective isometric embedding (\ie, $\varphi(X) = Y$).
 \end{definition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 Clearly, any isometric embedding is necessarily injective, so an isometry is bijective.
@@ -1127,13 +1127,12 @@ Now, we can immediately extend Formulation \eqref{GH:second} to the mm-space set
 using the Wassersteinization and $L^p$-ization processes in \Cref{fig:wass_motiv}.
 This results in the $L_p$-transportation distance \citep{Sturm06}: for $1 \leq p < \infty$,
 \begin{align}
-    D_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y))
-    := \inf_{d, \pi} \left( \int_{X \times Y} d(x,y)^p d\pi(x,y) \right)^{1/p}
+    D_p(\cX, \cY) := \inf_{d, \pi} \left( \int_{X \times Y} d(x,y)^p d\pi(x,y) \right)^{1/p}
     = \inf_{d, \pi} || d ||_{L^p(\pi)},
 \end{align}
 and for $p = \infty$,
 \begin{align}
-    D_{\infty}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) := \inf_{d, \pi} \sup_{(x,y) \in R(\pi)} d(x,y) =
+    D_{\infty}(\cX, \cY) := \inf_{d, \pi} \sup_{(x,y) \in R(\pi)} d(x,y) =
     \inf_{ d, \pi} || d ||_{L^{\infty}(R(\pi))},
 \end{align}
 where the infimum is taken over all $\pi \in U(\mu_X, \mu_Y)$ and $d \in \cD(d_X, d_Y)$.
@@ -1155,13 +1154,13 @@ to the setting of mm-space by replacing the Hausdorff distance with the Wasserst
 and obtain the equivalent form of the $L_p$-transportation distance
 \begin{align}
    \label{D:alter}
-  D_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
+  D_p(\cX, \cY) =
   \inf_{Z, f, g} W_{Z, p} \big( (f(X), f_{\# \mu_X}), (g(Y), g_{\# \mu_Y}) \big),
 \end{align}
 for $1 \leq p < \infty$ and
 \begin{align}
    \label{D:alter_infty}
-  D_{\infty}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
+  D_{\infty}(\cX, \cY) =
   \inf_{Z, f, g} W_{Z, \infty}\big( (f(X), f_{\# \mu_X} ), (g(Y), g_{\# \mu_Y} ) \big),
 \end{align}
 where the infimum is taken over all metric spaces $(Z,d)$ with measurable isometric embeddings
@@ -1196,15 +1195,14 @@ where the infimum is taken over all $R \in \mathcal R(X,Y)$. By replacing the co
 with the admissible coupling, we obtain the GW distance \citep{Memoli07,Memoli11}:
 for $1 \leq p < \infty$,
 \begin{align}
-    &\gw_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) \\
-    &:= \inf_{ \pi \in U(\mu_X, \mu_Y)} || d_X - d_Y ||_{L^p(\pi \otimes \pi)} \\
+    \gw_p(\cX, \cY) &:= \inf_{ \pi \in U(\mu_X, \mu_Y)} || d_X - d_Y ||_{L^p(\pi \otimes \pi)} \\
     &= \inf_{ \pi \in U(\mu_X, \mu_Y)}
-    \left( \int_{X \times Y} \int_{X \times Y} |d_X(x_1, x_2) - d_Y(y_1, y_2)|^p \;
+    \left( \iint |d_X(x_1, x_2) - d_Y(y_1, y_2)|^p \;
     d\pi(x_1, y_1) \; d\pi(x_2, y_2) \right)^{1 / p},
 \end{align}
 and for $p = \infty$,
 \begin{align}
-    \text{GW}_{\infty}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) &:=
+    \text{GW}_{\infty}(\cX, \cY) &:=
     \inf_{ \pi \in U(\mu_X, \mu_Y)} || d_X - d_Y ||_{L^{\infty}(R(\pi) \times R(\pi))} \\
     &= \inf_{ \pi \in U(\mu_X, \mu_Y)}
     \sup_{\substack{(x_1,y_1) \in R(\pi) \\ (x_2,y_2) \in R(\pi)}}
@@ -1262,7 +1260,7 @@ Remark 4.5 in \citep{Memoli11b}.
 Recently, \citep{Zhang21} adapt this fourth formulation to the mm-space and propose
 the bi-directional Gromov-Monge (BGM) distance defined as
 \begin{align}
-  \text{BGM}_p((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
+  \text{BGM}_p(\cX, \cY) =
   \inf_{\substack{f \in \cT(\mu_X, \mu_Y) \\ g \in \cT(\mu_Y, \mu_X)}}
   \Delta_{p}(f,X) + \Delta_{p}(g,Y) + \Delta_{p}(f,g, X, Y),
 \end{align}
@@ -1275,8 +1273,7 @@ where
 Another concurrent variant of BGM is proposed by \citep{Hur21},
 where they consider the reversible Gromov-Monge (RGM) distance
 \begin{align}
-  \text{RGM}_2((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
-  \inf_{(f,g) \in I(\mu_X, \mu_Y)} \Delta_2(f,g, X, Y),
+  \text{RGM}_2(\cX, \cY) = \inf_{(f,g) \in I(\mu_X, \mu_Y)} \Delta_2(f,g, X, Y),
 \end{align}
 where $I(\mu_X, \mu_Y) := \{(f, g): (g, \id_Y)_{\#} \mu_Y = (\id_X, f)_{\#} \mu_X \}$.
 We note that the constraints in RGM and BGM are related but not equivalent. In particular,
@@ -1291,7 +1288,7 @@ Formulation \eqref{GH:first},
 one can use the Gromov-Hausdorff-Prokhorov distance \citep{Villani08} and
 its variants \citep{Abraham13,Miermont09}
 \begin{align}
-  \text{GHP}((X, d_X, \mu_X), (Y, d_Y, \mu_Y)) =
+  \text{GHP}(\cX, \cY) =
   \inf_{Z, f, g} d_H^Z(f(X), g(Y)) + d_P(f_{\#} \mu_X, g_{\#} \mu_Y),
 \end{align}
 where $d_P$ is the Prokhorov distance. The Prokhorov distance can also be replaced by,
@@ -1541,7 +1538,7 @@ so that each iteration boils down to solving a (possibly regularized)
 OT problem. However, given the nonconvex nature of the GW problem, they also share
 a common limitation, where only local, but not global convergence is guaranteed.
 In what follows, we briefly discuss several solvers using this principle.
-We note that, however, in some particular situations, it is possible to achieve the
+We note that, however, in some particular situations, it is still possible to achieve the
 global convergence. For example, when $p=2$ and $C^x, C^y$ are squared Euclidean distance,
 \citep{Ryner23} propose to apply the cutting-plane method to a tractable relaxation of the GW problem
 and show that this algorithm converges to the global optimum of the GW problem.
@@ -1559,13 +1556,13 @@ one can also approximate the GW distance with entropic regularization.
 \begin{align}
   \min_{\substack{P \in U(\mu_X, \mu_Y)}} \langle C \otimes P, P \rangle + \varepsilon \kl(P | \gamma),
 \end{align}
-for some relevant reference histogram $\gamma \in \bbR^{m \times n}_{> 0}$ and $4$D-tensor cost $C$.
-For example, $\gamma = 1_{m \times n}$ corresponds to using the negative entropy as regularizer.
-To solve this problem, \citep{Peyre16,Solomon16} propose to use projected gradient descent,
+for some relevant reference histogram $\gamma \in \bbR^{m \times n}_{> 0}$,
+for example, $\gamma = 1_{m \times n}$ corresponds to using the negative entropy as regularizer.
+To solve this regularized problem, \citep{Peyre16,Solomon16} propose to use projected gradient descent,
 where each iteration boils down to solving an entropic OT problem. More precisely,
 \begin{lemma}[Generalization of Proposition 2 in \citep{Peyre16}]
   \label{lemma:fgw_pgd}
-  Given a matrix $M \in \bbR^{m \times n}$, consider the entropic (fused) GW problem
+  Given a matrix $M \in \bbR^{m \times n}$, consider the following entropic (fused) GW problem
   \begin{align}
     \label{eq:fused_egw}
     \min_{\substack{P \in U(\mu_X, \mu_Y)}} \langle C \otimes P, P \rangle
@@ -1613,8 +1610,8 @@ This lower-bound strategy can also be easily extended to the general problem \eq
 where it is enough to rewrite the objective function as
 \begin{align}
   \min_{\substack{P, Q \in U(\mu_X, \mu_Y) \\ P = Q}} \langle C \otimes P, Q \rangle
-  + \langle \frac{M}{2}, P + Q \rangle + \frac{\varepsilon}{2} \kl(P | \gamma)
-  + \frac{\varepsilon}{2} \kl(Q | \gamma).
+  + \frac{1}{2} \langle M, P \rangle + \frac{1}{2} \langle M, Q \rangle
+  + \frac{\varepsilon}{2} \kl(P | \gamma) + \frac{\varepsilon}{2} \kl(Q | \gamma).
 \end{align}
 Moreover, one can ignore the equality constraint without impacting the minimum,
 under exactly the same conditions as in Problem \eqref{eq:coot}.
