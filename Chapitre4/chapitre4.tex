@@ -7,7 +7,7 @@
 \chaptermark{\textbf{Fused Unbalanced Gromov-Wasserstein}}
 
 \hfill \break
-This paper presents the results from the paper \citep{Thual22} and addresses the unbalanced extension
+This paper presents the results from \citep{Thual22} and addresses the unbalanced extension
 of Co-Optimal transport with application in brains.
 Individual brains vary in both anatomy and functional organization, even within a given species.
 Inter-individual variability is a major impediment when trying to draw generalizable conclusions
@@ -25,8 +25,9 @@ vary in size across subjects. Our results show that FUGW alignment significantly
 increases between-subject correlation of activity for independent functional data,
 and leads to more precise mapping at the group level.
 
-In this work, I work on the formulation, the algorithm and its implementation.
-The experiments on the data are done by Alexis Thual.
+\paragraph{Contributions} AT, TZ, SD and BT designed and planned the study. All authors wrote
+the paper and revised the manuscript. The experimental design and analysis were done
+by AT, TZ, SD and BT. QHT formulated the mathematical framework and implemented the algorithms.
 
 \raggedbottom
 
@@ -377,7 +378,7 @@ LB-FUGW are numerically equal. This yields a closed form for $F^B$ and $D^B$,
 as a function of $P^{s,B}$ and $\cX^s$. We note that, during the barycenter estimation,
 the weight $w^B$ is always fixed as uniform distribution.
 
-\begin{algorithm}[th]
+\begin{algorithm}[t]
     \caption{LB-FUGW barycenter for Problem \eqref{eq:barycenter}}
     \label{alg:fugw_barycenter}
     \begin{algorithmic}[1]
@@ -425,7 +426,7 @@ retinotopy which we don't use in this work. We leverage these 400 fMRI maps.
 The training, validation and test sets respectively comprise
 326, 43 and 30 contrast maps acquired for each individual of the dataset.
 Tasks and MRI sessions differ between each of the sets.
-More details, including preprocessing, are provided in Supplementary Materials.
+% More details, including preprocessing, are provided in Supplementary Materials.
 
 \paragraph{Baseline alignment correlation}
 For each pair of individuals $(s, t)$ under study, and for each fMRI contrast $c$ in the test set,
@@ -488,7 +489,7 @@ resulting in couplings too large to fit on GPUs -- for reference,
 a coupling of size 10k $\times$ 10k already weights ~400Mo on disk.
 We thus reduce the size of the source and target data by
 clustering them into 10k small connected clusters using Ward's algorithm \citep{thirion:2014}.
-More details are given in supplementary section A.4.
+% More details are given in supplementary section A.4.
 
 \paragraph{Experiment 3 - Comparing FUGW barycenters with usual group analysis}
 \label{par:barycenter}
@@ -563,10 +564,10 @@ from $0.258$ to $0.356$.
     }
     \label{fig:gain_comparisions_fsaverage5}
 \end{figure}
-We also varied training sets by selecting subsets of training contrasts and find that
-similar performance on the test set can be achieved regardless of the training data
-(see Supplementary \Cref{sec:control_experiments} and in particular Supplementary
-\Cref{tab:varying_training_sets}).
+% We also varied training sets by selecting subsets of training contrasts and find that
+% similar performance on the test set can be achieved regardless of the training data
+% (see Supplementary \Cref{sec:control_experiments} and in particular Supplementary
+% \Cref{tab:varying_training_sets}).
 
 \paragraph{Hyper-parameters selection}
 \label{par:params_selection}
