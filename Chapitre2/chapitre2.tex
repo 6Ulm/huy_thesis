@@ -7,7 +7,7 @@
 
 \hfill \break
 This chapter presents two contributions to the CO-Optimal Transport (COOT).
-The first one is summarized in the paper \citep{Tran21},
+The first one is summarized in \citep{Tran21},
 which studies a relaxation of COOT via multi-marginal OT (MMOT).
 It unifies several popular OT methods under its umbrella by promoting structural information
 on the coupling. We show that incorporating such information into MMOT results in an
@@ -54,18 +54,19 @@ for example, in single-cell multi-omics tasks \citep{Demetci20b}.
 \footnote{In case of Wasserstein distance, there is no interest of feature correspondences
 because intuitively, they are equivalent to the identity matrix. However,
 it is no longer clear how to identify the such matching in the GW setting.}.
-Second, the distance aggregates the features, thus incurs information loss. This can be problematic,
-for example, in the high-dimensional setting, where the Euclidean distance is usually not a good
-metric
+Second, the distance averages out the features, thus incurs information loss.
+This can be problematic in the high-dimensional setting,
+where the Euclidean distance is usually not a good metric
+(see for example, \citep{Aggarwal01}, or Theorem 3.1.1 and Remark 3.1.2 in \citep{Vershynin18})
 \footnote{For more informative discussion,
 see \url{https://stats.stackexchange.com/questions/99171/why-is-euclidean-distance-not-a-good-metric-in-high-dimensions}.}.
 
 One way to overcome these limitations is to use the \textit{Co-Optimal Transport} (COOT)
 \citep{Redko20}, which learns simultaneously the sample and feature alignments.
-In what follows, we denote by $\Delta_{n}=\{w \in \bbR_{> 0}^n: \sum_{i=1}^{n} w_{i}=1\}$
+In what follows, we denote by $\Delta_{n}= \{p \in \bbR_{> 0}^n: \sum_{i=1}^{n} p_{i}=1\}$
 the simplex histogram with $n$ bins. We call $\cX = (X, \mu_1^X, \mu_2^X)$ a \textit{weighted matrix}
-defined by a triplet comprised of a matrix $X \in \bbR^{n \times d}$
-equipped with the histograms $\mu_1^X \in \Delta_n$ and $\mu_2^X \in \Delta_d$
+defined by a triplet comprised of a matrix $X \in \bbR^{n_x \times d_x}$
+equipped with the histograms $\mu_1^X \in \Delta_{n_x}$ and $\mu_2^X \in \Delta_{d_x}$
 on its rows and columns, respectively. For $p \geq 1$, we define the COOT between two
 weighted matrices $\cX = (X, \mu_1^X, \mu_2^X)$ and $\cY = (Y, \mu_1^Y, \mu_2^Y)$ as
 \begin{align}
@@ -93,16 +94,18 @@ whose applicability is summarized in \Cref{t:comparisons}.
     \hline
     Matrix norms & Same-size matrices & Not applicable \\
     \hline
-    OT, UOT & \makecell[l]{Matrices with the same \\ number of columns}
+    OT, UOT, SW & \makecell[l]{Matrices with the same \\ number of columns}
     & Only requires histogram on rows \\
     \hline
-    GW, FGW, UGW & Square matrices & \makecell[l]{Histograms on rows and columns \\ must be the same} \\
+    GW, FGW, UGW, SGW & Square matrices & \makecell[l]{Histograms on rows and columns \\ must be the same} \\
     \hline
     COOT & Arbitrary-size matrices & \makecell[l]{Any histograms on rows and columns} \\
     \hline
 		\end{tabular}
 		\caption{Applicablility of some popular divergences. COOT is much more flexible than
-    other OT-based divergences.
+    other OT-based divergences. UOT and UGW are the unbalaced OT and unbalaced GW divergence, respectively.
+    FGW is the Fused GW divergence. SW and SGW denote the sliced Wasserstein \citep{Rabin12,Bonneel15}
+    and sliced GW \citep{Vayer19a} distances.
     \label{t:comparisons}}
 \end{table}
 
@@ -132,9 +135,9 @@ If the inputs are the Euclidean, or squared Euclidean distances, then equality h
 COOT and GW distances \citep{Sejourne20,Redko20}. These results are based on the prior works
 of \citep{Konno76,Maron18} and summarized in the folllowing proposition.
 \begin{definition}
-  A square matrix $A \in \bbR^{n \times n}$ is conditionally positive (or negative) semi-definite
+  A square matrix $A \in \bbR^{n \times n}$ is conditionally negative semi-definite (CND)
   if it is symmetric and for any $c \in \bbR^n$ such that $\sum_i c_i = 0$, we have
-  $c^T A c \geq 0$ (or $c^T A c \leq 0$).
+  $c^T A c \leq 0$.
 \end{definition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}
@@ -142,15 +145,14 @@ of \citep{Konno76,Maron18} and summarized in the folllowing proposition.
   For $p=2$, suppose that $C^x$ and $C^y$ are of the forms:
   $C^x_{ij} = f_i + f_j + A_{ij}$ and $C^y_{kl} = g_k + g_l + B_{kl}$,
   where $f, g$ are vectors in $\bbR^m, \bbR^n$, respectively,
-  and the matrices $A, B$ are both conditionally positive (or negative) semi-definite.
-  Then $\gw(\cX, \cY) = \coot(\cX, \cY)$.
+  and the matrices $A, B$ are CND. Then $\gw(\cX, \cY) = \coot(\cX, \cY)$.
   Furthermore, if $(P_1^*, P_2^*)$ is a solution of the COOT problem, then $P_1^*$ and $P_2^*$
   are two solutions of the GW problem. In particular,
   if the semi-definiteness is replaced by the definiteness, then $P_1^* = P_2^*$.
 \end{proposition}
-Roughly speaking, if the similarity matrices is "approximately" conditionally positive
-(or negative) semi-definite, then one can safely remove the equality constraint
-without changing the minimum. Thus, \Cref{prop:coot_gw_equiv} justifies the rationale behind
+Roughly speaking, if the similarity matrices is "approximately" CND,
+then one can safely remove the equality constraint without changing the minimum.
+Thus, \Cref{prop:coot_gw_equiv} justifies the rationale behind
 the alternative minimization procedure for GW distance presented in \Cref{subsec:gw_approx}.
 This scheme is easily adapted to the entropic fused GW problem, by observing that,
 for any reference histogram $\mu \in \bbR_{> 0}^{m \times n}$, we have
@@ -173,8 +175,7 @@ one can safely drop the equality constraint during the optimization.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
-In order to avoid introducing unnecessary notational complication,
-we will mostly follow the terminology and concepts of the published work of \citep{Chowdhury21b}.
+We will mostly follow the terminology and concepts proposed in the published work of \citep{Chowdhury21b}.
 
 \subsection{Formulation and preliminary results}
 
@@ -192,8 +193,7 @@ $X_1 = X_2 = X$ and $\mu_1^X = \mu^X_2 = \mu_X$, one can reformulate the GW prob
   \end{split}
 \end{equation}
 When the equality constraint on the two couplings is relaxed,
-we obtain a lower bound of the GW distance. Under this relaxation,
-we can further allow that either $X_1 \neq X_2$ or $Y_1 \neq Y_2$.
+we can allow that either $X_1 \neq X_2$ or $Y_1 \neq Y_2$.
 The interest of such situation can be found, for example, in heterogenous domain adaptation,
 where $X_1$ and $Y_1$ represent the "sample" spaces in the source and target domains, respectively,
 and $X_2$ and $Y_2$ represent the "feature" spaces in the source and target domains, respectively.
@@ -229,9 +229,8 @@ It is not difficult to see that \Cref{def:cont_coot} generalizes the discrete CO
 In practice, the input data is usually expressed as matrix,
 whose rows represent samples and columns represent features.
 In this case, the interaction value is precisely the coordinate of the data matrix.
-On the other hand, the sample and feature spaces are unknown and have little interest and importance.
+Meanwhile, the sample and feature spaces are unknown and have little interest and importance.
 
-First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
 % \begin{figure}[ht]
 %   \centering
 %   \includegraphics[width=0.9\textwidth, keepaspectratio]{./Chapitre2/fig/coot_diagram.pdf}
@@ -239,6 +238,7 @@ First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
 %   which indicates the comparable performance of MMOT-DC-v1. On the other hand, the top-right plot shows the clear superiority of EGW-PGD.}
 %   \label{fig:continuous_coot}
 % \end{figure}
+First, we can show that the COOT problem \eqref{eq:cont_coot} is well defined.
 \begin{proposition}[Lemma 35 in \citep{Chowdhury21b}]
   \label{prop:exist_coot}
   The COOT problem always admits a minimizer.
@@ -271,9 +271,9 @@ same metric properties.
 \end{definition}
 We denote $\rms(\cX)$ the set of all relaxed mass splittings of $\cX$. Clearly,
 $\cX \in \rms(\cX)$, so $\rms(\cX)$ is not empty.
-In particular, in the GW setting, if $\cZ \in \ms(\cX)$, then $\cZ \in \rms(\cX)$, meaning that
-$\ms(\cX) \subset \rms(\cX)$. Now, we can define the isomorphism between the measure hypernetworks
-as follows.
+In particular, for measure networks, if $\cZ \in \ms(\cX)$, then $\cZ \in \rms(\cX)$,
+meaning that $\ms(\cX) \subset \rms(\cX)$. Now, we can define the isomorphism between
+the measure hypernetworks as follows.
 \begin{definition}[COOT-isomorphism] \label{coot_isomorphic}
   Two measure hypernetworks are
   \begin{enumerate}
@@ -315,18 +315,18 @@ Now, we can characterize the weak isomorphism by
   $\coot^{1/p}$ defines a metric on the space of measure hypernetworks, up to COOT-weak isomorphism.
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Discussion on the setting of mm-space}
-While the measure network can fit in the COOT framework, this is usually not the case for
-the mm-space since the distance function is only measurable in Polish space,
-but not necessarily bounded. However, all previous results on the existence of minimizer and
-metric property remain unchanged if one replaces measure hypernetworks by mm-spaces,
-as long as COOT is finite. Moreover,
-\begin{corollary}
-For $p=2$, all forms of COOT isomorphisms are equivalent and
-they are also equivalent to the isomorphism in GW sense.
-\end{corollary}
-This indicates that, both GW distance and COOT can be used to compare isometric objects,
-namely those transformed by reflection, rotation or translation.
+% \paragraph{Discussion on the setting of mm-space}
+% While the measure network can fit in the COOT framework, this is usually not the case for
+% the mm-space since the distance function is only measurable in Polish space,
+% but not necessarily bounded. However, all previous results on the existence of minimizer and
+% metric property remain unchanged if one replaces measure hypernetworks by mm-spaces,
+% as long as COOT is finite. Moreover,
+% \begin{corollary}
+% For $p=2$, all forms of COOT isomorphisms are equivalent and
+% they are also equivalent to the isomorphism in GW sense.
+% \end{corollary}
+% This indicates that, both GW distance and COOT can be used to compare isometric objects,
+% namely those transformed by reflection, rotation or translation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Entropic regularization and approximation error}
@@ -346,7 +346,8 @@ the entropic COOT. It also bears similarity with the \textit{quadratic divergenc
 \citep{Sejourne20} defined by $\kl^{\otimes 2}(\mu, \nu):= \kl(\mu \otimes \mu | \nu \otimes \nu)$,
 which is used to define the unbalanced GW divergence. Note that, in the balanced setting,
 the joint penalization in terms of KL divergence is in fact equivalent to the
-independent KL-penalization. Indeed, given any $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k=1,2$, we have
+independent KL-penalization. More precisely, given any $\pi_k \in U(\mu_k^X, \mu_k^Y)$,
+for $k=1,2$, we have
 \begin{equation}
   \kl \big( \pi_1 \otimes \pi_2 \vert (\mu^X_1 \otimes \mu^Y_1) \otimes (\mu^X_2 \otimes \mu^Y_2) \big)
   = \kl(\pi_1 \vert \mu^X_1 \otimes \mu^Y_1) + \kl(\pi_2 \vert \mu^X_2 \otimes \mu^Y_2).
@@ -406,11 +407,11 @@ then we can quantify the approximation error as follows.
 This bound is very similar to the one in Wasserstein setting \citep{Genevay19}.
 Let us consider two special cases of \Cref{prop:quant_bound_ent}.
 \begin{itemize}
-  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\textit{i.e.} $q=1$),
+  \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\ie, $q=1$),
   the upper bound becomes $d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big)$.
 
   \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are squared Euclidean distances
-  (\textit{i.e.} $q=2$), the upper bound becomes
+  (\ie, $q=2$), the upper bound becomes
   $\frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big)$.
 \end{itemize}
 In both situations, the dependence of the bound on the maximal distance $D$ between points
@@ -492,7 +493,7 @@ challenging case of doing so in a multi-marginal setting. On the other hand, whi
 problem in which the cost tensor induced by a graphical structure, it does not naturally promote the factorizability of
 transportation plans.
 
-\paragraph{Contributions} In this paper, we define and study a general MMOT problem with structural penalization on the coupling matrix.
+\paragraph{Contributions} In this work, we define and study a general MMOT problem with structural penalization on the coupling matrix.
 We start by showing that a such formulation includes several popular OT methods as special cases and allows to gain deeper insights
 into them. We further consider a relaxed problem where the hard constraint is replaced by a regularization term and show that it leads
 to an instance of the difference of convex programming problem. A numerical study of the solutions obtained when solving the latter
@@ -630,10 +631,11 @@ that the decomposition can involve tensors of an arbitrary order $<N$. Second, t
 knowledge regarding the tuples of measures which should be independent: the couplings for the measures from different tuples will
 be degenerate and the optimal coupling tensor will be reconstructed from couplings of each tuple separately.
 Third, suppose the partition $(\cT_m)_{m=1}^M$ is not degenerate and $M=2$, i.e. the tensor is factorized as product of
-two tensors, the problem \eqref{factor_mmot} is equivalent to a variation of low non-negative rank OT problem (see Appendix for a proof).
+two tensors, Problem \eqref{factor_mmot} is equivalent to a variation of low non-negative rank OT problem
+(see Appendix \ref{appendix:subsec_mmot_dc}).
 
 As for the existence of the solution to this problem, we have that $U_{\cT}$ is compact because it is a close subset of the
-compact set $U(\mu)$, which implies that the problem \eqref{factor_mmot} always admits a solution. Furthermore, observe that
+compact set $U(\mu)$, which implies that Problem \eqref{factor_mmot} always admits a solution. Furthermore, observe that
 \begin{equation}
   \begin{split}
     U_{\cT} &= \{ P \in U(\mu): P = P_1 \otimes ... \otimes P_M, \text{where } P_m \in \Sigma_{\cT_m}, \forall m = 1,...,M \} \\
@@ -671,7 +673,7 @@ $U_{\cT}$ is replaced by a regularization term.
 From the exposition above, one can guess that this relaxation is reminiscent of the entropic regularization in MMOT and
 coincides with it when $M = N$. As such, it also recovers the classical entropic OT. One should note that the choice of the KL
 divergence is not arbitrary and its advantage will become clear when it comes to the algorithm. %A well known
-A special case of Problem \eqref{relax_mmot} is when $M = N$, we recover the entropic-regularized MMOT problem, up to a constant.
+A special case of Problem \eqref{relax_mmot} is when $M = N$, we recover the entropic-regularized MMOT problem.
 
 After having defined the two optimization problems, we now set on exploring their theoretical properties.
 
@@ -741,7 +743,8 @@ Here, we establish a weaker case where this equality still holds.
 The proof relies on the connection between MMOT-DC and COOT shown in \Cref{interpolation_prop},
 and given a $4$-D solution of MMOT-DC, we can construct another $4$-D solutions whose
 $\cT_1$ and $\cT_2$-marginal matrices are identical,
-under the assumption of the cost tensor. The proof of the second claim is deferred to the Appendix.
+under the assumption of the cost tensor. The proof of the second claim is deferred to the
+Appendix \ref{appendix:subsec_mmot_dc}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
 \subsection{Numerical solution} \label{sec:algo}
