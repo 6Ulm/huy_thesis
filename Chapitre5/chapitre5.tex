@@ -6,8 +6,8 @@
 \chaptermark{\textbf{Augmented Gromov-Wasserstein}}
 
 \hfill \break
-This section presents the results from the paper "Breaking isometric ties and introducing priors
-in Gromov-Wasserstein distances" \citep{Demetci23}.
+This section presents the results from \citep{Demetci23} and address the problem of
+incorporating priors into Gromov-Wasserstein distance.
 Gromov-Wasserstein distance has many applications in machine learning due to its ability
 to compare measures across metric spaces and its invariance to isometric transformations. However,
 in certain applications, this invariant property can be too flexible, thus undesirable. Moreover,
@@ -19,8 +19,9 @@ enabling us to better leverage prior knowledge on the input data for improved pe
 We present theoretical insights into the proposed method. We then demonstrate its usefulness
 for single-cell multi-omic alignment tasks and heterogeneous domain adaptation in machine learning.
 
-\paragraph{Contributions} The experimental design and analysis are done by Pinar Demetci.
-I work on the theoritical analysis of the proposed method.
+\paragraph{Contributions} PD, IR and RS designed and planned the study. All authors wrote
+the paper and revised the manuscript. by PD and RS did the experimental design and analysis.
+The theoritical analysis of the proposed method is performed by QHT and revised by IR.
 
 \raggedbottom
 
@@ -223,7 +224,7 @@ The 2D projection of alignments in Panel B shows that GW sometimes completely sw
 the cell type clusters when they have a similar number of cells, whereas AGW is more robust
 to this phenomenon.
 
-\paragraph{Optimization} For simplicity, let $n_x = n_y = n$ and $d_x = d_y = d$.
+\paragraph{Optimization} For simplicity, suppose $n_x = n_y = n$ and $d_x = d_y = d$.
 With the squared loss in both GW and COOT terms, the computational trick by \citep{Peyre16}
 can be applied, which reduces the complexity of AGW from $O(n^4 + n^2 d^2)$
 to $O(n^3 + dn^2 + nd^2)$. For optimization, we use the block coordinate descent (BCD) algorithm,
@@ -261,10 +262,10 @@ The following result summarizes these observations, whose proofs are presented i
 Appendix.
 \begin{proposition}
 \label{prop:basic_prop}
-For every $\alpha \in [0, 1]$, given two input matrices $X$ and $Y$,
+For $\alpha \in [0, 1]$,
 \begin{enumerate}
-    \item When $\alpha \to 0$ (or $1$), one has $\agw_{\alpha}(\cX, \cY) \to \coot(\cX, \cY)$
-    (or $\gw(\cX, \cY)$).
+    \item Given two weighted matrices $\cX$ and $\cY$, when $\alpha \to 0$ (or $1$),
+    one has $\agw_{\alpha}(\cX, \cY) \to \coot(\cX, \cY)$ (or $\gw(\cX, \cY)$).
 
     \item AGW satisfies the relaxed triangle inequality: for any weighted matrices $\cX, \cY$
     and $\cZ$, one has $\agw_{\alpha}(\cX, \cY) \leq 2 \big( \agw_{\alpha}(\cX, \cZ)
@@ -318,11 +319,11 @@ While enjoying the interpolation and metric properties, AGW does not inherit the
 to the translation of the GW distance. However, we find that it satisfies a relaxed version
 of this invariant defined as follows.
 \begin{definition}
-    We call $D = \inf_{\pi \in U} F(\pi, X, Y)$, where $X, Y$ are input data and $U$
+    We call $D = \inf_{\pi \in \cU} F(\pi, X, Y)$, where $X, Y$ are input data and $\cU$
     is a set of feasible couplings and $F$ is a real-valued functional, an OT-based divergence.
     Then $D$ is weakly invariant to translation if for every $a, b \in \bbR$, we have
-    $\inf_{\pi \in U} F(\pi, X, Y) = C + \inf_{\pi \in U} F(\pi, X + a, Y+b)$,
-    for some constant $C$ depending on $a, b, X, Y$ and $U$.
+    $\inf_{\pi \in U} F(\pi, X + a, Y+b) = \inf_{\pi \in \cU} F(\pi, X, Y) + c$,
+    for some constant $C$ depending on $a, b, X, Y$ and $\cU$.
 \end{definition}
 Here, we denote the translation of $X$ as $X + a$, whose elements are of the form $X_{ij} + a$.
 Intuitively, an OT-based divergence is weakly invariant to translation if only
