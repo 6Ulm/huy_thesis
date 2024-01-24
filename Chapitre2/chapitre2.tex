@@ -919,90 +919,92 @@ One limitation of the current DC algorithm is that, it is not scalable because
 it requires storing a full-size tensor in the gradient step computation. Thus, future
 work may focus on more efficiently designed algorithms, in terms of both time and memory footprint.
 Moreover, incorporating additional structure on the cost tensor may also be computationally and practically beneficial.
+From a theoretical viewpoint, it is also interesting to study the extension of MMOT-DC to the continuous setting,
+which can potentially allow us to further understand the connection between GW distance and COOT.
 
-From a theoretical viewpoint, one potential application of MMOT-DC is on the study of the sample complexity of GW distance.
-More precisely, given two measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$,
-we want to quantify $| \gw(\cX, \cY) - \gw(\cX_n, \cY_n)|$. Note that, \citep{Zhang23} has also
-established the convergence rate for the case of $2$-GW distance, in which the cost function
-is the squared Euclidean distance. Our proposed approach, if works, would be able to handle any
-conditionally negative (or positive) semi-definite kernel.
+% From a theoretical viewpoint, one potential application of MMOT-DC is on the study of the sample complexity of GW distance.
+% More precisely, given two measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$,
+% we want to quantify $| \gw(\cX, \cY) - \gw(\cX_n, \cY_n)|$. Note that, \citep{Zhang23} has also
+% established the convergence rate for the case of $2$-GW distance, in which the cost function
+% is the squared Euclidean distance. Our proposed approach, if works, would be able to handle any
+% conditionally negative (or positive) semi-definite kernel.
 
-The idea is as follows: by \Cref{prop:coot_gw_equiv}, COOT and GW distance are equivalent
-\footnote{Note that one needs to properly extend \Cref{prop:coot_gw_equiv} to the continuous setting
-(of measure networks).}. So, we can replace GW by COOT, as it is less (unnecessarily) constrained.
-Next, we extend MMOT-DC to the continuous setting and show that the interpolation property
-still holds, notably MMOT-DC converges to COOT as regularization tends to the infinity.
-Thanks to the DC algo, we can linearize the MMOT-DC and obtain an entropic MMOT problem.
-This problem has two advantages. First, one can reuse the technique for entropic OT
-in \citep{Genevay19} and extend to the entropic MMOT. Second, for suitable choice of input,
-it approximates COOT.
+% The idea is as follows: by \Cref{prop:coot_gw_equiv}, COOT and GW distance are equivalent
+% \footnote{Note that one needs to properly extend \Cref{prop:coot_gw_equiv} to the continuous setting
+% (of measure networks).}. So, we can replace GW by COOT, as it is less (unnecessarily) constrained.
+% Next, we extend MMOT-DC to the continuous setting and show that the interpolation property
+% still holds, notably MMOT-DC converges to COOT as regularization tends to the infinity.
+% Thanks to the DC algo, we can linearize the MMOT-DC and obtain an entropic MMOT problem.
+% This problem has two advantages. First, one can reuse the technique for entropic OT
+% in \citep{Genevay19} and extend to the entropic MMOT. Second, for suitable choice of input,
+% it approximates COOT.
 
-Note that, this is still an ongoing work as we have not yet fully resolved all
-technical difficulties. Nevertheless, we report the sketch of the proof and leave most of
-mathematical details in Appendix.
+% Note that, this is still an ongoing work as we have not yet fully resolved all
+% technical difficulties. Nevertheless, we report the sketch of the proof and leave most of
+% mathematical details in Appendix.
 
-\paragraph{Assumptions} We assume that the measure networks
-$\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$. $X$ and $Y$ are compact
-subsets of $\bbR^{d_x}$ and $\bbR^{d_y}$, respectively. The probability measures
-$\mu_X$ and $\mu_Y$ are absolutely continuous with respect to the Lebesgue measures
-on $\bbR^{d_x}$ and $\bbR^{d_y}$, respectively.
-With some abuse of notation, we also use $\mu_X, \mu_Y$ to denote their density functions.
+% \paragraph{Assumptions} We assume that the measure networks
+% $\cX = (X, c_X, \mu_X)$ and $\cY = (Y, c_Y, \mu_Y)$. $X$ and $Y$ are compact
+% subsets of $\bbR^{d_x}$ and $\bbR^{d_y}$, respectively. The probability measures
+% $\mu_X$ and $\mu_Y$ are absolutely continuous with respect to the Lebesgue measures
+% on $\bbR^{d_x}$ and $\bbR^{d_y}$, respectively.
+% With some abuse of notation, we also use $\mu_X, \mu_Y$ to denote their density functions.
 
-\paragraph{Sketch of proof}
-For convenience, denote $\cU_4 = U(\mu_X, \mu_Y, \mu_X, \mu_Y)$ and $\mu = \mu_X \otimes \mu_Y$.
-We write $c = |c_X - c_Y|^2$ defined by $c(x, y, x', y') = |c_X(x, x') - c_Y(y, y') |^2$.
-Recall that, for any $\pi \in \cU_4$, we denote $\pi_{\#} = \pi_{\# 12} \otimes \pi_{\# 34}$.
-\begin{lemma}
-  For each $\pi \in \cU_4$, denote
-  $G(\pi) := \kl(\pi_{\# 12} | \mu) + \kl(\pi_{\# 34} | \mu) = \kl(\pi_{\#} | \mu^{\otimes 2})$.
-  Then $G$ is convex and differentiable. In particular, $G(\pi) = \int \nabla G(\pi) \; d \pi$,
-  for $\pi \in \cU_4$.
-\end{lemma}
-Now, we have
-\begin{align}
-  \int c \; d\gamma + \varepsilon \kl(\gamma | \gamma_{\#})
-  &\leq \int c \; d\gamma + \varepsilon \kl(\gamma | \mu^{\otimes 2})
-  - \varepsilon \Big[ G(\pi) + \int \nabla G(\pi) \; d \gamma - \int \nabla G(\pi) \; d \pi \Big] \\
-  &= \int \big[ c - \varepsilon \nabla G(\pi) \big] \; d \gamma
-  + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
-\end{align}
-By taking infimum over $\cU_4$, we obtain
-\begin{align}
-  \mmotdc_{\varepsilon} \leq
-  \inf_{\gamma \in \cU_4} \int \big[ c - \varepsilon \nabla G(\pi) \big] d \gamma
-  + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
-\end{align}
-Now, we define the following MMOT problem.
-\begin{definition}
-  For $\pi \in \cU_4$, define
-  \begin{align}
-    \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big) :=
-    \inf_{\gamma \in \cU_4} \int \big[ c - \varepsilon \nabla G(\pi) \big] \; d \gamma
-      + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
-  \end{align}
-\end{definition}
-There exists $\pi \in \cU_4$ such that $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big)$
-approximates COOT. For example, denote $\pi_{\varepsilon}$
-the solution of the entropic COOT problem $\coot_{\varepsilon}(\cX, \cY)$, we can show that
-\begin{corollary}
-  For every $\varepsilon > 0$, we have
-  $\coot_{1 / \varepsilon}(\cX, \cY) \geq
-  \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi_{1 / \varepsilon}) \big) \geq \mmotdc_{\varepsilon}$.
-  As a consequence,
-  $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi_{1 / \varepsilon}) \big) \to \coot(\cX, \cY)$,
-  when $\varepsilon \to \infty$.
-\end{corollary}
-Now, suppose $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)$ can approximate COOT,
-for some $\pi^* \in \cU_4$. Then, by the triangle inequality, we have
-\begin{align}
-  | \coot_(\cX, \cY) - \coot_(\cX_n, \cY_n)|
-  &\leq |\coot_(\cX, \cY) - \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)| \\
-  &+ |\mmot_{\varepsilon, n}\big( c - \varepsilon \nabla G(\pi^*) \big) - \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)| \\
-  &+ |\coot(\cX_n, \cY_n) - \mmot_{\varepsilon, n}\big( c - \varepsilon \nabla G(\pi^*) \big)|,
-\end{align}
-Now, it is enough to bound each term and obtain the final rate. However, the main difficulties
-lie on finding the appropriate choice of $\pi^*$ and on how to control
-it in the entropic MMOT problem.
+% \paragraph{Sketch of proof}
+% For convenience, denote $\cU_4 = U(\mu_X, \mu_Y, \mu_X, \mu_Y)$ and $\mu = \mu_X \otimes \mu_Y$.
+% We write $c = |c_X - c_Y|^2$ defined by $c(x, y, x', y') = |c_X(x, x') - c_Y(y, y') |^2$.
+% Recall that, for any $\pi \in \cU_4$, we denote $\pi_{\#} = \pi_{\# 12} \otimes \pi_{\# 34}$.
+% \begin{lemma}
+%   For each $\pi \in \cU_4$, denote
+%   $G(\pi) := \kl(\pi_{\# 12} | \mu) + \kl(\pi_{\# 34} | \mu) = \kl(\pi_{\#} | \mu^{\otimes 2})$.
+%   Then $G$ is convex and differentiable. In particular, $G(\pi) = \int \nabla G(\pi) \; d \pi$,
+%   for $\pi \in \cU_4$.
+% \end{lemma}
+% Now, we have
+% \begin{align}
+%   \int c \; d\gamma + \varepsilon \kl(\gamma | \gamma_{\#})
+%   &\leq \int c \; d\gamma + \varepsilon \kl(\gamma | \mu^{\otimes 2})
+%   - \varepsilon \Big[ G(\pi) + \int \nabla G(\pi) \; d \gamma - \int \nabla G(\pi) \; d \pi \Big] \\
+%   &= \int \big[ c - \varepsilon \nabla G(\pi) \big] \; d \gamma
+%   + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
+% \end{align}
+% By taking infimum over $\cU_4$, we obtain
+% \begin{align}
+%   \mmotdc_{\varepsilon} \leq
+%   \inf_{\gamma \in \cU_4} \int \big[ c - \varepsilon \nabla G(\pi) \big] d \gamma
+%   + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
+% \end{align}
+% Now, we define the following MMOT problem.
+% \begin{definition}
+%   For $\pi \in \cU_4$, define
+%   \begin{align}
+%     \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big) :=
+%     \inf_{\gamma \in \cU_4} \int \big[ c - \varepsilon \nabla G(\pi) \big] \; d \gamma
+%       + \varepsilon \kl(\gamma | \mu^{\otimes 2}).
+%   \end{align}
+% \end{definition}
+% There exists $\pi \in \cU_4$ such that $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi) \big)$
+% approximates COOT. For example, denote $\pi_{\varepsilon}$
+% the solution of the entropic COOT problem $\coot_{\varepsilon}(\cX, \cY)$, we can show that
+% \begin{corollary}
+%   For every $\varepsilon > 0$, we have
+%   $\coot_{1 / \varepsilon}(\cX, \cY) \geq
+%   \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi_{1 / \varepsilon}) \big) \geq \mmotdc_{\varepsilon}$.
+%   As a consequence,
+%   $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi_{1 / \varepsilon}) \big) \to \coot(\cX, \cY)$,
+%   when $\varepsilon \to \infty$.
+% \end{corollary}
+% Now, suppose $\mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)$ can approximate COOT,
+% for some $\pi^* \in \cU_4$. Then, by the triangle inequality, we have
+% \begin{align}
+%   | \coot_(\cX, \cY) - \coot_(\cX_n, \cY_n)|
+%   &\leq |\coot_(\cX, \cY) - \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)| \\
+%   &+ |\mmot_{\varepsilon, n}\big( c - \varepsilon \nabla G(\pi^*) \big) - \mmot_{\varepsilon}\big( c - \varepsilon \nabla G(\pi^*) \big)| \\
+%   &+ |\coot(\cX_n, \cY_n) - \mmot_{\varepsilon, n}\big( c - \varepsilon \nabla G(\pi^*) \big)|,
+% \end{align}
+% Now, it is enough to bound each term and obtain the final rate. However, the main difficulties
+% lie on finding the appropriate choice of $\pi^*$ and on how to control
+% it in the entropic MMOT problem.
 
 % \subsection{Stability of Co-Optimal Transport}
 
