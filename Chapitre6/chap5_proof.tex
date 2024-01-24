@@ -1,5 +1,42 @@
 \section{Appendix of Chapter 6}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Additional proof}
+
+\begin{proof}[Proof of \Cref{coro:ugw_ucoot}]
+  Let $(P, Q)$ be a solution of the problem $\widetilde{\fugw}(\cX^s, \cX^t)$.
+  This means $P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2}$. Using the relation
+  \begin{align}
+    \kl(p \otimes q | a \otimes b) = m(q) \kl(p | a) + m(p) \kl(q | b)
+    + \big(m(P) - m(a)\big) \big(m(Q) - m(b)\big),
+  \end{align}
+  we have,
+  \begin{enumerate}
+    \item $\kl(P_{\#1} \otimes Q_{\#1} \vert w^s \otimes w^s) =
+    \kl(P_{\#1} \otimes P_{\#1} \vert w^s \otimes w^s) =
+    \kl(Q_{\#1} \otimes Q_{\#1} \vert w^s \otimes w^s)$.
+
+    \item $\kl(P_{\#2} \otimes Q_{\#2} \vert w^t \otimes w^t) =
+  \kl(P_{\#2} \otimes P_{\#2} \vert w^t \otimes w^t) =
+  \kl(Q_{\#2} \otimes Q_{\#2} \vert w^t \otimes w^t)$.
+
+    \item $\kl \Big(P \otimes Q | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big) =
+    \kl \Big(P \otimes P | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big)
+    = \kl \Big(P \otimes Q | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big)$.
+  \end{enumerate}
+  So, the inequality $\widetilde{\fugw}(\cX^s, \cX^t) \leq \fugw(\cX^s, \cX^t)$ and
+  the suboptimality of $P, Q$ with respect to the problem $\fugw(\cX^s, \cX^t)$ imply that
+  \begin{equation}
+    2 \langle G, P \otimes Q \rangle \leq
+      \langle G, P \otimes P \rangle + \langle G, Q \otimes Q \rangle.
+  \end{equation}
+  Now, with exactly the same proof of \Cref{prop:coot_gw_equiv},
+  the above inequality becomes an equality.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Algorithmic details}
+
 \begin{algorithm}[t]
   \caption{Approximation scheme for LB-FUGW}
   \label{alg:lbfugw}
@@ -20,7 +57,7 @@
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[t]
+\begin{algorithm}[h]
   \caption{Sinkhorn algorithm \citep{Sejourne19}}
   \label{alg:sinkhorn}
   \begin{algorithmic}[1]
@@ -35,7 +72,7 @@
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[t]
+\begin{algorithm}[h]
   \caption{Cost}
   \label{alg:local_cost}
   \begin{algorithmic}[1]
@@ -44,14 +81,16 @@
       \STATE Calculate: $G \otimes P := \left( \sum_{i,j} G_{i,j,k,l} P_{i,j} \right)_{k,l}$.
       \STATE Calculate:
       \begin{align}
-          c := \alpha \; G \otimes P + \frac{1 - \alpha}{2} \; C +
+          c = \alpha \; G \otimes P + \frac{1 - \alpha}{2} \; C +
           \rho \; \langle \log \frac{P_{\#1}}{w^s}, P_{\#1} \rangle +
           \rho \; \langle \log \frac{P_{\#2}}{w^t}, P_{\#2} \rangle +
-          \varepsilon \; \langle \log \frac{P}{w^s \otimes w^t}, P \rangle
+          \varepsilon \; \langle \log \frac{P}{w^s \otimes w^t}, P \rangle.
       \end{align}
   \end{algorithmic}
 \end{algorithm}
-Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively. The exponential, division and logarithm operations are all element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
+Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively.
+The exponential, division and logarithm operations are all element-wise.
+The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
 
 % First, let us introduce the following problem
 % \begin{equation}
@@ -87,6 +126,7 @@ Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum,
 % \end{align}
 % where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Dataset description}
 %
 The presented experiments rely on the Individual Brain Charting (IBC) dataset.
