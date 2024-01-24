@@ -1,0 +1,157 @@
+\section{Appendix of Chapter 6}
+
+\begin{algorithm}[t]
+  \caption{Approximation scheme for LB-FUGW}
+  \label{alg:lbfugw}
+  \begin{algorithmic}[1]
+      \STATE \textbf{Input:} $\cX^s, \cX^t, \rho, \alpha, \varepsilon$.
+      \STATE \textbf{Output:} Pair of optimal couplings $(P, Q)$.
+      \STATE Initialize: $P = Q = w^s \otimes w^t / \sqrt{m(w^s) m(w^t)}$.
+      \WHILE{$(P, Q)$ has not converged}
+          \STATE Calculate: $c_P = \text{Cost}(P,  G, C, w^s, w^t, \rho, \alpha, \varepsilon)$.
+          \STATE Update: $Q \gets \text{Sinkhorn}(c_P, w^s, w^t, \rho m(P), \varepsilon m(P))$.
+          % % \Comment{fixed P}
+          \STATE Rescale: $Q \gets \sqrt{\frac{m(P)}{m(Q)}} Q$.
+          \STATE Calculate: $c_Q = \text{Cost}(Q,  G, C, w^s, w^t, \rho, \alpha, \varepsilon)$.
+          \STATE Update: $P \gets \text{Sinkhorn}(c_Q, w^s, w^t, \rho m(Q), \varepsilon m(Q))$.
+          % % \Comment{fixed Q}
+          \STATE Rescale: $P \gets \sqrt{\frac{m(Q)}{m(P)}} P$.
+      \ENDWHILE
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+  \caption{Sinkhorn algorithm \citep{Sejourne19}}
+  \label{alg:sinkhorn}
+  \begin{algorithmic}[1]
+      \STATE \textbf{Input:} $C, w^s, w^t, \rho, \varepsilon$.
+      \STATE \textbf{Output:} Optimal coupling $P$.
+      \STATE Initialize dual vectors: $f = 0_n \in \bbR^n, g = 0_p \in \bbR^p$.
+      \WHILE{$(f,g)$ has not converged}
+          \STATE Update: $f = -\frac{\rho}{\rho + \varepsilon} \log \sum_j \exp \big( g_j + \log w^t_j - \frac{C_{\cdot,j}}{\varepsilon} \big)$.
+        \STATE Update: $g = -\frac{\rho}{\rho + \varepsilon} \log \sum_i \exp \big( f_i + \log w^s_i - \frac{C_{i,\cdot}}{\varepsilon} \big)$.
+      \ENDWHILE
+      \STATE Calculate: $P = (w^s \otimes w^t) \exp \big(f \oplus g - \frac{C}{\varepsilon} \big)$.
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+  \caption{Cost}
+  \label{alg:local_cost}
+  \begin{algorithmic}[1]
+      \STATE \textbf{Input:} $P, G, C, w^s, w^t, \rho, \alpha, \varepsilon$.
+      \STATE \textbf{Output:} Local cost $c$.
+      \STATE Calculate: $G \otimes P := \left( \sum_{i,j} G_{i,j,k,l} P_{i,j} \right)_{k,l}$.
+      \STATE Calculate:
+      \begin{align}
+          c := \alpha \; G \otimes P + \frac{1 - \alpha}{2} \; C +
+          \rho \; \langle \log \frac{P_{\#1}}{w^s}, P_{\#1} \rangle +
+          \rho \; \langle \log \frac{P_{\#2}}{w^t}, P_{\#2} \rangle +
+          \varepsilon \; \langle \log \frac{P}{w^s \otimes w^t}, P \rangle
+      \end{align}
+  \end{algorithmic}
+\end{algorithm}
+Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively. The exponential, division and logarithm operations are all element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
+
+First, let us introduce the following problem
+\begin{equation}
+  \text{LB}_1(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
+\end{equation}
+where $\cE = \{(P, Q) \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
+the set of pairs of transportation plans whose corresponding marginal distributions are equal.
+Clearly, we have
+\begin{equation}
+    \text{LB-FUGW} (\cX^s, \cX^t) \leq \text{LB}_1(\cX^s, \cX^t)
+    \leq \fugw(\cX^s, \cX^t).
+\end{equation}
+Denote
+\begin{align}
+  \text{LB}_2 = \inf_{P \in U(Q_{\# 1}, Q_{\# 2})} \inf_{Q \geq 0} L_{\theta}(P, Q)
+\end{align}
+Show that $\text{LB}_2$ has solution?
+
+Observe that $\cE = \bigcup_{Q \geq 0} \{(P, Q): P \in U(Q_{\# 1}, Q_{\# 2}) \}$.
+Denote $(P^*, Q^*)$ the solution of $\text{LB}_1$. Then
+\begin{align}
+  \text{LB}_1(\cX^s, \cX^t) \leq
+\end{align}
+We have, for every $P, Q \geq 0$ and $t > 0$,
+\begin{align}
+  g(t(P, Q)) &= t g(P, Q) + (1-t) \left[ \lambda_1 m(\mu_X)^2 + \lambda_2 m(\mu_Y)^2 \right]
+  + (\lambda_1 + \lambda_2) t \log t m(P) m(Q) \\
+  &= t g(P, Q) + (1 - t) K + \lambda t \log t m(P) m(Q).
+\end{align}
+So,
+\begin{align}
+  \min_{t > 0} g(t(P, Q)) = K - t^* \lambda m(P) m(Q)
+\end{align}
+where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
+
+\subsection{Dataset description}
+%
+The presented experiments rely on the Individual Brain Charting (IBC) dataset.
+%
+A detailed description of the preprocessing pipeline of the IBC data is provided
+in \citep{Pinho2021}.
+%
+Raw data were preprocessed using \emph{PyPreprocess}
+\footnote{\url{https://github.com/neurospin/pypreprocess}}.
+
+All fMRI images, i.e. GE-EPI volumes, were collected twice with reversed
+phase-encoding directions, resulting in pairs of images with distortions going
+in opposite directions.
+%
+Susceptibility-induced off-resonance field was estimated from the two Spin-Echo
+EPI volumes in reversed phase-encoding directions.
+%
+The images were corrected based on the estimated deformation model.
+%
+Details about the method can be found in \citep{Andersson2003}.
+
+Further, the GE-EPI volumes were aligned to each other within every participant.
+%
+A rigid-body transformation was employed, in which the average volume of all
+images was used as reference \citep{Friston1995}.
+%
+The anatomical and motion-corrected fMRI images were given as input to
+\emph{FreeSurfer} v6.0.0, in order to extract meshes of the tissue
+interfaces and the sampling of functional activation on these meshes, as
+described in \citep{vanessen2012}.
+%
+The corresponding maps were then resampled to the fsaverage7 (high resolution,
+163k nodes per hemisphere) and fsaverage5 (low resolution, 10k nodes per hemisphere) templates of
+FreeSurfer \citep{Fischl1999}.
+
+FMRI data were analyzed using the \textit{General Linear Model}.
+%
+Regressors of the model were designed to capture variations in BOLD response
+strictly following stimulus timing specifications.
+%
+They were estimated through the convolution of boxcar functions, that represent
+per-condition stimulus occurrences, with the canonical \textit{Hemodynamic
+  Response Function} (HRF).
+%
+To build such models, paradigm descriptors grouped in triplets (i.e. onset time,
+duration and trial type) according to BIDS Specification were determined from
+the log files' registries generated by the stimulus-delivery software.
+%
+To account for small fluctuations in the latency of the HRF peak response,
+additional regressors were computed based on the convolution of the same
+task-conditions profile with the time derivative of the HRF.
+%
+Nuisance regressors were also added to the design matrix in order to minimize
+the final residual error.
+%
+To remove signal variance associated with spurious effects arising from
+movements, six temporal regressors were defined for the motion parameters.
+%
+Further, the first five principal components of the signal, extracted from
+voxels showing the $5\%$ highest variance, were also regressed to capture
+physiological noise \citep{Behzadi2007}.
+
+In addition, a discrete-cosine basis was included for high-pass filtering
+(\textit{cutoff}=$\frac{1}{128}\textrm{Hz}$).
+%
+Model specification was implemented using \textit{Nilearn} v0.8.1
+\citep{Abraham2014}, a Python library for statistical learning on neuroimaging
+data (\url{https://nilearn.github.io}).
