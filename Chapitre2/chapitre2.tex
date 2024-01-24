@@ -374,7 +374,7 @@ we need to introduce the following assumption on the measure hypernetwork.
   \end{enumerate}
 \end{assumption}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition} \label{conv_ent_coot}
+\begin{proposition} \label{prop:conv_ent_coot}
   Under \Cref{assump:ent_coot}, if the interactions are continuous, then
   $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$ when $\varepsilon \to 0$. Moreover,
   let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
@@ -429,43 +429,6 @@ for $2$-GW distance, when the distance function is the squared-Euclidean norm. B
 \Cref{prop:quant_bound_ent} holds for any $p$-GW distance and any $L^q$-norm as distance function.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \section{Co-Optimal Transport as low non-negative rank OT}
-
-% Recently, low non-negative rank OT \citep{Meyer21a} and extended to the GW and unbalanced settings
-% \citep{Meyer21b,Meyer23}. The idea is based on the \citep{Joel93} and first applied to OT by
-% \citep{Forrow18}, then more complete analysis in \citep{Meyer22}.
-% \begin{definition}
-%   [\citep{Joel93}]
-%   Given a non-negative matrix $A$, we define its non-negative rank by
-%   \begin{equation}
-%     \rank_{+}(A):= \min \big\{ r \geq 1: A = \sum_{i=1}^r M_i,
-%     \text{ where } \rank(M_i) = 1, M_i \geq 0, \forall i \big\}.
-%   \end{equation}
-%   By convention, zero matrix has zero (thus non-negative) rank.
-% \end{definition}
-% To estimate how large can the non-negative rank be, Lemma 2.3 in \citep{Joel93} states that
-% $\rank(A) \leq \rank_+(A) \leq \min(m, n)$, for any nonnegative matrix $A \in \bbR^{m \times n}$.
-% Now, the low non-negative rank OT (LROT) is defined as
-% \begin{align}
-%   \min_{P \in U(\mu, \nu)} &\langle C, P \rangle \\
-%   \text{ s.t. } &\rank_+(P) \leq r.
-% \end{align}
-% Now, we will show that COOT is in fact as a variation of the LROT.
-
-% Now, denote $L= \text{mat}(C)$ and $M = n_1 n_2, N = n_3 n_4$. COOT can be rewritten as
-% \begin{equation}
-%   \begin{split}
-%     \min_{Q \in \bbR^{M \times N}_{\geq 0}} &\langle L, Q \rangle \\
-%     \text{ such that } & A_{12}^T Q 1_N = \mu_{12} \\
-%     &A_{34}^T Q^T 1_M = \mu_{34} \\
-%     &\text{rank}_{+}(Q) = 1,
-%   \end{split}
-% \end{equation}
-% which is a variation of the non-negative rank-$1$ OT problem.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Factored couplings in Multi-marginal Optimal
 Transport via Difference of Convex programming} \label{subsec:MMOT_DC}
 
@@ -499,42 +462,6 @@ into them. We further consider a relaxed problem where the hard constraint is re
 to an instance of the difference of convex programming problem. A numerical study of the solutions obtained when solving the latter
 in cases of interest highlights their competitive performance when compared to solutions provided by the optimization
 strategies used previously.
-
-% Note that we can rewrite COOT as a variation of multi-marginal OT (MMOT) problem.
-% To see this, first, we recall some related concepts.
-% Given an integer $N \geq 1$, for any positive integers $a_1,..., a_N$, we call
-% $P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. In particular,
-% a $1$-D tensor is a vector and $2$-D tensor is a matrix.
-% A tensor is a probability tensor if its entries are non-negative and the sum of all entries is $1$.
-% Given $N$ probability vectors $\mu_1, ..., \mu_N$, we write $\mu = (\mu_n)_{n=1}^N$.
-% We denote $\Sigma$ the set of $N$-D probability tensors and $U(\mu) \subset \Sigma$ the set of non-negative tensors whose $N$
-% marginal distributions are $\mu_1, ..., \mu_N$. In this case, any coupling in $U(\mu)$ is said to be \textit{admissible}.
-
-% Given a collection of $N$ histograms $\mu = (\mu_n \in \bbR^{a_n})_{n=1}^N$
-% and a $N$-D cost tensor $C \in \bbR^{a_1 \times ... \times a_N}$, the MMOT problem reads
-% \begin{equation}
-%   \mmot(\mu) = \inf_{P \in U(\mu)} \langle C, P \rangle.
-% \end{equation}
-% In practice, such a formulation is intractable to optimize in a discrete setting as it results in a linear program where the number
-% of constraints grows exponentially in $N$. A more tractable strategy for solving MMOT is to consider the following entropic
-% regularization problem
-% \begin{equation} \label{MMOT_primal}
-%   \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon H(P).
-% \end{equation}
-% which can be solved using Sinkhorn's algorithm \citep{Benamou14}.
-% We refer the interested reader to Appendix \ref{appendix:subsec_mmot_dc} for algorithmic details.
-% Now, it is easy to see that COOT can be rewritten as
-% \begin{align}
-%   \inf_{\gamma \in U_2} \langle C, \gamma \rangle
-% \end{align}
-% where $U_2 = {\gamma \in U(\mu): \gamma = \pi^s }$
-
-% \paragraph{Contributions} We define and study a general MMOT problem with structural penalization on the coupling matrix.
-% We start by showing that a such formulation includes several popular OT methods as special cases and allows to gain deeper insights
-% into them. We further consider a relaxed problem where the hard constraint is replaced by a regularization term and show that it leads
-% to an instance of the difference of convex programming problem. A numerical study of the solutions obtained when solving the latter
-% in cases of interest highlights their competitive performance when compared to solutions provided by the optimization
-% strategies used previously.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Preliminary knowledge}
@@ -621,7 +548,7 @@ We also define $\mu^{\otimes}_{\cT_m} := \mu_p \otimes ... \otimes \mu_q$.
   Given a collection of histograms $\mu = (\mu_n)_{n=1}^N$ and a tuple partition $\cT = (\cT_m)_{m=1}^M$,
   we consider the following OT problem
   \begin{equation} \label{factor_mmot}
-    \text{F-MMOT}( \cT, \mu) = \inf_{P \in U_{\cT}} \langle C, P \rangle,
+    \fmmot( \cT, \mu) = \inf_{P \in U_{\cT}} \langle C, P \rangle,
   \end{equation}
   where $U_{\cT} \subset U(\mu)$ is the set of admissible couplings which can be factorized as a tensor product of $M$
   component probability tensors in $\Sigma_{\cT_1}, ..., \Sigma_{\cT_M}$.
@@ -644,7 +571,7 @@ compact set $U(\mu)$, which implies that Problem \eqref{factor_mmot} always admi
 \end{equation}
 Thus, the problem F-MMOT can be rewritten as
 \begin{equation}
-  \text{F-MMOT}( \cT, \mu) = \inf_{\substack{P_m \in U_{\cT_m} \\ \forall m = 1,...,M}}
+  \fmmot( \cT, \mu) = \inf_{\substack{P_m \in U_{\cT_m} \\ \forall m = 1,...,M}}
   \langle C, P_1 \otimes ... \otimes P_M \rangle.
 \end{equation}
 So, if $\cT_1,...,\cT_M$ are $2$-tuples and two marginal distributions corresponding to each $U_{\cT_m}$ are
@@ -686,9 +613,9 @@ Intuitively, the relaxed problem is expected to allow for solutions with a lower
   Given a collection of histograms $\mu$ and a tuple partition $\cT$,
   \begin{enumerate}
     \item For every $\varepsilon \geq 0$, we have $\mmot(\mu) \leq
-    \mmotdc_{\varepsilon}(\cT, \mu) \leq \text{F-MMOT}( \cT, \mu)$.
+    \mmotdc_{\varepsilon}(\cT, \mu) \leq \fmmot( \cT, \mu)$.
     \item For every $\varepsilon > 0, \mmotdc_{\varepsilon}( \cT, \mu ) = 0$ if and only if
-    $\text{F-MMOT} (\cT, \mu) = 0$.
+    $\fmmot (\cT, \mu) = 0$.
   \end{enumerate}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -703,8 +630,8 @@ The result below formalizes this intuition.
   let $P_{\varepsilon}$ be a minimiser of the problem $\mmotdc_{\varepsilon}(\cT, \mu)$.
   \begin{enumerate}
     \item When $\varepsilon \to \infty$, one has $\mmotdc_{\varepsilon}(\cT, \mu) \to
-    \text{F-MMOT}(\cT, \mu)$. In this case, any cluster point of the sequence of minimisers
-    $(P_{\varepsilon})_{\varepsilon}$ is a minimiser of $\text{F-MMOT}(\cT, \mu)$.
+    \fmmot(\cT, \mu)$. In this case, any cluster point of the sequence of minimisers
+    $(P_{\varepsilon})_{\varepsilon}$ is a minimiser of $\fmmot(\cT, \mu)$.
 
     \item When $\varepsilon \to 0$, then $\mmotdc_{\varepsilon}(\cT, \mu) \to \mmot(\mu)$.
     In this case, any cluster point of the sequence of minimisers $(P_{\varepsilon})_{\varepsilon}$ is a minimiser of
