@@ -132,6 +132,7 @@
 \newcommand{\gw}{\text{GW}}
 \newcommand{\mmotdc}{\text{MMOT-DC}}
 \newcommand{\mmot}{\text{MMOT}}
+\newcommand{\fmmot}{\text{F-MMOT}}
 \newcommand{\agw}{\text{AGW}}
 \newcommand{\vect}{\text{vec}}
 \newcommand{\rank}{\text{rank}}
