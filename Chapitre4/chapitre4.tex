@@ -310,33 +310,34 @@ where
 \end{itemize}
 In particular, we have $L_{\theta}(P, P) = L_{\theta}(P)$,
 which is the objective function of FUGW introduced in Equation \eqref{eq:fugw_obj_func}.
-% It is difficult to study when equality holds between FUGW and its lower bound.
-% Here, we aim to understand the potential gap between them.
-% First, let us introduce the following problem
-% \begin{equation}
-%   \widetilde{\fugw}(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
-% \end{equation}
-% where $\cE = \{P, Q \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
-% the set of pairs of transportation plans whose corresponding marginal distributions are equal.
-% Clearly, we have
-% \begin{equation}
-%     \text{LB-FUGW} (\cX^s, \cX^t) \leq \widetilde{\fugw}(\cX^s, \cX^t)
-%     \leq \fugw(\cX^s, \cX^t).
-% \end{equation}
-% This inequality indicates that the difference between FUGW and LB-FUGW might be potentially large.
-% However, this gap can be tightened (or even closed) in some cases.
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{corollary} \label{coro:ugw_ucoot}
-%     If the distances $D^s$ and $D^t$ are of the forms: $D^s_{ij} = f_i + f_j + A_{ij}$ and
-%     $D^t_{kl} = g_k + g_l + B_{kl}$, where $f, g$ are vectors in $\bbR^n, \bbR^p$, respectively,
-%     and the matrices $A, B$ are both conditionally or negative semi-definite, then we have
-%     $\text{LB-FUGW} (\cX^s, \cX^t) = \widetilde{\fugw}(\cX^s, \cX^t)$. Furthermore, if
-%     the definiteness holds, then the optimal solution satisfies $P^* = Q^*$, meaning that
-%     $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
-% \end{corollary}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+It is difficult to study when equality holds between FUGW and its lower bound.
+Here, we attempt to understand the potential gap between them.
+First, let us introduce the following problem
+\begin{equation}
+  \widetilde{\fugw}(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
+\end{equation}
+where $\cE = \{P, Q \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
+the set of pairs of transportation plans whose corresponding marginal distributions are equal.
+Clearly, we have
+\begin{equation}
+    \text{LB-FUGW} (\cX^s, \cX^t) \leq \widetilde{\fugw}(\cX^s, \cX^t)
+    \leq \fugw(\cX^s, \cX^t).
+\end{equation}
+This inequality indicates that the difference between FUGW and LB-FUGW might be potentially large.
+However, this gap can be tightened under the conditions in \Cref{prop:coot_gw_equiv}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{corollary} \label{coro:ugw_ucoot}
+    If the distances $D^s$ and $D^t$ are of the forms: $D^s_{ij} = f_i + f_j + A_{ij}$ and
+    $D^t_{kl} = g_k + g_l + B_{kl}$, where $f, g$ are vectors in $\bbR^n, \bbR^p$, respectively,
+    and the matrices $A, B$ are both conditionally negative semi-definite, then we have
+    $\fugw (\cX^s, \cX^t) = \widetilde{\fugw}(\cX^s, \cX^t)$.
+    % Furthermore, if the definiteness holds, then the optimal solution satisfies $P^* = Q^*$,
+    % meaning that $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
+\end{corollary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % In our experiments, while the geodesic distances do not necessarily meet these conditions,
-In our experiments, we observe that the two couplings of LB-FUGW are numerically equal.
+In our experiments, while the geodesic distances do not necessarily meet these conditions,
+we still observe that the two couplings of LB-FUGW are numerically equal.
 So it is enough to choose, for example, the first one, as alignment between source and target signals.
 
 The lower bound of FUGW involves solving a minimization problem with respect to two independent couplings:
