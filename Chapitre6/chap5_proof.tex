@@ -53,39 +53,39 @@
 \end{algorithm}
 Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively. The exponential, division and logarithm operations are all element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
 
-First, let us introduce the following problem
-\begin{equation}
-  \text{LB}_1(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
-\end{equation}
-where $\cE = \{(P, Q) \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
-the set of pairs of transportation plans whose corresponding marginal distributions are equal.
-Clearly, we have
-\begin{equation}
-    \text{LB-FUGW} (\cX^s, \cX^t) \leq \text{LB}_1(\cX^s, \cX^t)
-    \leq \fugw(\cX^s, \cX^t).
-\end{equation}
-Denote
-\begin{align}
-  \text{LB}_2 = \inf_{P \in U(Q_{\# 1}, Q_{\# 2})} \inf_{Q \geq 0} L_{\theta}(P, Q)
-\end{align}
-Show that $\text{LB}_2$ has solution?
+% First, let us introduce the following problem
+% \begin{equation}
+%   \text{LB}_1(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
+% \end{equation}
+% where $\cE = \{(P, Q) \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
+% the set of pairs of transportation plans whose corresponding marginal distributions are equal.
+% Clearly, we have
+% \begin{equation}
+%     \text{LB-FUGW} (\cX^s, \cX^t) \leq \text{LB}_1(\cX^s, \cX^t)
+%     \leq \fugw(\cX^s, \cX^t).
+% \end{equation}
+% Denote
+% \begin{align}
+%   \text{LB}_2 = \inf_{P \in U(Q_{\# 1}, Q_{\# 2})} \inf_{Q \geq 0} L_{\theta}(P, Q)
+% \end{align}
+% Show that $\text{LB}_2$ has solution?
 
-Observe that $\cE = \bigcup_{Q \geq 0} \{(P, Q): P \in U(Q_{\# 1}, Q_{\# 2}) \}$.
-Denote $(P^*, Q^*)$ the solution of $\text{LB}_1$. Then
-\begin{align}
-  \text{LB}_1(\cX^s, \cX^t) \leq
-\end{align}
-We have, for every $P, Q \geq 0$ and $t > 0$,
-\begin{align}
-  g(t(P, Q)) &= t g(P, Q) + (1-t) \left[ \lambda_1 m(\mu_X)^2 + \lambda_2 m(\mu_Y)^2 \right]
-  + (\lambda_1 + \lambda_2) t \log t m(P) m(Q) \\
-  &= t g(P, Q) + (1 - t) K + \lambda t \log t m(P) m(Q).
-\end{align}
-So,
-\begin{align}
-  \min_{t > 0} g(t(P, Q)) = K - t^* \lambda m(P) m(Q)
-\end{align}
-where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
+% Observe that $\cE = \bigcup_{Q \geq 0} \{(P, Q): P \in U(Q_{\# 1}, Q_{\# 2}) \}$.
+% Denote $(P^*, Q^*)$ the solution of $\text{LB}_1$. Then
+% \begin{align}
+%   \text{LB}_1(\cX^s, \cX^t) \leq
+% \end{align}
+% We have, for every $P, Q \geq 0$ and $t > 0$,
+% \begin{align}
+%   g(t(P, Q)) &= t g(P, Q) + (1-t) \left[ \lambda_1 m(\mu_X)^2 + \lambda_2 m(\mu_Y)^2 \right]
+%   + (\lambda_1 + \lambda_2) t \log t m(P) m(Q) \\
+%   &= t g(P, Q) + (1 - t) K + \lambda t \log t m(P) m(Q).
+% \end{align}
+% So,
+% \begin{align}
+%   \min_{t > 0} g(t(P, Q)) = K - t^* \lambda m(P) m(Q)
+% \end{align}
+% where $t^* = \exp \left( \frac{K - g(P, Q)}{\lambda m(P) m(Q)} - 1 \right)$.
 
 \subsection{Dataset description}
 %
