@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Appendix of Chapter 5}
+\section{Appendix of Chapter 4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 For later convenience, we define the function
@@ -600,32 +600,8 @@ than the usual uniform initialization, and one can expect to reach better local 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Experimental details} \label{sec_app:exp}
 
-\subsubsection{More details on barycentric mapping}  \label{bary_mapping}
-
-The barycentric mapping \citep{Ferradans14,Courty16} is a method to transform the source data
-to the target domain. Given the source data $X_s \in \bbR^{n_s \times d_s}$ and
-target data $X_t \in \bbR^{n_t \times d_t}$, once the optimal transportation plan
-$P \in \bbR^{n_s \times n_t}$ is learned, the transformation of the source to the target domain,
-can be expressed as: for $i = 1, ..., n_s$,
-\begin{equation} \label{bary_optim}
-    \widehat{x}_i^{(s)} \in \argmin_{x \in \bbR^{d_t}}
-    \sum_{j = 1}^{n_t} P_{ij} \; c(x, x_j^{(t)}),
-\end{equation}
-where the example $x^{(t)}_j \in \bbR^{d_t}$ corresponds to the $j$-th row of $X_t$ and
-the cost $c: \bbR^{d_t} \times R^{d_t} \to \bbR$ measures the discrepancy between
-two examples in $\bbR^{d_t}$. Typically, $c$ is the squared Euclidean distance,
-so Problem \eqref{bary_optim} admits a closed form solution, which is a weighted average of
-examples in the target domain:
-\begin{equation}
-    \widehat{x}_i^{(s)} = \sum_{j = 1}^{n_t} \frac{P_{ij}}{p_i} x_j^{(t)},
-\end{equation}
-where $p_i = \sum_{j} P_{ij}$, or in matrix notation:
-\begin{equation} \label{transOT:1}
-    \widehat{X}_s= \diag(\frac{1}{P 1_{n_t}}) P X_t \in \bbR^{n_s \times d_t},
-\end{equation}
-where the division is element-wise.
-
 \subsubsection{Heterogenous Domain Adaptation (HDA)}
+
 \paragraph{More details on label propagation}
 
 Once the sample coupling $P$ is learned, the label propagation works as follows:
@@ -799,187 +775,188 @@ so the marginal distributions on the target spaces should not be too relaxed.
   $\lambda_2$.} \label{tab:sensitiv_lambda_2}
 \end{table}
 
-\paragraph{Additional results}
-We also perform the adaptation from GoogleNet to CaffeNet. The results can be found in
-\Cref{tab:table3}. We draw the same conclusions as in the adaptation from CaffeNet to GoogleNet.
+% \paragraph{Additional results}
+% We also perform the adaptation from GoogleNet to CaffeNet. The results can be found in
+% \Cref{tab:table3}. We draw the same conclusions as in the adaptation from CaffeNet to GoogleNet.
 
-\hfill
-\begin{table}[H]
-  \begin{center}
-    \begin{small}
-      \begin{sc}
-        \begin{tabular}{c c c c c}
-          \toprule
-          & \multicolumn{3}{c}{GoogleNet $\to$ CaffeNet} \\
-          \midrule
-          Domains & GW & UGW & COOT & UCOOT \\
-          \midrule
+% \hfill
+% \begin{table}[H]
+%   \begin{center}
+%     \begin{small}
+%       \begin{sc}
+%         \begin{tabular}{c c c c c}
+%           \toprule
+%           & \multicolumn{3}{c}{GoogleNet $\to$ CaffeNet} \\
+%           \midrule
+%           Domains & GW & UGW & COOT & UCOOT \\
+%           \midrule
 
-          C $\to$ C & 19.45 ($\pm$ 10.88) & 17.50 ($\pm$ 4.88) & 46.20 ($\pm$ 14.94) & \textbf{46.50 ($\pm$ 5.81)} \\
-          \hline
-          C $\to$ A & 9.35 ($\pm$ 7.73) & 10.50 ($\pm$ 7.06) & 33.25 ($\pm$ 17.56) & \textbf{34.45 ($\pm$ 4.89)} \\
-          \hline
-          C $\to$ W & 19.15 ($\pm$ 10.59) & 11.95 ($\pm$ 7.49) & 14.95 ($\pm$ 12.44) & \textbf{33.60 ($\pm$ 10.07)} \\
-          \hline
+%           C $\to$ C & 19.45 ($\pm$ 10.88) & 17.50 ($\pm$ 4.88) & 46.20 ($\pm$ 14.94) & \textbf{46.50 ($\pm$ 5.81)} \\
+%           \hline
+%           C $\to$ A & 9.35 ($\pm$ 7.73) & 10.50 ($\pm$ 7.06) & 33.25 ($\pm$ 17.56) & \textbf{34.45 ($\pm$ 4.89)} \\
+%           \hline
+%           C $\to$ W & 19.15 ($\pm$ 10.59) & 11.95 ($\pm$ 7.49) & 14.95 ($\pm$ 12.44) & \textbf{33.60 ($\pm$ 10.07)} \\
+%           \hline
 
-          A $\to$ C & 7.90 ($\pm$ 4.92) & 11.70 ($\pm$ 5.57) & 28.80 ($\pm$ 12.02) & \textbf{40.55 ($\pm$ 6.50)} \\
-          \hline
-          A $\to$ A & 19.75 ($\pm$ 9.51) & 18.40 ($\pm$ 11.71) & \textbf{59.30 ($\pm$ 20.77)} & 58.95 ($\pm$ 10.37) \\
-          \hline
-          A $\to$ W & 14.55 ($\pm$ 14.62) & 10.05 ($\pm$ 4.70) & 9.75 ($\pm$ 7.75) & \textbf{65.20 ($\pm$ 9.80)} \\
-          \hline
+%           A $\to$ C & 7.90 ($\pm$ 4.92) & 11.70 ($\pm$ 5.57) & 28.80 ($\pm$ 12.02) & \textbf{40.55 ($\pm$ 6.50)} \\
+%           \hline
+%           A $\to$ A & 19.75 ($\pm$ 9.51) & 18.40 ($\pm$ 11.71) & \textbf{59.30 ($\pm$ 20.77)} & 58.95 ($\pm$ 10.37) \\
+%           \hline
+%           A $\to$ W & 14.55 ($\pm$ 14.62) & 10.05 ($\pm$ 4.70) & 9.75 ($\pm$ 7.75) & \textbf{65.20 ($\pm$ 9.80)} \\
+%           \hline
 
-          W $\to$ C & 14.05 ($\pm$ 5.97) & 21.95 ($\pm$ 4.33) & 13.70 ($\pm$ 7.01) & \textbf{33.45 ($\pm$ 6.67)} \\
-          \hline
-          W $\to$ A & 22.85 ($\pm$ 11.87) & 20.90 ($\pm$ 5.98) & \textbf{47.70 ($\pm$ 5.53)} & 44.45 ($\pm$ 6.02) \\
-          \hline
-          W $\to$ W & 24.10 ($\pm$ 15.78) & 27.95 ($\pm$ 8.34) & \textbf{72.55 ($\pm$ 4.82)} & 68.80 ($\pm$ 10.24) \\
-          \bottomrule
-          Average & 16.79 ($\pm$ 10.21) & 16.77 ($\pm$ 6.67) & 36.24 ($\pm$ 11.43) & \textbf{47.33 ($\pm$ 7.82)} \\
-          \bottomrule
-        \end{tabular}
-      \end{sc}
-      \end{small}
-  \end{center}
-  \caption{Unsupervised HDA from GoogleNet to CaffeNet.}
-  \label{tab:table3}
-\end{table}
+%           W $\to$ C & 14.05 ($\pm$ 5.97) & 21.95 ($\pm$ 4.33) & 13.70 ($\pm$ 7.01) & \textbf{33.45 ($\pm$ 6.67)} \\
+%           \hline
+%           W $\to$ A & 22.85 ($\pm$ 11.87) & 20.90 ($\pm$ 5.98) & \textbf{47.70 ($\pm$ 5.53)} & 44.45 ($\pm$ 6.02) \\
+%           \hline
+%           W $\to$ W & 24.10 ($\pm$ 15.78) & 27.95 ($\pm$ 8.34) & \textbf{72.55 ($\pm$ 4.82)} & 68.80 ($\pm$ 10.24) \\
+%           \bottomrule
+%           Average & 16.79 ($\pm$ 10.21) & 16.77 ($\pm$ 6.67) & 36.24 ($\pm$ 11.43) & \textbf{47.33 ($\pm$ 7.82)} \\
+%           \bottomrule
+%         \end{tabular}
+%       \end{sc}
+%       \end{small}
+%   \end{center}
+%   \caption{Unsupervised HDA from GoogleNet to CaffeNet.}
+%   \label{tab:table3}
+% \end{table}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Multi-omic dataset alignment}\label{multiOmics_exp_SI}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection{Multi-omic dataset alignment}\label{multiOmics_exp_SI}
 
-\paragraph{Data Preprocessing} \label{CITEseq_exp_appendix}
-For the single-cell multi-omics experiments, we use the ``PBMC'' dataset from Stoeckius
-\textit{et al} \citep{CITEseq}, accessed on Gene Expression Omnibus (GEO) with the
-accession code: \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE100866}{GSE100866}.
-This dataset contains a mix of 7,985 mouse and human peripheral blood mononuclear cells (PBMC)
-and profiles ten antibodies, 17,014 human genes, and 12,915 mouse genes. To pick the human cells,
-we follow the description in \citep{CITEseq}, and select the cells that have at least 500,
-and more than 90\% of all unique molecular identifiers (UMIs) mapped to the human genes
-(rather than the mouse genes). From the resulting $\sim 4500$ cells, we pick the first 1000
-to use in our experiments. We use the CLR-normalized antibody count data provided in GEO
-and apply log normalization to the gene expression data using Seurat package in R to
-remove biases in sequencing across cells \citep{Seurat}. Prior to alignment,
-we follow the existing single-cell alignment methods \citep{Demetci22, Demetci22-2,Liu2019,singh20},
-and also apply L2 normalization to both modalities. The top 50 most variable genes
-(\Cref{fig:multiomics}(c)) are selected using the \texttt{FindVariableFeatures()}
-function from \citep{Seurat}.
+% \paragraph{Data Preprocessing} \label{CITEseq_exp_appendix}
+% For the single-cell multi-omics experiments, we use the ``PBMC'' dataset from Stoeckius
+% \textit{et al} \citep{CITEseq}, accessed on Gene Expression Omnibus (GEO) with the
+% accession code: \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE100866}{GSE100866}.
+% This dataset contains a mix of 7,985 mouse and human peripheral blood mononuclear cells (PBMC)
+% and profiles ten antibodies, 17,014 human genes, and 12,915 mouse genes. To pick the human cells,
+% we follow the description in \citep{CITEseq}, and select the cells that have at least 500,
+% and more than 90\% of all unique molecular identifiers (UMIs) mapped to the human genes
+% (rather than the mouse genes). From the resulting $\sim 4500$ cells, we pick the first 1000
+% to use in our experiments. We use the CLR-normalized antibody count data provided in GEO
+% and apply log normalization to the gene expression data using Seurat package in R to
+% remove biases in sequencing across cells \citep{Seurat}. Prior to alignment,
+% we follow the existing single-cell alignment methods \citep{Demetci22, Demetci22-2,Liu2019,singh20},
+% and also apply L2 normalization to both modalities. The top 50 most variable genes
+% (\Cref{fig:multiomics}(c)) are selected using the \texttt{FindVariableFeatures()}
+% function from \citep{Seurat}.
 
-\paragraph{Hyperparameter tuning} Hyperparameters were tuned using grid search.
-For both COOT and UCOOT, we considered the following range for the entropic regularization
-coefficients $\varepsilon_f, \varepsilon_s \in \{1e-5, 5e-5, 1e-5, 5e-4, ... ,0.1, 0.5\}$.
-For the mass relaxation coefficients $\lambda_1, \lambda_2 $ in UCOOT, the following range
-was considered $\lambda_1, \lambda_2 \in \{1e-3, 5e-3, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50 ,100\}$.
-Each combination of hyperparameters were run on three randomly chosen subsets of the dataset
-that included 30\% of the samples and the hyperparameter combinations that on average yielded
-the highest feature matches and lowest FOSCTTM were picked for the experiments on the full dataset.
-Below, we list the hyperparameter combinations used for the final alignment results
-reported in this paper:
-\begin{itemize}
-    \item[$\bullet$] \textbf{Balanced scenario of aligning matching features
-    (\Cref{fig:multiomics}(a)):} \\ $\lambda_1=1, \lambda_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
-    \item[$\bullet$] \textbf{Unbalanced scenario of aligning a subset of the matching features
-    (\Cref{fig:multiomics}(b)):} \\ $\lambda_1=1, \lambda_2=1e-2, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
-    \item[$\bullet$] \textbf{Unbalanced scenario of aligning antibodies with the top 50 most variable genes
-    (\Cref{fig:multiomics}(c)):}  $\lambda_1=10, \lambda_2=5e-5, \varepsilon_1=1e-4, \varepsilon_2=0.5$
-    \item[$\bullet$] \textbf{Balanced scenario of aligning the same number of cells
-    (\Cref{fig:multiomicsSamples}(a)):} \\ $\lambda_1=1, \lambda_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
-    \item[$\bullet$] \textbf{Unbalanced scenario 1 of aligning different number of cells
-    (\Cref{fig:multiomicsSamples}(b)):} \\ $\lambda_1=0.01, \lambda_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
-    \item[$\bullet$] \textbf{Unbalanced scenario 2 of aligning different number of cells
-    (\Cref{fig:multiomicsSamples}(c)):} \\ $\lambda_1=0.01, \lambda_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
-\end{itemize}
+% \paragraph{Hyperparameter tuning} Hyperparameters were tuned using grid search.
+% For both COOT and UCOOT, we considered the following range for the entropic regularization
+% coefficients $\varepsilon_f, \varepsilon_s \in \{1e-5, 5e-5, 1e-5, 5e-4, ... ,0.1, 0.5\}$.
+% For the mass relaxation coefficients $\lambda_1, \lambda_2 $ in UCOOT, the following range
+% was considered $\lambda_1, \lambda_2 \in \{1e-3, 5e-3, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50 ,100\}$.
+% Each combination of hyperparameters were run on three randomly chosen subsets of the dataset
+% that included 30\% of the samples and the hyperparameter combinations that on average yielded
+% the highest feature matches and lowest FOSCTTM were picked for the experiments on the full dataset.
 
-\paragraph{Further investigation of the feature alignments}
-In the unbalanced experiment, where we align the most variable genes and the antibodies,
-we expect a well-performing alignment method to correctly match antibodies with the genes
-that express them. This would be the strongest biological connection between a protein
-(\ie, an antibody, in this case) and a gene. However, other biological connections can also exist,
-such as between an antibody and a gene that regulates the expression of that antibody,
-a gene that codes for a protein the antibody physically interacts with, or a gene that codes
-for a protein that is active in the same biological pahtway as the antibody of interest.
-To investigate whether there are such matches recovered outside of the ten genes we label
-as ``matching genes'', we refer to two gene regulatory network databases that contain data
-on human PBMCs, GRNdb \citep{GRNdb} and GRAND \citep{GRAND} (for the first kind of relationship),
-two protein--protein interaction databases, BioGRID \citep{BIOGRID}, and STRING \citep{STRING}
-(for the second kind of relationship), and KEGG \citep{KEGG}, a database of biological pathways
-(for the last kind of relationship).
+% Below, we list the hyperparameter combinations used for the final alignment results
+% reported in this paper:
+% \begin{itemize}
+%     \item[$\bullet$] \textbf{Balanced scenario of aligning matching features
+%     (\Cref{fig:multiomics}(a)):} \\ $\lambda_1=1, \lambda_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
+%     \item[$\bullet$] \textbf{Unbalanced scenario of aligning a subset of the matching features
+%     (\Cref{fig:multiomics}(b)):} \\ $\lambda_1=1, \lambda_2=1e-2, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
+%     \item[$\bullet$] \textbf{Unbalanced scenario of aligning antibodies with the top 50 most variable genes
+%     (\Cref{fig:multiomics}(c)):}  $\lambda_1=10, \lambda_2=5e-5, \varepsilon_1=1e-4, \varepsilon_2=0.5$
+%     \item[$\bullet$] \textbf{Balanced scenario of aligning the same number of cells
+%     (\Cref{fig:multiomicsSamples}(a)):} \\ $\lambda_1=1, \lambda_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
+%     \item[$\bullet$] \textbf{Unbalanced scenario 1 of aligning different number of cells
+%     (\Cref{fig:multiomicsSamples}(b)):} \\ $\lambda_1=0.01, \lambda_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
+%     \item[$\bullet$] \textbf{Unbalanced scenario 2 of aligning different number of cells
+%     (\Cref{fig:multiomicsSamples}(c)):} \\ $\lambda_1=0.01, \lambda_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
+% \end{itemize}
 
-Of the 46 correspondences yielded by COOT, and 16 by UCOOT, outside of the
-`correspondences with `matching genes'', only a few show up on these databases:
-\begin{itemize}
-    \item[$\bullet$] \textbf{CD19 antibody correspondences:} Both BIOGRID \citep{BIOGRID} and
-    STRING \citep{STRING} databases return a physical interaction with CD79A protein
-    (encoded by the \textit{CD79A} gene), which is experimentally validated by
-    affinity capture-Western \citep{Carter97}. The correspondence with \textit{CD79A} is yielded
-    by both UCOOT and COOT. Additionally, according to KEGG \citep{KEGG},
-    CD19 participates in the B-cell receptor (BCR) signaling pathway along with IGH,
-    which is formed by multiple segments joining together, including IGHD and
-    IGHM \footnote{\url{https://www.genecards.org/cgi-bin/carddisp.pl?gene=IGHD},
-    and \url{https://www.genecards.org/cgi-bin/carddisp.pl?gene=IGH&keywords=IGH}}.
-    COOT yields correspondences with the genes that code for these.
+% \paragraph{Further investigation of the feature alignments}
+% In the unbalanced experiment, where we align the most variable genes and the antibodies,
+% we expect a well-performing alignment method to correctly match antibodies with the genes
+% that express them. This would be the strongest biological connection between a protein
+% (\ie, an antibody, in this case) and a gene. However, other biological connections can also exist,
+% such as between an antibody and a gene that regulates the expression of that antibody,
+% a gene that codes for a protein the antibody physically interacts with, or a gene that codes
+% for a protein that is active in the same biological pahtway as the antibody of interest.
+% To investigate whether there are such matches recovered outside of the ten genes we label
+% as ``matching genes'', we refer to two gene regulatory network databases that contain data
+% on human PBMCs, GRNdb \citep{GRNdb} and GRAND \citep{GRAND} (for the first kind of relationship),
+% two protein--protein interaction databases, BioGRID \citep{BIOGRID}, and STRING \citep{STRING}
+% (for the second kind of relationship), and KEGG \citep{KEGG}, a database of biological pathways
+% (for the last kind of relationship).
 
-    \item[$\bullet$] \textbf{CD57 antibody correspondences:} There is an experimentally validated
-    physical interaction with ITM2C (encoded by the \textit{ITM2C} gene), which shows up on BIOGRID.
-    This interaction has been validated using proximity labeling mass spectrometry \citep{Go2021}.
-    \textit{ITM2C} is among the correspondences yielded by COOT.
+% Of the 46 correspondences yielded by COOT, and 16 by UCOOT, outside of the
+% `correspondences with `matching genes'', only a few show up on these databases:
+% \begin{itemize}
+%     \item[$\bullet$] \textbf{CD19 antibody correspondences:} Both BIOGRID \citep{BIOGRID} and
+%     STRING \citep{STRING} databases return a physical interaction with CD79A protein
+%     (encoded by the \textit{CD79A} gene), which is experimentally validated by
+%     affinity capture-Western \citep{Carter97}. The correspondence with \textit{CD79A} is yielded
+%     by both UCOOT and COOT. Additionally, according to KEGG \citep{KEGG},
+%     CD19 participates in the B-cell receptor (BCR) signaling pathway along with IGH,
+%     which is formed by multiple segments joining together, including IGHD and
+%     IGHM \footnote{\url{https://www.genecards.org/cgi-bin/carddisp.pl?gene=IGHD},
+%     and \url{https://www.genecards.org/cgi-bin/carddisp.pl?gene=IGH&keywords=IGH}}.
+%     COOT yields correspondences with the genes that code for these.
 
-    \item[$\bullet$] \textbf{CD2 antibody correspondences:} According to the BIOGRID database,
-    a physical interaction between CD2 and PTPRC has been proposed via an \textit{in vitro}
-    study \textit{et al} \citep{Schraven90}. \textit{PTPRC} shows up among the correspondences
-    yielded by both UCOOT and COOT for the CD2 antibody.
+%     \item[$\bullet$] \textbf{CD57 antibody correspondences:} There is an experimentally validated
+%     physical interaction with ITM2C (encoded by the \textit{ITM2C} gene), which shows up on BIOGRID.
+%     This interaction has been validated using proximity labeling mass spectrometry \citep{Go2021}.
+%     \textit{ITM2C} is among the correspondences yielded by COOT.
 
-    \item[$\bullet$] \textbf{CD4 antibody correspondences:} According to BIOGRID, CD4 has been shown
-    to physically interact with TUBB using affinity capture mass spectrometry by
-    Bernhard \textit{et al} \citep{Bernhard2004}. TUBB is a component of the tubulin protein,
-    which made out of $\beta-$tubulin (TUBB) and $\alpha-$tubulin (TUBA).
-    UCOOT yields a correspondence between CD4 and TUBA1B (gene that codes for a component
-    of the $\alpha-$tubulin)
-    \footnote{\url{https://www.nature.com/scitable/content/microtubules-the-basics-14673338/}}.
-\end{itemize}
-Outside of these, no other correspondences returned biological relevance based on our database and
-literature search, which leads us to conclude COOT yields more redundant correspondences that UCOOT.
+%     \item[$\bullet$] \textbf{CD2 antibody correspondences:} According to the BIOGRID database,
+%     a physical interaction between CD2 and PTPRC has been proposed via an \textit{in vitro}
+%     study \textit{et al} \citep{Schraven90}. \textit{PTPRC} shows up among the correspondences
+%     yielded by both UCOOT and COOT for the CD2 antibody.
 
-\paragraph{Sample alignment experiments} Below in \Cref{fig:multiomicsSamples},
-we visualize the aligned samples (first two principal components of the two domains
-together upon barycentric projection) and report the alignment performance as measured
-by the ``average fraction of samples closer than true match (FOSCTTM)'' and
-``label transfer accuracy'' metrics. We borrow these metrics from previously published
-single-cell multi-omic data alignment methods \citep{Liu2019,cao2020unsupervised,Demetci22,Pamona,Demetci22-2}.
-For label transfer accuracy, we follow the previously published methods
-\citep{cao2020unsupervised, Pamona, Demetci22, Demetci22-2} and train a $k-$NN classifier
-(for $k=5$) on the cell-type labels of the measurement domain with the full set of cells,
-and apply it to predict the cell-type labels of the downsampled domain.
-We report the prediction accuracy. For the balanced scenario, we train the classifier
-on the antibody domain to predict the labels in the gene expression domain upon transportation.
-For the average FOSCTTM metric used in unbalanced scenarios, we use the cells that
-remain to have a correspondence after subsampling to calculate the FOSCTTM scores.
-We note that lower average FOSCTTM and higher label transfer accuracy results indicate
-better alignments.
+%     \item[$\bullet$] \textbf{CD4 antibody correspondences:} According to BIOGRID, CD4 has been shown
+%     to physically interact with TUBB using affinity capture mass spectrometry by
+%     Bernhard \textit{et al} \citep{Bernhard2004}. TUBB is a component of the tubulin protein,
+%     which made out of $\beta-$tubulin (TUBB) and $\alpha-$tubulin (TUBA).
+%     UCOOT yields a correspondence between CD4 and TUBA1B (gene that codes for a component
+%     of the $\alpha-$tubulin)
+%     \footnote{\url{https://www.nature.com/scitable/content/microtubules-the-basics-14673338/}}.
+% \end{itemize}
+% Outside of these, no other correspondences returned biological relevance based on our database and
+% literature search, which leads us to conclude COOT yields more redundant correspondences that UCOOT.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{./Chapitre3/fig/citeseq-samples.pdf}
-    % \includegraphics[width=.8\linewidth,trim={0 0 15cm 0},clip]{fig/citeseq-samples.pdf}
-    \caption{Visualization of the sample alignments with UCOOT and COOT after
-    barycentric projection (First two principal components). The top row visualizes results
-    with samples colored based on measurement modality (black points show the
-    gene expression domain samples, and red points show the antibody domain samples).
-    The bottom row visualizes alignments with samples colored based on cell-type labels.
-    \textbf{(a)} presents sample alignments in the balanced scenario, where we align
-    the same number of cells (1000) in each measurement modality with the matching features
-    (same scenario as Fig 6 (a), but presenting sample alignments).
-    \textbf{(b)} In this unbalanced scenario, we randomly downsample
-    the cells in antibody domain by 25\%.
-    \textbf{(c)} In this second unbalanced scenario, we randomly downsample the cells
-    in the gene expression domain by 25\% and align with the full set of samples
-    in the antibody domain. For all alignments, we quantify alignment quality using
-    average FOSCTTM (``Ave. FOSCTTM'') and label transfer accuracy (``Label Tr. Acc.''),
-    and report them under the plots. We calculate both metrics prior to applying
-    dimensionality reduction with principal component analysis (PCA).
-    PCA is only applied for visualization purposes. Note that the overall increase in
-    label transfer accuracy between \textbf{a-c} is likely due to the removal of
-    groups of heterogenous cell types during downsampling.
-    \label{fig:multiomicsSamples}
-  }
-\end{figure}
+% \paragraph{Sample alignment experiments} Below in \Cref{fig:multiomicsSamples},
+% we visualize the aligned samples (first two principal components of the two domains
+% together upon barycentric projection) and report the alignment performance as measured
+% by the ``average fraction of samples closer than true match (FOSCTTM)'' and
+% ``label transfer accuracy'' metrics. We borrow these metrics from previously published
+% single-cell multi-omic data alignment methods \citep{Liu2019,cao2020unsupervised,Demetci22,Pamona,Demetci22-2}.
+% For label transfer accuracy, we follow the previously published methods
+% \citep{cao2020unsupervised, Pamona, Demetci22, Demetci22-2} and train a $k-$NN classifier
+% (for $k=5$) on the cell-type labels of the measurement domain with the full set of cells,
+% and apply it to predict the cell-type labels of the downsampled domain.
+% We report the prediction accuracy. For the balanced scenario, we train the classifier
+% on the antibody domain to predict the labels in the gene expression domain upon transportation.
+% For the average FOSCTTM metric used in unbalanced scenarios, we use the cells that
+% remain to have a correspondence after subsampling to calculate the FOSCTTM scores.
+% We note that lower average FOSCTTM and higher label transfer accuracy results indicate
+% better alignments.
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{./Chapitre3/fig/citeseq-samples.pdf}
+%     % \includegraphics[width=.8\linewidth,trim={0 0 15cm 0},clip]{fig/citeseq-samples.pdf}
+%     \caption{Visualization of the sample alignments with UCOOT and COOT after
+%     barycentric projection (First two principal components). The top row visualizes results
+%     with samples colored based on measurement modality (black points show the
+%     gene expression domain samples, and red points show the antibody domain samples).
+%     The bottom row visualizes alignments with samples colored based on cell-type labels.
+%     \textbf{(a)} presents sample alignments in the balanced scenario, where we align
+%     the same number of cells (1000) in each measurement modality with the matching features
+%     (same scenario as Fig 6 (a), but presenting sample alignments).
+%     \textbf{(b)} In this unbalanced scenario, we randomly downsample
+%     the cells in antibody domain by 25\%.
+%     \textbf{(c)} In this second unbalanced scenario, we randomly downsample the cells
+%     in the gene expression domain by 25\% and align with the full set of samples
+%     in the antibody domain. For all alignments, we quantify alignment quality using
+%     average FOSCTTM (``Ave. FOSCTTM'') and label transfer accuracy (``Label Tr. Acc.''),
+%     and report them under the plots. We calculate both metrics prior to applying
+%     dimensionality reduction with principal component analysis (PCA).
+%     PCA is only applied for visualization purposes. Note that the overall increase in
+%     label transfer accuracy between \textbf{a-c} is likely due to the removal of
+%     groups of heterogenous cell types during downsampling.
+%     \label{fig:multiomicsSamples}
+%   }
+% \end{figure}

@@ -67,8 +67,8 @@ Denote $g$ the objective function of Problem \eqref{eq:uot_bregman}. We have,
     &= t g(P) + A(t) + (t-1) B.
 \end{align}
 For any minimizer $P^* \in \cC$, denote $\cT^* =\{ t \in \bbR: tP^* \in \cC \}$. Clearly, $\cT^*$ is
-not empty since $1 \in \cT^*$. Then $\min_{t \in \cT^*} g(tP^*) = g(P^*)$ and the minimum is
-attained when $t=1$. This means $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$,
+not empty since $1 \in \cT^*$. Since $P^*$ is a (global) minimizer, we have
+$\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$,
 or equivalently,
 \begin{align}
   g(P^*) &= - B - \frac{\partial A(t)}{\partial t} \bigg|_{t=1} \\
