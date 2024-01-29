@@ -1,22 +1,52 @@
 \chapter*{Notations}
 % \chaptermark{Acknowledgement}
 
-\addcontentsline{tot}{chapter}{Notations}
+\begin{table}[h]
+\centering
+\begin{tabular}{l l}
+    \textbf{Measure theory} & \\
+    $\cP(\cX)$ & Space of probability measures on a space $X$ \\
 
-Je tiens à remercier  \\
-I would like to thank. my parents..\\
-J'adresse également toute ma reconnaissance à .... \\
+    $\cM^+(X)$ & Space of finite nonnegative Borel measures on a space $X$ \\
 
-Thibault Séjourné, Titouan Vayer, Cédric-Vincent Cuaz,
-Alexis Thual,
-Arturo Castellanos,
-Clément Bonet,
-Hicham Janati,
-Ievgen Redko,
-Nguyen Tuan Binh,
-Pham Minh Tan,
-Pham Dat
+    $U(\mu, \nu)$ & Set of admissible couplings, whose marginals are $\mu$ and $\nu$ \\
 
+    $\cX$ & \makecell[l]{All weighted objects, including weighted space, metric-measure space, \\
+    measure network, weighted matrix, measure hypernetwork, \\
+    sample-feature space, are written in italic} \\
 
+    $\#$ & Push-forward operator \\
 
-....
+    $\pi_{\# 1}, \pi_{\# 2}$
+    & \makecell[l]{First and second marginal distributions of measures $\pi$, respectively \\
+    \ie, if $\pi \in \cM^+(X \times Y)$, then $\pi_{\# 1}(x) = \int_Y d\pi(x,y)$ and
+    $\pi_{\# 2}(y) = \int_X d\pi(x,y)$} \\
+
+    $\mu \otimes \nu$ & Product measure between two measures $\mu$ and $\nu$ \\
+
+    $\rightharpoonup$ & Weak convergence \\
+
+    $m(\mu)$ & Mass of measure $\mu$ \\
+
+    $\Delta_n$ & Set of histograms of $n$ bins, \ie,
+    $\Delta_n := \{ p \in \bbR^n_{> 0}: \sum_i p_i = 1 \}$ \\
+
+    & \\
+
+    \textbf{Linear algebra} & \\
+    $X$ & Matrix in discrete setting, or space in continuous setting \\
+    $\otimes$ & \makecell[l]{Tensor-matrix multiplication. Given a $4$D-tensor $L$ and a matrix $P$, \\
+    the matrix $L \otimes P$ is defined by $(L \otimes P)_{ij} = \sum_{k,l} L_{ijkl} P_{kl}$} \\
+    $\oplus$ & sum defined by $(f \oplus g)(x, y) = f(x) + g(y)$ \\
+    $\odot$ & Element-wise multiplication \\
+    $\langle \cdot, \cdot \rangle$ & Scalar product \\
+
+    & \\
+
+    \textbf{Acronym} & \\
+    OT, UOT & Balanced and Unbalanced Optimal Transport \\
+    GW, UGW & Balanced and Unbalanced Gromov-Wasserstein \\
+    FGW, FUGW & Fused Balanced and Unbalanced Gromov-Wasserstein \\
+    COOT, UCOOT & Balanced and Unbalanced Co-Optimal Transport
+\end{tabular}
+\end{table}
