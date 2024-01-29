@@ -530,72 +530,71 @@ Then:
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Algorithmic details}
 
-\subsection{Algorithmic details}
+% \subsubsection{Optimization procedure}
+% Recall that in discrete form, the UCOOT problem reads
+% \begin{equation}
+% \begin{split}
+%     \label{eq:ucoot-discrete-2_copy}
+%   \min_{\substack{\pi^s, \pi^f \\
+%   m(\pi^s) = m(\pi^f)}} \sum_{i, j, k, l}
+%   &(A_{ik} - B_{jl})^2\pi^s_{ij}\pi^f_{kl} + \lambda_1 \kl(\pi^s_{\#1} \otimes \pi^f_{\# 1} \vert u_1 )
+%   + \lambda_2 \kl(\pi^s_{\# 2} \otimes \pi^f_{\# 2} \vert u_2) \\
+%   &+ \varepsilon \kl( \pi^s \otimes \pi^f \vert \mu^s_1 \otimes \mu_2^s \otimes \mu_1^f \otimes \mu_2^f),
+% \end{split}
+% \end{equation}
+% where $\pi_{\# 1} = (\sum_j \pi_{ij})_i$ and $\pi_{\# 2} = (\sum_i \pi_{ij})_j$.
+% Here $\mu_k = \mu_k^s \otimes \mu_k^f$, for $k=1,2$. By Proposition 4 in \citep{Sejourne20},
+% for fixed $\pi^f \in \bbR^{d_1 \times d_2}_{\geq 0}$, the minimization in
+% Problem \eqref{eq:ucoot-discrete-2_copy} is equivalent to solving the following unbalanced OT problem
+% \begin{equation} \label{eq:ucoot_uot}
+%   \begin{split}
+%     \min_{\pi \in \bbR^{n_1, n_2}_{\geq 0}} & \; \langle L_{\varepsilon}, \pi \rangle
+%     + \lambda_1 m_s \kl(\pi_{\#1} \vert \mu_1^s)
+%     + \lambda_2 m_s \kl(\pi_{\#2} \vert \mu_2^s)
+%     + \varepsilon m_s \kl(\pi \vert \mu^s_1 \otimes \mu_2^s),
+%   \end{split}
+% \end{equation}
+% where $m_s = m(\pi^s)$ and
+% \begin{equation} \label{ucoot:9}
+%   L_{\varepsilon} := \int \vert A - B \vert^2 \mathrm d \pi^f +
+%   \lambda_1 \langle \log \frac{\pi^f_{\#1}}{\mu_1^f}, \pi^f_{\#1} \rangle +
+%   \lambda_2 \langle \log \frac{\pi^f_{\#2}}{\mu_2^f}, \pi^f_{\#2} \rangle +
+%   \varepsilon \langle \log \frac{\pi^f}{\mu_1^f \otimes \mu_2^f}, \pi^f \rangle,
+% \end{equation}
+% and $\int \vert A - B \vert^2 \mathrm d \pi^f \in \mathbb R^{n_1, n_2}$ defined by
+% $\int \vert A - B \vert^2 \mathrm d\pi^f = A^{\odot 2} \pi^f_{\# 1} \oplus B^{\odot 2} \pi^f_{\# 2} - 2 A \pi^f B^T$.
+% Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively.
+% For any matrix $M$, we write $M^{\odot 2} := M \odot M$, where $\odot$ is
+% the element-wise multiplication. The exponential, division and logarithm operations are also
+% element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
 
-\subsubsection{Optimization procedure}
-Recall that in discrete form, the UCOOT problem reads
-\begin{equation}
-\begin{split}
-    \label{eq:ucoot-discrete-2_copy}
-  \min_{\substack{\pi^s, \pi^f \\
-  m(\pi^s) = m(\pi^f)}} \sum_{i, j, k, l}
-  &(A_{ik} - B_{jl})^2\pi^s_{ij}\pi^f_{kl} + \lambda_1 \kl(\pi^s_{\#1} \otimes \pi^f_{\# 1} \vert u_1 )
-  + \lambda_2 \kl(\pi^s_{\# 2} \otimes \pi^f_{\# 2} \vert u_2) \\
-  &+ \varepsilon \kl( \pi^s \otimes \pi^f \vert \mu^s_1 \otimes \mu_2^s \otimes \mu_1^f \otimes \mu_2^f),
-\end{split}
-\end{equation}
-where $\pi_{\# 1} = (\sum_j \pi_{ij})_i$ and $\pi_{\# 2} = (\sum_i \pi_{ij})_j$.
-Here $\mu_k = \mu_k^s \otimes \mu_k^f$, for $k=1,2$. By Proposition 4 in \citep{Sejourne20},
-for fixed $\pi^f \in \bbR^{d_1 \times d_2}_{\geq 0}$, the minimization in
-Problem \eqref{eq:ucoot-discrete-2_copy} is equivalent to solving the following unbalanced OT problem
-\begin{equation} \label{eq:ucoot_uot}
-  \begin{split}
-    \min_{\pi \in \bbR^{n_1, n_2}_{\geq 0}} & \; \langle L_{\varepsilon}, \pi \rangle
-    + \lambda_1 m_s \kl(\pi_{\#1} \vert \mu_1^s)
-    + \lambda_2 m_s \kl(\pi_{\#2} \vert \mu_2^s)
-    + \varepsilon m_s \kl(\pi \vert \mu^s_1 \otimes \mu_2^s),
-  \end{split}
-\end{equation}
-where $m_s = m(\pi^s)$ and
-\begin{equation} \label{ucoot:9}
-  L_{\varepsilon} := \int \vert A - B \vert^2 \mathrm d \pi^f +
-  \lambda_1 \langle \log \frac{\pi^f_{\#1}}{\mu_1^f}, \pi^f_{\#1} \rangle +
-  \lambda_2 \langle \log \frac{\pi^f_{\#2}}{\mu_2^f}, \pi^f_{\#2} \rangle +
-  \varepsilon \langle \log \frac{\pi^f}{\mu_1^f \otimes \mu_2^f}, \pi^f \rangle,
-\end{equation}
-and $\int \vert A - B \vert^2 \mathrm d \pi^f \in \mathbb R^{n_1, n_2}$ defined by
-$\int \vert A - B \vert^2 \mathrm d\pi^f = A^{\odot 2} \pi^f_{\# 1} \oplus B^{\odot 2} \pi^f_{\# 2} - 2 A \pi^f B^T$.
-Here, the notations $\otimes$ and $\oplus$ denote the Kronecker product and sum, respectively.
-For any matrix $M$, we write $M^{\odot 2} := M \odot M$, where $\odot$ is
-the element-wise multiplication. The exponential, division and logarithm operations are also
-element-wise. The scalar product is denoted by $\langle \cdot, \cdot \rangle$.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection{UCOOT helps finding better minima}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{UCOOT helps finding better minima}
+% \setlength{\intextsep}{0pt}
+% \begin{wrapfigure}[10]{r}{0.45\textwidth}
+%   \centering
+%   \vspace{-15pt}
+%   \includegraphics[width=\linewidth]{./Chapitre3/fig/init.pdf}
+%   \vspace*{-10mm}
+%   \caption{Scatter plot of the COOT transportation cost with naive initialization (y-axis)
+%   vs initialization with UCOOT.
+%   \label{fig:init}}
+% \end{wrapfigure}
+% Interestingly, we find that COOT can achieve better minima when initialized with the UCOOT solutions.
+% \Cref{fig:init} illustrates how UCOOT can lead to better alignments by finding
+% better local minima of the COOT transportation cost. For 100 random Gaussian datasets
+% $A, B$ with uniformly sampled shapes $n_1, n_2, d_1, d_2$, we visualize the COOT loss
+% with uniform initialization (y-axis) versus the COOT loss when initializing the COOT BCD
+% with UCOOT's solution. For both $\varepsilon = 0$ and $\varepsilon > 0$,
+% the latter leads to lower COOT costs than the former, on average.
 
-\setlength{\intextsep}{0pt}
-\begin{wrapfigure}[10]{r}{0.45\textwidth}
-  \centering
-  \vspace{-15pt}
-  \includegraphics[width=\linewidth]{./Chapitre3/fig/init.pdf}
-  \vspace*{-10mm}
-  \caption{Scatter plot of the COOT transportation cost with naive initialization (y-axis)
-  vs initialization with UCOOT.
-  \label{fig:init}}
-\end{wrapfigure}
-Interestingly, we find that COOT can achieve better minima when initialized with the UCOOT solutions.
-\Cref{fig:init} illustrates how UCOOT can lead to better alignments by finding
-better local minima of the COOT transportation cost. For 100 random Gaussian datasets
-$A, B$ with uniformly sampled shapes $n_1, n_2, d_1, d_2$, we visualize the COOT loss
-with uniform initialization (y-axis) versus the COOT loss when initializing the COOT BCD
-with UCOOT's solution. For both $\varepsilon = 0$ and $\varepsilon > 0$,
-the latter leads to lower COOT costs than the former, on average.
-
-As COOT is a non-convex problem, the choice of initialization plays an important role.
-Intuitively, by choosing $\lambda_1$ and $\lambda_2$ sufficiently large,
-one can use UCOOT to approach COOT. For this reason, the solution of UCOOT can be more informative
-than the usual uniform initialization, and one can expect to reach better local optimal of COOT.
+% As COOT is a non-convex problem, the choice of initialization plays an important role.
+% Intuitively, by choosing $\lambda_1$ and $\lambda_2$ sufficiently large,
+% one can use UCOOT to approach COOT. For this reason, the solution of UCOOT can be more informative
+% than the usual uniform initialization, and one can expect to reach better local optimal of COOT.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Experimental details} \label{sec_app:exp}
@@ -642,7 +641,8 @@ In this case, we also tune $\lambda_1, \lambda_2 \in \{ 1, 50, 20, 50\}$ and
 follow exactly the same tuning and testing procedure as in the case $\varepsilon > 0$.
 We report our finding in \Cref{tab:hda2}. We observe that, in many tasks,
 the performance remains competitive while enjoying lower variance.
-\newline
+
+\hfill
 \begin{table}[h]
 	\begin{center}
 		\begin{small}

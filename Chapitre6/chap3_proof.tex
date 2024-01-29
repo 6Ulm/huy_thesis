@@ -358,57 +358,57 @@ $\frac{1}{\textrm{\# lizard cells in the same cell-type}}$.
 % As the interpolation coefficient of AGW, we consider $\alpha \in [ 0.1, 0.2, ..., 0.9]$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Empirical Runtime Analysis} \label{subsec:chap5_runtime}
+% \subsection{Empirical Runtime Analysis} \label{subsec:chap5_runtime}
 
-As described in \Cref{subsec:agw_formulation},
-the theoretical complexity of AGW is $O(n^3 + dn^2 + nd^2)$. When $d<n$,
-the dominating term of $n^3$ is due to the computational burden of computing the GW distance.
-However, in practice, we observe that AGW converges in much fewer iterations than GW
-(about $1/5$ of the number of iterations on average) thus having a shorter runtime.
-To further speed up optimization,
-one can consider low-rank coupling and cost matrix \citep{Meyer21b} or
-use the divide and conquer strategy \citep{Chowdhury21a},
-which allows one to scale the GW distance up to a million points.
+% As described in \Cref{subsec:agw_formulation},
+% the theoretical complexity of AGW is $O(n^3 + dn^2 + nd^2)$. When $d<n$,
+% the dominating term of $n^3$ is due to the computational burden of computing the GW distance.
+% However, in practice, we observe that AGW converges in much fewer iterations than GW
+% (about $1/5$ of the number of iterations on average) thus having a shorter runtime.
+% To further speed up optimization,
+% one can consider low-rank coupling and cost matrix \citep{Meyer21b} or
+% use the divide and conquer strategy \citep{Chowdhury21a},
+% which allows one to scale the GW distance up to a million points.
 
-For runtime comparisons, we present AGW, GW and COOT runtimes in \Cref{tabSI:runtime}
-on HDA experiments. We ran all algorithms on an Intel Xeon e5-2670 CPU with 16GB memory.
-To ensure consistency in comparisons, we kept the regularization coefficients the same across
-all runs, with the coefficient of entropic regularization over sample coupling as $5e-4$ and
-the coefficient of entropic regularization over the feature couplings (in COOT and AGW) as $1e-3$.
-These were the values most often picked by hyperparameter tuning.
+% For runtime comparisons, we present AGW, GW and COOT runtimes in \Cref{tabSI:runtime}
+% on HDA experiments. We ran all algorithms on an Intel Xeon e5-2670 CPU with 16GB memory.
+% To ensure consistency in comparisons, we kept the regularization coefficients the same across
+% all runs, with the coefficient of entropic regularization over sample coupling as $5e-4$ and
+% the coefficient of entropic regularization over the feature couplings (in COOT and AGW) as $1e-3$.
+% These were the values most often picked by hyperparameter tuning.
 
-\begin{table}[t]
-\small
-\begin{tabular}{@{}lccc|ccc@{}}
-\toprule
-                           & \multicolumn{3}{c|}{\textbf{Number of Iterations}}                      & \multicolumn{3}{c}{\textbf{Runtime per Iteration}}                     \\ \midrule
-                           & \textbf{COOT}        & \textbf{AGW ($\alpha$=0.5)} & \textbf{GW}           & \textbf{COOT}        & \textbf{AGW ($\alpha$=0.5)} & \textbf{GW}          \\
-\textbf{A $\rightarrow$ A} & 2.1 $\pm$ 0.5               & 13.9 $\pm$ 1.8              & 42.7 $\pm$ 17.3          & 0.18 $\pm$ 0.02         & 0.22 $\pm$ 0.05             & 0.22 $\pm$ 0.04         \\
-\textbf{A $\rightarrow$ C} & 1.9 $\pm$ 0.7               & 13.7 $\pm$ 2.5              & 56.4 $\pm$ 21.4          & 0.16 $\pm$ 0.01         & 0.21 $\pm$ 0.07             & 0.26 $\pm$ 0.02         \\
-\textbf{A $\rightarrow$ W} & 2.3 $\pm$ 0.8               & 13.4 $\pm$ 1.0              &41.3 $\pm$ 14.8          & 0.18 $\pm$ 0.03         & 0.20 $\pm$ 0.01            & 0.23 $\pm$ 0.06        \\
-\textbf{C $\rightarrow$ A} & 2.0 $\pm$ 0.0               & 15.7 $\pm$ 3.5              & 62.4 $\pm$ 14.5         & 0.23 $\pm$ 0.05         & 0.26 $\pm$ 0.09             & 0.28 $\pm$ 0.03         \\
-\textbf{C $\rightarrow$ C} & 2.0 $\pm$ 0.4               & 12.0 $\pm$ 1.9              & 54.1 $\pm$ 12.0         & 0.21 $\pm$ 0.04         & 0.24 $\pm$ 0.07             & 0.22 $\pm$ 0.04         \\
-\textbf{C $\rightarrow$ W} & 2.4 $\pm$ 0.8               & 11.6 $\pm$ 2.2              & 72.5 $\pm$ 19.7         & 0.20 $\pm$ 0.02         & 0.21 $\pm$ 0.01             & 0.24 $\pm$ 0.05         \\
-\textbf{W $\rightarrow$ A} & 2.0 $\pm$ 0.0              & 14.5 $\pm$ 1.4              & 32.7 $\pm$ 17.8          & 0.20 $\pm$ 0.06         & 0.22 $\pm$ 0.01             & 0.27 $\pm$ 0.04         \\
-\textbf{W $\rightarrow$ C} & 2.2 $\pm$ 0.6               & 11.8 $\pm$ 2.3              & 48.3 $\pm$ 8.2           & 0.17 $\pm$ 0.02         & 0.19 $\pm$ 0.01             & 0.20 $\pm$ 0.09         \\
-\textbf{W $\rightarrow$ W}  & 2.0 $\pm$ 0.0               & 13.6 $\pm$ 1.1              & 52.7 $\pm$ 7.2          & 0.20 $\pm$ 0.03        & 0.21 $\pm$ 0.02             & 0.23 $\pm$ 0.02 \\ \bottomrule
-\end{tabular}
-\caption{\label{tabSI:runtime}
-\textbf{Runtime per iteration and number of iterations before convergence of AGW, GW and COOT
-algorithms on HDA experiments}. The same convergence criteria are used across all methods.}
-\end{table}
+% \begin{table}[t]
+% \small
+% \begin{tabular}{@{}lccc|ccc@{}}
+% \toprule
+%                            & \multicolumn{3}{c|}{\textbf{Number of Iterations}}                      & \multicolumn{3}{c}{\textbf{Runtime per Iteration}}                     \\ \midrule
+%                            & \textbf{COOT}        & \textbf{AGW ($\alpha$=0.5)} & \textbf{GW}           & \textbf{COOT}        & \textbf{AGW ($\alpha$=0.5)} & \textbf{GW}          \\
+% \textbf{A $\rightarrow$ A} & 2.1 $\pm$ 0.5               & 13.9 $\pm$ 1.8              & 42.7 $\pm$ 17.3          & 0.18 $\pm$ 0.02         & 0.22 $\pm$ 0.05             & 0.22 $\pm$ 0.04         \\
+% \textbf{A $\rightarrow$ C} & 1.9 $\pm$ 0.7               & 13.7 $\pm$ 2.5              & 56.4 $\pm$ 21.4          & 0.16 $\pm$ 0.01         & 0.21 $\pm$ 0.07             & 0.26 $\pm$ 0.02         \\
+% \textbf{A $\rightarrow$ W} & 2.3 $\pm$ 0.8               & 13.4 $\pm$ 1.0              &41.3 $\pm$ 14.8          & 0.18 $\pm$ 0.03         & 0.20 $\pm$ 0.01            & 0.23 $\pm$ 0.06        \\
+% \textbf{C $\rightarrow$ A} & 2.0 $\pm$ 0.0               & 15.7 $\pm$ 3.5              & 62.4 $\pm$ 14.5         & 0.23 $\pm$ 0.05         & 0.26 $\pm$ 0.09             & 0.28 $\pm$ 0.03         \\
+% \textbf{C $\rightarrow$ C} & 2.0 $\pm$ 0.4               & 12.0 $\pm$ 1.9              & 54.1 $\pm$ 12.0         & 0.21 $\pm$ 0.04         & 0.24 $\pm$ 0.07             & 0.22 $\pm$ 0.04         \\
+% \textbf{C $\rightarrow$ W} & 2.4 $\pm$ 0.8               & 11.6 $\pm$ 2.2              & 72.5 $\pm$ 19.7         & 0.20 $\pm$ 0.02         & 0.21 $\pm$ 0.01             & 0.24 $\pm$ 0.05         \\
+% \textbf{W $\rightarrow$ A} & 2.0 $\pm$ 0.0              & 14.5 $\pm$ 1.4              & 32.7 $\pm$ 17.8          & 0.20 $\pm$ 0.06         & 0.22 $\pm$ 0.01             & 0.27 $\pm$ 0.04         \\
+% \textbf{W $\rightarrow$ C} & 2.2 $\pm$ 0.6               & 11.8 $\pm$ 2.3              & 48.3 $\pm$ 8.2           & 0.17 $\pm$ 0.02         & 0.19 $\pm$ 0.01             & 0.20 $\pm$ 0.09         \\
+% \textbf{W $\rightarrow$ W}  & 2.0 $\pm$ 0.0               & 13.6 $\pm$ 1.1              & 52.7 $\pm$ 7.2          & 0.20 $\pm$ 0.03        & 0.21 $\pm$ 0.02             & 0.23 $\pm$ 0.02 \\ \bottomrule
+% \end{tabular}
+% \caption{\label{tabSI:runtime}
+% \textbf{Runtime per iteration and number of iterations before convergence of AGW, GW and COOT
+% algorithms on HDA experiments}. The same convergence criteria are used across all methods.}
+% \end{table}
 
-We observe in \Cref{tabSI:runtime} that AGW tends to converge in fewer iterations than GW.
-Based on \Cref{fig:SI-timing}, this appears to be thanks to the further refinement of
-the sample coupling matrix and quicker drop in GW cost as influenced by the feature coupling
-(after feature optimization step of the COOT term in the same iteration,
-as all else remains the same between the two algorithms).
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{./Chapitre5/fig/timing_plots.png}
-    \caption{\label{fig:SI-timing} \textbf{(A)} Magnitude of the update made to the sample coupling
-    across iterations in AGW and GW, depicted as an example on the ``A$\rightarrow$A''
-    scenario of the HDA experiments. Error bars are based on 10 runs with random sampling.
-    We visualize the first 8 iterations as some runs converge in 8 iterations for AGW.
-    \textbf{(B)} GW distance across iterations.}
-\end{figure}
+% We observe in \Cref{tabSI:runtime} that AGW tends to converge in fewer iterations than GW.
+% Based on \Cref{fig:SI-timing}, this appears to be thanks to the further refinement of
+% the sample coupling matrix and quicker drop in GW cost as influenced by the feature coupling
+% (after feature optimization step of the COOT term in the same iteration,
+% as all else remains the same between the two algorithms).
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{./Chapitre5/fig/timing_plots.png}
+%     \caption{\label{fig:SI-timing} \textbf{(A)} Magnitude of the update made to the sample coupling
+%     across iterations in AGW and GW, depicted as an example on the ``A$\rightarrow$A''
+%     scenario of the HDA experiments. Error bars are based on 10 runs with random sampling.
+%     We visualize the first 8 iterations as some runs converge in 8 iterations for AGW.
+%     \textbf{(B)} GW distance across iterations.}
+% \end{figure}
