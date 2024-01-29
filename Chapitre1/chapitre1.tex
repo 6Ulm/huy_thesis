@@ -269,10 +269,12 @@ Support Vector Machine \citep{Jolicoeur19}.
 In discrete setting, the OT formulation is a linear program.
 An example of exact solver \footnote{See also Chapter 3 in \citep{Peyre19}
 for a more detailed discussion on classic algorithms and Section 2.1 in \citep{Pele09}
-for an overview on computational complexity.}
+for an overview on computational complexity}
 is the interior point method \citep{Orlin88}. It requires the complexity of $O(n^3 \log n)$,
 which is computationally prohibitive in many applications.
-There exist some approaches to overcome this limitation. For example, the mini-batch approach
+There exist some approaches to overcome this limitation
+\footnote{See Section 3 in \citep{Bonneel23} for an overview on the numerical solvers.}.
+For example, the mini-batch approach
 \citep{Sommerfeld19,Fatras20} considers multiple resamplings of the data and
 uses the average of distances computed in the mini-batches as an estimation of the true OT distance.
 The "sliced" method \citep{Rabin12,Bonneel15} develops an alternative metric
@@ -369,8 +371,10 @@ $P = (\mu \otimes \nu) \odot (u \otimes v) \odot K$, where $\odot$ is the elemen
 \paragraph{Discussion on Sinkhorn algorithm}
 The Sinkhorn algorithm has two key advantages. First, since the iterates only require
 vector-matrix multiplication, they can be seamlessly parallerized.
-One can further speed up the computation by exploiting the structure of the kernel matrix
-(see Section 4.3 in \citep{Peyre19}). Second, it is enough to store only the dual vectors
+One can further speed up the computation,
+for example, by exploiting the structure of the kernel matrix
+\footnote{See Section 4.3 in \citep{Peyre19} and the excellent thesis of \citep{Feydy20} for more
+implementation details.}. Second, it is enough to store only the dual vectors
 (which cost $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
 can be easily queried on demand.
 

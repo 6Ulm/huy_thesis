@@ -1,5 +1,6 @@
 
 \chapter[Breaking isometric ties and introducing priors in Gromov-Wasserstein distance]{Breaking isometric ties and introducing priors in Gromov-Wasserstein distance}
+\label{chap:agw}
 
 \renewcommand{\contentsname}{Contents}
 \localtableofcontents*
@@ -401,9 +402,7 @@ We consider entropic regularization for all methods on both sample and
 (when applicable) feature couplings. We keep the hyperparameter values considered
 for all regularization coefficients consistent across all methods. We report the results of
 the best-performing hyperparameter combination after tuning on a validation set for each method
-in each experiment. We detail our experimental setup in Appendix \ref{subsec:appendix_expe_agw} and
-report empirical runtimes in Appendix \ref{subsec:chap5_runtime}.
-Our source code and scripts can be found at \url{https://anonymous.4open.science/r/AGW-2023}.
+in each experiment.
 
 \begin{figure}[t]
 \centering
@@ -532,35 +531,48 @@ we apply AGW to unsupervised and semi-supervised heterogeneous DA (HDA) tasks,
 where the source and target samples live in different spaces, and we have as few as
 zero labeled target samples.
 
+\paragraph{Datasets and experimental setup}
 We follow the experimental setup by \citep{Redko20} and use source-target pairs
 from the Caltech-Office dataset \citep{Saenko10}. We consider all pairs between three domains:
 Amazon (A), Caltech-$256$ (C), and Webcam (W), whose images are embeddings from
 the second last layer in the GoogleNet \citep{Szegedy15} (vectors in $\bbR^{4096}$)
 and CaffeNet \citep{Jia14} (vectors in $\bbR^{1024}$) neural network architectures.
+
 In semi-supervised settings, we incorporate prior knowledge on a few target labels
 by adding an extra cost matrix to the training of sample coupling, so that
 a source sample will be penalized if it transfers mass to the target samples from different classes.
 Once the sample coupling $P$ is learned, we obtain the final prediction using label propagation:
 $\widehat{y}_t = \argmax_k L_{k\cdot}$,
 where $L = D_s P$ and $D_s$ denotes one-hot encodings of the source labels $y_s$.
-All hyperparameters are tuned on a validation set based on accuracy
-(see Appendix \ref{subsec:appendix_expe_agw} for details).
 
-\Cref{tab:hda_agw} presents the performance of each method averaged across ten runs in
-the unsupervised setting, where AGW yields favorable results in 6 out of 9 cases. In two cases,
-UGW, and in one case, UCOOT, outperform AGW despite the lower performance of
+All hyperparameters are tuned on a validation set based on accuracy.
+We evaluate AGW against GW and COOT on source-target pairs from the Caltech-Office dataset
+\citep{Saenko10} by considering all pairs between the three domains: Amazon (A), Caltech-$256$ (C),
+and Webcam (W), similarly to \citep{Redko20}. We randomly choose 20 samples per class
+and perform adaptation from CaffeNet to GoogleNet and repeat it 10 times.
+We report the average performance of each method along with the standard deviation.
+Differently than \citep{Redko20}, we (1) unit normalize the dataset prior to alignment
+as we empirically found it to boost all methods' average performance compared to using
+unnormalized datasets, (2) use cosine distances when defining intra-domain distance matrices
+for GW and AGW, as we found them to perform better than Euclidean distances,
+and (3) report results after hyperparameter tuning methods for each pair of datasets.
+Specifically, for each pair of (A)-(C), (A)-(W), etc, we sweep a hyperparameter grid over
+5 runs of random sampling, choose the best-performing combination, and run
+10 runs of random sampling to report results.
+
+For all methods that allow for entropic regularization,
+we consider their version with no entropic regularization (either on the sample-level alignments,
+feature-level alignments, or both), along with various levels of regularization.
+For entropic regularization over sample alignments, we consider
+$\varepsilon_1 \in [ 5e-4, 1e-3, 5e-3, 1e-2, 5e-2, 0.1] $. For entropic regularization over
+feature alignments in COOT and AGW, we consider $\varepsilon_2 \in [ 5e-4, 1e-3, 5e-3, 1e-2, 5e-2, 0.1]$.
+As the interpolation coefficient of AGW, we consider $\alpha \in [ 0.1, 0.2, ..., 0.9]$.
+
+\paragraph{Results} \Cref{tab:hda_agw} presents the performance of each method averaged across
+ten runs in the unsupervised setting, where AGW yields favorable results in 6 out of 9 cases.
+In two cases, UGW, and in one case, UCOOT, outperform AGW despite the lower performance of
 their balanced counterparts. In these cases, unbalanced formulations prove beneficial,
 and support extending AGW to unbalanced scenarios as future work.
-
-\paragraph{Empirical runtime} As described in \Cref{subsec:agw_formulation},
-the theoretical complexity of AGW is $O(n^3 + dn^2 + nd^2)$. When $d<n$,
-the dominating term of $n^3$ is due to the computational burden of computing the GW distance.
-However, in practice, we observe that AGW converges in much fewer iterations than GW
-(about $1/5$ of the number of iterations on average) thus having a shorter runtime
-(further detailed in Appendix \ref{subsec:chap5_runtime}). To further speed up optimization,
-one can consider low-rank coupling and cost matrix \citep{Meyer21b} or
-use the divide and conquer strategy \citep{Chowdhury21a},
-which allows one to scale the GW distance up to a million points.
 
 \section{Discussion and conclusion}
 
