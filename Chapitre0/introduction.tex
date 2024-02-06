@@ -1,10 +1,211 @@
 \chapter[Introduction]{Introduction}
 
-\localtableofcontents
-
-\section{Comparing probability measures with Optimal Transport}
-
-\section{Comparing incomparable spaces with Optimal Transport}
-
-\section{Thesis outlines and contributions}
 \chaptermark{Introduction}
+
+\renewcommand{\contentsname}{Contents}
+\localtableofcontents*
+\chaptermark{\textbf{Introduction}}
+% \hfill \break
+
+\raggedbottom
+
+\section{Why and how optimal transport?}
+
+In the recent years, the unprecedented versatility of optimal transport (OT) has gone far beyond
+the original formulation of \citep{Monge81} on the least effort problem,
+thanks to the seminal work of \citep{Kanto42}. From a high-level perspective, we can
+conceptually describe the OT as a principled approach to compare \textbf{weighted objects}
+(\ie, sets equipped with certain measures), and even better,
+to align their elements in many situations.
+
+\subsection{Optimal transport for probability measures}
+The most fundamental application of OT, featured by the Wasserstein distance,
+is on the comparison of probability measures. Needless to say,
+this task is ubiquitous in statistical learning. A classic example is
+the maximum likelihood estimation,
+which is asymptotically equivalent to finding an empirical model "closest" to the true one,
+in terms of Kullback-Leibler divergence.
+
+Giving the long history of development of statistics and probability theory,
+there are countless choices of divergences
+\footnote{For a comprehensive and up-to-date taxonomy of divergences, see
+\url{https://franknielsen.github.io/Divergence/Poster-Distances.pdf}.}.
+But what distinguishes Wasserstein distance from them in practice?
+First, as opposed to many popular divergences, it allows to compare probability measures with
+non-overlapped supports. This is because it is not based on bin-by-bin comparison,
+but rather on all pairwise relations across the supports captured by the distance function.
+As a result, the Wasserstein distance can characterize the weak convergence,
+which proves to be particularly useful, for example, in training generative adversarial networks \citep{Arjovsky17}.
+Second, as for many OT-based divergences, the resulting OT plan contains
+meaningful information on the correspondances between samples, and has found important applications,
+namely in domain adaptation \citep{Courty16} and genomics \citep{Schiebinger19}.
+Broadly speaking, the OT plan can 1) be used to estimate the barycentric mapping
+\citep{Ferradans14,Courty16}, which can be seen as the projection of the source data
+onto the target domain, or 2) provide the predictions in the classification problem,
+without the need of training a classifier \citep{Redko19a}.
+
+The success of Wasserstein distance, or more generally OT, can also be found in
+computer graphics \citep{Bonneel16,Solomon15}, dictionary learning \citep{Rolet16},
+supervised machine learning \citep{Frogner15}
+\footnote{For a more comprehensive and up-to-date review on the applications of OT in
+computer vision and computer graphics, see \citep{Bonneel23}.} and
+natural language processing \citep{Kusner15}, to name a few.
+
+\subsection{Optimal transport beyond probability measures}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+By definition, Wasserstein distance requires that the probability measures
+must live in a common probability space. This is equivalent to comparing two
+\underline{probability} spaces whose \underline{supports} lie
+\underline{in the same underlying (typically metric) space}.
+In other words, we implicitly assume that 1) it is always feasible to calculate
+the inter-domain distance, and 2) the measures must have unit mass, due to the marginal constraints.
+Let us challenge these assumptions.
+
+\paragraph{Can we handle finite nonnegative measures?} Yes, for example,
+by replacing the hard marginal constraints by soft penalties.
+This gives rise to the celebrated \textit{Unbalanced Optimal Transport}, first proposed by
+\citep{Benamou03} for numerical purpose. However, in practice, a much more popular version
+is due to the works of \citep{Liero18,Frogner15}.
+
+\paragraph{Can the supports lie in different spaces?} Yes, the comparison between
+two incomparable spaces is still feasible, though indirectly. A natural approach is to project them
+onto a sufficiently rich common space, so that it is possible to calculate the Wasserstein distance
+between their embeddings. This leads to a whole family of distances originated from
+the Gromov-Hausdorff distance. The most famous member in this class is
+the Gromov-Wasserstein distance \citep{Memoli07,Memoli11}.
+
+\paragraph{How can we integrate extra information into OT?} A natural solution is to optimize
+a linear combination of the OT's objective function and a term which takes into account the
+prior knowledge. This simple strategy usually works well in practice and has been used, namely to
+compare the weighted labelled graphs \citep{Vayer19b}, or to incorporate the mutual information
+when the inter and intra-domain distances are informative \citep{Chuang23},
+or in semi-supervised domain adaptation, where the alignments between some labelled source
+and target samples are available \citep{Gu22}.
+
+% It is known that GW distance is invariant under isometric transformations. However,
+% not all of them are born equal. For example, digits 6 and 9 are isomorphic in GW sense,
+% but they clearly represent different labels. Moreover,
+% the GW distance relies on the intra-domain similarity, which implies two consequences.
+% The similarity is usually measured by the distance,
+% which may be not a meaningful measure of discrepancy,
+% especially in high-dimensional Euclidean space (see \citep{Aggarwal01}, or
+% Theorem 3.1.1 and Remark 3.1.2 in \citep{Vershynin18}).
+% Second, the across-domain comparison must be done indirectly via similarity matrix,
+% thus incurs potential information loss.
+
+\paragraph{Can we still \textbf{directly} compare \textbf{incomparable spaces}?} Yes,
+in discrete setting. More precisely, \citep{Redko20} takes a radically different perspective
+to exploit the input data, by considering the pairwise differences between the coordinates
+of samples across spaces and learning simultaneously the samples and feature alignments.
+The corresponding distance, called \textit{Co-Optimal transport}, defines a proper approach
+to compare weighted matrices.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Thesis outlines and contributions}
+
+I have started working on Co-Optimal transport (COOT) and heterogeneous domain adaptation
+since November 2020. My interest on this line of research is mostly motivated by
+the aforementioned questions, with major focus on the comparison of incomparable spaces.
+In particular, the main objectives of this thesis titled
+\textit{Optimal transport for transfer learning across domains} include
+\begin{enumerate}
+    \item Studying the continuous extension of COOT, which serves as the first step towards
+    further analysis on the statistical and computational properties.
+
+    \item Understanding the connection between Gromov-Wasserstein distance and COOT.
+    This includes , and how can if one combine COOT and GW.
+
+    Theoritically justifying some common practice and belief on the GW distance,
+    which are originated from the OT. In particular, we aim to explore
+    1) the use of entropic approximation as a proxy for (unregularized) GW distance,
+    and 2) the sensitivity of GW distance and robustness of UGW to outliers.
+    Given the close connection between COOT and GW,
+    understanding one may shed light on understanding the other.
+
+    \item Unlocking the potential applicability of COOT on across-domain matching.
+    In particular, COOT offers unique opportunity to perform feature alignments
+    in single-cell multi-omics, which do not exist for GW or other OT-based divergences.
+
+    \item It is known that GW distance is invariant under isometric transformations. However,
+    not all of them are born equal. For example, digits 6 and 9 are isomorphic in GW sense,
+    but they clearly represent different labels.
+\end{enumerate}
+Our contributions are in line with these objectives and summarized in the next paragraphs.
+Last but not least, during his PhD, the author has also contributed to the open-source packages,
+namely Python Optimal Transport, available at \url{https://pythonot.github.io/}, and
+Fused Unbalanced Gromov-Wasserstein, available at \url{https://github.com/alexisthual/fugw}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{\Cref{chap:1} : Background on Optimal Transport}
+
+We provide relevant background on the classic OT and Gromov-Wasserstein distance.
+We focus on the intuition and motivation of the important distances in OT.
+Second, we spend much effort on the algorithmic and implementation details, including the
+most recent overview on the. This may help practitioners , without requiring
+diving deep into the OT theory.
+We also present a promising, yet simple alternative solver to the unbalanced OT problem,
+which has never been discussed in the literature.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{\Cref{chap:coot}: Contributions to Co-Optimal Transport}
+
+In this chapter, we study the continuous extension of Co-Optimal Transport.
+
+The first contribution is based on my unpublished working paper
+on continuous COOT in November 2020 and bears similarity with two concurrent works.
+The first one is the hypergraph COOT \citep{Chowdhury21b} published in December 2021.
+Their work and ours are based on the same mathematical framework of \citep{Chowdhury19},
+which results in the same metric property. Apart from that, they pursue different research objectives,
+where COOT is used to explore the categorical properties of the space of measure hypernetworks.
+By contrast, we consider continuous COOT as the first step towards the analysis of
+entropic approximation, unbalanced extension and sample complexity.
+
+Our study on the entropic COOT also shares some resemblance to the approximation error of
+entropic GW in the paper of \citep{Zhang23} published in December 2022.
+Their analysis and ours use the block approximation technique \citep{Carlier17}
+to show the convergence of the minimum and minimizer, and to quantify the approximation error.
+In particular, our result can be immediately extended to the GW setting. However,
+we consider different assumptions on the mm-spaces,
+which imply different upper bound of the approximation error.
+
+The second contribution is based on \citep{Tran21} and published in NeuRIPS Workshop in Optimal
+Transport and Machine Learning (OTML 2021). The motivating idea is that,
+COOT can be reformulated as a multi-marginal OT problem under the additional factorization constraint.
+We generalize this observation and consider the factored MMOT problem and its relaxation
+via KL divergence. We show that the relaxation interpolates between the factored MMOT and the
+MMOT problems.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{\Cref{chap:ucoot}: Unbalanced Co-Optimal Transport}
+
+In this chapter, we present the unbalanced extension of Co-Optimal Transport.
+Thi
+
+We show that UCOOT is provably robust to outliers, whereas this is not the case for COOT.
+As a byproduct, this robustness result also holds for GW and UGW.
+We demonstrate the in the unsupervised heterogeneous domain adaptation and single-cell multi-omics
+tasks. For the latter, the feature coupling proves to be particularly useful in recovering the
+alignments between genes.
+
+This chapter is based on \citep{Tran23} and has been accepted at the
+AAAI Conference on Artificial Intelligence (AAAI 2023). The implementation of UCOOT will be
+integrated into the next release of Python Optimal Transport package.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{\Cref{chap:agw}: Breaking isometric ties and introducing priors in
+Gromov-Wasserstein distance}
+
+In this chapter, we propose a simple, yet efficient variation of GW distance, called
+\textit{Augmented Gromov-Wasserstein} (AGW) divergence. It aims at addressing the above concerns.
+More precisely, AGW learns simultaneously the sample and feature couplings,
+ linearly combining the objective functions of GW distance and Co-Optimal Transport.
+We show that this combination results in much less isometries than GW distance.
+More importantly, our experiments illustrate the. This indicates that these invariants appear to be relevant .
+
+This chapter is based on \citep{Demetci23} and has been accepted at the
+International Conference on Artificial Intelligence and Statistics (AISTATS 2024).
+It is a collaborative work with Ievgen Redko (Huawei), Pinar Demetci (Broad Institute)
+and Ritambhara Singh (Brown University). The main contribution of the author is on the
+theoritical analysis of the proposed method. In particular, despite its simplicity,
+the isometries induced by AGW requires non-trivial techniques.
