@@ -95,6 +95,7 @@
 \RequirePackage{dsfont}
 \RequirePackage{makecell}
 \RequirePackage{mathtools}
+\RequirePackage{soul}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
