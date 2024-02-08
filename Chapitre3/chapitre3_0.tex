@@ -1,0 +1,338 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Inexact Bregman Proximal Point for Entropic Unbalanced Optimal Transport}
+\label{sec:input}
+
+This section is an ongoing work on an alternative solver for the entropic UOT problem
+\ref{eq:discrete_ent_uot}, which has not yet been studied in the literature,
+to the best of our knowledge.
+We called this approach \textit{INexact Proximal Unbalanced optimal Transport} (INPUT),
+since it is a straightforward application of the inexact Bregman Proximal Point (BPP) algorithm
+to the UOT problem. We present the derivation of INPUT, then illustrate how
+it can overcome the limitations of the MM and Sinkhorn-based methods,
+while being orders of magnitude faster in our toy experiments. Despite the simplicity,
+its convergence analysis remains a challenging open problem and is under our active research.
+
+\subsection{Motivation, optimization and algorithm}
+
+While the Bregman Proximal Point method \citep{Chen93} applies to the class of Bregman divergences,
+we will exclusively focus on the KL divergence throughout this thesis.
+\begin{definition}
+  Given a nonepmpty closed convex set of $E \subset \bbR^d_{\geq 0}$
+  and a proper closed convex function $f: E \to \bbR$, consider the following
+  convex optimization problem
+  \begin{align}
+    \min_{x \in E} f(x).
+  \end{align}
+  For learning rate $\eta > 0$, the exact BPP scheme with respect to the KL divergence reads
+  \begin{align}
+    \label{eq:bppa}
+    x^{(t+1)} = \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}),
+  \end{align}
+  and the inexact BPP scheme reads
+  \begin{align}
+    \label{eq:bppa_inexact}
+    x^{(t+1)} \approx \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}).
+  \end{align}
+  Here, $x^{(t+1)}$ is only an approximate solution in some predefined sense.
+\end{definition}
+When applying to Problem \eqref{eq:discrete_ent_uot}, the exact BPP iteration boils down to solving
+\begin{align}
+\label{eq:bpp_uot}
+  &P^{(t+1)} \\
+  &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
+  \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
+  + \rho_2 \kl(P_{\# 2} | \nu) + \varepsilon \kl(P | \gamma) + \eta \kl(P | P^{(t)}) \\
+  &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
+  \left \langle C - \eta \log \frac{P^{(t)}}{\gamma}, P \right \rangle
+  + \rho_1 \kl(P_{\# 1} | \mu) + \rho_2 \kl(P_{\# 2} | \nu) + (\varepsilon + \eta) \kl(P | \gamma).
+\end{align}
+This is nothing but an entropic UOT problem with modified cost and regularization.
+Thus, any solvers discussed in \Cref{sub:uot_optim} can be used. In particular,
+by construction, BPP is naturally applicable to the unregularized UOT.
+In practice, the exact BPP may not be an efficient algorithm to solve the UOT problem since
+it requires solving \textbf{exactly} many entropic subproblems. This can be computationally expensive,
+especially when the learning rate is small.
+
+While the inexact BPP scheme has recently been applied to the balanced OT \citep{Xie20,Yang22},
+we are not aware of any extension to the unbalanced counterpart.
+Our proposed method follows directly from \citep{Xie20}, which is simple to implement and
+usually performs well in practice. In particular,
+we only require running a few Sinkhorn iterations for each entropic subproblem and
+use the approximated coupling as input for the next BPP iteration.
+The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
+\begin{algorithm}[t]
+  \caption{INPUT algorithm for Problem \eqref{eq:discrete_ent_uot}.}
+  \label{alg:isppa}
+\begin{algorithmic}[1]
+  \STATE \textbf{Input:} cost matrix $C \in \bbR^{m \times n}$,
+  measures $\mu \in \bbR^m_{> 0}, \nu \in \bbR^n_{> 0}, \gamma \in \bbR^{m \times n}_{> 0}$,
+  regularization $\varepsilon \geq 0$, relaxation parameters $\rho_1, \rho_2 > 0$,
+  learning rate $\eta > 0$.
+  \FOR{$t=1, \dots, T$}
+  \STATE Calculate new cost: $C^{(t+1)} \gets C - \eta \log \Big( \frac{P^{(t)}}{\gamma} \Big)$.
+  \STATE Solve approximatively the entropic UOT problem
+  \begin{align}
+    P^{(t+1)} \approx \argmin_{P \geq 0} \; \langle C^{(t+1)}, P \rangle +
+    \rho_1 \kl(P_{\# 1} | \mu) + \rho_2 \kl(P_{\# 2} | \nu) + (\varepsilon + \eta) \kl(P | \gamma).
+  \end{align}
+  \ENDFOR
+  \STATE \textbf{Output:} transport plan $P^{(T)}$.
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Convergence analysis in the exact setting}
+
+Let us start with the convergence analysis in case of exact BPP iteration \ref{eq:bpp_uot}.
+Thanks to Lemma 3.3 and Theorem 3.4 in \citep{Chen93}, if $P^*$ is a minimizer of
+Problem \eqref{eq:discrete_ent_uot}, then
+\begin{enumerate}
+  \item The sequence $\big( \kl(P^*, P^{(t)}) \big)_t$ is nonincreasing and converges to $0$.
+  \item The sequence $\big( F(P^{(t)}) \big)_t$ is nonincreasing and
+  \begin{align}
+    \label{eq:chen_teboulle}
+    F(P^{(t)}) - F(P^*) \leq \frac{\eta}{t} \kl(P^* | P^{(0)}).
+  \end{align}
+\end{enumerate}
+The upper bound \eqref{eq:chen_teboulle} can be improved by further exploiting the property of
+the objective function of Problem \eqref{eq:discrete_ent_uot}.
+First, we introduce the notions of relative smoothness \citep{Bauschke17} and
+strong convexity \citep{Lu18} of a function with respect to the KL divergence.
+\begin{definition}
+  \label{def:smooth-convex}
+  Let $f:C \to \bbR$ be a differentiable convex function.
+  Given $L \geq 0$, we say that $f$ is $L-$smooth relative to the KL divergence
+  if for any $x, y \in C$,
+  \begin{align}
+    f(x) \leq f(y) + \langle \nabla f(y), x - y \rangle + L \; \kl(x, y).
+  \end{align}
+  Given $l \geq 0$, we say $f$ is $l-$strongly convex relative to the KL divergence
+  if for any $x, y \in C$,
+  \begin{align}
+    f(x) \geq f(y) + \langle \nabla f(y), x - y \rangle + l\; \kl(x, y).
+  \end{align}
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:convex-smoothness}
+  $F$ is $\varepsilon$-strongly convex and $(\lambda_1 + \lambda_2 + \varepsilon)$-relatively smooth
+  with respect to the KL divergence.
+\end{lemma}
+The following result is a simple generalization of Theorem 3.1 in \citep{Lu18}.
+\begin{proposition}[Convergence rate of exact BPP for Problem \eqref{eq:discrete_ent_uot}]
+  \label{prop:convergence-exact-sppa}
+  For every $\eta > 0$, exact BPP scheme decreases the value of $F(\cdot)$ with each iteration $t$:
+  the sequence $\big( F(\pi^{(t)}) \big)_t$ is monotonically decreasing.
+  Moreover, if $\varepsilon \leq \eta \leq \lambda_1 + \lambda_2 + \varepsilon$,
+  then we have
+  \begin{align}
+    F(\pi^{(t)}) - F(\pi^*)
+    \leq \frac{\varepsilon}{\left( 1 +
+    \frac{\varepsilon (\lambda_1 + \lambda_2 + \varepsilon)}{\eta (\lambda_1 + \lambda_2)} \right)^t - 1}
+    \kl(\pi^* | \pi^{(0)}).
+  \end{align}
+\end{proposition}
+It is not difficult to check that this bound is weaker than the one in
+Inequality (\ref{eq:chen_teboulle}). Indeed,
+\begin{align}
+  \frac{\varepsilon}{\left( 1 +
+  \frac{\varepsilon (\lambda_1 + \lambda_2 + \varepsilon)}{\eta (\lambda_1 + \lambda_2)} \right)^t - 1}
+  \leq \frac{\varepsilon}{\frac{t \varepsilon(\lambda_1 + \lambda_2 + \varepsilon)}{\eta (\lambda_1 + \lambda_2)}}
+  = \frac{\eta}{t} \frac{\lambda_1 + \lambda_2}{\lambda_1 + \lambda_2 + \varepsilon}
+  \leq \frac{\eta}{t}.
+\end{align}
+
+\subsection{Convergence analysis in the inexact setting}
+
+Despite the simplicity, it is difficult to analyze the convergence of INPUT.
+In particular, while it is an immediate extension of the work of \citet{Xie20} on the balanced OT,
+their proof techniques of the convergence can not be adapted to the unbalanced setting.
+This is because they rely on the property of the set of admissible couplings,
+which is not available in the UOT. Moreover, their assumptions and conditions are also
+not trivial to verify in practice, thus the convergence results are mostly of theoretical interest.
+
+The convergence analysis of the inexact BPP has already been studied at the same time
+as the exact one. Typically, one can control the approximation error using
+$\varepsilon$-subdifferential \citep{Burachik97,Kiwiel97},
+or bounded subgradient \citep{Eckstein98,Rockafellar76}, to name a few.
+We are studying the literature in this domain to identify the relevant criteria, which are
+amenable to study the convergence and to verify in practice.
+
+\subsection{Illustration on toy example}
+
+\paragraph{Experimental setup}
+We consider a synthetic dataset:
+the source data $X$ contains $200$ points forming an ellipse and a square,
+assigned with the same uniform probability on both shapes
+$\mu = \frac{1}{200} \sum_{i=1}^{200} \delta_{x_i}$. The target data $Y$ also contains $200$ points
+forming an ellipse and a circle, assigned with the histogram
+$\nu = \frac{3}{200} \sum_{j=1}^{30} \delta_{y_j \in \text{Circle}} +
+\frac{7}{200} \sum_{j=31}^{100} \delta_{y_j \in \text{Circle}} +
+\frac{7}{200} \sum_{j=1}^{100} \delta_{y_j \in \text{Ellipse}}$.
+The objective in this experiment is to estimate the entropic UOT cost, where
+we choose $\gamma = \mu \otimes \nu$ and the cost $C(x, y) = || x - y||^2_2$.
+
+\paragraph{Competing methods}
+For INPUT, we consider $3$ versions corresponding to $3$ solvers for the inner entropic UOT problem:
+\texttt{INPUT-Sinkhorn}, \texttt{INPUT-TI-v2}, \texttt{INPUT-MM}.
+Here, we choose the variant of Sinkhorn-TI (\Cref{alg:TI_Sinkhorn_variant})
+since it is more simple to implement, yet appears to perform comparably to the Sinkhorn-TI.
+The Sinkhorn-based methods include
+\texttt{Sinkhorn} (\Cref{alg:Sinkhorn_algo}), \texttt{Sinkhorn-TI-v1} (\Cref{alg:TI_Sinkhorn})
+and its variant \texttt{Sinkhorn-TI-v2} (\Cref{alg:TI_Sinkhorn_variant}).
+We emphasize that all Sinkhorn-based methods require log-domain implementation
+for numerical stability, whereas INPUT does not suffer this issue,
+thus is implemented with direct vector-matrix multiplication.
+Apart from these $2$ families of solvers, we also evaluate the performance of
+Majorization-Minimization algorithm \texttt{MM}.
+
+\paragraph{Results}
+We set up $4$ scenarios to verify if INPUT can overcome the limitations of other existing methods.
+More precisely, the first one considers the situation of small relaxations and large regularization.
+It is an easy test and we expect that all methods perform well.
+In the second one, we fix the relaxations but choose small regularization
+in order to hinder convergence of Sinkhorn-based methods.
+The third scenario uses fixed regularization but very large marginal relaxations to slow down
+the convergence of MM.
+The last one combines small regularization and very large relaxations. It is designed to challenge
+both Sinkhorn and MM methods.
+
+It is clear that the INPUT family consistently and significantly outperforms other solvers,
+The distinction becomes even more visible in the regimes where Sinkhorn and MM struggle.
+Except for the first scenario, by contrast to its competitors,
+it seems that INPUT does not require compensating the running time for the quality of the estimation.
+We also observe that, within the family of INPUT,
+combining INPUT with Sinkhorn-TI yields the most efficient algorithm.
+Amongst the Sinkhorn-based solvers, Sinkhorn-TI shows clear improvement over Sinkhorn,
+even though this advantage quickly diminishes when regularization is small.
+
+\begin{table}[]
+  \small
+  \centering
+  \begin{tabular}{|cc|c|c|c|c|}
+  \hline
+  \multicolumn{2}{|c|}{} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}Scenario 1\\ $\rho_1 = 40$\\ $\rho_2 = 50$\\ $\varepsilon = 1$\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}Scenario 2\\ $\rho_1 = 40$\\ $\rho_2 = 50$\\ $\varepsilon = 1e-3$\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}Scenario 3\\ $\rho_1 = 4000$\\ $\rho_2 = 5000$\\ $\varepsilon = 1$\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}Scenario 4\\ $\rho_1 = 4000$\\ $\rho_2 = 5000$\\ $\varepsilon = 1e-3$\end{tabular}} \\ \hline
+  \multicolumn{1}{|c|}{\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Sinkhorn\\ family\end{tabular}}}} &
+    \textbf{Sinkhorn} &
+    \begin{tabular}[c]{@{}c@{}}0.275 $\pm$ 0.011\\ {\color{blue}{{41.618}}} \end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}55.946 $\pm$ 5.893\\ 40.588\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}{\color{red}{{0.020 $\pm$ 0.002}}} \\ 57.667\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}No convergence at \\ this tolerance\end{tabular} \\ \cline{2-6}
+  \multicolumn{1}{|c|}{} &
+    \textbf{TI-v1} &
+    \begin{tabular}[c]{@{}c@{}}0.389 $\pm$ 0.018\\ {\color{blue}{{41.618}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}37.679 $\pm$ 0.926\\ {\color{red}{{40.576}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}1.118 $\pm$ 0.047\\ 57.613\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}31.088 $\pm$ 0.505\\ 56.834\end{tabular} \\ \cline{2-6}
+  \multicolumn{1}{|c|}{} &
+    \textbf{TI-v2} &
+    \begin{tabular}[c]{@{}c@{}}0.318 $\pm$ 0.013\\ {\color{blue}{{41.618}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}31.679 $\pm$ 2.919\\ {\color{red}{{40.576}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}0.871 $\pm$ 0.034\\ 57.613\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}24.828 $\pm$ 0.243\\ 56.834\end{tabular} \\ \hline
+  \multicolumn{1}{|c|}{\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}INPUT\\ family\end{tabular}}}} &
+    \textbf{Sinkhorn} &
+    \begin{tabular}[c]{@{}c@{}}0.190 $\pm$ 0.008\\ {\color{blue}{{41.618}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}0.676 $\pm$ 0.032\\ {\color{blue}{{40.521}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}1.143 $\pm$ 0.048\\ {\color{blue}{{57.608}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}1.387 $\pm$ 0.026\\ {\color{blue}{{55.866}}}\end{tabular} \\ \cline{2-6}
+  \multicolumn{1}{|c|}{} &
+    \textbf{TI-v2} &
+    \begin{tabular}[c]{@{}c@{}}{\color{red}{{0.149 $\pm$ 0.008}}}\\ {\color{blue}{{41.618}}} \end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}{\color{red}{{0.649 $\pm$ 0.013}}}\\ {\color{blue}{{40.521}}} \end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}{\color{blue}{{0.018 $\pm$ 0.002}}} \\ {\color{red}{{57.609}}}\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}{\color{blue}{{0.079 $\pm$ 0.010}}} \\ {\color{red}{{55.868}}}\end{tabular} \\ \cline{2-6}
+  \multicolumn{1}{|c|}{} &
+    \textbf{MM} &
+    \begin{tabular}[c]{@{}c@{}} {\color{blue}{{0.068 $\pm$ 0.006}}} \\ 41.627\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}} {\color{blue}{{0.186 $\pm$ 0.007}}} \\ 40.640\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}1.038 $\pm$ 0.026\\ 57.738\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}1.028 $\pm$ 0.021\\ 56.723\end{tabular} \\ \hline
+  \multicolumn{2}{|c|}{\textbf{MM}} &
+    \begin{tabular}[c]{@{}c@{}}0.193 $\pm$ 0.010\\ {\color{red}{{41.621}}} \end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}0.864 $\pm$ 0.024\\ 40.558\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}0.726 $\pm$ 0.046\\ 59.089\end{tabular} &
+    \begin{tabular}[c]{@{}c@{}}{\color{red}{{0.944 $\pm$ 0.026}}} \\ 57.829\end{tabular} \\ \hline
+  \end{tabular}
+  \caption{Time $\pm$ standard deviation (in seconds) required to reach the predefined tolerance
+  (first line) and entropic UOT cost (second line). The lower score the better.
+  {\color{blue}{{Blue number}}} indicates the best score.
+  {\color{red}{{Red number}}} indicates the second best score.
+  \label{t:uot_time_compare}}
+\end{table}
+
+\subsection{Discussion}
+
+While this experiment is mainly for the proof-of-concept purpose,
+it shows that INPUT is a promising alternative solver for the UOT problem.
+
+\paragraph{Strengths of INPUT}
+INPUT has two very appealing features. First, it overcomes the limitations of
+the MM and Sinkhorn-based algorithms. In particular,
+it can, not only handle both balanced/unbalanced, and unregularized/regularized settings,
+but also, empirically, can converge very fast to the optimal plan and the global minimum,
+even in the regimes of very small regularization (where Sinkhorn-based methods struggles),
+or of very large relaxation (where MM wrestles).
+We summarize the applicability of these algorithms in \Cref{t:uot_algo_compare}.
+
+Second, the presence of learning rate $\eta$
+increases the level of regularization in the inner entropic UOT subproblem,
+thus brings two important benefits. The first one is on the reduction of number of iterations:
+the larger the regularization, the faster the Sinkhorn algorithm converges. As a consequence,
+running only a few iterations is usually enough to obtain a decent approximation of
+the true solution. The second advantage is on the acceleration per BPP iteration. In practice,
+when the regularization is not too small, one can ignore the log-domain implementation
+and employ the one with direct vector-matrix multiplication,
+without any concern about the numerical overflow issue.
+As a result, this allows to speed up the calculation of the iterates.
+
+\paragraph{Weaknesses of INPUT} There is no free lunch. INPUT has two drawbacks.
+First, the cost matrix must be recalculated at the beginning of each BPP iteration.
+This can be computationally expensive and prevents INPUT from being scalable.
+Second, while tuning the learning rate is neither too tricky nor difficult,
+it may take some effort to find an appropriate value. One possible workaround,
+which usually works well in practice, is to start with $\eta$ small and not too far from $\varepsilon$.
+The intuition of this heuristic comes from \Cref{prop:convergence-exact-sppa} of exact BPP scheme,
+which indicates that, for fixed initialization, the smaller the learning rate, the smaller
+the potential gap between the estimation and the minimum.
+\begin{table}[t]
+	\centering
+		\begin{tabular}{|l|c|c|c|c|}
+    \hline
+    & \textbf{\makecell{Scaling}}
+    & \textbf{\makecell{TI-Sinkhorn}} & \textbf{MM} & \textbf{INPUT} \\
+    \hline
+    \makecell[l]{Unregularized \\ setting} & \nomark & \nomark & \yesmark & \yesmark \\
+    \hline
+    \makecell[l]{Balanced \\ setting} & \yesmark & \yesmark & \nomark  & \yesmark  \\
+    \hline
+    \makecell[l]{Semi-relaxed \\ setting} & \yesmark & \yesmark & \nomark  & \yesmark  \\
+    \hline
+    \makecell[l]{Major \\ drawbacks} & \makecell{Very slow conv. \\ for small $\varepsilon$}
+    & \makecell{Slow conv. \\ for small $\varepsilon$}
+    & \makecell{Slow conv. \\ for large $\rho$}
+    & \makecell{Cost recalculation, \\
+    extra tuning of \\ hyperparameters} \\
+    \hline
+		\end{tabular}
+		\caption{Summary of features of algorithms for entropic UOT problem \eqref{eq:discrete_ent_uot}.
+    Unregularized setting refers to $\varepsilon = 0$, balanced setting corresponds to
+    $\rho_1 = \rho_2 = \infty$ and semi-relaxed setting refers to either $\rho_1 = \infty$
+    or $\rho_2 = \infty$.
+    \label{t:uot_algo_compare}}
+\end{table}
+
+\paragraph{Can we adapt INPUT to solve the squared $l_2$-regularized Problem \eqref{uot_l2} ?}
+In theory, yes, since the squared $l_2$-norm is a Bregman divergence,
+thus the (inexact) BPP scheme is applicable. However, comparing to the MM solver,
+we doubt that it would bring any gain in convergence speed. Indeed,
+recall that the main motivation of INPUT comes from the poor convergence behavior of Sinkhorn
+algorithm when \textbf{regularization} is small. For this reason, adding more regularization
+to each BPP iteration helps accelerating the calculation
+and improving the convergence of the algorithm. By contrast,
+the case of squared $l_2$-norm does not suffer the same issue,
+but rather on the \textbf{relaxation} parameters. So, more regularization does not help.
