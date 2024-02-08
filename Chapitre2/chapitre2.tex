@@ -117,7 +117,7 @@ In particular, we have $\gw(\cX, \cY) \geq \coot(\cX, \cY) \geq \text{TLB}(\cX, 
 % The equivalence between BAP and QAP has already been studied in \citep{Konno76}.
 If the inputs are the Euclidean, or squared Euclidean distances, then equality holds between
 COOT and GW distances \citep{Sejourne20,Redko20}. These results are based on the prior works
-of \citep{Konno76,Maron18} and summarized in the folllowing proposition.
+of \citet{Konno76,Maron18} and summarized in the folllowing proposition.
 \begin{definition}
   A square matrix $A \in \bbR^{n \times n}$ is conditionally negative semi-definite (CND)
   if it is symmetric and for any $c \in \bbR^n$ such that $\sum_i c_i = 0$, we have
@@ -159,7 +159,7 @@ one can safely drop the equality constraint during the optimization.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
-We will mostly follow the terminology and concepts proposed in the published work of \citep{Chowdhury21b}.
+We will mostly follow the terminology and concepts proposed in the published work of \citet{Chowdhury21b}.
 
 \subsection{Formulation and preliminary results}
 
@@ -241,7 +241,6 @@ The framework on the GW isomorphism presented in \Cref{subsec:prop_gw}
 can be extended immediately to the COOT setting. In particular, while our
 presentation is different to that of \citep{Chowdhury21b}, we still come up with the
 same metric properties.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{definition}[Relaxed mass splitting]
@@ -406,7 +405,7 @@ by comparing these two bounds, we deduce that if $\log(2d \varepsilon) \leq 1$,
 then the squared Euclidean distances generates a provably better (smaller) upper bound.
 
 With little modification of the proof, exactly the same upper bound in \Cref{prop:quant_bound_ent}
-holds for GW distance. We note that \citep{Zhang23} also establish a similar
+holds for GW distance. We note that \citet{Zhang23} also establish a similar
 $O(\varepsilon \log \varepsilon)$-approximation error between the unregularized and entropic GW,
 but they rely on different assumptions to ours. In particular, their result only holds
 for $2$-GW distance, when the distance function is the squared-Euclidean norm. By contrast,
@@ -436,7 +435,7 @@ Such a constraint leads to the appearance of the strongly convex entropy term in
 OT problem to be solved efficiently using simple Sinkhorn-Knopp matrix balancing algorithm. In addition to this, it was also noticed
 that structural constraints on the coupling and cost matrices allow to reduce the high computational cost and sample complexity
 of the classic OT problem \citep{Genevay19,Forrow18,Chiheng21,Meyer21a}. However, none of these works considered a much more
-challenging case of doing so in a multi-marginal setting. On the other hand, while the work of \citep{Haasler20} considers the MMOT
+challenging case of doing so in a multi-marginal setting. On the other hand, while the work of \citet{Haasler20} considers the MMOT
 problem in which the cost tensor induced by a graphical structure, it does not naturally promote the factorizability of
 transportation plans.
 
@@ -476,7 +475,7 @@ regularization problem
   \inf_{P \in U(\mu)} \langle C, P \rangle + \varepsilon \kl(P | \mu^{\otimes}).
 \end{equation}
 which can be solved using Sinkhorn's algorithm \citep{Benamou14}.
-We refer the interested reader to Appendix for algorithmic details.
+We refer the interested reader to Appendix \ref{appendix:subsec_mmot_dc} for algorithmic details.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Factored Multi-marginal Optimal Transport}
@@ -488,9 +487,34 @@ smoothly promoted through a Kullback-Leibler penalty.
 
 \subsubsection{Motivation}
 
-Before a formal statement of our problem, we first give a couple of motivating examples showing why and when structural constraints on the coupling matrix can be beneficial. To this end, first note that a trivial example of the usefulness of such constraints in OT is the famous entropic regularization. Indeed, while most of the works define the latter by adding negative entropy of the coupling to the classic OT objective function directly, the original idea was to constraint the sought coupling to remain close (to some extent) to a rank-one product of the two marginal distributions. The appearance of negative entropy in the final objective function is then only a byproduct of such constraint due to the decomposition of the KL divergence into a sum of three terms with two of them being constant. Below we give two more examples of real-world applications related to MMOT problem where a certain decomposition imposed on the coupling tensor can be desirable.
-\paragraph{Multi-source multi-target translation.} A popular task in computer vision is to match images across different domains in order to perform the so-called image translation. Such tasks are often tackled within the GAN framework where one source domain from which the translation is performed, is matched with multiple target domains modeled using generators. While MMOT was applied in this context by \citep{Cao19} when only one source was considered, its application in a multi-source setting may benefit from structural constraints on the coupling tensor incorporating the human prior on what target domains each source domain should be matched to.
-\paragraph{Multi-task reinforcement learning.} In this application, the goal is to learn individual policies for a set of agents while taking into account the similarities between them and hoping that the latter will improve the individual policies. A common approach is to consider an objective function consisting of two terms where the first term is concerned with learning individual policies, while the second forces a consensus between them. Similar to the example considered above, MMOT problem was used to promote the consensus across different agents' policies in \citep{Cohen21}, even though such a consensus could have benefited from a prior regarding the semantic relationships between the learned tasks.
+Before a formal statement of our problem, we first give a couple of motivating examples showing
+why and when structural constraints on the coupling matrix can be beneficial. To this end,
+first note that a trivial example of the usefulness of such constraints in OT is the famous
+entropic regularization. Indeed, while most of the works define the latter by adding
+negative entropy of the coupling to the classic OT objective function directly,
+the original idea was to constraint the sought coupling to remain close (to some extent)
+to a rank-one product of the two marginal distributions. The appearance of negative entropy
+in the final objective function is then only a byproduct of such constraint due to
+the decomposition of the KL divergence into a sum of three terms with two of them being constant.
+Below we give two more examples of real-world applications related to MMOT problem
+where a certain decomposition imposed on the coupling tensor can be desirable.
+\paragraph{Multi-source multi-target translation.} A popular task in computer vision is
+to match images across different domains in order to perform the so-called image translation.
+Such tasks are often tackled within the GAN framework where one source domain from which
+the translation is performed, is matched with multiple target domains modeled using generators.
+While MMOT was applied in this context by \citet{Cao19} when only one source was considered,
+its application in a multi-source setting may benefit from structural constraints
+on the coupling tensor incorporating the human prior on what target domains each source domain
+should be matched to.
+
+\paragraph{Multi-task reinforcement learning.} In this application, the goal is to learn
+individual policies for a set of agents while taking into account the similarities between them
+and hoping that the latter will improve the individual policies. A common approach is
+to consider an objective function consisting of two terms where the first term is concerned
+with learning individual policies, while the second forces a consensus between them.
+Similar to the example considered above, MMOT problem was used to promote the consensus
+across different agents' policies in \citep{Cohen21}, even though such a consensus
+could have benefited from a prior regarding the semantic relationships between the learned tasks.
 %
 %We can cite other examples motivating the introduction of structural constraints in MMOT problem but the bottom line of it remains unchanged: imposing a certain structure on the optimal coupling tensor is a way of incorporating the human-based priors to the MMOT problem that reflect the domain knowledge about the problem at hand. We now proceed to the formal introduction of this idea.
 
@@ -778,7 +802,7 @@ and our relaxation.
 We generate two random matrices $X \in \bbR^{20 \times 3}$ and $Y \in \bbR^{30 \times 2}$,
 whose entries are drawn independently from the uniform distribution on the interval $[0,1)$. Then we calculate two corresponding
 squared Euclidean distance matrices of size $20$ and $30$. Their rows and columns are equipped with the discrete
-uniform distributions. In this case, \citep{Redko20} show that the COOT loss coincides with the GW distance, and the
+uniform distributions. In this case, \citet{Redko20} show that the COOT loss coincides with the GW distance, and the
 Block Coordinate Descent (BCD) algorithm used to approximate COOT is equivalent to the Frank-Wolfe algorithm \citep{Frank56}
 used to solve the GW distance.
 
@@ -884,8 +908,8 @@ We call this variation \textit{MMOT-DC-v1} and use the same setup as in Experime
       \end{sc}
     \end{small}
   \end{center}
-  \caption{Average and standard deviation of COOT loss of MMOT-DC and MMOT-DC-v1. The performance of the two algorithms is
-  very similar.}
+  \caption{Average and standard deviation of COOT loss of MMOT-DC and MMOT-DC-v1.
+  The performance of the two algorithms is very similar.}
   % \vskip -0.1in
 \end{table}
 
