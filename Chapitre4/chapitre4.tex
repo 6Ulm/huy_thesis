@@ -28,7 +28,7 @@ and leads to more precise mapping at the group level.
 \raggedbottom
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
+\subsection{Introduction}
 \label{sec:introduction}
 
 The availability of millimeter or sub-millimeter anatomical or functional brain images has opened
@@ -134,7 +134,7 @@ than in others, or may simply be absent. We show that this approach successfully
 the challenging case of different cortical meshes, and that derived brain activity templates
 are sharper than those obtained with standard anatomical alignment approaches.
 
-\section{Methods}
+\subsection{Methods}
 \label{sec:methods}
 
 Optimal Transport yields a natural framework to address the alignment problem,
@@ -148,7 +148,7 @@ can help preserve the global geometry underlying the signal.
 The more recent fused GW distance \citep{Vayer19b} goes one step further by
 making it possible to integrate functional data simultaneously with anatomical information.
 
-\subsection{Fused Unbalanced Gromov-Wasserstein}
+\subsubsection{Fused Unbalanced Gromov-Wasserstein}
 
 We leverage \citep{Vayer19b,Sejourne20} to present a new objective function which interpolates
 between a loss preserving the global geometry of the underlying mesh structure and
@@ -268,7 +268,7 @@ whereas the larger blob in the target distribution is also a place of mass creat
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Optimization}
+\subsubsection{Optimization}
 
 Estimating the unbalanced Gromov Wasserstein loss is numerically sensitive to initialization,
 due to the non-convexity of the problem.
@@ -345,7 +345,7 @@ the Sinkhorn algorithm \citep{Sejourne19}. Details of the BCD iteration can be f
 in \Cref{alg:lbfugw}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Barycenters}
+\subsubsection{Barycenters}
 Barycenters represent common patterns across samples.
 Their role is instrumental in identifying a unique target for aligning a given group of individuals.
 As seen in \Cref{fig:intro}, the vertex-wise group average does not usually provide
@@ -402,7 +402,7 @@ the weight $w^B$ is always fixed as uniform distribution.
 \end{algorithm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
-\section{Numerical experiments}
+\subsection{Numerical experiments}
 
 We design three experiments to assess the performance of FUGW.
 In Experiments 1 and 2, we are interested in assessing if aligning pairs of individuals with
@@ -535,9 +535,9 @@ respond to specific stimuli. We assess whether FUGW helps find the same clusters
 Eventually, we quantify the number of vertices significantly activated or deactivated
 with and without alignment respectively.
 
-\section{Results}
+\subsection{Results}
 
-\subsection{Experiment 1 - Template anatomy}
+\subsubsection{Experiment 1 - Template anatomy}
 
 \paragraph{Aligning subjects on a fixed mesh}
 
@@ -642,7 +642,7 @@ This feature is indeed captured by the difference of mass between subjects
     \label{fig:transported_mass}
 \end{figure}
 
-\subsection{Experiment 2 - Individual anatomies}
+\subsubsection{Experiment 2 - Individual anatomies}
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\columnwidth]{./Chapitre4/figures/individual_alignment_correlation_gain_fugw}
@@ -676,7 +676,7 @@ transporting their functional signal in an anatomically sound way.
     \label{fig:individual_projections}
 \end{figure}
 
-\subsection{Experiment 3 - Barycenter}
+\subsubsection{Experiment 3 - Barycenter}
 
 In the absence of a proper metric to quantify the correctness of a barycenter,
 we first qualitatively compare the functional templates obtained with and without alignment.
@@ -713,7 +713,7 @@ as shown in \Cref{fig:barycenter_vs_group_average}.C.
     \label{fig:barycenter_vs_group_average}
 \end{figure}
 
-\section{Discussion}
+\subsection{Discussion}
 
 FUGW can derive meaningful couplings between pairs of subjects without
 the need of a pre-existing anatomical template. It is well-suited to computing
