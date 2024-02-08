@@ -12,8 +12,8 @@
 \section{Why and how optimal transport?}
 
 In the recent years, the unprecedented versatility of optimal transport (OT) has gone far beyond
-the original formulation of \citep{Monge81} on the least effort problem,
-thanks to the seminal work of \citep{Kanto42}. From a high-level perspective, we can
+the original formulation of \citet{Monge81} on the least effort problem,
+thanks to the seminal work of \citet{Kanto42}. From a high-level perspective, we can
 conceptually describe the OT as a principled approach to compare \textbf{weighted objects}
 (\ie, sets equipped with certain measures), and even better,
 to align their elements in many situations.
@@ -66,8 +66,8 @@ due to the marginal constraints. To what extent can we relax these assumptions?
 \paragraph{Can we handle finite nonnegative measures?} Yes, for example,
 by replacing the hard marginal constraints by soft penalties.
 This gives rise to the celebrated \textit{Unbalanced Optimal Transport}, first proposed by
-\citep{Benamou03} for numerical purpose. However, in practice, a much more popular version
-is due to the works of \citep{Liero18,Frogner15}.
+\citet{Benamou03} for numerical purpose. However, in practice, a much more popular version
+is due to the works of \citet{Liero18,Frogner15}.
 
 \paragraph{Can the supports lie in different (also known as, incomparable) spaces?}
 Yes, the comparison between two incomparable spaces is still feasible, though indirectly.
@@ -96,7 +96,7 @@ and target samples are available \citep{Gu22}.
 % thus incurs potential information loss.
 
 \paragraph{Can we still \textbf{directly} compare \textbf{incomparable spaces}?} Yes,
-in discrete setting. More precisely, \citep{Redko20} takes a radically different perspective
+in discrete setting. More precisely, \citet{Redko20} takes a radically different perspective
 to exploit the input data, by considering the pairwise differences between the coordinates
 of samples across spaces and learning simultaneously the samples and feature alignments.
 The corresponding distance, called \textit{Co-Optimal transport}, defines a proper approach
@@ -116,9 +116,11 @@ In particular, this thesis titled
     understanding one may shed light on understanding the other. Related works:
     \begin{itemize}
         \item[$\bullet$] \Cref{chap:coot} of this thesis.
+
         \item[$\bullet$] \ul{Unbalanced Co-Optimal Transport}. \textbf{Quang Huy Tran},
         Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko, Pinar Demetci and Ritambhara Singh.
         \textit{AAAI Conference on Artificial Intelligence}, 2023.
+
         \item[$\bullet$] \ul{Factored couplings in multi-marginal optimal transport via difference of
         convex programming}. \textbf{Quang Huy Tran}, Hicham Janati, Ievgen Redko,
         Rémi Flamary and Nicolas Courty.
@@ -176,7 +178,8 @@ of this thesis, notably the balanced and unbalanced OT, and the Gromov-Wasserste
 Second, we spend much effort on their algorithmic and implementation details, which are not
 usually discussed in the literature. We also provide a review on some variations of OT,
 coming mostly from the machine learning community. This may serve as a supplement
-to the excellent reference on computational OT of \citep{Peyre19}.
+to the excellent reference on computational OT of \citet{Peyre19} and to the very recent
+overview on unbalanced OT of \citet{Sejourne22}.
 Finally, we present a promising, yet simple alternative solver to the unbalanced OT problem,
 which has never been discussed in the literature, to the best of our knowledge.
 
@@ -187,14 +190,14 @@ In this chapter, we present two contributions to the study of COOT.
 The first one is based on my unpublished working paper
 on continuous COOT in November 2020 and bears similarity with two concurrent works.
 The first one is the hypergraph COOT \citep{Chowdhury21b} published in December 2021.
-Their work and ours are based on the same mathematical framework of \citep{Chowdhury19},
+Their work and ours are based on the same mathematical framework of \citet{Chowdhury19},
 which results in the same metric property. Apart from that, they pursue different research objectives,
 where COOT is used to explore the categorical properties of the space of measure hypernetworks.
 By contrast, we consider continuous COOT as the first step towards the analysis of
 entropic approximation, unbalanced extension and sample complexity.
 
 Our study on the entropic COOT also shares some resemblance to the approximation error of
-entropic GW in the paper of \citep{Zhang23} published in December 2022.
+entropic GW in the paper of \citet{Zhang23} published in December 2022.
 Their analysis and ours use the block approximation technique \citep{Carlier17}
 to show the convergence of the minimum and minimizer, and to quantify the approximation error.
 In particular, our result can be immediately extended to the GW setting. However,
