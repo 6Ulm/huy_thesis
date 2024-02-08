@@ -19,7 +19,7 @@ whose supports live in the same underlying space. Then, we study two important e
 of this problem. The first one is based on the relaxation of the hard marginal constraints,
 which results in the unbalanced OT. The second generalization
 considers the situation where the supports of the probability measures lie in
-incomparable ground spaces. This leads to the Gromov-Wasserstein distance,
+incomparable spaces. This leads to the Gromov-Wasserstein distance,
 whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein distance.
 
 \raggedbottom
@@ -31,7 +31,7 @@ whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein
 
 We present two viewpoints on the motivation of the OT problem:
 the Monge problem serves as the historical starting point and
-the Hausdorff distance later provides the intuition to the Gromov-Wasserstein distance.
+the Hausdorff distance later provides the intuition of the Gromov-Wasserstein distance.
 Then, we introduce some important theoritical properties of the Wasserstein distance,
 which are widely used in machine learning applications.
 Finally, we discuss in details the algorithmic and practical aspects of the
@@ -40,17 +40,17 @@ entropic approximation of the OT distance.
 \subsubsection{Motivation} \label{subsec:ot_motiv}
 
 \paragraph{Relation with Monge's problem}
-The original OT problem was first formulated by \citep{Monge81}. From a mathematical viewpoint,
-it aims to transport all the mass from one probability distribution to the other, so that
+The original OT problem was first formulated by \citet{Monge81}. From a mathematical viewpoint,
+it aims at transporting all the mass from one probability distribution to the other, so that
 the displacement cost is minimized. Typically, this cost is measured by a distance function which
 takes supports of the probability measures as inputs. Transporting from one probability measure
-$\mu$ to the other one $\nu$ is equivalent to finding a map $T$ such that $\nu = T_{\# \nu}$.
+$\mu$ to the other one $\nu$ is equivalent to finding a map $T$ such that $\nu = T_{\#} \mu$.
 \begin{definition}[Push-forward measure]
   Let $X, Y$ be two measurable spaces. Given a probability measure $\mu$ on $X$ and a
-  measurable map $T: X \to Y$, we call $T_{\# \mu} \in \cP(Y)$ the \textbf{push-forward} measure of
-  $\mu$ by $T$, defined by $T_{\# \mu}(E) = \mu(T^{-1}(E))$, for every $E \subset Y$. Equivalently,
+  measurable map $T: X \to Y$, we call $T_{\#} \mu \in \cP(Y)$ the \textbf{push-forward} measure of
+  $\mu$ by $T$, defined by $T_{\#} \mu(E) = \mu(T^{-1}(E))$, for every $E \subset Y$. Equivalently,
   for every measurable bounded function $\varphi: Y \to \bbR$, we have
-  $\int_Y \varphi \; d T_{\# \mu} = \int_X \varphi \circ T \; d\mu$.
+  $\int_Y \varphi \; d T_{\#} \mu = \int_X \varphi \circ T \; d\mu$.
   We also say $T$ is a \textbf{transport map} from $\mu$ to $\nu$.
 \end{definition}
 \begin{definition}[Monge's problem]
@@ -61,7 +61,7 @@ $\mu$ to the other one $\nu$ is equivalent to finding a map $T$ such that $\nu =
     \text{MOT}(\mu, \nu) = \inf_{T \in \cT(\mu, \nu)} \int_X c(x, T(x)) \; d\mu(x),
   \end{align}
 \end{definition}
-where $\cT(\mu, \nu) := \{T: X \to Y \text{ measurable such that } T_{\# \mu}= \nu \}$ is the
+where $\cT(\mu, \nu) := \{T: X \to Y \text{ measurable such that } T_{\#} \mu= \nu \}$ is the
 set of transport maps from $\mu$ to $\nu$.
 Despite the natural interpretation, the Monge's formulation has some major drawbacks.
 First, its objective function is nonconvex,
@@ -101,18 +101,18 @@ $X$ and $Y$, we obtain the famous Wasserstein distance of order $p$ \citep{Villa
 \end{align}
 Since $\cT(\mu, \nu) \subset U(\mu, \nu)$, we have $\text{MOT}(\mu, \nu) \geq \ot(\mu, \nu)$.
 Equality may hold, for example in the cases of the celebrated Brenier's theorem \citep{Brenier87}
-for continuous measures, and of the Birkhoff-von-Neumann theorem \citep{Birkhoff46}
-for the discrete ones.
+and the Birkhoff-von-Neumann theorem \citep{Birkhoff46} for continuous and discrete measures,
+respectively.
 
 \paragraph{Relation with Hausdorff distance}
 So far, we have seen the derivation of the OT from the Monge's problem.
 Now, we present another approach based on the Hausdorff distance.
-Most materials are taken from \citep{Memoli11}.
+Most materials are inspired from \citep{Memoli11}.
 
 Given a compact metric space $(Z, d)$, we denote $\cC(Z)$ the collection of all compact subsets of
 $Z$. The Hausdorff distance between $X, Y \in \cC(Z)$ is defined as
 \begin{align}
-    d_{H}^{(Z, d)}(X,Y) := \max \left( \sup_{x \in X} d(x,Y), \sup_{y \in Y} d(y,X) \right),
+    d_{H}^{(Z, d)}(X,Y) := \max \left\{ \sup_{x \in X} d(x,Y), \sup_{y \in Y} d(y,X) \right\},
 \end{align}
 where the distance between a point to a subset of a metric space is defined by
 $d(x,Y) := \inf_{y \in Y} d(x,y)$.
@@ -217,7 +217,7 @@ we have $\mu_n \rightharpoonup \mu$ if and only if $W_p(\mu_n, \mu) \to 0$
 (Theorem 7.12 in \citep{Villani03}).
 This topological property also holds for the integral probability metric \citep{Muller97},
 but not for other popular statistical divergences, namely the Kullback-Leibler divergence,
-total variation, Hellinger distance
+the total variation, or the Hellinger distance
 \footnote{More detailed comparison amongst divergences can be found in \citep{Gibbs02}.}.
 
 \paragraph{Duality theory}
@@ -256,7 +256,7 @@ is a reformulation of the primal problem as the maximization over all $1$-Lipsch
 which can be parametrized by neural networks.
 In practice, the the $1$-Wasserstein distance has been successfully used
 in the training of generative adversarial networks (GAN) \citep{Goodfellow14},
-thanks to the seminal work of \citep{Arjovsky17} on Wasserstein GAN (WGAN).
+thanks to the seminal work of \citet{Arjovsky17} on Wasserstein GAN (WGAN).
 There have been various extensions and improvements of WGAN, for example
 smoothed WGAN \citep{Sanjabi18}, WGAN-GP \citep{Gulrajani17}, WGAN-LP \citep{Petzka18},
 Sobolev-GAN \citep{Mroueh17}. It is also the motivation for other OT-based GAN methods, namely
@@ -280,8 +280,8 @@ uses the average of distances computed in the mini-batches as an estimation of t
 The "sliced" method \citep{Rabin12,Bonneel15} develops an alternative metric
 called \textit{Sliced Wasserstein distance}.
 It relies on the fact that computing the $1$-D Wasserstein distance boils down to sorting the
-point values, which only requires the complexity of $O(n \log n)$.
-Using the framework from statistical physics, \citep{Koehl19}
+point values, which operates with a complexity of $O(n \log n)$.
+Using the framework from statistical physics, \citet{Koehl19}
 approximate the OT distance by the free energy evaluated at sufficiently small temperature.
 From a more mathematical viewpoint, this idea is based on the interesting relation
 between the minimum and the logsumexp operation, where informally, one has that:
@@ -290,7 +290,7 @@ $\min f(x) = \lim_{\beta \to 0^+} -\frac{1}{\beta} \int e^{-\beta f(x)} dx$.
 \paragraph{Entropic OT problem}
 In this thesis, we focus on the line of works on the discrete entropic approximation
 \footnote{For a mathematical introduction in the general setting,
-interested readers may consult the lecture note of \citep{Nutz22}.} defined by:
+interested readers may consult the lecture note of \citet{Nutz22}.} defined by:
 for $\varepsilon > 0$,
 \begin{align}
   \label{eq:primal_ot}
@@ -302,10 +302,10 @@ the regularizer is the negative entropy defined by $H(P) = \sum_{i,j} P_{ij} (\l
 However, since $\kl(P | \mu \otimes \nu) = H(P) - H(\mu) - H(\nu)$, for any $P \in U(\mu, \nu)$,
 the two regularized problems are equivalent, up to a constant.
 Interestingly, the entropic OT is an even older problem than the unregularized one.
-It was already studied in the early 30's by \citep{Schrodinger32},
+It was already studied in the early 30's by \citet{Schrodinger32},
 under the name \textit{static Schrodinger bridge problem}.
 The entropic OT problem has attracted much attention to the
-machine learning community thanks to the seminal work of \citep{Cuturi13}.
+machine learning community thanks to the seminal work of \citet{Cuturi13}.
 
 Note that, the entropic regularization introduces bias,
 in the sense that $\ot_{\varepsilon}(\mu, \mu) \neq 0$, for any $\varepsilon > 0$.
@@ -337,8 +337,8 @@ Second, since entropic OT is a convex problem, strong duality holds and one has 
   - \varepsilon \; \left\langle \exp \left( \frac{f \oplus g - C}{\varepsilon} \right), \mu \otimes \nu \right\rangle.
 \end{align}
 Arguably, this is the most important premise in the study of the entropic approximation, which
-allows to develop and analyze many Sinkhorn-based algorithms (see \Cref{para:summary} for discussion).
-In particular, \citep{Genevay19} use the dual problem to show that entropic OT
+allows to develop and analyze many Sinkhorn-based algorithms.
+In particular, \citet{Genevay19} use the dual problem to show that entropic OT
 has better sample complexity than unregularized OT,
 though it fixes the bottleneck in the sample size by introducing a new one in the regularization.
 This issue can be mitigated, for example when the probability measures are sub-Gaussian \citep{Mena19}.
@@ -373,12 +373,12 @@ The Sinkhorn algorithm has two key advantages. First, since the iterates only re
 vector-matrix multiplication, they can be seamlessly parallerized.
 One can further speed up the computation,
 for example, by exploiting the structure of the kernel matrix
-\footnote{See Section 4.3 in \citep{Peyre19} and the excellent thesis of \citep{Feydy20} for more
+\footnote{See Section 4.3 in \citep{Peyre19} and the excellent thesis of \citet{Feydy20} for more
 implementation details.}. Second, it is enough to store only the dual vectors
-(which cost $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
+(which costs $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
 can be easily queried on demand.
 
-However, the smaller the regularization, the more it hurts the Sinkhorn algorithm.
+However, the smaller the regularization, the slower the Sinkhorn algorithm converges.
 First, if the number of iterations is not sufficiently large,
 the algorithm may fail to converge and the resulting transport plan can be inadmissible.
 To circumvent this issue, one can apply the rounding algorithm \citep{Altschuler17},
@@ -407,9 +407,9 @@ One can use the $\varepsilon$-scaling scheme \citep{Schmitzer19}
 converging to $\varepsilon$, then successively use the solution of the previous problem to
 initialize the next one. However, this can be very costly due to the amount of subproblems,
 while not necessarily ensuring the convergence to the true minimizer of the entropic OT problem.
-Recently, \citep{Thornton23a} leverage the fact that the dual vectors in unregularized OT problem
+Recently, \citet{Thornton23a} leverage the fact that the dual vectors in unregularized OT problem
 can admit closed-form expressions for $1$D-OT and Gaussian measures, and propose to use them
-as initialization. They empirically show that, this practice can result in much less iterations,
+as initialization. They empirically show that this practice can result in much less iterations,
 thus significantly speed up and improve the convergence of the Sinkhorn algorithm.
 
 \paragraph{Summary} \label{para:summary}
@@ -493,7 +493,7 @@ outliers, if any, must be matched regardless of the cost they induce.
 To circumvent these limitations, a straightforward solution is to control
 the difference between the marginal distributions of the transportation plan
 and the data by some discrepancy measure. This gives rise to the unbalanced OT (UOT),
-which was first proposed by \citep{Benamou03}.
+which was first proposed by \citet{Benamou03}.
 The theoretical and numerical aspects of this relaxation
 have been studied extensively \citep{Liero18,Chizat18b,Chizat18a,Khiem20}
 and have been gaining increasing attention in the machine learning community,
@@ -791,7 +791,7 @@ can be found in \Cref{alg:TI_Sinkhorn}.
 
 To analyze the convergence of TI-Sinkhorn, we introduce two norms:
 the supremum norm $||f||_{\infty} = \max_i | f_i|$ and the
-Hilber pseudo-norm $||f||_* = \frac{1}{2} \left( \max_i f_i - \min_i f_i \right)$.
+Hilbert pseudo-norm $||f||_* = \frac{1}{2} \left( \max_i f_i - \min_i f_i \right)$.
 Denote $\kappa_{\varepsilon}(\mu)$ the contraction rate of the softmin operator
 $\smin_{\varepsilon}^{\mu}$ for the norm $||f||_*$, meaning that
 \begin{align}
@@ -904,7 +904,7 @@ and semi-relaxed (either $\rho_1=\infty$ or $\rho_2=\infty$) OT settings.
 
 Another example of the Bregman divergence is the squared $l_2$-norm, where
 $D_{\varphi}(p, q) := \frac{|| p - q||^2}{2}$, with $\varphi(x) = \frac{||x||^2}{2}$. Interestingly,
-the MM iterate can also be computed explicitly in this case.
+the MM iterates can also be computed explicitly in this case.
 \begin{corollary}[Generalization of Equation 7 in \citep{Chapel21}]
   \label{coro:uot_l2_mm}
   For $\mu \in \bbR^m, \nu \in \bbR^n$ and $\gamma \in \bbR^{m \times n}$,  consider the
@@ -1009,13 +1009,13 @@ to compute the inter-space distance. Such situations are ubiquitous in practice.
 For example, images in source and target domains may have different resolutions. Even if they
 are vectorized by the last layers of neural networks, it is not unusual to have the
 embeddings of different dimensions. Even worse, in graph,
-such vectorial representation of the node may not even exist by default
-(though it can be learned), and only within-domain similarity matrix is available.
+such vectorial embedding of the node does not even exist (though it can be learned),
+and only within-domain similarity matrix is available.
 We also note that, in the finite-dimensional setting,
 one can still manipulate the formulation of the OT problem,
 in order to adapt the unequal-dimension supports of the measures \citep{Cai22,McCann20}.
 However, it is not clear how such methods are applied into practical situations.
-Until very recently, \citep{Sebbouh23} propose to learn simultaneously the transport plan and
+Until very recently, \citet{Sebbouh23} propose to learn simultaneously the transport plan and
 a cost matrix of the form $c(x, y) = \langle M x, y \rangle$, and show the effectiveness
 of this approach in the single-cell spatial transcriptomics and multiomics matching tasks.
 
@@ -1065,8 +1065,7 @@ the metric is no longer shared across spaces but must be specified for each indi
 As we will see, the relation between Wasserstein and Hausdorff distances presented
 in \Cref{subsec:ot_motiv} becomes very handy as it gives us a natural extension to
 the setting of mm-space. First, we introduce the Gromov-Hausdorff (GH) distance proposed
-by \citep{Gromov81} (see also Remark 7.3.12 in \citep{Burago01}).
-While we are mostly inspired by Chapter 4 in \citep{Memoli11},
+by \citet{Gromov81}. While we are mostly inspired by Chapter 4 in \citep{Memoli11},
 we perform a more thorough literature review, including the most recent development and
 applications of the GH-based distances in the OT and machine learning literature.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1090,7 +1089,7 @@ corresponds to the smallest Hausdorff distance.
 It is well known that the GH distance defines a metric on the space of compact metric spaces,
 up to isometry \citep{Gromov99,Burago01}. Interestingly, it also admits many
 equivalent reformulations and we will see that each of them gives rise to different
-distance in the space of mm-spaces, including the aforementioned GW distance.
+distances in the space of mm-spaces, including the aforementioned GW distance.
 Let us first introduce the following useful notions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{definition}[Pullback]
@@ -1142,14 +1141,15 @@ and for $p = \infty$,
 \end{align}
 where the infimum is taken over all $\pi \in U(\mu_X, \mu_Y)$ and $d \in \cD(d_X, d_Y)$.
 This distance can also be obtained from a more popular definition of the GH distance,
-also due to \citep{Gromov99}
+also due to \citet{Gromov99}
 \begin{align}
    \label{GH:first}
   \gh((X,d_X), (Y,d_Y)) = \inf_{Z, f, g} d_{ H}^{Z}(f(X), g(Y)),
 \end{align}
 where the infimum is taken over all metric spaces $(Z,d)$ and isometric embeddings
 $f: X \to Z$ and $g: Y \to Z$. It can be shown that Formulations \eqref{GH:zeroth} and \eqref{GH:first}
-are equivalent (see Appendix). Intuitively, Formulation \eqref{GH:first} implies that
+are equivalent (see Appendix \ref{subsec:appendix_gw}). Intuitively,
+Formulation \eqref{GH:first} implies that
 the GH distance can be alternatively obtained by projecting the two original metric spaces
 onto a common metric one, where the Hausdorff distance between the two embeddings can be computed.
 Moreover, each projection map must also preserve the within-space distance.
@@ -1174,12 +1174,12 @@ $f: X \to Z$ and $g: Y \to Z$.
 To the best of our knowledge, despite the well-established theory,
 the $L_p$-transportation distance has not yet found any applications in practice,
 due to the computational intractability of the optimization problem that it encodes.
-In the OT literature, there exist other works which also rely on
+In the OT and machine learning literature, there exist other works which also rely on
 this idea of projecting onto a common space.
-For example, \citep{Alaya22} study a variant of Formulation \eqref{D:alter} called
+For example, \citet{Alaya22} study a variant of Formulation \eqref{D:alter} called
 \textit{Sub-Embedding Robust Wasserstein}, or
-\citep{Paty19} propose the subspace robust Wasserstein projection,
-which projects onto a Grassmannian manifold, or \citep{Cai22} use orthogonal transformations
+\citet{Paty19} propose the subspace robust Wasserstein projection,
+which projects onto a Grassmannian manifold, or \citet{Cai22} use orthogonal transformations
 to project one space onto the other.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1219,7 +1219,7 @@ $\gw_{\infty} = D_{\infty}$ and $\gw_p \leq D_p$, for any $p \geq 1$.
 While bearing some similarity with Formulation \eqref{GH:second},
 the optimization problem in GW distance is
 much more feasibility to solve in practice. In particular, the maximization over
-the set of admissible distance in Formulation \eqref{GH:second} incurs an additional variable,
+the set of admissible distances in Formulation \eqref{GH:second} incurs an additional variable,
 which is difficult to optimize.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1231,7 +1231,7 @@ Thanks to Theorem 2.1 in \citep{Kalton99}, for bounded metric spaces, we have
   \sup_{\substack{(x_1, x_2) \in X^2 \\ (y_1, y_2) \in Y^2 \\
   (x_i, y_i) \in G(f,g)}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big| \\
   &= \frac{1}{2} \inf_{\substack{f: X \to Y \\ g: Y \to X}}
-  \max \Big( \Delta_{\infty}(f, X), \Delta_{\infty}(g, Y), \Delta_{\infty}(f,g, X, Y) \Big).
+  \max \Big\{ \Delta_{\infty}(f, X), \Delta_{\infty}(g, Y), \Delta_{\infty}(f,g, X, Y) \Big\}.
 \end{align}
 Here, the infimum is taken over all \textbf{arbitrary} maps $f$ and $g$, and
 \begin{itemize}
@@ -1262,7 +1262,7 @@ Here, the infimum is taken over all \textbf{arbitrary} maps $f$ and $g$, and
 The second equality holds, due to Remark 2 in \citep{Memoli05}. Interested readers can find
 more discussion on the practical use of Formulation \eqref{kalton_form} in
 Remark 4.5 in \citep{Memoli11b}.
-Recently, \citep{Zhang21} adapt this fourth formulation to the mm-space and propose
+Recently, \citet{Zhang21} adapt this fourth formulation to the mm-space and propose
 the bi-directional Gromov-Monge (BGM) distance defined as
 \begin{align}
   \text{BGM}_p(\cX, \cY) =
@@ -1275,7 +1275,7 @@ where
   \item[$\bullet$] $\Delta_{p}(g, Y) = || g^* d_X - d_Y ||_{L^p(Y^2, \mu_Y \otimes \mu_Y)}$.
   \item[$\bullet$] $\Delta_{p}(f,g, X, Y) = || (\id_X, g)^*d_X - (f, \id_Y)^*d_Y ||_{L^p(X \times Y, \mu_X \otimes \mu_Y)}$.
 \end{itemize}
-Another concurrent variant of BGM is proposed by \citep{Hur21},
+Another concurrent variant of BGM is proposed by \citet{Hur21},
 where they consider the reversible Gromov-Monge (RGM) distance
 \begin{align}
   \text{RGM}_2(\cX, \cY) = \inf_{(f,g) \in I(\mu_X, \mu_Y)} \Delta_2(f,g, X, Y),
@@ -1470,7 +1470,7 @@ an efficient approximation technique and additional structures on the cost tenso
 In this section, we discuss both components in more details.
 
 \subsubsection{Structure of the cost tensor}
-To handle the cost tensor, an efficient, yet easy to implement strategy is to make it
+To handle the cost tensor, an efficient, yet easy way to implement strategy is to make it
 as decomposable as possible. Given its form $C = |C^x - C^y|^p$, the decomposability
 can be achieved by choosing $p=2$. To see this, let us recall the following results.
 \begin{lemma}[Generalization of Proposition 1 in \citep{Peyre16}]
@@ -1492,7 +1492,7 @@ In particular, in the case of GW distance, for any $P \in U(\mu_X, \mu_Y)$, we h
 \end{align}
 where $\langle (C^x)^{\odot 2} \mu_X, \mu_X \rangle + \langle (C^y)^{\odot 2} \mu_Y, \mu_Y \rangle$
 is a constant independent of $P$ and has computational cost of $O(m^2 + n^2)$.
-The cost of $C^x P (C^y)^T$ is $O(m^2 n + n^2m)$.
+The cost of computing $C^x P (C^y)^T$ is $O(m^2 n + n^2m)$.
 So, the overall computational complexity is reduced from $O(m^2 n^2)$ to $O(m^2 n + n^2 m)$.
 Moreover, if the input matrices $C^x, C^y$ are factorizable,
 then this cost can be even further reduced, for both constant term and $C^x P (C^y)^T$.
@@ -1545,10 +1545,10 @@ a common limitation, where only local, but not global convergence is guaranteed.
 In what follows, we briefly discuss several solvers using this principle.
 We note that, however, in some particular situations, it is still possible to achieve the
 global convergence. For example, when $p=2$ and $C^x, C^y$ are squared Euclidean distance,
-\citep{Ryner23} propose to apply the cutting-plane method to a tractable relaxation of the GW problem
+\citet{Ryner23} propose to apply the cutting-plane method to a tractable relaxation of the GW problem
 and show that this algorithm converges to the global optimum of the GW problem.
 
-\paragraph{1. Condition gradient descent} \citep{Vayer19b} directly estimate the GW problem by using
+\paragraph{1. Condition gradient descent} \citet{Vayer19b} directly estimate the GW problem by using
 the Frank-Wolfe algorithm, also known as \textit{condition gradient descent}
 \citep{Frank56,Jaggi13}. More precisely, each iteration requires
 solving an unregularized OT problem, whose cost $C \otimes P^{(t)}$ is the gradient
@@ -1563,7 +1563,7 @@ one can also approximate the GW distance with entropic regularization.
 \end{align}
 for some relevant reference histogram $\gamma \in \bbR^{m \times n}_{> 0}$,
 for example, $\gamma = 1_{m \times n}$ corresponds to using the negative entropy as regularizer.
-To solve this regularized problem, \citep{Peyre16,Solomon16} propose to use projected gradient descent,
+To solve this regularized problem, \citet{Peyre16,Solomon16} propose to use projected gradient descent,
 where each iteration boils down to solving an entropic OT problem. More precisely,
 \begin{lemma}[Generalization of Proposition 2 in \citep{Peyre16}]
   \label{lemma:fgw_pgd}
@@ -1585,10 +1585,10 @@ where the sequence $(P^{(t)})_t$ converges empirically. However, the theoretical
 convergence analysis remains unexplored. As a side note,
 adding regularization to the GW distance also incurs bias,
 similar to the entropic OT. Inspired by the Sinkhorn divergence,
-\citep{Bunne19} apply the same strategy to debiase the entropic GW,
+\citet{Bunne19} apply the same strategy to debiase the entropic GW,
 but there is no theoritical guarantee with their approach.
 
-\paragraph{3. (Inexact) Bregman proximal point} Inspired by IPOT \citep{Xie20}, \citep{Xu19, Xu19b}
+\paragraph{3. (Inexact) Bregman proximal point} Inspired by IPOT \citep{Xie20}, \citet{Xu19, Xu19b}
 propose to use the Bregman proximal point (BPP) method, where at each iteration, we solve
 \begin{align}
   \min_{P \in U(\mu_X, \mu_Y)} \langle C \otimes P, P \rangle + \eta \; \kl(P | P^{(t)}).
@@ -1641,7 +1641,7 @@ then applying the BPP method discuss previously. Local linear convergence result
 is also established for hBPG.
 
 \paragraph{6. Saddle point approximation} Similar to \citep{Koehl19},
-\citep{Koehl23} use the framework from statistical physics and approximate the GW distance by
+\citet{Koehl23} use the framework from statistical physics and approximate the GW distance by
 the limit of a decreasing sequence of free energies. Rougly speaking, at each iteration,
 this boils down to iteratively estimating the free energy by using the saddle point approximation.
 Formally, we fix a decreasing sequence of temperatures $(\beta_t)_t$ converging to $0^+$.
@@ -1668,13 +1668,13 @@ the temperature tends to $0$, the convergence analysis of this algorithm remains
 \label{subsec:beyond_gw}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\paragraph{Fused GW distance} Structured data - an object made of two components:
+\paragraph{Fused GW distance} Structured data is an object made of two components:
 structure and feature information, is ubiquitous in practical situations.
 Typical examples include attributed graph, whose node is assigned with a label, or
 cortical surface whose vertice is associated to a vectorial representation of the
 functional activation map, or in supervised learning, the dataset is a set of example-label pairs.
 By construction, neither GW nor Wasserstein distance is designed to handle this kind of data.
-\citep{Vayer19b} propose a simple, yet efficient method called
+\citet{Vayer19b} propose a simple, yet efficient method called
 \textit{Fused GW} (FGW) distance, which is able to take into account both types of information.
 It is convenient to cast structured data as an attributed graph $\cX = (C^x, F^x, \mu_X)$,
 where $C^x$ is the similarity matrix, $F^x$ is the set of features associated to the nodes and
@@ -1705,7 +1705,7 @@ Joint-distribution OT \citep{Courty17}, or Transportation $L^p$ distance \citep{
 \paragraph{Marginal relaxation in GW distance} Inspired by the recent interest and development
 on UOT \citep{Liero18}, the GH-based distances between mm-spaces can be extended to
 the unbalanced setting. More precisely, given two mm-spaces
-$\cX = (X, d_X, \mu_X)$ and $\cY = (Y, d_Y, \mu_Y)$, \citep{Ponti20}
+$\cX = (X, d_X, \mu_X)$ and $\cY = (Y, d_Y, \mu_Y)$, \citet{Ponti20}
 study the unbalanced extension of the $L_p$-transportation distance called
 \textit{Sturm-Entropic-Transport distance}, defined as
 \begin{align}
@@ -1716,7 +1716,7 @@ where the infimum is taken over all complete and separable metric spaces $Z$ and
 isometric embeddings $f: X \to Z$ and $g: Y \to Z$.
 
 To compare compact mm-spaces,
-\citep{Sejourne20} propose the unbalanced GW (UGW) divergence: given two relaxation parameters
+\citet{Sejourne20} propose the unbalanced GW (UGW) divergence: given two relaxation parameters
 $\lambda_1, \lambda_2 > 0$ and two Csizar divergences $D_{\varphi_1}, D_{\varphi_2}$, they define
 \begin{align}
   \text{UGW}_{\lambda}(\cX, \cY) =
@@ -1738,7 +1738,7 @@ Lemma 4 in \citep{Khiem20} to show that, if $\pi^*$ is the solution of UGW, then
 \end{align}
 meaning that the minimum is a \textbf{quadratic} function of the minimizer.
 
-\citep{Zhang21} introduce the unbalanced bidirectional Gromov-Monge divergence defined as:
+\citet{Zhang21} introduce the unbalanced bidirectional Gromov-Monge divergence defined as:
 for $\lambda_x, \lambda_y > 0$,
 \begin{align}
     \text{UBGM}_{\lambda}(\cX, \cY) = \inf_{\substack{f: X \to Y \\ g: Y \to X}}
@@ -1910,7 +1910,7 @@ Inequality (\ref{eq:chen_teboulle}). Indeed,
 \subsection{Convergence analysis in the inexact setting}
 
 Despite the simplicity, it is difficult to analyze the convergence of INPUT.
-In particular, while it is an immediate extension of the work of \citep{Xie20} on the balanced OT,
+In particular, while it is an immediate extension of the work of \citet{Xie20} on the balanced OT,
 their proof techniques of the convergence can not be adapted to the unbalanced setting.
 This is because they rely on the property of the set of admissible couplings,
 which is not available in the UOT. Moreover, their assumptions and conditions are also
@@ -1957,7 +1957,7 @@ More precisely, the first one considers the situation of small relaxations and l
 It is an easy test and we expect that all methods perform well.
 In the second one, we fix the relaxations but choose small regularization
 in order to hinder convergence of Sinkhorn-based methods.
-The third scenario uses fixed regularization but very large marginal relaxations to obstruct
+The third scenario uses fixed regularization but very large marginal relaxations to slow down
 the convergence of MM.
 The last one combines small regularization and very large relaxations. It is designed to challenge
 both Sinkhorn and MM methods.
@@ -1986,7 +1986,7 @@ even though this advantage quickly diminishes when regularization is small.
     \begin{tabular}[c]{@{}c@{}}0.275 $\pm$ 0.011\\ {\color{blue}{{41.618}}} \end{tabular} &
     \begin{tabular}[c]{@{}c@{}}55.946 $\pm$ 5.893\\ 40.588\end{tabular} &
     \begin{tabular}[c]{@{}c@{}}{\color{red}{{0.020 $\pm$ 0.002}}} \\ 57.667\end{tabular} &
-    \begin{tabular}[c]{@{}c@{}}Not converge at \\ this tolerance\end{tabular} \\ \cline{2-6}
+    \begin{tabular}[c]{@{}c@{}}No convergence at \\ this tolerance\end{tabular} \\ \cline{2-6}
   \multicolumn{1}{|c|}{} &
     \textbf{TI-v1} &
     \begin{tabular}[c]{@{}c@{}}0.389 $\pm$ 0.018\\ {\color{blue}{{41.618}}}\end{tabular} &
