@@ -1,10 +1,10 @@
-\chapter{Technical Background on Optimal Transport}
+\chapter{Technical background on optimal transport}
 \label{chap:1}
 
 % \localtableofcontents
 \renewcommand{\contentsname}{Contents}
 \localtableofcontents*
-\chaptermark{\textbf{Technical Background on Optimal Transport}}
+\chaptermark{\textbf{Technical background on optimal transport}}
 
 \hfill \break
 In this chapter, we provide relevant technical background to three problems:
@@ -45,6 +45,7 @@ it aims at transporting all the mass from one probability distribution to the ot
 the displacement cost is minimized. Typically, this cost is measured by a distance function which
 takes supports of the probability measures as inputs. Transporting from one probability measure
 $\mu$ to the other one $\nu$ is equivalent to finding a map $T$ such that $\nu = T_{\#} \mu$.
+Mathematically speaking, we define the Monge's problem as follows.
 \begin{definition}[Push-forward measure]
   Let $X, Y$ be two measurable spaces. Given a probability measure $\mu$ on $X$ and a
   measurable map $T: X \to Y$, we call $T_{\#} \mu \in \cP(Y)$ the \textbf{push-forward} measure of
@@ -285,7 +286,7 @@ Using the framework from statistical physics, \citet{Koehl19}
 approximate the OT distance by the free energy evaluated at sufficiently small temperature.
 From a more mathematical viewpoint, this idea is based on the interesting relation
 between the minimum and the logsumexp operation, where informally, one has that:
-$\min f(x) = \lim_{\beta \to 0^+} -\frac{1}{\beta} \int e^{-\beta f(x)} dx$.
+$\min f(x) = \lim_{\beta \to +\infty} -\frac{1}{\beta} \log \int e^{-\beta f(x)} dx$.
 
 \paragraph{Entropic OT problem}
 In this thesis, we focus on the line of works on the discrete entropic approximation
@@ -378,7 +379,7 @@ implementation details.}. Second, it is enough to store only the dual vectors
 (which costs $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
 can be easily queried on demand.
 
-However, the smaller the regularization, the slower the Sinkhorn algorithm converges.
+However, the smaller the regularization, the more slowly the Sinkhorn algorithm converges.
 First, if the number of iterations is not sufficiently large,
 the algorithm may fail to converge and the resulting transport plan can be inadmissible.
 To circumvent this issue, one can apply the rounding algorithm \citep{Altschuler17},
@@ -564,12 +565,13 @@ since it allows to show that the UOT is robust to outliers.
   the noisy measure. Then, for any nonnegative finite Borel measures $\nu$
   with compact support $F$, we have
   \begin{align}
-    \label{eq:ot_robust}
+    \label{eq:ot_sensitive}
     \ot(\widetilde{\mu}, \nu) \geq
     (1 - \alpha) \inf_{(x, y) \in E_o \times F} c(x, y),
   \end{align}
   whereas
   \begin{align}
+    \label{eq:uot_robust}
     \uot_{\rho}(\widetilde{\mu}, \nu) \leq \alpha \uot_{\rho}(\mu, \nu) +
     (1 - \alpha) M
     \left( 1 - \exp \left( -\frac{K}{M} \right) \right),
@@ -588,12 +590,12 @@ since it allows to show that the UOT is robust to outliers.
   Taking the infimum over $U(\widetilde{\mu}, \nu)$, we obtain the upper bound of OT.
   The lower bound on UOT follows immediately from the proof of Lemma 1.1 in \citep{Fatras21}.
 \end{proof}
-Clearly, the behavior of the outliers is always controlled in UOT.
-Thanks to the marginal relaxation, if the outlier is too impactful,
+Inequality \eqref{eq:uot_robust} indicates that the behavior of the outliers is always controlled
+in UOT. Thanks to the marginal relaxation, if the outlier is too impactful,
 its impact will quickly saturate to $0$, meaning that it receives no mass from other points.
 By contrast, this is not the case for balanced OT, since every point (including outliers)
 must be aligned regardless of its cost, due to the marginal constraints. The right-hand side of
-Inequality \eqref{eq:ot_robust} can be made arbitrarily large by taking outliers "far" enough
+Inequality \eqref{eq:ot_sensitive} can be made arbitrarily large by taking outliers "far" enough
 from the clean data.
 
 \subsubsection{Optimization and algorithm} \label{sub:uot_optim}
@@ -605,8 +607,6 @@ be approximated with entropic regularization. The main advantages of this approa
 well-understood convergence analysis \citep{Chizat18a}, statistical properties \citep{Sejourne19},
 GPU-friendly implementation, strong convexity and smoothness coming from the dual problem,
 making it a suitable training loss for neural networks.
-While entropic regularization also introduces bias to the UOT, it is possible to debiase
-using the same trick as in the balanced counterpart \citep{Sejourne19}.
 
 It is important to note that, in the OT literature, the entropic regularization
 can be referred to two different regularizers: the negative entropy \citep{Frogner15, Chizat18a} and
@@ -1011,13 +1011,13 @@ are vectorized by the last layers of neural networks, it is not unusual to have 
 embeddings of different dimensions. Even worse, in graph,
 such vectorial embedding of the node does not even exist (though it can be learned),
 and only within-domain similarity matrix is available.
-We also note that, in the finite-dimensional setting,
-one can still manipulate the formulation of the OT problem,
-in order to adapt the unequal-dimension supports of the measures \citep{Cai22,McCann20}.
-However, it is not clear how such methods are applied into practical situations.
-Until very recently, \citet{Sebbouh23} propose to learn simultaneously the transport plan and
-a cost matrix of the form $c(x, y) = \langle M x, y \rangle$, and show the effectiveness
-of this approach in the single-cell spatial transcriptomics and multiomics matching tasks.
+% We also note that, in the finite-dimensional setting,
+% one can still manipulate the formulation of the OT problem,
+% in order to adapt the unequal-dimension supports of the measures \citep{Cai22,McCann20}.
+% However, it is not clear how such methods are applied into practical situations.
+% Until very recently, \citet{Sebbouh23} propose to learn simultaneously the transport plan and
+% a cost matrix of the form $c(x, y) = \langle M x, y \rangle$, and show the effectiveness
+% of this approach in the single-cell spatial transcriptomics and multiomics matching tasks.
 
 In this section, we present a metric which can be used to compare incomparable spaces,
 termed \textbf{Gromov-Wasserstein} (GW) distance introduced by \citep{Memoli07,Memoli11}
@@ -1207,7 +1207,7 @@ for $1 \leq p < \infty$,
 \end{align}
 and for $p = \infty$,
 \begin{align}
-    \text{GW}_{\infty}(\cX, \cY) &:=
+    \gw_{\infty}(\cX, \cY) &:=
     \inf_{ \pi \in U(\mu_X, \mu_Y)} || d_X - d_Y ||_{L^{\infty}(R(\pi) \times R(\pi))} \\
     &= \inf_{ \pi \in U(\mu_X, \mu_Y)}
     \sup_{\substack{(x_1,y_1) \in R(\pi) \\ (x_2,y_2) \in R(\pi)}}
@@ -1390,18 +1390,18 @@ The following result is very handy as it allows us to flexibly switch between th
   \label{GW_mGW}
   Let $\cX$ and $\cY$ be two measure networks, then
   \begin{align}
-    \text{GW}(\cX, \cY) = \inf_{\cZ \in \ms(\cX)} \text{GM}(\cZ, \cY)
+    \gw(\cX, \cY) = \inf_{\cZ \in \ms(\cX)} \text{GM}(\cZ, \cY)
     = \inf_{\cZ \in \ms(\cY)} \text{GM}(\cZ, \cX).
   \end{align}
   Moreover, the infima are always attained: there exist two measure networks $\cZ_x \in \ms(\cX)$ and
   $\cZ_y \in \ms(\cY)$ such that
-  $\text{GW}(\cX, \cY) = \text{GM}(\cZ_x, \cY) = \text{GM}(\cZ_y, \cX)$.
+  $\gw(\cX, \cY) = \text{GM}(\cZ_x, \cY) = \text{GM}(\cZ_y, \cX)$.
 \end{corollary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition}[Relations of GW and GM with isomorphism] \label{prop:GW_iso}
   Let $\cX$ and $\cY$ be two measure networks.
   \begin{enumerate}
-    \item $\cX$ and $\cY$ are weakly isomorphic if and only if $\text{GW}(\cX, \cY) = 0$.
+    \item $\cX$ and $\cY$ are weakly isomorphic if and only if $\gw(\cX, \cY) = 0$.
     \item $\cX$ and $\cY$ are semi-strongly isomorphic if and only if
     $\text{GM}(\cX, \cY) = \text{GM}(\cY, \cX) = 0$.
   \end{enumerate}
@@ -1411,7 +1411,7 @@ The following result is very handy as it allows us to flexibly switch between th
 \begin{proof}
 If $\cX$ and $\cY$ are weakly isormorphic, then there exists a common mass splitting
 $\cZ$ of $\cX$ and $\cY$, which means $\text{GM}(\cZ, \cY) = 0$. By \Cref{GW_mGW},
-$\text{GW}(\cX, \cY) = \text{GM}(\cZ, \cY) = 0$. Conversely, if $\text{GW}(\cX, \cY) = 0$,
+$\gw(\cX, \cY) = \text{GM}(\cZ, \cY) = 0$. Conversely, if $\gw(\cX, \cY) = 0$,
 then by \Cref{GW_mGW}, there exists $\cZ \in \ms(\cX)$ such that $\text{GM}(\cZ, \cY) = 0$.
 But this means $\cZ \in \ms(\cY)$. We conclude that $\cX$ and $\cY$ are weakly isormorphic
 since $\cZ$ is the common mass splitting. The equivalence between semi-strong isormorphism and
@@ -1644,7 +1644,7 @@ is also established for hBPG.
 \citet{Koehl23} use the framework from statistical physics and approximate the GW distance by
 the limit of a decreasing sequence of free energies. Rougly speaking, at each iteration,
 this boils down to iteratively estimating the free energy by using the saddle point approximation.
-Formally, we fix a decreasing sequence of temperatures $(\beta_t)_t$ converging to $0^+$.
+Formally, we fix a increasing sequence of inverse temperatures $(\beta_t)_t$ converging to $+\infty$.
 At the iteration $t$, set $Q^{(0)} = P^{(t-1)}$. Then, for $k \geq 1$,
 run the following iterative scheme until convergence.
 \begin{enumerate}
@@ -1661,7 +1661,7 @@ run the following iterative scheme until convergence.
 Finally, set $P^{(t)} = Q^{(k)}$ and repeat the procedure.
 Here $\varphi(x) = \frac{e^{-x}}{e^{-x} - 1} + \frac{1}{x}$, for $x \neq 0$ and $\varphi(0) = 1/2$.
 In theory, while the GW distance is known to be the limit of the free energy when
-the temperature tends to $0$, the convergence analysis of this algorithm remains unexplored.
+the temperature tends to $0^+$, the convergence analysis of this algorithm remains unexplored.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Beyond GW distance}

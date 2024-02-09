@@ -86,23 +86,23 @@ GW distance mentioned above. We summarize our contributions as follows:
     to the heterogeneous domain adaptation in ML.
     %\item runtime
 \end{enumerate}
-The paper is organized as follows. Section 2 presents key notions from the OT theory
-utilized in the rest of the paper. Section 3 presents our proposed AGW formulation and
-analyzes its theoretical properties. In Section 4, we present several empirical studies
-for the single-cell alignment task and demonstrate the applicability of our method to
-the heterogeneous domain adaptation task. We conclude our paper in Section 5 with
-a discussion of potential future work.
+% The paper is organized as follows. Section 2 presents key notions from the OT theory
+% utilized in the rest of the paper. Section 3 presents our proposed AGW formulation and
+% analyzes its theoretical properties. In Section 4, we present several empirical studies
+% for the single-cell alignment task and demonstrate the applicability of our method to
+% the heterogeneous domain adaptation task. We conclude our paper in Section 5 with
+% a discussion of potential future work.
 
-\paragraph{Notations} In what follows, we denote by
-$\Sigma_{n}=\{ p \in \bbR_{> 0}^n: \sum_{i=1}^{n} p_{i}=1\}$
-the simplex histogram with $n$ bins. We use $\otimes$ for tensor-matrix multiplication,
-\ie, $L \otimes B$ is the matrix $(\sum_{k,l} L_{ijkl} B_{kl})_{i,j}$ for a $4$D-tensor $L$ and
-a matrix $B$. We use $\langle \cdot, \cdot \rangle$ for the matrix scalar product associated with
-the Frobenius norm $\|\cdot\|_{F}$. We write $1_d \in \bbR^d$ for a
-$d$-dimensional vector of ones. We use the terms ``coupling matrix'', ``transport plan''
-and ``correspondence matrix'' interchangeably.
-A point in the space can also be called ``an example'' or ``a sample''.
-Given an integer $n \geq 1$, denote $[n] := \{ 1, ..., n\}$.
+% \paragraph{Notations} In what follows, we denote by
+% $\Sigma_{n}=\{ p \in \bbR_{> 0}^n: \sum_{i=1}^{n} p_{i}=1\}$
+% the simplex histogram with $n$ bins. We use $\otimes$ for tensor-matrix multiplication,
+% \ie, $L \otimes B$ is the matrix $(\sum_{k,l} L_{ijkl} B_{kl})_{i,j}$ for a $4$D-tensor $L$ and
+% a matrix $B$. We use $\langle \cdot, \cdot \rangle$ for the matrix scalar product associated with
+% the Frobenius norm $\|\cdot\|_{F}$. We write $1_d \in \bbR^d$ for a
+% $d$-dimensional vector of ones. We use the terms ``coupling matrix'', ``transport plan''
+% and ``correspondence matrix'' interchangeably.
+% A point in the space can also be called ``an example'' or ``a sample''.
+% Given an integer $n \geq 1$, denote $[n] := \{ 1, ..., n\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Augmented Gromov-Wasserstein}
@@ -156,7 +156,7 @@ interpolating between them will restrict each other's invariants. Additionally,
 interpolating with COOT is a natural way to introduce raw feature alignments in GW,
 which allows for leveraging priors on them. We call this interpolation \textbf{Augmented GW} (AGW).
 Recall that a weighted matrix is the triplet $\cX = (X, \mu_1^X, \mu_2^X)$, where
-$X \in \bbR^{n_x \times d_x}, \mu_1^X \in \Sigma_{n_x}$ and $\mu_2^X \in \Sigma_{d_x}$.
+$X \in \bbR^{n_x \times d_x}, \mu_1^X \in \Delta_{n_x}$ and $\mu_2^X \in \Delta_{d_x}$.
 Given $\alpha \in [0,1]$, we define the AGW between two weighted matrices $\cX$ and $\cY$ as
 \begin{align}
 \label{eq:scootr}

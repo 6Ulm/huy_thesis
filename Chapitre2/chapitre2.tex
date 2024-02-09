@@ -1,10 +1,10 @@
 
-\chapter[Contribution to CO-Optimal Transport]{Contribution to CO-Optimal Transport}
+\chapter[Contributions to CO-Optimal Transport]{Contributions to CO-Optimal Transport}
 \label{chap:coot}
 
 \renewcommand{\contentsname}{Contents}
 \localtableofcontents*
-\chaptermark{\textbf{Contribution to CO-Optimal Transport}}
+\chaptermark{\textbf{Contributions to CO-Optimal Transport}}
 
 \hfill \break
 This chapter presents two contributions to the CO-Optimal Transport (COOT).
@@ -14,7 +14,7 @@ It unifies several popular OT methods under its umbrella by promoting structural
 on the coupling. We show that incorporating such information into MMOT results in an
 instance of a difference of convex (DC) programming problem allowing us to solve it numerically.
 Despite high computational cost, the solutions provided by DC optimization are usually
-as qualitative as those obtained using currently employed optimization schemes.
+as qualitative as those obtained using available optimization schemes.
 
 The second contribution is on the continuous COOT and its entropic approximation.
 We consider a generalization of measure network called \textit{measure hypernetwork}
@@ -159,7 +159,7 @@ one can safely drop the equality constraint during the optimization.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
-We will mostly follow the terminology and concepts proposed in the published work of \citet{Chowdhury21b}.
+We will mostly follow the terminology and concepts proposed in \citep{Chowdhury21b}.
 
 \subsection{Formulation and preliminary results}
 
@@ -378,7 +378,7 @@ then we can quantify the approximation error as follows.
   Given two measure networks $\cX = (X, \mu_X, c_X)$ and $\cY = (Y, \mu_Y, c_Y)$.
   Suppose that $X$ is bounded subset of $\bbR^{d_x}$ and $Y$ is a bounded subset
   of $\bbR^{d_y}$, where $\diam(X), \diam(Y) \leq D$.
-  Denote $d = \max(d_x, d_y)$. Suppose there exist a constants $q > 0$ such that
+  Denote $d = \max(d_x, d_y)$. Suppose there exists a constants $q > 0$ such that
   $c_X(x_1, x_2) = \vert\vert x_1 - x_2 \vert\vert^q$, for every $(x_1,x_2) \in X^2$, and
   $c_Y(y_1, y_2) = \vert\vert y_1 - y_2 \vert\vert^q$, for every $(y_1,y_2) \in Y^2$. Then,
   \begin{equation}
@@ -519,7 +519,7 @@ could have benefited from a prior regarding the semantic relationships between t
 %We can cite other examples motivating the introduction of structural constraints in MMOT problem but the bottom line of it remains unchanged: imposing a certain structure on the optimal coupling tensor is a way of incorporating the human-based priors to the MMOT problem that reflect the domain knowledge about the problem at hand. We now proceed to the formal introduction of this idea.
 
 \subsubsection{Factored MMOT and its relaxation}
-We start by giving several definitions used in the following parts of the paper.
+We start by giving several definitions used in the following parts of this section.
 %We call $P \in \bbR^{a_1 \times ... \times a_N}$ a $N$-D tensor. When $N=1$, we simply call it a vector and when $N=2$,
 %it is a matrix.
 \begin{definition}[Tuple partition]
