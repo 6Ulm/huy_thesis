@@ -34,7 +34,7 @@ then $(\nabla h(\pi))_{ij} = \log (\pi_{\#1})_i - \log \alpha_i$, for every $j$.
 \end{equation}
 where the last inequality is due to the data pre-processing inequality.
 This means that $h$ is $1$-relatively smooth \wrt the KL divergence.
-We conclude that $F$ is $(\lambda_1 + \lambda_2 + \varepsilon)$-relatively smooth.
+We conclude that $F$ is $(\rho_1 + \rho_2 + \varepsilon)$-relatively smooth.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -199,13 +199,13 @@ $\vert \xi_1 - \xi_2 \vert^p: (X_1^s \times X_2^s) \times (X_1^f \times X_2^f) \
 \end{equation}
 and write the objective function of generalized COOT as
 \begin{equation}
-    F_{\lambda}(\pi^s, \pi^f) = \iint |\xi_1 - \xi_2|^p \mathrm d\pi^s \mathrm d \pi^f
-    + \sum_{k=1}^2\lambda_k D_k(\pi^s_{\#k} \otimes \pi^f_{\#k} \vert \mu^s_k \otimes \mu^f_k).
+    F_{\rho}(\pi^s, \pi^f) = \iint |\xi_1 - \xi_2|^p \mathrm d\pi^s \mathrm d \pi^f
+    + \sum_{k=1}^2\rho_k D_k(\pi^s_{\#k} \otimes \pi^f_{\#k} \vert \mu^s_k \otimes \mu^f_k).
 \end{equation}
 The generalized COOT now reads compactly as
 \begin{equation} \label{eq:ucoot_copy}
   \inf_{\substack{\pi^s \in \cM^+(X_1^s \times X_2^s) \\
-  \pi^f \in \cM^+(X_1^f \times X_2^f) \\ m(\pi^s) = m(\pi^f)}} F_{\lambda}(\pi^s, \pi^f)
+  \pi^f \in \cM^+(X_1^f \times X_2^f) \\ m(\pi^s) = m(\pi^f)}} F_{\rho}(\pi^s, \pi^f)
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -254,7 +254,7 @@ We will prove a more general version of \Cref{prop:existence}.
     \item The entropy functions $\phi_1$ and $\phi_2$ are superlinear, \ie,
     $(\phi_1)'_{\infty} = (\phi_2)'_{\infty} = \infty$.
     \item The function $\vert \xi_1 - \xi_2 \vert^p$ has compact sublevels in $S$ and
-    $\inf_{S} \vert \xi_1 - \xi_2 \vert^p + \lambda_1 (\phi_1)'_{\infty} + \lambda_2 (\phi_2)'_{\infty} > 0$.
+    $\inf_{S} \vert \xi_1 - \xi_2 \vert^p + \rho_1 (\phi_1)'_{\infty} + \rho_2 (\phi_2)'_{\infty} > 0$.
   \end{enumerate}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -282,9 +282,9 @@ We will prove a more general version of \Cref{prop:existence}.
     \end{equation}
   Thus, Problem \eqref{eq:ucoot_copy} can be rewritten as
   \begin{equation}
-    \ucoot_{\lambda}(\cX_1, \cX_2) =
+    \ucoot_{\rho}(\cX_1, \cX_2) =
     \inf_{\pi \in E_{uco}} \int_{S} \vert \xi_1 - \xi_2 \vert^p
-    \mathrm d\pi + \sum_{k=1,2} \lambda_k D_{\phi_k}(\pi_{\# k} \vert \mu_k),
+    \mathrm d\pi + \sum_{k=1,2} \rho_k D_{\phi_k}(\pi_{\# k} \vert \mu_k),
   \end{equation}
   where
   \begin{equation}
@@ -295,15 +295,15 @@ We will prove a more general version of \Cref{prop:existence}.
   Define
   \begin{equation}
     L(\pi):= \int_{S} \vert \xi_1 - \xi_2 \vert^p \mathrm d \pi +
-    \sum_{k=1,2} \lambda_k D_{\phi_k}(\pi_{\# k} \vert \mu_k).
+    \sum_{k=1,2} \rho_k D_{\phi_k}(\pi_{\# k} \vert \mu_k).
   \end{equation}
   By Jensen's inequality, we have
   \begin{equation}
     \begin{split}
       L(\pi) &\geq m(\pi) \inf_{S} \vert \xi_1 - \xi_2 \vert^p +
-      \sum_{k=1,2} \lambda_k m(\mu_k) \phi_k \Big( \frac{m(\pi_{\# k})}{m(\mu_k)} \Big) \\
+      \sum_{k=1,2} \rho_k m(\mu_k) \phi_k \Big( \frac{m(\pi_{\# k})}{m(\mu_k)} \Big) \\
       &= m(\pi) \bigg[ \inf_{S} \vert \xi_1 - \xi_2 \vert^p +
-      \sum_{k=1,2} \lambda_k \frac{m(\mu_k)}{m(\pi)} \phi_k
+      \sum_{k=1,2} \rho_k \frac{m(\mu_k)}{m(\pi)} \phi_k
       \Big( \frac{m(\pi)}{m(\mu_k)} \Big) \bigg],
     \end{split}
   \end{equation}
@@ -350,7 +350,7 @@ We will prove a more general version of \Cref{prop:existence}.
   Suppose that $\cX_1$ and $\cX_2$ are two finite sample-feature spaces such that
   $(X^s_1, X^s_2)$ and $(X^f_1, X^f_2)$
   have the same cardinality and are equipped with the uniform measures
-  $\mu_1^s = \mu_2^s$, $\mu_1^f = \mu_2^f$. Then $\ucoot_{\lambda}(\cX_1, \cX_2) = 0$
+  $\mu_1^s = \mu_2^s$, $\mu_1^f = \mu_2^f$. Then $\ucoot_{\rho}(\cX_1, \cX_2) = 0$
   if and only if there exist perfect alignments between rows (samples) and between
   columns (features) of the interaction matrices $\xi_1$ and $\xi_2$.
 \end{claim}
@@ -361,25 +361,25 @@ We will prove a more general version of \Cref{prop:existence}.
   under the assumptions on $\cX_1$ and $\cX_2$, we have
   $\coot(\cX_1, \cX_2) = 0$ if and only if there exist perfect alignments
   between rows (samples) and between columns (features) of the interaction matrices $\xi_1$ and
-  $\xi_2$. So, it is enough to prove that $\ucoot_{\lambda}(\cX_1, \cX_2) = 0$
+  $\xi_2$. So, it is enough to prove that $\ucoot_{\rho}(\cX_1, \cX_2) = 0$
   if and only if $\coot(\cX_1, \cX_2) = 0$.
 
   Let $(\pi^s, \pi^f)$ be a pair of equal-mass couplings such that
-  $\ucoot_{\lambda}(\cX_1, \cX_2) = 0$. It follows that
+  $\ucoot_{\rho}(\cX_1, \cX_2) = 0$. It follows that
   $\pi^s_{\#k} \otimes \pi^f_{\#k} = \mu_k^s \otimes \mu_k^f$, for $k=1,2$. Consequently,
   $m(\pi^s) m(\pi^f) = m(\mu_1^s) m(\mu_1^f) = 1$, so $m(\pi^s) = m(\pi^f) = 1$. Now, we have
   $\int_{X_k^s} \mathrm d \pi^s_{\#k} \; \mathrm d \pi^f_{\#k}
   = \int_{X_k^s} \mathrm d\mu_k^s \; \mathrm d\mu_k^f$, or equivalently,
   $\pi^f_{\#k} = \mu_k^f$. Similarly, $\pi^s_{\#k} = \mu_k^s$, meaning that
   $\pi^s \in U(\mu_1^s, \mu_2^s)$ and $\pi^f \in U(\mu_1^f, \mu_2^f)$. Thus,
-  $\coot(\cX_1, \cX_2) = \ucoot_{\lambda}(\cX_1, \cX_2) = 0$.
+  $\coot(\cX_1, \cX_2) = \ucoot_{\rho}(\cX_1, \cX_2) = 0$.
 
   For the other direction, suppose that $\coot(\cX_1, \cX_2) = 0$.
   Let $(\pi^s, \pi^f)$ be a pair of couplings such that $\coot(\cX_1, \cX_2) = 0$.
   As $\pi^s \in U(\mu_1^s, \mu_2^s)$ and $\pi^f \in U(\mu_1^f, \mu_2^f)$, one has
-  $\coot(\cX_1, \cX_2) = F_{\lambda}(\pi^s, \pi^f) \geq
-  \ucoot_{\lambda}(\cX_1, \cX_2) \geq 0$,
-  for every $\lambda_1, \lambda_2 > 0$. So, $\ucoot_{\lambda}(\cX_1, \cX_2) = 0$.
+  $\coot(\cX_1, \cX_2) = F_{\rho}(\pi^s, \pi^f) \geq
+  \ucoot_{\rho}(\cX_1, \cX_2) \geq 0$,
+  for every $\rho_1, \rho_2 > 0$. So, $\ucoot_{\rho}(\cX_1, \cX_2) = 0$.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -572,8 +572,8 @@ Then:
     \begin{split}
       \ucoot(\widetilde{\cX_1}, \cX_2) &\leq \alpha_s\alpha_f \ucoot(\cX_1, \cX_2) +
       \Delta_{\infty}(Ms + q)t \\
-      &+ \frac{ts}{M}(\ucoot(\cX_1, \cX_2) - (\lambda_1 + \lambda_2)(1-M)^2) \\
-      &+ (\lambda_1 + \lambda_2) \big[ s M \varphi(t) + 2q t \varphi(t)
+      &+ \frac{ts}{M}(\ucoot(\cX_1, \cX_2) - (\rho_1 + \rho_2)(1-M)^2) \\
+      &+ (\rho_1 + \rho_2) \big[ s M \varphi(t) + 2q t \varphi(t)
       + s(1-M)(1-t) + q(1-t)^2 \big].
     \end{split}
   \end{equation}
@@ -599,10 +599,10 @@ Then:
   where
   \begin{equation}
       \begin{split}
-          A' &= \Delta_{\infty}(Ms + q) + s(M-1) + \frac{s}{M}\ucoot(\cX_1, \cX_2) - \frac{s}{M}(\lambda_1 + \lambda_2)(1-M)^2 \\
-          &+ 2(\lambda_1 + \lambda_2) (1-\alpha_s\alpha_f - sM) \\
-          & \leq \Delta_{\infty}(M + 1) + M + \frac{1}{M}\ucoot(\cX_1, \cX_2) + 2(\lambda_1 + \lambda_2) (1-\alpha_s\alpha_f) = A \\
-          B' &= 2sM(\lambda_1 + \lambda_2) (1-\alpha_s\alpha_f) \leq 2M(\lambda_1 + \lambda_2) (1-\alpha_s\alpha_f) = B.
+          A' &= \Delta_{\infty}(Ms + q) + s(M-1) + \frac{s}{M}\ucoot(\cX_1, \cX_2) - \frac{s}{M}(\rho_1 + \rho_2)(1-M)^2 \\
+          &+ 2(\rho_1 + \rho_2) (1-\alpha_s\alpha_f - sM) \\
+          & \leq \Delta_{\infty}(M + 1) + M + \frac{1}{M}\ucoot(\cX_1, \cX_2) + 2(\rho_1 + \rho_2) (1-\alpha_s\alpha_f) = A \\
+          B' &= 2sM(\rho_1 + \rho_2) (1-\alpha_s\alpha_f) \leq 2M(\rho_1 + \rho_2) (1-\alpha_s\alpha_f) = B.
       \end{split}
   \end{equation}
   In both inequalities, we use the fact that $s \leq 1 - \alpha_s \alpha_f \leq 1$.
@@ -627,9 +627,9 @@ Then:
     \begin{equation}
       \begin{split}
         \varepsilon \kl(\pi_{\varepsilon} \vert \mu^s \otimes \mu^f)
-        &\leq F_{\lambda}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f) +
+        &\leq F_{\rho}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f) +
         \varepsilon \kl(\pi_{\varepsilon} \vert \mu^s \otimes \mu^f) \\
-        &\leq F_{\lambda} \left( \sqrt{\frac{m(\mu^f)}{m(\mu^s)}} \mu^s, \sqrt{\frac{m(\mu^s)}{m(\mu^f)}} \mu^f \right) +
+        &\leq F_{\rho} \left( \sqrt{\frac{m(\mu^f)}{m(\mu^s)}} \mu^s, \sqrt{\frac{m(\mu^s)}{m(\mu^f)}} \mu^f \right) +
         \varepsilon \kl( \mu^s \otimes \mu^f \vert \mu^s \otimes \mu^f) \\
         &= \iint \vert \xi_1 - \xi_2 \vert^p \mathrm d\mu^s \mathrm d\mu^f.
       \end{split}
@@ -644,23 +644,23 @@ Then:
     $\kl(\pi_{\varepsilon} \vert \mu^s \otimes \mu^f)$,
     thus $\pi_{\varepsilon} \rightharpoonup \mu^s \otimes \mu^f$. The conclusion then follows.
 
-    \item Let $(\pi_*^s, \pi_*^f)$ be a solution of $\ucoot_{\lambda}(\cX_1, \cX_2)$.
+    \item Let $(\pi_*^s, \pi_*^f)$ be a solution of $\ucoot_{\rho}(\cX_1, \cX_2)$.
     The optimality of $(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f)$ implies
     \begin{equation}
       \begin{split}
-        \ucoot_{\lambda}(\cX_1, \cX_2)
-      &\leq \ucoot_{\lambda}(\cX_1, \cX_2) +
+        \ucoot_{\rho}(\cX_1, \cX_2)
+      &\leq \ucoot_{\rho}(\cX_1, \cX_2) +
       \varepsilon \kl(\pi_*^s \otimes \pi_*^f \vert \mu^s \otimes \mu^f).
       \end{split}
     \end{equation}
     Thus, when $\varepsilon \to 0$, one has
-    $\ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2) \to \ucoot_{\lambda}(\cX_1, \cX_2)$. Moreover,
+    $\ucoot_{\rho, \varepsilon}(\cX_1, \cX_2) \to \ucoot_{\rho}(\cX_1, \cX_2)$. Moreover,
     following the proof technique of Lemma 4 in \citep{Khiem20}, we can show that
     \begin{align}
-      \ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2) &=
-      \sum_{k=1, 2} \lambda_k \; m(\mu_k^s) \; m(\mu_k^f) \\
+      \ucoot_{\rho, \varepsilon}(\cX_1, \cX_2) &=
+      \sum_{k=1, 2} \rho_k \; m(\mu_k^s) \; m(\mu_k^f) \\
       &+ \varepsilon \prod_{k=1, 2} m(\mu_k^s) \; m(\mu_k^f)
-      - (\lambda_1  + \lambda_2 + \varepsilon) \; m(\pi^s_{\varepsilon})^2.
+      - (\rho_1  + \rho_2 + \varepsilon) \; m(\pi^s_{\varepsilon})^2.
     \end{align}
     We deduce that $m(\pi^s_{\varepsilon}) \to m(\pi^s_*)$, when $\varepsilon \to 0$,
 
@@ -668,17 +668,17 @@ Then:
     \begin{equation}
       \begin{split}
         \langle C, \mu^s \otimes \mu^f \rangle &=
-        F_{\lambda} \left( \sqrt{\frac{m(\mu^f)}{m(\mu^s)}} \mu^s, \sqrt{\frac{m(\mu^s)}{m(\mu^f)}} \mu^f \right) +
+        F_{\rho} \left( \sqrt{\frac{m(\mu^f)}{m(\mu^s)}} \mu^s, \sqrt{\frac{m(\mu^s)}{m(\mu^f)}} \mu^f \right) +
         \varepsilon \kl( \mu^s \otimes \mu^f \vert \mu^s \otimes \mu^f ) \\
-        &\geq F_{\lambda}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f) +
+        &\geq F_{\rho}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f) +
         \varepsilon \kl(\pi_{\varepsilon}^s \otimes \pi_{\varepsilon}^f \vert \mu^s \otimes \mu^f) \\
-        &\geq F_{\lambda}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f).
+        &\geq F_{\rho}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f).
       \end{split}
     \end{equation}
     On the other hand, following the same proof in \Cref{eq:ucoot_existence_copy},
     we can show that if
     $m(\pi_{\varepsilon}) \to \infty$, then
-    $F_{\lambda}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f) \to \infty$, which
+    $F_{\rho}(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f) \to \infty$, which
     contradicts the above inequality. So, there exists $M > 0$ such that
     $m(\pi_{\varepsilon}) \leq M$, for every $\varepsilon > 0$.
 
@@ -690,15 +690,15 @@ Then:
     $\pi_{\varepsilon_n} \to \widehat{\pi} = \widehat{\pi}^s \otimes \widehat{\pi}^f \in \widetilde{E}_{uco}$,
     with $m(\widehat{\pi}^s) = m(\widehat{\pi}^f)$.
     The continuity of the divergences implies that,
-    $F_{\lambda, \varepsilon}(\pi_{\varepsilon_n}^s, \pi_{\varepsilon_n}^f) \to
-    F_{\lambda}(\widehat{\pi}^s, \widehat{\pi}^f)$, when $\varepsilon \to 0$. We deduce that
-    $\ucoot_{\lambda}(\cX_1, \cX_2) = F_{\lambda}(\widehat{\pi}^s, \widehat{\pi}^f)$,
+    $F_{\rho, \varepsilon}(\pi_{\varepsilon_n}^s, \pi_{\varepsilon_n}^f) \to
+    F_{\rho}(\widehat{\pi}^s, \widehat{\pi}^f)$, when $\varepsilon \to 0$. We deduce that
+    $\ucoot_{\rho}(\cX_1, \cX_2) = F_{\rho}(\widehat{\pi}^s, \widehat{\pi}^f)$,
     or equivalently $(\widehat{\pi}^s, \widehat{\pi}^f)$
-    is a solution of $\ucoot_{\lambda}(\cX_1, \cX_2)$. Moreover, we have
+    is a solution of $\ucoot_{\rho}(\cX_1, \cX_2)$. Moreover, we have
     \begin{equation} \label{unbalanced_max_ent}
       \begin{split}
-        0 &\leq F_{\lambda}(\pi_{\varepsilon_n}^s, \pi_{\varepsilon_n}^f)
-        - F_{\lambda}(\pi_*^s, \pi_*^f) \\
+        0 &\leq F_{\rho}(\pi_{\varepsilon_n}^s, \pi_{\varepsilon_n}^f)
+        - F_{\rho}(\pi_*^s, \pi_*^f) \\
       &\leq \varepsilon_n \Big( \kl(\pi_*^s \otimes \pi_*^f \vert \mu^s \otimes \mu^f) -
       \kl(\pi_{\varepsilon_n}^s \otimes \pi_{\varepsilon_n}^f \vert \mu^s \otimes \mu^f) \Big).
       \end{split}
@@ -714,7 +714,7 @@ Then:
       \kl(\widehat{\pi}^s \otimes \widehat{\pi}^f \vert \mu^s \otimes \mu^f) =
       \min_{(\pi^s, \pi^f)} \kl(\pi^s \otimes \pi^f \vert \mu^s \otimes \mu^f),
     \end{equation}
-    where the infimum is taken over all solutions of $\ucoot_{\lambda}(\cX_1, \cX_2)$.
+    where the infimum is taken over all solutions of $\ucoot_{\rho}(\cX_1, \cX_2)$.
   \end{enumerate}
 \end{proof}
 
@@ -728,8 +728,8 @@ Then:
 %     \label{eq:ucoot-discrete-2_copy}
 %   \min_{\substack{\pi^s, \pi^f \\
 %   m(\pi^s) = m(\pi^f)}} \sum_{i, j, k, l}
-%   &(A_{ik} - B_{jl})^2\pi^s_{ij}\pi^f_{kl} + \lambda_1 \kl(\pi^s_{\#1} \otimes \pi^f_{\# 1} \vert u_1 )
-%   + \lambda_2 \kl(\pi^s_{\# 2} \otimes \pi^f_{\# 2} \vert u_2) \\
+%   &(A_{ik} - B_{jl})^2\pi^s_{ij}\pi^f_{kl} + \rho_1 \kl(\pi^s_{\#1} \otimes \pi^f_{\# 1} \vert u_1 )
+%   + \rho_2 \kl(\pi^s_{\# 2} \otimes \pi^f_{\# 2} \vert u_2) \\
 %   &+ \varepsilon \kl( \pi^s \otimes \pi^f \vert \mu^s_1 \otimes \mu_2^s \otimes \mu_1^f \otimes \mu_2^f),
 % \end{split}
 % \end{equation}
@@ -740,16 +740,16 @@ Then:
 % \begin{equation} \label{eq:ucoot_uot}
 %   \begin{split}
 %     \min_{\pi \in \bbR^{n_1, n_2}_{\geq 0}} & \; \langle L_{\varepsilon}, \pi \rangle
-%     + \lambda_1 m_s \kl(\pi_{\#1} \vert \mu_1^s)
-%     + \lambda_2 m_s \kl(\pi_{\#2} \vert \mu_2^s)
+%     + \rho_1 m_s \kl(\pi_{\#1} \vert \mu_1^s)
+%     + \rho_2 m_s \kl(\pi_{\#2} \vert \mu_2^s)
 %     + \varepsilon m_s \kl(\pi \vert \mu^s_1 \otimes \mu_2^s),
 %   \end{split}
 % \end{equation}
 % where $m_s = m(\pi^s)$ and
 % \begin{equation} \label{ucoot:9}
 %   L_{\varepsilon} := \int \vert A - B \vert^2 \mathrm d \pi^f +
-%   \lambda_1 \langle \log \frac{\pi^f_{\#1}}{\mu_1^f}, \pi^f_{\#1} \rangle +
-%   \lambda_2 \langle \log \frac{\pi^f_{\#2}}{\mu_2^f}, \pi^f_{\#2} \rangle +
+%   \rho_1 \langle \log \frac{\pi^f_{\#1}}{\mu_1^f}, \pi^f_{\#1} \rangle +
+%   \rho_2 \langle \log \frac{\pi^f_{\#2}}{\mu_2^f}, \pi^f_{\#2} \rangle +
 %   \varepsilon \langle \log \frac{\pi^f}{\mu_1^f \otimes \mu_2^f}, \pi^f \rangle,
 % \end{equation}
 % and $\int \vert A - B \vert^2 \mathrm d \pi^f \in \mathbb R^{n_1, n_2}$ defined by
@@ -781,7 +781,7 @@ Then:
 % the latter leads to lower COOT costs than the former, on average.
 
 % As COOT is a non-convex problem, the choice of initialization plays an important role.
-% Intuitively, by choosing $\lambda_1$ and $\lambda_2$ sufficiently large,
+% Intuitively, by choosing $\rho_1$ and $\rho_2$ sufficiently large,
 % one can use UCOOT to approach COOT. For this reason, the solution of UCOOT can be more informative
 % than the usual uniform initialization, and one can expect to reach better local optimal of COOT.
 
@@ -808,7 +808,7 @@ We tune the hyperparameters of each method via grid search.
   $\varepsilon_f, \varepsilon_s \in \{0, 0.01, 0.1, 0.5\}$.
   \item[$\bullet$] For GW, we choose the regularisation parameter
   $\varepsilon \in \{0, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5\}$.
-  \item[$\bullet$] For UGW and UCOOT, we choose $\lambda_1, \lambda_2 \in \{1, 5, 20, 50\}$ and
+  \item[$\bullet$] For UGW and UCOOT, we choose $\rho_1, \rho_2 \in \{1, 5, 20, 50\}$ and
   $\varepsilon \in \{0.01, 0.05, 0.1, 0.5\}$.
   Furthermore, for UGW and GW, before calculating the Euclidean distance matrix for each domain,
   the matrix of domain data is normalised by max scaling, so that its coordinates are bounded in
@@ -826,7 +826,7 @@ we only considered $\varepsilon > 0$ for UCOOT and UGW, so that the scaling algo
 \citep{Chizat18b} is applicable. We note that,
 the MM solver can allow us to handle the case $\varepsilon = 0$
 (\ie, we can estimate directly UCOOT, rather than via its entropic approximation).
-In this case, we also tune $\lambda_1, \lambda_2 \in \{ 1, 50, 20, 50\}$ and
+In this case, we also tune $\rho_1, \rho_2 \in \{ 1, 50, 20, 50\}$ and
 follow exactly the same tuning and testing procedure as in the case $\varepsilon > 0$.
 We report our finding in \Cref{tab:hda2}. We observe that, in many tasks,
 the performance remains competitive while enjoying lower variance.
@@ -871,23 +871,23 @@ the performance remains competitive while enjoying lower variance.
 		\end{small}
 	\end{center}
 	\caption{Unsupervised HDA from CaffeNet to GoogleNet for $\varepsilon > 0$ and $\varepsilon = 0$.
-  UCOOT ($\varepsilon > 0$) corresponds to the model where $\varepsilon, \lambda_1$ and $\lambda_2$
+  UCOOT ($\varepsilon > 0$) corresponds to the model where $\varepsilon, \rho_1$ and $\rho_2$
   are tuned, with $\varepsilon > 0$, and UCOOT ($\varepsilon = 0$) means that $\varepsilon = 0$
-  and only $\lambda_1, \lambda_2$ are tuned. }
+  and only $\rho_1, \rho_2$ are tuned. }
 	\label{tab:hda2}
 \end{table}
 
 \paragraph{Sensitivity analysis}
-We report the sensitivity of UCOOT's performance to the hyper-parameters $\varepsilon, \lambda_1$
-and $\lambda_2$ for two tasks C$\to$W and A$\to$A in
+We report the sensitivity of UCOOT's performance to the hyper-parameters $\varepsilon, \rho_1$
+and $\rho_2$ for two tasks C$\to$W and A$\to$A in
 \Cref{tab:sensitiv_eps,tab:sensitiv_lambda1,tab:sensitiv_lambda_2}. In general,
 the performance depends significantly on the choice of hyperparameters.
-In \Cref{tab:sensitiv_eps}, given fixed values of $\lambda_1$ and $\lambda_2$,
+In \Cref{tab:sensitiv_eps}, given fixed values of $\rho_1$ and $\rho_2$,
 UCOOT performs badly for either too small or large values of $\varepsilon$,
 indicating that regularization is necessary but should not be too strong.
-From \Cref{tab:sensitiv_lambda1}, we see that large value of $\lambda_1$ degrades
+From \Cref{tab:sensitiv_lambda1}, we see that large value of $\rho_1$ degrades
 the performance, meaning that the marginal constraints on the source distributions should not
-be too tight. Meanwhile, it seems that large $\lambda_2$ is preferable,
+be too tight. Meanwhile, it seems that large $\rho_2$ is preferable,
 so the marginal distributions on the target spaces should not be too relaxed.
 
 \hfill
@@ -910,7 +910,7 @@ so the marginal distributions on the target spaces should not be too relaxed.
 		\end{footnotesize}
 	\end{center}
 	\caption{Sensitivity of UCOOT to $\varepsilon$ in tasks C$\to$W and A$\to$A.
-  We fix $\lambda_2 = 50$ and $\lambda_1 = 1$ and show the accuracy for various value of
+  We fix $\rho_2 = 50$ and $\rho_1 = 1$ and show the accuracy for various value of
   $\varepsilon$.} \label{tab:sensitiv_eps}
 \end{table}
 %%%%%%%%%%%%%%%%%
@@ -924,7 +924,7 @@ so the marginal distributions on the target spaces should not be too relaxed.
 					\toprule
 					& \multicolumn{5}{c}{CaffeNet $\to$ GoogleNet} \\
 					\midrule
-					Domains & $\lambda_1= 20$ & 40 & 50 & 60 & 80 \\
+					Domains & $\rho_1= 20$ & 40 & 50 & 60 & 80 \\
 					\midrule
 					C $\to$ W & 35.80 ($\pm$ 9.33) & 37.35 ($\pm$ 13.82) & 27.45 ($\pm$ 8.33) & 32.45 ($\pm$ 11.62) & 30.15 ($\pm$ 12.89) \\
 					\hline
@@ -934,9 +934,9 @@ so the marginal distributions on the target spaces should not be too relaxed.
 			\end{sc}
 		\end{footnotesize}
 	\end{center}
-	\caption{Sensitivity of UCOOT to $\lambda_1$ in tasks C$\to$W and A$\to$A.
-  We fix $\lambda_2 = 1$ and $\varepsilon = 0.1$ and show the accuracy for various value of
-  $\lambda_1$.} \label{tab:sensitiv_lambda1}
+	\caption{Sensitivity of UCOOT to $\rho_1$ in tasks C$\to$W and A$\to$A.
+  We fix $\rho_2 = 1$ and $\varepsilon = 0.1$ and show the accuracy for various value of
+  $\rho_1$.} \label{tab:sensitiv_lambda1}
 \end{table}
 %%%%%%%%%%%%%%
 
@@ -949,7 +949,7 @@ so the marginal distributions on the target spaces should not be too relaxed.
 					\toprule
 					& \multicolumn{5}{c}{CaffeNet $\to$ GoogleNet} \\
 					\midrule
-					Domains & $\lambda_2= 0.3$ & 0.5 & 1 & 2 & 4 \\
+					Domains & $\rho_2= 0.3$ & 0.5 & 1 & 2 & 4 \\
 					\midrule
 					C $\to$ W & 34.20 ($\pm$ 9.83) & 34.45 ($\pm$ 10.80) & 34.75 ($\pm$ 13.04) & 29.70 ($\pm$ 10.55) & 32.30 ($\pm$ 18.81) \\
 					\hline
@@ -959,9 +959,9 @@ so the marginal distributions on the target spaces should not be too relaxed.
 			\end{sc}
 		\end{footnotesize}
 	\end{center}
-	\caption{Sensitivity of UCOOT to $\lambda_2$ in tasks C$\to$W and A$\to$A.
-  We fix $\lambda_1 = 50$ and $\varepsilon = 0.1$ and show the accuracy for various value of
-  $\lambda_2$.} \label{tab:sensitiv_lambda_2}
+	\caption{Sensitivity of UCOOT to $\rho_2$ in tasks C$\to$W and A$\to$A.
+  We fix $\rho_1 = 50$ and $\varepsilon = 0.1$ and show the accuracy for various value of
+  $\rho_2$.} \label{tab:sensitiv_lambda_2}
 \end{table}
 
 % \paragraph{Additional results}
@@ -1033,8 +1033,8 @@ so the marginal distributions on the target spaces should not be too relaxed.
 % \paragraph{Hyperparameter tuning} Hyperparameters were tuned using grid search.
 % For both COOT and UCOOT, we considered the following range for the entropic regularization
 % coefficients $\varepsilon_f, \varepsilon_s \in \{1e-5, 5e-5, 1e-5, 5e-4, ... ,0.1, 0.5\}$.
-% For the mass relaxation coefficients $\lambda_1, \lambda_2 $ in UCOOT, the following range
-% was considered $\lambda_1, \lambda_2 \in \{1e-3, 5e-3, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50 ,100\}$.
+% For the mass relaxation coefficients $\rho_1, \rho_2 $ in UCOOT, the following range
+% was considered $\rho_1, \rho_2 \in \{1e-3, 5e-3, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50 ,100\}$.
 % Each combination of hyperparameters were run on three randomly chosen subsets of the dataset
 % that included 30\% of the samples and the hyperparameter combinations that on average yielded
 % the highest feature matches and lowest FOSCTTM were picked for the experiments on the full dataset.
@@ -1043,17 +1043,17 @@ so the marginal distributions on the target spaces should not be too relaxed.
 % reported in this paper:
 % \begin{itemize}
 %     \item[$\bullet$] \textbf{Balanced scenario of aligning matching features
-%     (\Cref{fig:multiomics}(a)):} \\ $\lambda_1=1, \lambda_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
+%     (\Cref{fig:multiomics}(a)):} \\ $\rho_1=1, \rho_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
 %     \item[$\bullet$] \textbf{Unbalanced scenario of aligning a subset of the matching features
-%     (\Cref{fig:multiomics}(b)):} \\ $\lambda_1=1, \lambda_2=1e-2, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
+%     (\Cref{fig:multiomics}(b)):} \\ $\rho_1=1, \rho_2=1e-2, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
 %     \item[$\bullet$] \textbf{Unbalanced scenario of aligning antibodies with the top 50 most variable genes
-%     (\Cref{fig:multiomics}(c)):}  $\lambda_1=10, \lambda_2=5e-5, \varepsilon_1=1e-4, \varepsilon_2=0.5$
+%     (\Cref{fig:multiomics}(c)):}  $\rho_1=10, \rho_2=5e-5, \varepsilon_1=1e-4, \varepsilon_2=0.5$
 %     \item[$\bullet$] \textbf{Balanced scenario of aligning the same number of cells
-%     (\Cref{fig:multiomicsSamples}(a)):} \\ $\lambda_1=1, \lambda_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
+%     (\Cref{fig:multiomicsSamples}(a)):} \\ $\rho_1=1, \rho_2=0.1, \varepsilon_1=1e-4, \varepsilon_2=1e-4$
 %     \item[$\bullet$] \textbf{Unbalanced scenario 1 of aligning different number of cells
-%     (\Cref{fig:multiomicsSamples}(b)):} \\ $\lambda_1=0.01, \lambda_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
+%     (\Cref{fig:multiomicsSamples}(b)):} \\ $\rho_1=0.01, \rho_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
 %     \item[$\bullet$] \textbf{Unbalanced scenario 2 of aligning different number of cells
-%     (\Cref{fig:multiomicsSamples}(c)):} \\ $\lambda_1=0.01, \lambda_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
+%     (\Cref{fig:multiomicsSamples}(c)):} \\ $\rho_1=0.01, \rho_2=0.1, \varepsilon_1=5e-3, \varepsilon_2=1e-4$
 % \end{itemize}
 
 % \paragraph{Further investigation of the feature alignments}
