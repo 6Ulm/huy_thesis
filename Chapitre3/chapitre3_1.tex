@@ -530,7 +530,7 @@ We now investigate the application of discrete UCOOT in semi-supervised and unsu
 Heterogeneous Domain Adaptation (HDA). It is a particularly difficult problem where
 one aims to predict classes on unlabeled data using labeled data lying in a different space.
 OT methods across spaces have recently shown good performance on such tasks,
-in particular using GW distance ~\citep{Yan18} and COOT~\citep{Redko20}.
+in particular using GW distance \citep{Yan18} and COOT \citep{Redko20}.
 %i.e. the samples in source and target domains live in the different spaces, and we have no access to the labelled target sample.
 %It should be noted that COOT and UCOOT have already been used in real-world applications.
 % For example, as the entropic GW distance and its COOT follow exactly the same approximation scheme, they share the success in
@@ -538,12 +538,12 @@ in particular using GW distance ~\citep{Yan18} and COOT~\citep{Redko20}.
 % comparing kernel matrices \citep{peyre16}. On the other hand, the recent discrete COOT also works well in co-clustering and
 % HDA tasks \citep{Redko20} and the UCOOT has shown competitive performance in positive-unlabelled learning \citep{Sejourne20}.
 
-\paragraph{Datasets and experimental setup.} We consider the Caltech-Office dataset~\citep{Saenko10}
+\paragraph{Datasets and experimental setup.} We consider the Caltech-Office dataset \citep{Saenko10}
 containing three domains:
 Amazon (A) ($1123$ images), Caltech-$256$ (C) ($958$ images) and Webcam (W) ($295$ images)
 with 10 overlapping classes amongst them. The image in each domain is representated by
 the output of the second last layer
-in the Google Net~\citep{Szegedy15} and Caffe Net~\citep{Jia14} neural network architectures,
+in the Google Net \citep{Szegedy15} and Caffe Net \citep{Jia14} neural network architectures,
 which results in $4096$ and $1024$-dimensional vectors, respectively (thus $d_s = 4096, d_t = 1024$).
 We compare $4$ OT-based methods: GW, COOT, UGW, and UCOOT. For the semi-supervised HDA task,
 we additionally use $k$-NN, with $k=3$ as baseline method, which corresponds to the situation where
@@ -886,7 +886,7 @@ the single-cell datasets.
 
 Lastly, we also consider the case of unequal number of samples across the two measurements.
 This case is common in real world single-cell multi-omics datasets that are not
-simultaneously measured. \citep{Demetci22-2} have shown that
+simultaneously measured. \citet{Demetci22-2} have shown that
 single-cell alignment methods that do not account for this mismatch yield poor alignment results.
 Therefore, we downsample the number of cells in one of the domains by 25\%
 and perform alignment with the full set of cells in the other domain.

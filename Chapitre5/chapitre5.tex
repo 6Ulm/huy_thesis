@@ -41,7 +41,7 @@ on different metric-measure spaces. In this scenario, the Gromov-Wasserstein (GW
 seeks an optimal matching between points in the supports of the considered distributions
 that will minimize the distortion of intra-domain distances upon such matching.
 
-Since its proposal by \citep{Memoli11} and further extensions by \citep{Peyre16},
+Since its proposal by \citet{Memoli11} and further extensions by \citet{Peyre16},
 GW has been successfully used in a wide range of applications, including
 domain adaptation \citep{Yan18}, computational biology
 \citep{Nitzan2019,Pamona,UniPort,SpaOTsc,Demetci20,Demetci22,PASTE},
@@ -226,7 +226,7 @@ the cell type clusters when they have a similar number of cells, whereas AGW is 
 to this phenomenon.
 
 \paragraph{Optimization} For simplicity, suppose $n_x = n_y = n$ and $d_x = d_y = d$.
-With the squared loss in both GW and COOT terms, the computational trick by \citep{Peyre16}
+With the squared loss in both GW and COOT terms, the computational trick by \citet{Peyre16}
 can be applied, which reduces the complexity of AGW from $O(n^4 + n^2 d^2)$
 to $O(n^3 + dn^2 + nd^2)$. For optimization, we use the block coordinate descent (BCD) algorithm,
 where we alternatively fix one coupling and minimize AGW with respect to the other (\Cref{alg:bcd_agw}).
@@ -532,7 +532,7 @@ where the source and target samples live in different spaces, and we have as few
 zero labeled target samples.
 
 \paragraph{Datasets and experimental setup}
-We follow the experimental setup by \citep{Redko20} and use source-target pairs
+We follow the experimental setup by \citet{Redko20} and use source-target pairs
 from the Caltech-Office dataset \citep{Saenko10}. We consider all pairs between three domains:
 Amazon (A), Caltech-$256$ (C), and Webcam (W), whose images are embeddings from
 the second last layer in the GoogleNet \citep{Szegedy15} (vectors in $\bbR^{4096}$)
