@@ -162,11 +162,11 @@ $\cX_2 = ((X_2^s, \mu_2^s), (X_2^f, \mu_2^f), \xi_2)$ by:
   \pi^f \in \cM^+(X_1^f \times X_2^f) \\ m(\pi^s) = m(\pi^f)}}
   &\underbrace{\iint |\xi_1(x_1^s, x_1^f) - \xi_2(x_2^s, x_2^f)|^p
   \; \mathrm d\pi^s \; \mathrm d \pi^f}_{\text{transport cost of sample-feature pairs}}
-  + \underbrace{\sum_{k=1}^2\lambda_k D_k(\pi^s_{\#k} \otimes \pi^f_{\#k} |
+  + \underbrace{\sum_{k=1}^2\rho_k D_k(\pi^s_{\#k} \otimes \pi^f_{\#k} |
   \mu^s_k \otimes \mu^f_k)}_{\text{mass destruction / creation penalty}},
   \end{split}
 \end{equation}
-for $\lambda_1, \lambda_2 >0$ and $p \geq 1$.
+for $\rho_1, \rho_2 >0$ and $p \geq 1$.
 \end{definition}
 As the multiplicative nature between $\pi^s$ and $\pi^f$ leads to an invariance by the scaling map
 $\alpha \mapsto (\alpha \pi^s, \frac{1}{\alpha} \pi^f)$, for $\alpha > 0$,
@@ -196,9 +196,9 @@ In this work, we relax the hard constraints and consider a more flexible formula
 with the KL divergence:
 \begin{definition}[UCOOT]
    We define Unbalanced COOT (UCOOT) as in \Cref{eq:ucoot} with $D_1 = D_2 = \kl$.
-   We write $\ucoot_{\lambda}(\cX_1, \cX_2)$ to indicate the UCOOT between
+   We write $\ucoot_{\rho}(\cX_1, \cX_2)$ to indicate the UCOOT between
    two sample-feature spaces $\cX_1$ and $\cX_2$, for a given
-   pair of hyperparameters $\lambda = (\lambda_1, \lambda_2)$.
+   pair of hyperparameters $\rho = (\rho_1, \rho_2)$.
 \end{definition}
 While various properties of the divergences $D_k$ have been extensively studied
 in the context of unbalanced OT by several authors \citep{Chizat17,Frogner15},
@@ -247,13 +247,13 @@ A general proof is given in the Appendix.
 \end{remark}
 
 \paragraph{Relation between UCOOT and COOT.} When $ \mu^s_k$ and $\mu^f_k$ are probability measures,
-for $k=1,2$, then $\ucoot_{\lambda}(\cX_1, \cX_2) \leq \coot(\cX_1, \cX_2)$,
-for any $\lambda_1, \lambda_2 > 0$.
-Moreover, $\ucoot_{\lambda}(\cX_1, \cX_2) = 0$ if and only if $\coot(\cX_1, \cX_2) = 0$.
+for $k=1,2$, then $\ucoot_{\rho}(\cX_1, \cX_2) \leq \coot(\cX_1, \cX_2)$,
+for any $\rho_1, \rho_2 > 0$.
+Moreover, $\ucoot_{\rho}(\cX_1, \cX_2) = 0$ if and only if $\coot(\cX_1, \cX_2) = 0$.
 In particular, suppose that $\cX_1$ and $\cX_2$ are two finite sample-feature spaces
 such that $(X^s_1, X^s_2)$ and $(X^f_1, X^f_2)$ have the same cardinality and
 are equipped with the uniform measures $\mu_1^s = \mu_2^s$, $\mu_1^f = \mu_2^f$.
-Then $\ucoot_{\lambda}(\cX_1, \cX_2) = 0$ if and only if
+Then $\ucoot_{\rho}(\cX_1, \cX_2) = 0$ if and only if
 there exist perfect alignments between rows (samples) and between
 columns (features) of the interaction matrices $\xi_1$ and $\xi_2$.
 
@@ -263,8 +263,8 @@ KL divergence. More precisely, if $(\pi_*^s, \pi_*^f)$ is the equal-mass solutio
 then by using the proof technique of Lemma 4 in \citep{Khiem20}, one can show that
 \begin{align}
   \label{eq:ucoot_minimizer_minimum}
-  \ucoot_{\lambda}(\cX_1, \cX_2) =
-  \sum_{k=1, 2} \lambda_k \; m(\mu_k^s) \; m(\mu_k^f) - (\lambda_1  + \lambda_2) \; m(\pi^s_*)^2.
+  \ucoot_{\rho}(\cX_1, \cX_2) =
+  \sum_{k=1, 2} \rho_k \; m(\mu_k^s) \; m(\mu_k^f) - (\rho_1  + \rho_2) \; m(\pi^s_*)^2.
 \end{align}
 
 \subsection{Robustness of Unbalanced Co-Optimal Transport} \label{sec:robustness}
@@ -330,7 +330,7 @@ as outliers get further from the data:
 \begin{theorem}[UCOOT is robust to outliers]
 \label{thm:ucoot_robust}
 Consider two sample-feature spaces $\widetilde{\cX_1}, \cX_2$ as defined
-in \Cref{assump:robust}. Let $\delta := 2(\lambda_1 + \lambda_2)(1 - \alpha_s\alpha_f)$
+in \Cref{assump:robust}. Let $\delta := 2(\rho_1 + \rho_2)(1 - \alpha_s\alpha_f)$
 and $K = M + \frac{1}{M}\ucoot(\cX_1, \cX_2) +\delta$,
 where $M= m(\pi^s) = m(\pi^f)$ is the transported mass between clean data. Then:
 \begin{align} %\label{eq:ucoot-robust}
@@ -362,7 +362,7 @@ This is well illustrated in \Cref{fig:robust},
 where we simulate outliers by adding a perturbation to a row of the interaction matrix.
 More precisely, we first generate a matrix $A \in \mathbb R^{20 \times 15}$ by
 $A_{ij} = \cos(\frac{i}{20} \pi) + \cos(\frac{j}{15} \pi)$.
-Then, we replace its last row by $\tau \mathds 1_{15}$, for $\tau \geq 0$.
+Then, we replace its last row by $\tau 1_{15}$, for $\tau \geq 0$.
 \Cref{fig:robust} depicts COOT and UCOOT between $A$
 and its modified version as a function of $\tau$. The higher the value of $\tau$,
 the more likely that the last row contains the interaction of outliers.
@@ -388,7 +388,7 @@ and thus better local minima. In this section, we first describe how to compute 
 \paragraph{Optimization strategy}
 We consider two tabular datasets $A \in \bbR^{n_1 \times d_1}$ and $B \in \bbR^{n_2 \times d_2}$.
 Let $u_k$ be the uniform histogram over sample-feature pairs:
-$u_k := \frac{1}{n_kd_k}\mathds 1_{n_k} \otimes \mathds 1_{d_k}$, for $k=1, 2$.
+$u_k := \frac{1}{n_kd_k}1_{n_k} \otimes 1_{d_k}$, for $k=1, 2$.
 For the sake of simplicity, we assume uniform weights over both samples and features.
 Computing UCOOT can be done using block-coordinate descent (BCD) both with
 and without entropy regularization. More precisely, given a hyperparameter $\varepsilon \geq 0$,
@@ -399,8 +399,8 @@ discrete UCOOT can be written as:
   &\min_{\substack{\pi^s, \pi^f \\
   \iffalse \in \bbR_+^{n_1, n_2} \\ \pi^f \in \bbR_+^{d_1, d_2} \\ \fi m(\pi^s) = m(\pi^f)}}
   \sum_{i, j, k, l} (A_{ik} - B_{jl})^2\pi^s_{ij}\pi^f_{kl} +
-  \lambda_1 \kl(\pi^s \mathds 1_{n_1} \otimes \pi^f \mathds 1_{d_1} | u_1 )  \\
-  &+ \lambda_2 \kl({\pi^s}^\top \mathds 1_{n_2} \otimes {\pi^f}^{\top} \mathds 1_{d_2} | u_2) +
+  \rho_1 \kl(\pi^s 1_{n_1} \otimes \pi^f 1_{d_1} | u_1 )  \\
+  &+ \rho_2 \kl({\pi^s}^\top 1_{n_2} \otimes {\pi^f}^{\top} 1_{d_2} | u_2) +
   \varepsilon \text{KL}( \pi^s \otimes \pi^f | \mu^s_1 \otimes \mu_2^s \otimes \mu_1^f \otimes \mu_2^f).
 \end{split}
 \end{equation}
@@ -408,7 +408,7 @@ discrete UCOOT can be written as:
 \begin{algorithm}[t]
     \caption{BCD algorithm to solve UCOOT \label{alg:bcd}}
     \begin{algorithmic}
-      \STATE {\bfseries Input:} $A \in \bbR^{n_1, d_1}, B \in \bbR^{n_2, d_2}$, $\lambda_1, \lambda_2, \varepsilon$
+      \STATE {\bfseries Input:} $A \in \bbR^{n_1, d_1}, B \in \bbR^{n_2, d_2}$, $\rho_1, \rho_2, \varepsilon$
       \STATE Initialize $\pi^s$ and $\pi^f$
       \REPEAT
       \STATE Update $\pi^s$ using Sinkhorn or MM
@@ -433,7 +433,7 @@ close to those in the non-entropic case. We formalize this claim in the followin
 \begin{proposition}
   \label{prop:convergence_minimiser_unbalanced}
   Let $(\pi_{\varepsilon}^s, \pi_{\varepsilon}^f)$ be an equal-mass solution of the problem
-  $\ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2)$. Denote $\mu^s = \mu_1^s \otimes \mu_2^s$
+  $\ucoot_{\rho, \varepsilon}(\cX_1, \cX_2)$. Denote $\mu^s = \mu_1^s \otimes \mu_2^s$
   and $\mu^f = \mu_1^f \otimes \mu_2^f$.
   \begin{enumerate}
     \item When $\varepsilon \to \infty$, we have $\pi_{\varepsilon}^s \rightharpoonup
@@ -442,7 +442,7 @@ close to those in the non-entropic case. We formalize this claim in the followin
 
     \item When $\varepsilon \to 0$, we have
     \begin{enumerate}
-      \item $\ucoot_{\lambda, \varepsilon}(\cX_1, \cX_2) \to \ucoot_{\lambda}(\cX_1, \cX_2)$ and
+      \item $\ucoot_{\rho, \varepsilon}(\cX_1, \cX_2) \to \ucoot_{\rho}(\cX_1, \cX_2)$ and
       $m(\pi_{\varepsilon}^s) \to m(\pi_*^s)$, for any equal-mass solution
       $(\pi_*^s, \pi_*^f)$ of the unregularized problem.
 
@@ -733,6 +733,7 @@ labelled target samples, \Cref{tab:table2} shows that the advantage of UCOOT dim
 as the level of certainty increases. In this case, both COOT and UCOOT
 are also much more stable but UCOOT is somewhat more volatile than COOT.
 
+\newpage
 \paragraph{Robustness to target shift.}
 We also illustrate the robustness of UCOOT to a change in class proportions,
 also known as target shift.
@@ -746,8 +747,8 @@ also known as target shift.
   \label{f:hda_prop}}
 \end{wrapfigure}
 More precisely, we simulate a change in proportion only in the source domain
-by selecting $20\rho$ samples per class for 4 amongst 10 classes with $\rho$
-decreasing from $\rho=1$ to $\rho=0.2$. In this configuration,
+by selecting $20p$ samples per class for 4 amongst 10 classes with $p$
+decreasing from $p=1$ to $p=0.2$. In this configuration,
 the classes in the source domain are imbalanced and the unlabeled HDA problem becomes more difficult.
 We report the performance of all the methods as a function of the Total Variation (TV)
 between the class marginal distributions on one pair of datasets in \Cref{f:hda_prop}.
@@ -790,7 +791,7 @@ in a single-cell multi-omics dataset.
 %As a result, we require computational methods to align the cells and the features of the different measurements to obtain correspondence between similar cells and features. This correspondence information can help investigate which features in one domain (e.g., genes) match the ones (e.g., proteins) in the other domain.
 %
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[trim={0.2cm 0.2cm 0.8cm 0.5cm}, clip, width=\linewidth, keepaspectratio=true]{./Chapitre3/fig/genes-alignments.pdf}
     \caption{Feature alignments on the single-cell multi-omics dataset of COOT and UCOOT between antibodies (surface proteins) and their matching genes (that encode them). \textbf{(a)} The features are sorted such that the correct alignment would yield a diagonal matrix. \textbf{(b)} Only five of the correct gene matches are kept (the last five genes from (a) are excluded). \textbf{(c)} Alignments between the ten antibodies and the top 50 most variable genes, including the matching genes.
@@ -804,7 +805,7 @@ the CITE-seq experiment \citep{CITEseq},
 which simultaneously measures gene expression and antibody (or surface protein)
 abundance in single cells. From this dataset, we use 1000 human peripheral blood cells,
 which have ten antibodies and 17,014 genes profiled. We selected this specific dataset
-as we know the ground-truth correspondences on both the samples (i.e., cells)
+as we know the ground-truth correspondences on both the samples (\ie, cells)
 and the features (\ie, genes and their encoded antibodies), thus allowing us to quantify
 and compare the alignment performance of UCOOT and COOT.
 As done previously \citep{Pamona, Demetci22, Liu2019}, we quantify the cell alignment performance
@@ -833,8 +834,8 @@ the accuracy of correct matching.
 \paragraph{Hyperparameter tuning} Hyperparameters were tuned using grid search.
 For both COOT and UCOOT, we considered the following range for the entropic regularization
 coefficients $\varepsilon_f, \varepsilon_s \in \{1e-5, 5e-5, 1e-5, 5e-4, ... ,0.1, 0.5\}$.
-For the mass relaxation coefficients $\lambda_1, \lambda_2 $ in UCOOT, the following range
-was considered $\lambda_1, \lambda_2 \in \{1e-3, 5e-3, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50 ,100\}$.
+For the mass relaxation coefficients $\rho_1, \rho_2 $ in UCOOT, the following range
+was considered $\rho_1, \rho_2 \in \{1e-3, 5e-3, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50 ,100\}$.
 Each combination of hyperparameters were run on three randomly chosen subsets of the dataset
 that included 30\% of the samples and the hyperparameter combinations that on average yielded
 the highest feature matches and lowest FOSCTTM were picked for the experiments on the full dataset.
@@ -842,7 +843,7 @@ the highest feature matches and lowest FOSCTTM were picked for the experiments o
 % I'll move the details about the original dataset to the Appendix
 % The particular dataset we work with profiles a mix of 7,985 human and mouse peripheral blood mononuclear cells and contains measurements on 10 antibodies, 17014 human genes and 12915 mouse genes. We select 1000 human cells from this dataset to work with.
 
-\paragraph{Results in balanced Scenarios} First, we select and align the same number of samples and features
+\paragraph{Results in balanced scenarios} First, we select and align the same number of samples and features
 across the two datasets. For this, we subset the gene expression domain with the ten genes that
 match to the ten antibodies they express. Original data contains the same number of cells
 across domains since both domains are simultaneously measured in the same single-cells.
@@ -853,7 +854,7 @@ for cells. Both COOT and UCOOT recover the diagonal for matching features (100\%
 but UCOOT recovers the exact matching, likely due to its robustness to noise,
 whereas COOT assigns weights to other features as well.
 
-\paragraph{Results in unbalanced Scenarios} Next, we perform alignment with an unequal number of features.
+\paragraph{Results in unbalanced scenarios} Next, we perform alignment with an unequal number of features.
 This setting is more likely to occur for real-world single-cell datasets as different features
 are measured. In the first simple scenario, we align the ten antibodies with only a subset (five)
 of their matching genes. As visualized in \Cref{fig:multiomics}~(b),
