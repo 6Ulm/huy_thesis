@@ -419,28 +419,7 @@ First, despite the prohibitive theoretical complexity,
 efficient implementation of exact solver for unregularized OT exists \citep{Flamary21},
 and can work well on datasets of size up to $O(10^4)$.
 
-Second, it is also possible to directly estimate the OT distance using the
-Bregman proximal point method \citep{Chen93,Teboulle97}, where for fixed learning rate $\eta > 0$,
-at iteration $t$, we solve
-\begin{align}
-  \label{eq:bpp_eot}
-  P^{(t+1)} = \argmin_{P \in U(\mu, \nu)} \langle C, P \rangle + \eta \; \kl(P, P^{(t)}).
-\end{align}
-This is a slightly modified entropic OT problem and can still be solved with the
-Sinkhorn algorithm, but now the OT plan is computed by
-\begin{align}
-  P^{(t+1)} = P^{(t)} \odot \exp \left( \frac{f^{(t+1)} \oplus g^{(t+1)} - C}{\eta} \right),
-\end{align}
-where $(f^{(t+1)}, g^{(t+1)})$ is the optimal dual vectors of Problem \eqref{eq:bpp_eot}.
-Classic results \citep{Chen93} guarantee the linear convergence of BPP method
-to the minimum and the minimizer of the OT problem.
-Interestingly, it is not necessarily to solve \textbf{exactly} the entropic problem \eqref{eq:bpp_eot},
-but even as few as one Sinkhorn iteration can work in practice.
-This approach, known as \textit{Inexact Proximal OT} (IPOT), is introduced in \citep{Xie20}.
-Later, we will see in \Cref{sec:input} that it can be easily extended to the unbalanced OT setting
-and achieves superior performance to other existing methods.
-
-Third, the recent improvements on the Sinkhorn algorithm,
+Second, the recent improvements on the Sinkhorn algorithm,
 namely the over-relaxation method \citep{Lehmann21,Thibault21}, the screening strategy \citep{Alaya19},
 or the greedy approach \citep{Altschuler17,Lin20,Kostic21}, usually focus on careful manipulation
 of the iterates. There are also gradient-based solvers for the entropic OT, notably

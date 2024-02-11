@@ -232,7 +232,7 @@ to $O(n^3 + dn^2 + nd^2)$. For optimization, we use the block coordinate descent
 where we alternatively fix one coupling and minimize AGW with respect to the other (\Cref{alg:bcd_agw}).
 Each iteration then consists of solving two OT problems. To further accelerate the optimization,
 entropic regularization can be used \citep{Cuturi13} on either $P$, $Q$, or both.
-In practice, we rely on the built-in functions of the POT package \citep{Flamary21}.
+In practice, we rely on the built-in functions of the Python Optimal Transport package \citep{Flamary21}.
 
 \begin{algorithm}[t]
     \caption{BCD algorithm to solve AGW \label{alg:bcd_agw}}
@@ -260,7 +260,7 @@ Intuitively, we expect that AGW interpolates between GW and COOT and shares simi
 with Fused Gromov-Wasserstein (FGW) distance \citep{Vayer19b}, namely
 the relaxed triangle inequality (since COOT and GW distances are both metrics).
 The following result summarizes these observations, whose proofs are presented in
-Appendix.
+Appendix \ref{appendix:agw}.
 \begin{proposition}
 \label{prop:basic_prop}
 For $\alpha \in [0, 1]$,
@@ -574,7 +574,7 @@ In two cases, UGW, and in one case, UCOOT, outperform AGW despite the lower perf
 their balanced counterparts. In these cases, unbalanced formulations prove beneficial,
 and support extending AGW to unbalanced scenarios as future work.
 
-\section{Discussion and conclusion}
+\section{Conclusion}
 
 We present Augmented Gromov-Wasserstein (AGW), a new OT-based divergence for incomparable spaces.
 It interpolates between GW and CO-Optimal transport and allows to narrow down the
