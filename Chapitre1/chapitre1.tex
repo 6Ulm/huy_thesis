@@ -1254,6 +1254,9 @@ where
   \item[$\bullet$] $\Delta_{p}(g, Y) = || g^* d_X - d_Y ||_{L^p(Y^2, \mu_Y \otimes \mu_Y)}$.
   \item[$\bullet$] $\Delta_{p}(f,g, X, Y) = || (\id_X, g)^*d_X - (f, \id_Y)^*d_Y ||_{L^p(X \times Y, \mu_X \otimes \mu_Y)}$.
 \end{itemize}
+Since this formulation requires learning two transport maps which push one distribution to the other,
+it shares some similarity with the cycle generative adversarial networks \citep{Zhu17,Kim17},
+where one trains two transport maps which are roughly inverse to each other.
 Another concurrent variant of BGM is proposed by \citet{Hur21},
 where they consider the reversible Gromov-Monge (RGM) distance
 \begin{align}
@@ -1717,7 +1720,7 @@ Lemma 4 in \citep{Khiem20} to show that, if $\pi^*$ is the solution of UGW, then
 \end{align}
 meaning that the minimum is a \textbf{quadratic} function of the minimizer.
 
-\citet{Zhang21} introduce the unbalanced bidirectional Gromov-Monge divergence defined as:
+\citet{Zhang21} introduce the unbalanced bi-directional Gromov-Monge divergence defined as:
 for $\lambda_x, \lambda_y > 0$,
 \begin{align}
     \text{UBGM}_{\lambda}(\cX, \cY) = \inf_{\substack{f: X \to Y \\ g: Y \to X}}
