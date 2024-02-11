@@ -56,11 +56,10 @@ natural language processing \citep{Kusner15}, to name a few.
 
 By definition, Wasserstein distance requires that the probability measures
 must live in a common probability space. This is equivalent to comparing two
-\underline{probability} spaces whose \underline{supports} lie
-\underline{in the same underlying (typically metric) space}.
+probability spaces whose supports lie in the same underlying (typically metric) space.
 In other words, we implicitly assume that 1) it is always feasible to compute
 the \underline{inter-domain distance}, which also happens to be \underline{the only ingredient}
-we need the Wasserstein distance, and 2) the measures must have unit mass,
+we need the Wasserstein distance, and 2) the measures must have \underline{unit mass},
 due to the marginal constraints. To what extent can we relax these assumptions?
 
 \paragraph{Can we handle finite nonnegative measures?} Yes, for example,
@@ -74,7 +73,7 @@ Yes, the comparison between two incomparable spaces is still feasible, though in
 A natural approach is to project them onto a sufficiently rich common space,
 so that it is possible to calculate the Wasserstein distance between their embeddings.
 This leads to a whole family of distances originated from the Gromov-Hausdorff distance.
-The most famous member in this class is the Gromov-Wasserstein distance \citep{Memoli07,Memoli11}.
+The most famous member in this class is the Gromov-Wasserstein (GW) distance \citep{Memoli07,Memoli11}.
 
 \paragraph{How can we integrate extra information into OT?} A natural solution is to optimize
 a linear combination of the OT's objective function and a term which takes into account the
@@ -99,7 +98,7 @@ and target samples are available \citep{Gu22}.
 in discrete setting. More precisely, \citet{Redko20} takes a radically different perspective
 to exploit the input data, by considering the pairwise differences between the coordinates
 of samples across spaces and learning simultaneously the samples and feature alignments.
-The corresponding distance, called \textit{Co-Optimal transport}, defines a proper approach
+The corresponding distance, called \textit{Co-Optimal transport} (COOT), provides a principled approach
 to compare weighted matrices.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,9 +109,10 @@ by the aforementioned questions, with major focus on the incomparable spaces.
 In particular, this thesis titled
 \textit{Optimal transport for transfer learning across domains} has several main objectives.
 \begin{enumerate}
-    \item Given the discrete nature of COOT, it is natural to study of its continuous extension,
+    \item Given the discrete nature of Co-Optimal transport, it is natural to study of its continuous extension,
     which may serve as the first step towards further analysis on the numerical,
-    and potentially, statistical properties. Given the close connection between COOT and GW,
+    and potentially, statistical properties. Given the close connection between
+    COOT and GW distance,
     understanding one may shed light on understanding the other. Related works:
     \begin{itemize}
         \item[$\bullet$] \Cref{chap:coot} of this thesis.
@@ -128,9 +128,8 @@ In particular, this thesis titled
     \end{itemize}
 
     \item Stacking techniques from different branches in OT allows to have the best of many worlds,
-    thus can provide efficient solution to a specific problem.
-    Examples of this strategy include the unbalanced GW \citep{Sejourne20}
-    and fused GW \citep{Vayer19b}. Related works:
+    thus can provide efficient solution to a specific problem. This strategy has been successfully used,
+    for example in the unbalanced GW \citep{Sejourne20} and the fused GW \citep{Vayer19b}. Related works:
     \begin{itemize}
         \item[$\bullet$] \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distance}.
         Pinar Demetci, \textbf{Quang Huy Tran}, Ievgen Redko and Ritambhara Singh.
@@ -170,18 +169,16 @@ namely Python Optimal Transport, available at \url{https://pythonot.github.io/},
 Fused Unbalanced Gromov-Wasserstein, available at \url{https://github.com/alexisthual/fugw}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{\Cref{chap:1} : Background on Optimal Transport}
+\paragraph{\Cref{chap:1} : Technical background on optimal transport}
 
 The purpose of this chapter is to provide relevant mathematical and numerical background
 on OT. In particular, we focus on the intuition and motivation of the core starting points
-of this thesis, notably the balanced and unbalanced OT, and the Gromov-Wasserstein distance.
+of this thesis, notably the balanced and unbalanced OT, and the GW distance.
 Second, we spend much effort on their algorithmic and implementation details, which are not
 usually discussed in the literature. We also provide a review on some variations of OT,
 coming mostly from the machine learning community. This may serve as a supplement
-to the excellent reference on computational OT of \citet{Peyre19} and to the very recent
-overview on unbalanced OT of \citet{Sejourne22}.
-Finally, we present a promising, yet simple alternative solver to the unbalanced OT problem,
-which has never been discussed in the literature, to the best of our knowledge.
+to the excellent reference on computational OT of \citet{Peyre19} and to the informative
+tutorial of \citet{Sejourne22} on how to used unbalanced transport in machine learning.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{\Cref{chap:coot}: Contributions to Co-Optimal Transport}
@@ -215,40 +212,53 @@ Despite high computational cost incurred by the cost tensor,
 it can provide decent estimation of the COOT and GW distance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{\Cref{chap:ucoot}: Unbalanced Co-Optimal Transport}
+\paragraph{\Cref{chap:ucoot}: Contributions to the unbalanced transport}
 
-In this chapter, we present the unbalanced extension of COOT in the
-continuous setting. We show that our formulation is a well-defined optimization problem.
-More importantly, it guaratees the provable robustness to outliers,
-which is not the case for COOT. As a byproduct, this result can be
-extended immediately to GW and unbalanced GW. The proposed method also shows favorable performance in
-the unsupervised heterogeneous domain adaptation and single-cell multi-omics tasks.
-For the latter, the feature coupling allows to efficiently recover
-the alignments between genes, when the across-domain cells have different number of genomic features.
+In this chapter, we present three contributions to the unbalanced OT-based divergences.
+\begin{enumerate}
+    \item \textbf{Inexact Bregman Proximal Point for Entropic Unbalanced Optimal Transport.}
+    This contribution is based on my unpublished working paper on an alternative solver
+    for the unbalanced OT problem,
+    called \textit{INexact Proximal Unbalanced optimal Transport} (INPUT).
+    Relied on the Bregman Proximal Point scheme,
+    INPUT is versatile and simple, yet shows promising performance over many existing methods.
+    However, its complete convergence analysis remains an open problem.
 
-This chapter is based on \citep{Tran23} and has been accepted at the
-AAAI Conference on Artificial Intelligence (AAAI 2023). The implementation of UCOOT will be
-integrated into the next release of Python Optimal Transport package \citep{Flamary21}.
+    \item \textbf{Unbalanced Co-Optimal Transport.}
+    We present the unbalanced extension of COOT in the
+    continuous setting. We show that our formulation is a well-defined optimization problem.
+    More importantly, it guaratees the provable robustness to outliers,
+    which is not the case for COOT. As a byproduct, this result can be
+    extended immediately to GW and unbalanced GW.
+    The proposed method also shows favorable performance in
+    the unsupervised heterogeneous domain adaptation and single-cell multi-omics tasks.
+    For the latter, in the unbalanced scenarios, the feature coupling allows to efficiently recover
+    the alignments between genes, when the across-domain cells have
+    different number of genomic features.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{\Cref{chap:fugw}: Fused Unbalanced Gromov-Wasserstein}
+    This chapter is based on \citep{Tran23} and has been accepted at the
+    AAAI Conference on Artificial Intelligence (AAAI 2023). The implementation of
+    Unbalanced COOT will be
+    integrated into the next release of Python Optimal Transport package \citep{Flamary21}.
 
-In this work, we present a novel method for inter-subject alignment based on Optimal Transport,
-denoted as Fused Unbalanced Gromov-Wasserstein (FUGW). The method aligns cortical surfaces based
-on the similarity of their functional signatures in response to a variety of stimulation settings,
-while penalizing large deformations of individual topographic organization. We demonstrate that
-FUGW is well-suited for whole-brain landmark-free alignment. The unbalanced feature allows
-to deal with the fact that functional areas vary in size across subjects. Our results show that
-FUGW alignment significantly increases between-subject correlation of activity for independent
-functional data, and leads to more precise mapping at the group level.
-The proposed method also allows to learn better brain templates, comparing to other anatomical
-alignment approaches.
+    \item \textbf{Fused Unbalanced Gromov-Wasserstein.}
+    We present a novel method for inter-subject alignment based on OT,
+    denoted as Fused Unbalanced Gromov-Wasserstein (FUGW). The method aligns cortical surfaces based
+    on the similarity of their functional signatures in response to a variety of stimulation settings,
+    while penalizing large deformations of individual topographic organization. We demonstrate that
+    FUGW is well-suited for whole-brain landmark-free alignment. The unbalanced feature allows
+    to deal with the fact that functional areas vary in size across subjects. Our results show that
+    FUGW alignment significantly increases between-subject correlation of activity for independent
+    functional data, and leads to more precise mapping at the group level.
+    The proposed method also allows to learn better brain templates, comparing to other anatomical
+    alignment approaches.
 
-This chapter is based on \citep{Thual22} and has been accepted at the
-Neural Information Processing Systems (NeurIPS 2022).
-It is a collaborative work with MIND team at INRIA Saclay.
-The main contribution of the author is on the formulation of the framework
-and the implementation of the algorithms.
+    This chapter is based on \citep{Thual22} and has been accepted at the
+    Neural Information Processing Systems (NeurIPS 2022).
+    It is a collaborative work with MIND team at INRIA Saclay.
+    The main contribution of the author is on the formulation of the mathematical framework
+    and the implementation of the algorithms.
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{\Cref{chap:agw}: Breaking isometric ties and introducing priors in
@@ -260,7 +270,7 @@ but they clearly represent different labels. We propose a simple,
 yet efficient variation of GW distance, called \textit{Augmented Gromov-Wasserstein} (AGW) divergence,
 which partially addresses the above isssue.
 More precisely, AGW learns simultaneously the sample and feature couplings by
-linearly combining the objective functions of GW distance and Co-Optimal Transport.
+linearly combining the objective functions of GW distance and COOT.
 We show that such combination results in much less isometries than GW distance.
 More importantly, the strong performance of AGW in our experiments indicates
 that these invariants appear to be relevant and meaningful.
