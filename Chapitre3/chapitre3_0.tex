@@ -3,64 +3,48 @@
 \section{Inexact Bregman Proximal Point for Entropic Unbalanced Optimal Transport}
 \label{sec:input}
 
-This section is an ongoing work on an alternative solver for the entropic UOT problem
-\ref{eq:discrete_ent_uot}, which has not yet been studied in the literature,
-to the best of our knowledge.
-We called this approach \textit{INexact Proximal Unbalanced optimal Transport} (INPUT),
-since it is a straightforward application of the inexact Bregman Proximal Point (BPP) algorithm
-to the UOT problem. We present the derivation of INPUT, then illustrate how
-it can overcome the limitations of the MM and Sinkhorn-based methods,
-while being orders of magnitude faster in our toy experiments. Despite the simplicity,
-its convergence analysis remains a challenging open problem and is under our active research.
+\subsection{Motivation and algorithm}
 
-\subsection{Motivation, optimization and algorithm}
-
-While the Bregman Proximal Point method \citep{Chen93} applies to the class of Bregman divergences,
+While usually approximated via the entropic regularization, the OT distance can also be directly
+estimated using the Bregman proximal point (BPP) method \citep{Chen93,Teboulle97}.
+Though this scheme can apply to the class of Bregman divergences,
 we will exclusively focus on the KL divergence throughout this thesis.
-\begin{definition}
-  Given a nonepmpty closed convex set of $E \subset \bbR^d_{\geq 0}$
-  and a proper closed convex function $f: E \to \bbR$, consider the following
-  convex optimization problem
-  \begin{align}
-    \min_{x \in E} f(x).
-  \end{align}
-  For learning rate $\eta > 0$, the exact BPP scheme with respect to the KL divergence reads
-  \begin{align}
-    \label{eq:bppa}
-    x^{(t+1)} = \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}),
-  \end{align}
-  and the inexact BPP scheme reads
-  \begin{align}
-    \label{eq:bppa_inexact}
-    x^{(t+1)} \approx \argmin_{x \in E} f(x) + \eta \kl(x, x^{(t)}).
-  \end{align}
-  Here, $x^{(t+1)}$ is only an approximate solution in some predefined sense.
-\end{definition}
-When applying to Problem \eqref{eq:discrete_ent_uot}, the exact BPP iteration boils down to solving
+More precisely, for fixed learning rate $\eta > 0$, at iteration $t$, we solve
+\begin{align}
+  \label{eq:bpp_eot}
+  P^{(t+1)} = \argmin_{P \in U(\mu, \nu)} \langle C, P \rangle + \eta \; \kl(P | P^{(t)}).
+\end{align}
+This is a slightly modified entropic OT problem and can be solved with the Sinkhorn algorithm,
+ut now the OT plan is computed by
+\begin{align}
+  P^{(t+1)} = P^{(t)} \odot \exp \left( \frac{f^{(t+1)} \oplus g^{(t+1)} - C}{\eta} \right),
+\end{align}
+where $(f^{(t+1)}, g^{(t+1)})$ is the optimal dual vectors of Problem \eqref{eq:bpp_eot}.
+Classic results \citep{Chen93} guarantee the linear convergence of BPP method
+to the minimum and the minimizer of the OT problem. Interestingly, this scheme can be easily extended to the
+generic UOT problem \eqref{eq:discrete_ent_uot}, where each iteration boils down to solving
 \begin{align}
 \label{eq:bpp_uot}
   &P^{(t+1)} \\
-  &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
+  &= \; \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
   \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
   + \rho_2 \kl(P_{\# 2} | \nu) + \varepsilon \kl(P | \gamma) + \eta \kl(P | P^{(t)}) \\
-  &= \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
+  &= \; \argmin_{P \in \bbR^{m \times n}_{\geq 0}}
   \left \langle C - \eta \log \frac{P^{(t)}}{\gamma}, P \right \rangle
   + \rho_1 \kl(P_{\# 1} | \mu) + \rho_2 \kl(P_{\# 2} | \nu) + (\varepsilon + \eta) \kl(P | \gamma).
 \end{align}
 This is nothing but an entropic UOT problem with modified cost and regularization.
 Thus, any solvers discussed in \Cref{sub:uot_optim} can be used. In particular,
 by construction, BPP is naturally applicable to the unregularized UOT.
-In practice, the exact BPP may not be an efficient algorithm to solve the UOT problem since
-it requires solving \textbf{exactly} many entropic subproblems. This can be computationally expensive,
-especially when the learning rate is small.
 
+Interestingly, it is not necessarily to solve exactly the entropic OT problem \eqref{eq:bpp_eot},
+but even as few as one Sinkhorn iteration can work in practice.
+This approach, known as \textit{Inexact Proximal OT}, is introduced in \citep{Xie20}.
 While the inexact BPP scheme has recently been applied to the balanced OT \citep{Xie20,Yang22},
 we are not aware of any extension to the unbalanced counterpart.
-Our proposed method follows directly from \citep{Xie20}, which is simple to implement and
-usually performs well in practice. In particular,
-we only require running a few Sinkhorn iterations for each entropic subproblem and
-use the approximated coupling as input for the next BPP iteration.
-The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
+Our proposed method, called \textit{INexact Proximal Unbalanced optimal Transport} (INPUT),
+follows directly from \citep{Xie20}, since it is simple to implement and
+usually performs well in practice. The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
 \begin{algorithm}[t]
   \caption{INPUT algorithm for Problem \eqref{eq:discrete_ent_uot}.}
   \label{alg:isppa}
@@ -83,7 +67,10 @@ The algorithmic details of INPUT can be found in \Cref{alg:isppa}.
 
 \subsection{Convergence analysis in the exact setting}
 
-Let us start with the convergence analysis in case of exact BPP iteration \ref{eq:bpp_uot}.
+In practice, performing the exact BPP iteration \eqref{eq:bpp_uot}
+may not be an efficient way to solve Problem \eqref{eq:discrete_ent_uot} since
+solving exactly many entropic subproblems can be computationally expensive,
+However, for theoritical interest, let us first start with the convergence analysis of this scheme.
 Thanks to Lemma 3.3 and Theorem 3.4 in \citep{Chen93}, if $P^*$ is a minimizer of
 Problem \eqref{eq:discrete_ent_uot}, then
 \begin{enumerate}
@@ -94,17 +81,36 @@ Problem \eqref{eq:discrete_ent_uot}, then
     F(P^{(t)}) - F(P^*) \leq \frac{\eta}{t} \kl(P^* | P^{(0)}).
   \end{align}
 \end{enumerate}
-The upper bound \eqref{eq:chen_teboulle} can be improved by further exploiting the property of
+The upper bound \eqref{eq:chen_teboulle} can be further improved by exploiting the structure of
 the objective function of Problem \eqref{eq:discrete_ent_uot}.
 First, we introduce the notions of relative smoothness \citep{Bauschke17} and
 strong convexity \citep{Lu18} of a function with respect to the KL divergence.
+% \begin{definition}[Bregman proximal point algorithm]
+%   Given a nonepmpty closed convex set of $E \subset \bbR^d_{\geq 0}$
+%   and a proper closed convex function $f: E \to \bbR$, consider the following
+%   convex optimization problem
+%   \begin{align}
+%     \min_{x \in E} f(x).
+%   \end{align}
+%   For learning rate $\eta > 0$, the exact BPP scheme with respect to the KL divergence reads
+%   \begin{align}
+%     \label{eq:bppa}
+%     x^{(t+1)} = \argmin_{x \in E} f(x) + \eta \kl(x | x^{(t)}),
+%   \end{align}
+%   and the inexact BPP scheme reads
+%   \begin{align}
+%     \label{eq:bppa_inexact}
+%     x^{(t+1)} \approx \argmin_{x \in E} f(x) + \eta \kl(x | x^{(t)}).
+%   \end{align}
+%   Here, $x^{(t+1)}$ is only an approximate solution in some predefined sense.
+% \end{definition}
 \begin{definition}
   \label{def:smooth-convex}
-  Let $f:C \to \bbR$ be a differentiable convex function.
-  Given $L \geq 0$, we say that $f$ is $L-$smooth relative to the KL divergence
-  if for any $x, y \in C$,
+  Let $f:C \to \bbR$ be a differentiable convex function, where $C \subset \bbR^d_{\geq 0}$ is
+  a nonepmpty closed convex set. Given $L \geq 0$, we say that $f$ is $L-$smooth relative to
+  the KL divergence if for any $x, y \in C$,
   \begin{align}
-    f(x) \leq f(y) + \langle \nabla f(y), x - y \rangle + L \; \kl(x, y).
+    f(x) \leq f(y) + \langle \nabla f(y), x - y \rangle + L \; \kl(x | y).
   \end{align}
   Given $l \geq 0$, we say $f$ is $l-$strongly convex relative to the KL divergence
   if for any $x, y \in C$,
@@ -112,7 +118,9 @@ strong convexity \citep{Lu18} of a function with respect to the KL divergence.
     f(x) \geq f(y) + \langle \nabla f(y), x - y \rangle + l\; \kl(x, y).
   \end{align}
 \end{definition}
-
+Recall that the objective function of Problem \eqref{eq:discrete_ent_uot} is
+$F(P) = \langle C, P \rangle + \rho_1 \kl(P_{\# 1} | \mu)
++ \rho_2 \kl(P_{\# 2} | \nu) + \varepsilon \kl(P | \gamma)$. Then, we have
 \begin{lemma}
   \label{lemma:convex-smoothness}
   $F$ is $\varepsilon$-strongly convex and $(\lambda_1 + \lambda_2 + \varepsilon)$-relatively smooth
@@ -144,7 +152,7 @@ Inequality (\ref{eq:chen_teboulle}). Indeed,
 
 \subsection{Convergence analysis in the inexact setting}
 
-Despite the simplicity, it is difficult to analyze the convergence of INPUT.
+Despite the simplicity, it is difficult to study the convergence of INPUT.
 In particular, while it is an immediate extension of the work of \citet{Xie20} on the balanced OT,
 their proof techniques of the convergence can not be adapted to the unbalanced setting.
 This is because they rely on the property of the set of admissible couplings,
@@ -271,12 +279,12 @@ While this experiment is mainly for the proof-of-concept purpose,
 it shows that INPUT is a promising alternative solver for the UOT problem.
 
 \paragraph{Strengths of INPUT}
-INPUT has two very appealing features. First, it overcomes the limitations of
+There are two very appealing features. First, INPUT overcomes the limitations of
 the MM and Sinkhorn-based algorithms. In particular,
 it can, not only handle both balanced/unbalanced, and unregularized/regularized settings,
 but also, empirically, can converge very fast to the optimal plan and the global minimum,
 even in the regimes of very small regularization (where Sinkhorn-based methods struggles),
-or of very large relaxation (where MM wrestles).
+or of very large relaxation (where MM converges slowly).
 We summarize the applicability of these algorithms in \Cref{t:uot_algo_compare}.
 
 Second, the presence of learning rate $\eta$
