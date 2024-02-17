@@ -7,7 +7,7 @@
 \chaptermark{\textbf{Introduction}}
 % \hfill \break
 
-\raggedbottom
+% \raggedbottom
 
 \section{Why and how optimal transport?}
 
@@ -98,8 +98,8 @@ and target samples are available \citep{Gu22}.
 in discrete setting. More precisely, \citet{Redko20} takes a radically different perspective
 to exploit the input data, by considering the pairwise differences between the coordinates
 of samples across spaces and learning simultaneously the samples and feature alignments.
-The corresponding distance, called \textit{Co-Optimal transport} (COOT), provides a principled approach
-to compare weighted matrices.
+The corresponding distance, called \textit{Co-Optimal transport} (COOT),
+provides a principled approach to compare weighted matrices.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Thesis outlines and contributions}
@@ -128,7 +128,8 @@ In particular, this thesis titled
     \end{itemize}
 
     \item Stacking techniques from different branches in OT allows to have the best of many worlds,
-    thus can provide efficient solution to a specific problem. This strategy has been successfully used,
+    thus can provide efficient solutions to problems arised from real-world applications.
+    This strategy has been successfully used,
     for example in the unbalanced GW \citep{Sejourne20} and the fused GW \citep{Vayer19b}. Related works:
     \begin{itemize}
         \item[$\bullet$] \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distance}.
@@ -212,53 +213,51 @@ Despite high computational cost incurred by the cost tensor,
 it can provide decent estimation of the COOT and GW distance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{\Cref{chap:ucoot}: Contributions to the unbalanced transport}
+\paragraph{\Cref{chap:ucoot}: Unbalanced Co-Optimal Transport}
 
-In this chapter, we present three contributions to the unbalanced OT-based divergences.
-\begin{enumerate}
-    \item \textbf{Inexact Bregman Proximal Point for Entropic Unbalanced Optimal Transport.}
-    This contribution is based on my unpublished working paper on an alternative solver
-    for the unbalanced OT problem,
-    called \textit{INexact Proximal Unbalanced optimal Transport} (INPUT).
-    Relied on the Bregman Proximal Point scheme,
-    INPUT is versatile and simple, yet shows promising performance over many existing methods.
-    However, its complete convergence analysis remains an open problem.
+We present the unbalanced extension of COOT in the continuous setting.
+We show that our formulation is a well-defined optimization problem.
+More importantly, it guaratees the provable robustness to outliers, which is not the case for COOT.
+As a byproduct, this result can be extended immediately to GW and unbalanced GW.
+The proposed method also shows favorable performance in
+the unsupervised heterogeneous domain adaptation and single-cell multi-omics tasks.
+For the latter, in the unbalanced scenarios, the feature coupling allows to efficiently recover
+the alignments between genes, when the across-domain cells have
+different number of genomic features.
 
-    \item \textbf{Unbalanced Co-Optimal Transport.}
-    We present the unbalanced extension of COOT in the
-    continuous setting. We show that our formulation is a well-defined optimization problem.
-    More importantly, it guaratees the provable robustness to outliers,
-    which is not the case for COOT. As a byproduct, this result can be
-    extended immediately to GW and unbalanced GW.
-    The proposed method also shows favorable performance in
-    the unsupervised heterogeneous domain adaptation and single-cell multi-omics tasks.
-    For the latter, in the unbalanced scenarios, the feature coupling allows to efficiently recover
-    the alignments between genes, when the across-domain cells have
-    different number of genomic features.
+This chapter is based on \citep{Tran23} and has been accepted at the
+AAAI Conference on Artificial Intelligence (AAAI 2023). The implementation of
+Unbalanced COOT will be
+integrated into the next release of Python Optimal Transport package \citep{Flamary21}.
 
-    This chapter is based on \citep{Tran23} and has been accepted at the
-    AAAI Conference on Artificial Intelligence (AAAI 2023). The implementation of
-    Unbalanced COOT will be
-    integrated into the next release of Python Optimal Transport package \citep{Flamary21}.
+% \begin{enumerate}
+%     \item \textbf{Inexact Bregman Proximal Point for Entropic Unbalanced Optimal Transport.}
+%     This contribution is based on my unpublished working paper on an alternative solver
+%     for the unbalanced OT problem,
+%     called \textit{INexact Proximal Unbalanced optimal Transport} (INPUT).
+%     Relied on the Bregman Proximal Point scheme,
+%     INPUT is versatile and simple, yet shows promising performance over many existing methods.
+%     However, its complete convergence analysis remains an open problem.
+% \end{enumerate}
 
-    \item \textbf{Fused Unbalanced Gromov-Wasserstein.}
-    We present a novel method for inter-subject alignment based on OT,
-    denoted as Fused Unbalanced Gromov-Wasserstein (FUGW). The method aligns cortical surfaces based
-    on the similarity of their functional signatures in response to a variety of stimulation settings,
-    while penalizing large deformations of individual topographic organization. We demonstrate that
-    FUGW is well-suited for whole-brain landmark-free alignment. The unbalanced feature allows
-    to deal with the fact that functional areas vary in size across subjects. Our results show that
-    FUGW alignment significantly increases between-subject correlation of activity for independent
-    functional data, and leads to more precise mapping at the group level.
-    The proposed method also allows to learn better brain templates, comparing to other anatomical
-    alignment approaches.
+\paragraph{\Cref{chap:fugw}: Fused Unbalanced Gromov-Wasserstein}
 
-    This chapter is based on \citep{Thual22} and has been accepted at the
-    Neural Information Processing Systems (NeurIPS 2022).
-    It is a collaborative work with MIND team at INRIA Saclay.
-    The main contribution of the author is on the formulation of the mathematical framework
-    and the implementation of the algorithms.
-\end{enumerate}
+We present a novel method for inter-subject alignment based on OT,
+denoted as Fused Unbalanced Gromov-Wasserstein (FUGW). The method aligns cortical surfaces based
+on the similarity of their functional signatures in response to a variety of stimulation settings,
+while penalizing large deformations of individual topographic organization. We demonstrate that
+FUGW is well-suited for whole-brain landmark-free alignment. The unbalanced feature allows
+to deal with the fact that functional areas vary in size across subjects. Our results show that
+FUGW alignment significantly increases between-subject correlation of activity for independent
+functional data, and leads to more precise mapping at the group level.
+The proposed method also allows to learn better brain templates, comparing to other anatomical
+alignment approaches.
+
+This chapter is based on \citep{Thual22} and has been accepted at the
+Neural Information Processing Systems (NeurIPS 2022).
+It is a collaborative work with MIND team at INRIA Saclay.
+The main contribution of the author is on the formulation of the mathematical framework
+and the implementation of the algorithms.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{\Cref{chap:agw}: Breaking isometric ties and introducing priors in

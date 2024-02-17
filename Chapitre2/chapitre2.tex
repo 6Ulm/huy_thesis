@@ -138,24 +138,24 @@ In particular, if the similarity matrices is CND,
 then one can safely remove the equality constraint without changing the minimum.
 Thus, \Cref{prop:coot_gw_equiv} justifies the rationale behind
 the alternative minimization procedure for GW distance presented in \Cref{subsec:gw_approx}.
-This scheme is easily adapted to the entropic fused GW problem, by observing that,
-for any reference histogram $\mu \in \bbR_{> 0}^{m \times n}$, we have
-\begin{equation}
-  \begin{split}
-    &\inf_{\substack{P \in U(\mu_X, \mu_Y)}}
-  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} P_{jl}
-  + \alpha \langle D, P \rangle + \varepsilon \; \kl(P | \mu) \\
-  &= \inf_{\substack{P \in U(\mu_X, \mu_Y) \\ Q \in U(\mu_X, \mu_Y) \\ P = Q }}
-  \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} Q_{jl}
-  + \frac{\alpha}{2} \langle D, P \rangle + \frac{\alpha}{2} \langle D, Q \rangle
-  + \frac{\varepsilon}{2} \kl(P | \mu) + \frac{\varepsilon}{2} \kl(Q | \mu).
-  \end{split}
-\end{equation}
-Again, under exactly the same conditions on the similarity matrices in \Cref{prop:coot_gw_equiv},
-one can safely drop the equality constraint during the optimization.
+% This scheme is easily adapted to the entropic fused GW problem, by observing that,
+% for any reference histogram $\mu \in \bbR_{> 0}^{m \times n}$, we have
+% \begin{equation}
+%   \begin{split}
+%     &\inf_{\substack{P \in U(\mu_X, \mu_Y)}}
+%   \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} P_{jl}
+%   + \alpha \langle D, P \rangle + \varepsilon \; \kl(P | \mu) \\
+%   &= \inf_{\substack{P \in U(\mu_X, \mu_Y) \\ Q \in U(\mu_X, \mu_Y) \\ P = Q }}
+%   \sum_{i,j,k,l} (C^x_{ij} - C^y_{kl})^p P_{ik} Q_{jl}
+%   + \frac{\alpha}{2} \langle D, P \rangle + \frac{\alpha}{2} \langle D, Q \rangle
+%   + \frac{\varepsilon}{2} \kl(P | \mu) + \frac{\varepsilon}{2} \kl(Q | \mu).
+%   \end{split}
+% \end{equation}
+% Again, under exactly the same conditions on the similarity matrices in \Cref{prop:coot_gw_equiv},
+% one can safely drop the equality constraint during the optimization.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continuous Co-Optimal Transport}
+\section{Continuous Co-Optimal Transport} \label{sec:continuous_coot}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
@@ -450,9 +450,8 @@ strategies used previously.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Preliminary knowledge}
 
-\paragraph{Notations.} For each integer $n \geq 1$, we write $[n] := \{1,...,n\}$.
-We denote $\langle \cdot, \cdot \rangle$ denotes the Frobenius inner product.
-The generalized Kullback-Leibler divergence between two positive vectors $p, q \in \bbR^n_{> 0}$
+\paragraph{Notations.} In the discrete setting, the
+Kullback-Leibler divergence between two positive vectors $p, q \in \bbR^n_{> 0}$
 is defined as $\kl(p | q) = \sum_i p_i \log \frac{p_i}{q_i} - \sum_i p_i + \sum_i q_i$,
 with the convention that $0 \log 0 = 0$.
 
@@ -915,7 +914,7 @@ We call this variation \textit{MMOT-DC-v1} and use the same setup as in Experime
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Conclusion and future work}
+\subsection{Discussion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section, we present a novel relaxation of the factorized MMOT problem called \textit{MMOT-DC}.

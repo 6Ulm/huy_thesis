@@ -7,6 +7,9 @@
 \chaptermark{\textbf{Technical background on optimal transport}}
 
 \hfill \break
+
+\raggedbottom
+
 In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
 The general structure for each topic includes the motivation, the theoritical and numerical aspects.
@@ -40,12 +43,13 @@ entropic approximation of the OT distance.
 \subsubsection{Motivation} \label{subsec:ot_motiv}
 
 \paragraph{Relation with Monge's problem}
-The original OT problem was first formulated by \citet{Monge81}. From a mathematical viewpoint,
+The original OT problem was first formulated by \citet{Monge81}.
+From a mathematical viewpoint,
 it aims at transporting all the mass from one probability distribution to the other, so that
 the displacement cost is minimized. Typically, this cost is measured by a distance function which
 takes supports of the probability measures as inputs. Transporting from one probability measure
 $\mu$ to the other one $\nu$ is equivalent to finding a map $T$ such that $\nu = T_{\#} \mu$.
-Mathematically speaking, we define the Monge's problem as follows.
+Following \citep{Fillipo15}, we define the Monge's problem as follows.
 \begin{definition}[Push-forward measure]
   Let $X, Y$ be two measurable spaces. Given a probability measure $\mu$ on $X$ and a
   measurable map $T: X \to Y$, we call $T_{\#} \mu \in \cP(Y)$ the \textbf{push-forward} measure of
@@ -55,7 +59,8 @@ Mathematically speaking, we define the Monge's problem as follows.
   We also say $T$ is a \textbf{transport map} from $\mu$ to $\nu$.
 \end{definition}
 \begin{definition}[Monge's problem]
-  Let $X, Y$ be two metric spaces. Given two probability measures $\mu \in \cP(X), \nu \in \cP(Y)$
+  Let $X, Y$ be two complete and separable metric spaces.
+  Given two probability measures $\mu \in \cP(X), \nu \in \cP(Y)$
   and a measurable cost function $c: X \times Y \to \bbR \cup \{\infty\}$,
   we define the Monge's problem as
   \begin{align}
@@ -680,6 +685,9 @@ including the unregularized UOT (\ie, $\varepsilon = 0$) and other unbalanced di
 namely the squared $l_2$-regularized UOT \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
 the unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
 and the unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
+Even more interestingly, these examples share a common trait, that is, the minimum is a polynomial
+of the minimiser, whose coefficients depend only on the input measures (\ie, $\mu, \nu, \gamma$)
+and hyperparameters (\ie, $\rho_1, \rho_2, \varepsilon$), but not the cost $C$.
 
 Now, we discuss some existing approaches to solve Problem \eqref{eq:discrete_ent_uot}.
 
@@ -1711,8 +1719,8 @@ $D_{\varphi}^{\otimes 2}(\mu | \nu) := D_{\varphi}(\mu \otimes \mu | \nu \otimes
 This structure of product measures is particularly useful in the study of theoretical
 and practical properties of UGW, namely the existence of solution,
 the relation with conic formulation \citep{Sejourne20} and the robustness to outliers \citep{Tran23}.
-Moreover, when $D_{\varphi_1}, D_{\varphi_2}$ are KL divergences, one can use the proof technique of
-Lemma 4 in \citep{Khiem20} to show that, if $\pi^*$ is the solution of UGW, then
+Moreover, thanks to \Cref{prop:uot_minimizer},
+when $D_{\varphi_1}, D_{\varphi_2}$ are KL divergences, we have
 \begin{align}
   \label{eq:ugw_minimizer_minimum}
   \text{UGW}_{\lambda}(\cX, \cY) = \lambda_1 \; m(\mu_X)^2 + \lambda_2 \; m(\mu_Y)^2

@@ -1,0 +1,35 @@
+\section{Appendix of Chapter 5}
+
+\subsection{Proofs related to Fused Unbalanced Gromov-Wasserstein}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{proof}[Proof of \Cref{coro:ugw_ucoot}]
+  Let $(P, Q)$ be a solution of the problem $\widetilde{\fugw}(\cX^s, \cX^t)$.
+  This means $P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2}$. Using the relation
+  \begin{align}
+    \kl(p \otimes q | a \otimes b) = m(q) \kl(p | a) + m(p) \kl(q | b)
+    + \big(m(P) - m(a)\big) \big(m(Q) - m(b)\big),
+  \end{align}
+  we have,
+  \begin{enumerate}
+    \item $\kl(P_{\#1} \otimes Q_{\#1} \vert w^s \otimes w^s) =
+    \kl(P_{\#1} \otimes P_{\#1} \vert w^s \otimes w^s) =
+    \kl(Q_{\#1} \otimes Q_{\#1} \vert w^s \otimes w^s)$.
+
+    \item $\kl(P_{\#2} \otimes Q_{\#2} \vert w^t \otimes w^t) =
+  \kl(P_{\#2} \otimes P_{\#2} \vert w^t \otimes w^t) =
+  \kl(Q_{\#2} \otimes Q_{\#2} \vert w^t \otimes w^t)$.
+
+    \item $\kl \Big(P \otimes Q | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big) =
+    \kl \Big(P \otimes P | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big)
+    = \kl \Big(P \otimes Q | (w^s \otimes w^t) \otimes (w^s \otimes w^t) \Big)$.
+  \end{enumerate}
+  So, the inequality $\widetilde{\fugw}(\cX^s, \cX^t) \leq \fugw(\cX^s, \cX^t)$ and
+  the suboptimality of $P, Q$ with respect to the problem $\fugw(\cX^s, \cX^t)$ imply that
+  \begin{equation}
+    2 \langle G, P \otimes Q \rangle \leq
+      \langle G, P \otimes P \rangle + \langle G, Q \otimes Q \rangle.
+  \end{equation}
+  Now, following exactly the same proof of \Cref{prop:coot_gw_equiv},
+  the above inequality becomes an equality.
+\end{proof}

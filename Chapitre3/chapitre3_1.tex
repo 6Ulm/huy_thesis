@@ -1,9 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Unbalanced Co-Optimal Transport}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Introduction}
+\section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The last decade has witnessed many successful applications of optimal
@@ -23,7 +19,7 @@ must be calculated in advance and the effect of the individual variables is lost
 
 Similar to classical OT, COOT enforces hard constraints on the marginal distributions
 both between samples and features. These constraints lead to two main limitations:
-(1) imbalanced datasets where samples or features are re-weighted
+(1) unbalanced datasets where samples or features are re-weighted
 cannot be accurately compared; (2) mass transportation \emph{must} be exhaustive:
 outliers, if any, must be matched regardless of the cost they induce.
 To circumvent these limitations, we propose to relax the mass preservation constraints
@@ -107,7 +103,7 @@ and $+\infty$ otherwise.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{From COOT to Unbalanced Co-Optimal Transport} \label{sec:ucoot}
+\section{From COOT to Unbalanced Co-Optimal Transport} \label{sec:ucoot}
 The ultimate goal behind the CO-Optimal Transport (COOT)
 framework is the simultaneous alignment of samples \emph{and} features to allow for
 comparisons across spaces of different dimensions. In this section, we discuss
@@ -258,16 +254,19 @@ there exist perfect alignments between rows (samples) and between
 columns (features) of the interaction matrices $\xi_1$ and $\xi_2$.
 
 \paragraph{Relation between UCOOT and its solution.}
-UCOOT is a quadratic function of its minimizer, thanks to the property of the
-KL divergence. More precisely, if $(\pi_*^s, \pi_*^f)$ is the equal-mass solution,
-then by using the proof technique of Lemma 4 in \citep{Khiem20}, one can show that
+As a consequence of \Cref{prop:uot_minimizer}, UCOOT is a bilinear function of its minimizers,
+thanks to the property of the KL divergence. More precisely,
+if $(\pi_*^s, \pi_*^f)$ is the equal-mass solution, then we have
 \begin{align}
   \label{eq:ucoot_minimizer_minimum}
   \ucoot_{\rho}(\cX_1, \cX_2) =
-  \sum_{k=1, 2} \rho_k \; m(\mu_k^s) \; m(\mu_k^f) - (\rho_1  + \rho_2) \; m(\pi^s_*)^2.
+  \sum_{k=1, 2} \rho_k \; m(\mu_k^s) \; m(\mu_k^f) - (\rho_1  + \rho_2) \; m(\pi^s_*) m(\pi^f_*).
 \end{align}
+Interestingly, this equation depends only on the measures and hyperparameters. There is no
+dependency on the interactions because they have been fully captured in the masses of
+the optimal sample and feature couplings.
 
-\subsection{Robustness of Unbalanced Co-Optimal Transport} \label{sec:robustness}
+\section{Robustness of Unbalanced Co-Optimal Transport} \label{sec:robustness}
 When discussing the concept of robustness, outliers are often considered as samples
 not following the underlying distribution of the data. In our general context of
 sample-feature alignments, we consider a \emph{pair} $(x^s, x^f) \in X^s \times X^f$
@@ -375,7 +374,7 @@ This provides a theoretical explanation of the empirical observation in \citep{S
 that unlike GW, the UGW distance is also robust to outliers.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Optimization algorithm and complexity} \label{subsec_app:algo}
+\section{Optimization algorithm and complexity} \label{subsec_app:algo}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Solving COOT-type problems, in general, is not trivial. As highlighted in \citep{Redko20},
 the balanced case corresponds to a convex relaxation of the bilinear assignment problem,
@@ -459,8 +458,8 @@ close to those in the non-entropic case. We formalize this claim in the followin
 \end{proposition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Experiments} \label{sec:experiments}
-\subsubsection{Illustration and interpretation on MNIST images}
+\section{Experiments} \label{sec:experiments}
+\subsection{Illustration and interpretation on MNIST images}
 
 \begin{figure}[t]
   \centering
@@ -522,7 +521,7 @@ For $\sigma > 0$, we compute the average accuracy
 The performance of COOT not only degrades with noisier outliers but is also unstable.
 By contrast, the accuracy of UCOOT remains almost constant regardless of the level of noise.
 
-\subsubsection{Heterogeneous Domain Adaptation}
+\subsection{Heterogeneous Domain Adaptation}
 
 %Domain adaptation (DA) refers to the problem in which a classifier
 %learned on one domain (called \textit{source}) can generalise well to the other one (called \textit{target}).
@@ -733,7 +732,6 @@ labelled target samples, \Cref{tab:table2} shows that the advantage of UCOOT dim
 as the level of certainty increases. In this case, both COOT and UCOOT
 are also much more stable but UCOOT is somewhat more volatile than COOT.
 
-\newpage
 \paragraph{Robustness to target shift.}
 We also illustrate the robustness of UCOOT to a change in class proportions,
 also known as target shift.
@@ -763,7 +761,7 @@ become more imbalanced.
 %
 %\paragraph{Robustness to target shift}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Single-cell multi-omics alignment}
+\subsection{Single-cell multi-omics alignment}
 
 Finally, we present a real-world application of UCOOT for the alignment of single-cell measurements.
 Recent advances in single-cell sequencing technologies allow biologists to measure
@@ -896,7 +894,7 @@ report the average values. UCOOT continues to yield a low FOSCTTM score (0.0081 
 in the balanced scenario), while COOT shows a larger drop in performance
 (0.1342 compared to 0.0127 in the balanced scenario).
 
-\subsection{Discussion and conclusion}
+\section{Discussion}
 \label{sec:conclusion}
 
 In this work, we present an extension of COOT called unbalanced COOT,

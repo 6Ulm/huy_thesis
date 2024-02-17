@@ -7,6 +7,9 @@
 \chaptermark{\textbf{Fused Unbalanced Gromov-Wasserstein}}
 
 \hfill \break
+
+\raggedbottom
+
 This chapter presents the results from \citep{Thual22} and addresses the applications of
 unbalanced extension of fused Gromov-Wasserstein in human brains alignments.
 Individual brains vary in both anatomy and functional organization, even within a given species.
@@ -28,7 +31,7 @@ and leads to more precise mapping at the group level.
 \raggedbottom
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Introduction}
+\section{Introduction}
 \label{sec:introduction}
 
 The availability of millimeter or sub-millimeter anatomical or functional brain images has opened
@@ -86,7 +89,7 @@ across individuals in their fine-grained functional organization \citep{Glasser2
 \textit{(iii)} Beyond the problem of aligning human brains, it is an even greater challenge
 to systematically compare functional brain organization in two different species,
 such as humans and macaques \citep{neubert_comparison_2014,mars_whole_2018,xu_cross-species_2020,eichert_cross-species_2020,}.
-Such inter-species comparisons intro9duce a more extreme form of variability in the correspondence model.
+Such inter-species comparisons introduce a more extreme form of variability in the correspondence model.
 
 \paragraph{Related work}
 %
@@ -119,7 +122,6 @@ a fixed spatial context (mesh or voxel grid), and thus cannot be used on heterog
 such as between two individual human anatomies or, worse, between a monkey brain
 and a human brain.
 
-
 \paragraph{Contributions}
 
 Following \citep{bazeille_local_2019}, we use the Wasserstein distance between source and
@@ -134,7 +136,7 @@ than in others, or may simply be absent. We show that this approach successfully
 the challenging case of different cortical meshes, and that derived brain activity templates
 are sharper than those obtained with standard anatomical alignment approaches.
 
-\subsection{Methods}
+\section{Methods}
 \label{sec:methods}
 
 Optimal Transport yields a natural framework to address the alignment problem,
@@ -142,13 +144,12 @@ as it seeks to derive a plan -- a \textit{coupling} -- that can be seen as a sof
 between cortical areas of a source and target individual.
 As discussed previously, there is a need for a functional alignment method that respects
 the rich geometric structure of the anatomical features, hence the Wasserstein distance alone
-is not sufficient.
-By construction, the GW distance \citep{Memoli11,Memoli07}
+is not sufficient. By construction, the GW distance \citep{Memoli11,Memoli07}
 can help preserve the global geometry underlying the signal.
 The more recent fused GW distance \citep{Vayer19b} goes one step further by
 making it possible to integrate functional data simultaneously with anatomical information.
 
-\subsubsection{Fused Unbalanced Gromov-Wasserstein}
+\subsection{Fused Unbalanced Gromov-Wasserstein}
 
 We leverage \citep{Vayer19b,Sejourne20} to present a new objective function which interpolates
 between a loss preserving the global geometry of the underlying mesh structure and
@@ -268,7 +269,7 @@ whereas the larger blob in the target distribution is also a place of mass creat
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Optimization}
+\subsection{Optimization}
 
 Estimating the unbalanced Gromov Wasserstein loss is numerically sensitive to initialization,
 due to the non-convexity of the problem.
@@ -294,7 +295,7 @@ where
 \begin{itemize}
     \item[$\bullet$] $C \triangleq \Big( ||F^s_{i} - F^t_j||^2_2\Big)_{i,j} \in \bbR^2_+$ \hfill (feature cost matrix)
 
-    \item[$\bullet$] $G \triangleq \Big( |D^s_{i,j} - D^t_{k,l}| \Big)_{i,j,k,l} \in \bbR^4_+$ \hfill (geometry cost matrix)
+    \item[$\bullet$] $G \triangleq \Big( |D^s_{i,j} - D^t_{k,l}| \Big)_{i,j,k,l} \in \bbR^4_+$ \hfill (geometry cost tensor)
 
     \item[$\bullet$] $L_{\text{W}}(P, Q) \triangleq \langle C, \frac{P + Q}{2} \rangle = \frac{1}{2} ( \sum_{i,j} C_{i,j}P_{i,j} + \sum_{i,j} C_{i,j}Q_{i,j})$ \hfill (Wasserstein)
 
@@ -341,11 +342,10 @@ Using a Block-Coordinate Descent (BCD) scheme, we fix a coupling and minimize
 with respect to the other. This allows us to always be dealing with linear problems
 instead of a quadratic one. Eventually, each BCD iteration consists in alternatively solving
 two entropic unbalanced OT problems, whose solutions can be approximated using
-the Sinkhorn algorithm \citep{Sejourne19}. Details of the BCD iteration can be found
-in \Cref{alg:lbfugw}.
+the Sinkhorn algorithm \citep{Sejourne19}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Barycenters}
+\subsection{Barycenters}
 Barycenters represent common patterns across samples.
 Their role is instrumental in identifying a unique target for aligning a given group of individuals.
 As seen in \Cref{fig:intro}, the vertex-wise group average does not usually provide
@@ -357,7 +357,7 @@ of all subjects $s \in \cS$, as well as the corresponding couplings $P^{s,B}$ fr
 to the barycenter. More precisely, we solve
 \begin{equation}
     \label{eq:barycenter}
-    \cX^B = (F_B, D_B, w^B) \in \arg\min_{\cX}  \sum_{s \in \cS} \fugw(\cX^s, \cX),
+    \cX^B = (F_B, D_B, w^B) \in \argmin_{\cX}  \sum_{s \in \cS} \fugw(\cX^s, \cX),
 \end{equation}
 where we set the weights $w_B$ to be the uniform distribution.
 By construction, the resulting barycenter benefits from the advantages of FUGW,
@@ -402,7 +402,7 @@ the weight $w^B$ is always fixed as uniform distribution.
 \end{algorithm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
-\subsection{Numerical experiments}
+\section{Numerical experiments}
 
 We design three experiments to assess the performance of FUGW.
 In Experiments 1 and 2, we are interested in assessing if aligning pairs of individuals with
@@ -535,9 +535,9 @@ respond to specific stimuli. We assess whether FUGW helps find the same clusters
 Eventually, we quantify the number of vertices significantly activated or deactivated
 with and without alignment respectively.
 
-\subsection{Results}
+\section{Results}
 
-\subsubsection{Experiment 1 - Template anatomy}
+\subsection{Experiment 1 - Template anatomy}
 
 \paragraph{Aligning subjects on a fixed mesh}
 
@@ -642,7 +642,7 @@ This feature is indeed captured by the difference of mass between subjects
     \label{fig:transported_mass}
 \end{figure}
 
-\subsubsection{Experiment 2 - Individual anatomies}
+\subsection{Experiment 2 - Individual anatomies}
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\columnwidth]{./Chapitre4/figures/individual_alignment_correlation_gain_fugw}
@@ -676,7 +676,7 @@ transporting their functional signal in an anatomically sound way.
     \label{fig:individual_projections}
 \end{figure}
 
-\subsubsection{Experiment 3 - Barycenter}
+\subsection{Experiment 3 - Barycenter}
 
 In the absence of a proper metric to quantify the correctness of a barycenter,
 we first qualitatively compare the functional templates obtained with and without alignment.
@@ -713,7 +713,7 @@ as shown in \Cref{fig:barycenter_vs_group_average}.C.
     \label{fig:barycenter_vs_group_average}
 \end{figure}
 
-\subsection{Discussion}
+\section{Discussion}
 
 FUGW can derive meaningful couplings between pairs of subjects without
 the need of a pre-existing anatomical template. It is well-suited to computing

@@ -30,31 +30,31 @@
 % Inclusion du chapitre remerciement
 % Input acknowledgement chapter
 \clearemptydoublepage
-% \input{./Chapitre0/acknowledgement}
+\input{./Chapitre0/acknowledgement}
 
 % Ne pas oublier cette commande qui g\'{e}n\`{e}re la page de couverture avant
 % This command will generate the front cover
 \frontmatter
 \renewcommand{\contentsname}{Table of Contents}
-\clearemptydoublepage
+% \clearemptydoublepage
 \tableofcontents %sommaire %table of content
 \etocsettocstyle{}{} % from now on only local tocs
 % \shorttableofcontvents{Sommaire}{0}
 
-\clearemptydoublepage
-% \input{./Chapitre0/introduction}
+% \clearemptydoublepage
+\input{./Chapitre0/notations}
+\input{./Chapitre0/introduction}
 
-\clearemptydoublepage
+% \clearemptydoublepage
 \mainmatter
-% \input{./Chapitre0/abstract}
-% \input{./Chapitre0/notations}
 
-\clearemptydoublepage
+% \clearemptydoublepage
 \input{./Chapitre1/chapitre1}
 \input{./Chapitre2/chapitre2}
 \input{./Chapitre3/chapitre3}
 \input{./Chapitre4/chapitre4}
 \input{./Chapitre5/chapitre5}
+\input{./Chapitre0/conclusion}
 \input{./Chapitre6/chapitre6}
 
 % \ifenvsetTF{COMPILE_ALL}{
@@ -65,12 +65,12 @@
 % 	%\input{./Chapitre2/chapitre2}
 % }
 
-\clearemptydoublepage
+% \clearemptydoublepage
 \backmatter
 
 % Chapitre pour la bibliographie
 % Bibliography chapter
-\clearemptydoublepage
+% \clearemptydoublepage
 \phantomsection % To have a correct link in the table of contents
 \addcontentsline{toc}{chapter}{Bibliography}
 \nocite{*}
