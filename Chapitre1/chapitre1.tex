@@ -13,7 +13,7 @@
 In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
 The general structure for each topic includes the motivation, the theoritical and numerical aspects.
-In particular, we focus on the numerics, which are not usually discussed in the OT literature,.
+In particular, we focus on the numerics, which are not usually discussed in the OT literature.
 By contrast, we only briefly present the theory since it has already been well-studied and
 can be found in many prior works, which will be precised during the discussion of each topic.
 
@@ -49,7 +49,7 @@ it aims at transporting all the mass from one probability distribution to the ot
 the displacement cost is minimized. Typically, this cost is measured by a distance function which
 takes supports of the probability measures as inputs. Transporting from one probability measure
 $\mu$ to the other one $\nu$ is equivalent to finding a map $T$ such that $\nu = T_{\#} \mu$.
-Following \citep{Fillipo15}, we define the Monge's problem as follows.
+We follow \citet{Fillipo15} and define the Monge's problem as follows.
 \begin{definition}[Push-forward measure]
   Let $X, Y$ be two measurable spaces. Given a probability measure $\mu$ on $X$ and a
   measurable map $T: X \to Y$, we call $T_{\#} \mu \in \cP(Y)$ the \textbf{push-forward} measure of
@@ -195,17 +195,17 @@ when extending to the setting of metric measure space.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.85\textwidth,keepaspectratio]{Chapitre1/figures/wass_motiv.pdf}
-  \caption{"W" indicates the \textit{Wassersteinization} process: replacing the optimization over the correspondances by over the admissible couplings.
-  "$L^p$" indicates the \textit{$L^p$-ization} process: replacing the supremum norm by the $L^p$-norm.}
+  \caption{"W" indicates the \textit{Wassersteinization} process defined by replacing the optimization over the correspondances by over the admissible couplings.
+  "$L^p$" indicates the \textit{$L^p$-ization} process defined by replacing the supremum norm by the $L^p$-norm.}
   \label{fig:wass_motiv}
 \end{figure}
 \subsubsection{Theory}
-Since the seminal work of Kantorovich \citep{Kanto42},
+Since the seminal work of \citet{Kanto42},
 the theory of OT has been profoundly developped in the last decades.
 Different theoretical aspects with different level of generality
 (from compact metric space to Polish space) are covered in various excellent references,
-to name just a few, \citep{Villani03,Villani08,Fillipo15,Ambrosio05}. This list is
-by no means exhaustive or representative. In this thesis, we only present a few
+\citep{Villani03,Villani08,Fillipo15,Ambrosio05}, to name a few. This list is
+by no means exhaustive or representative. In this thesis, we only present some
 basic and useful properties of OT, which have much impact in machine learning.
 
 \paragraph{Existence of solution, metric and weak convergence properties}
@@ -260,7 +260,7 @@ in \citep{Villani08}. More discussion on the $1$-Wasserstein distance can be fou
 in Chapter 6 in \citep{Peyre19}.}
 is a reformulation of the primal problem as the maximization over all $1$-Lipschitz functionals,
 which can be parametrized by neural networks.
-In practice, the the $1$-Wasserstein distance has been successfully used
+In practice, the $1$-Wasserstein distance has been successfully used
 in the training of generative adversarial networks (GAN) \citep{Goodfellow14},
 thanks to the seminal work of \citet{Arjovsky17} on Wasserstein GAN (WGAN).
 There have been various extensions and improvements of WGAN, for example
@@ -324,7 +324,7 @@ This issue can be easily overcome by considering the Sinkhorn divergence
 \end{align}
 Not only being unbiased, the Sinkhorn divergence also enjoys favorable topological, statistical
 and interpolation properties \citep{Feydy19,Genevay19}. In particular,
-if the cost is the squared $l_2$-norm, then it is a good proxy
+if the ground cost is the squared $l_2$-norm, then it is a good proxy
 for the squared $2$-Wasserstein distance. More precisely, under mild conditions on $\mu$ and $\nu$,
 one has that $| \text{SD}_{\varepsilon}(\mu, \nu) - W_2^2(\mu, \nu) | = O(\varepsilon^2)$
 \citep{Chizat20}.
@@ -348,8 +348,8 @@ In particular, \citet{Genevay19} use the dual problem to show that entropic OT
 has better sample complexity than unregularized OT,
 though it fixes the bottleneck in the sample size by introducing a new one in the regularization.
 This issue can be mitigated, for example when the probability measures are sub-Gaussian \citep{Mena19}.
-Entropic OT is also known for its joint convexity, smoothness with respect to
-the inputs \citep{Luise18} and metric property \citep{Sanjabi18}.
+Entropic OT is also known for its metric property \citep{Sanjabi18}, joint convexity
+and smoothness with respect to the inputs \citep{Luise18}.
 
 \paragraph{Algorithm} To solve the dual problem \eqref{eq:dual_ot},
 we are interested in the deterministic approach, where the most popular solver
@@ -384,7 +384,7 @@ implementation details.}. Second, it is enough to store only the dual vectors
 (which costs $O(n)$ in memory) because the OT plan (which costs $O(n^2)$ in memory)
 can be easily queried on demand.
 
-However, the smaller the regularization, the more slowly the Sinkhorn algorithm converges.
+However, the Sinkhorn algorithm suffers from the small regularization.
 First, if the number of iterations is not sufficiently large,
 the algorithm may fail to converge and the resulting transport plan can be inadmissible.
 To circumvent this issue, one can apply the rounding algorithm \citep{Altschuler17},
@@ -535,11 +535,11 @@ $\nu \in \cM^+(Y)$ is defined by
   + \rho_2 D_{\varphi_2}(\pi_{\# 2} | \nu).
 \end{align}
 
-\paragraph{Properties} Under mild conditions of the cost and entropy functions,
+\paragraph{Properties} Under mild conditions of the ground cost and entropy functions,
 the UOT problem always admits a solution (Theorem 3.3 in \citep{Liero18}).
 Similar to the balanced case, UOT also enjoys the metric properties, duality theory and
 dynamic formulation, to name a few. For a more complete treatment on the theory of UOT,
-readers are invited to see the seminal works of \citep{Liero18,Chizat18b}, and the reference therein.
+readers are invited to see the seminal works of \citet{Liero18,Chizat18b}, and the reference therein.
 The case where $D_{\varphi_1} = D_{\varphi_2} = \kl$ is also of our special interest,
 since it allows to show that the UOT is robust to outliers.
 \begin{proposition}[Generalization of Lemma 1 in \citep{Fatras21}]
@@ -617,7 +617,7 @@ Denote $m(Q) = \sum_{i, j} Q_{ij}$ the mass of measure $Q$. Observe that
 where $\odot$ is the element-wise multiplication between two matrices and the exponential operation
 is also element-wise. Now, the ambiguity of the entropic regularizer is naturally handled in
 Problem \eqref{eq:discrete_ent_uot}. More precisely,
-the KL divergence corresponds to $\gamma = \mu \otimes \nu$ whereas
+the KL divergence corresponds to $\gamma = \mu \otimes \nu$, whereas
 the negative entropy corresponds to $\gamma = 1_{m \times n}$,
 since $\kl(P | 1_{m \times n}) = \langle P, \log P \rangle - m(P) + mn = H(P) + mn$.
 
@@ -635,18 +635,18 @@ This is a special case of the following result.
   \label{prop:uot_minimizer}
   Let $D_{\varphi_1}, D_{\varphi_2}$ and $D_{\varphi}$ be three Bregman divergences whose
   domains are in $\bbR^m, \bbR^n$ and $\bbR^{m \times n}$, respectively. Denote
-  $\cD = \{P \in \dom(\varphi): P_{\#1} \in \dom(\varphi_1), P_{\#2} \in \dom(\varphi_2) \}$.
+  $\dom = \{P \in \dom(\varphi): P_{\#1} \in \dom(\varphi_1), P_{\#2} \in \dom(\varphi_2) \}$.
   Given two matrices $C \in \bbR^{m \times n}, \gamma \in \dom(\varphi)$ and
   two vectors $\mu_1 \in \dom(\varphi_1), \mu_2 \in \dom(\varphi_2)$,
   consider the following regularized UOT problem: for $\rho_1, \rho_2, \varepsilon \geq 0$,
   \begin{align}
     \label{eq:uot_bregman}
-    \uot_{\varepsilon, \rho} = \inf_{P \in \cC} \; \langle C, P \rangle
+    \uot_{\varepsilon, \rho} = \inf_{P \in E} \; \langle C, P \rangle
     + \rho_1 D_{\varphi_1}(P_{\# 1} | \mu_1) +
     \rho_2 D_{\varphi_2}(P_{\# 2} | \mu_2) + \varepsilon D_{\varphi}(P | \gamma),
   \end{align}
-  where the constraint set $\cC \subset \cD$ satisfies: for any $P \in \cC$ and $t \in \bbR$,
-  if $tP \in \cD$, then $t P \in \cC$. Suppose Problem \eqref{eq:uot_bregman}
+  where the constraint set $E \subset \dom$ satisfies: for any $P \in E$ and $t \in \bbR$,
+  if $tP \in \dom$, then $t P \in E$. Suppose Problem \eqref{eq:uot_bregman}
   admits a solution $P^*$, then we have
   \begin{equation}
     \begin{split}
@@ -753,7 +753,7 @@ and can be accelerated using similar workarounds in the balanced setting.
 due to the linear structure in the objective function of the dual problem,
 if $(f, g)$ is the optimal solution, then so is $(f + \lambda, g - \lambda)$,
 for every $\lambda \in \bbR$. However, this translation invariant (TI) property no longer holds for
-the unbalanced counterpart. As observed in \citep{Sejourne21}, this is problematic because
+the unbalanced counterpart. As observed by \citet{Sejourne21}, this is problematic because
 the convergence of dual vectors depends on the translation (since the iterates do),
 thus is sensitive to initialization. Moreover, it becomes very slow when the regularization
 is too small relative to the relaxation ($\varepsilon \ll \rho$).
@@ -838,7 +838,7 @@ TI-Sinkhorn still suffers from small regularization and remains slow in such sit
 \end{algorithmic}
 \end{algorithm}
 
-\citep{Sejourne21} also propose a variant of TI-Sinkhorn, whose details can be found in
+\citet{Sejourne21} also propose a variant of TI-Sinkhorn, whose details can be found in
 \Cref{alg:TI_Sinkhorn_variant}. The idea is to directly apply alternative optimization scheme
 to the problem $\sup_{f, g, \lambda} F_{\varepsilon}(f + \lambda, g - \lambda)$, which guarantees
 the convergence to a stationary point \citep{Tseng01}. In practice,
@@ -869,7 +869,7 @@ whose objective function comprises of a linear term and a KL divergence as penal
 Moreover, since the KL divergence is a Bregman divergence, one can apply the
 majorization-minimization (MM) approach (see, for example \citep{Hunter04,Sun17}) and obtain
 a closed-form update of the transport plan, without the need of invoking the dual vectors
-to reconstruct the coupling, as in the Sinkhorn-based methods. Following \citep{Chapel21},
+to reconstruct the coupling, as in the Sinkhorn-based methods. Following the work of \citet{Chapel21},
 the MM iterate of Problem \eqref{eq:discrete_ent_uot} reads
 \begin{align}
     P^{(t+1)} &= \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
@@ -882,8 +882,7 @@ the MM iterate of Problem \eqref{eq:discrete_ent_uot} reads
 \end{align}
 where $\lambda = \rho_1 + \rho_2 + \varepsilon$ and
 $\lambda_i = \frac{\rho_i}{\lambda}$ and $r = \frac{\varepsilon}{\lambda}$.
-Here, the division and exponential operations are element-wise and
-$\odot$ is the element-wise multiplication. We also remark that,
+Here, the division and exponential operations are element-wise. We also remark that,
 the unregularized UOT ($\varepsilon = 0$) is naturally handled by MM algorithm,
 whereas the Sinkhorn-based algorithms are only applicable to the regularized UOT. However,
 unlike its competitors, the MM algorithm does not work in the balanced ($\rho_1=\rho_2=\infty$)
@@ -899,7 +898,8 @@ the MM iterates can also be computed explicitly in this case.
   \begin{align}
   \label{uot_l2}
       \uot_{\varepsilon, \rho} =
-      \min_{P \geq 0} \; \langle C, P \rangle + \rho_1 \frac{||P_{\# 1} - \mu||^2}{2}
+      \min_{P \in \bbR^{m \times n}_{\geq 0}}
+      \; \langle C, P \rangle + \rho_1 \frac{||P_{\# 1} - \mu||^2}{2}
       + \rho_2 \frac{|| P_{\# 2} - \nu ||^2}{2} + \varepsilon  \frac{||P - \gamma||^2}{2}.
   \end{align}
   Then, the update reads
@@ -941,7 +941,7 @@ By induction, we obtain $P^{(t+1)} \approx P^{(t)}$, meaning that the convergenc
 Regarding the case of squared $l_2$-norm, one needs to carefully choose
 the hyperparameters, so that the matrix
 $\max \Big(0, (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma - C \Big)$ is
-neither too dense (which fails to achieve sparsity), nor too sparse (which may incur division error).
+neither too dense (thus fails to achieve sparsity), nor too sparse (thus may incur division error).
 For this reason, the tuning may be quite troublesome.
 
 \paragraph{Discussion} We can consider a more general UOT formulation:
@@ -1007,9 +1007,9 @@ and only within-domain similarity matrix is available.
 % of this approach in the single-cell spatial transcriptomics and multiomics matching tasks.
 
 In this section, we present a metric which can be used to compare incomparable spaces,
-termed \textbf{Gromov-Wasserstein} (GW) distance introduced by \citep{Memoli07,Memoli11}
+termed \textbf{Gromov-Wasserstein} (GW) distance introduced by \citet{Memoli07,Memoli11}
 \footnote{Historically, the name "Gromov-Wasserstein distance" has several meanings.
-In the terrific book of Cédric Villani \citep{Villani08}, it is a synonym
+In the terrific book of \citet{Villani08}, it is a synonym
 for the $L_p$-transportation distance. In \citep{Memoli11b},
 Facundo Mémoli used it to refer to two other distances, including the now-standard one, which is
 popularized by the work of the same author \citep{Memoli11}.}. It allows to handle a more general
@@ -1460,7 +1460,7 @@ an efficient approximation technique and additional structures on the cost tenso
 In this section, we discuss both components in more details.
 
 \subsubsection{Structure of the cost tensor}
-To handle the cost tensor, an efficient, yet easy way to implement strategy is to make it
+To handle the cost tensor, an efficient, yet easy-to-implement strategy is to make it
 as decomposable as possible. Given its form $C = |C^x - C^y|^p$, the decomposability
 can be achieved by choosing $p=2$. To see this, let us recall the following results.
 \begin{lemma}[Generalization of Proposition 1 in \citep{Peyre16}]
@@ -1578,8 +1578,10 @@ similar to the entropic OT. Inspired by the Sinkhorn divergence,
 \citet{Bunne19} apply the same strategy to debiase the entropic GW,
 but there is no theoritical guarantee with their approach.
 
-\paragraph{3. (Inexact) Bregman proximal point} Inspired by IPOT \citep{Xie20}, \citet{Xu19, Xu19b}
-propose to use the Bregman proximal point (BPP) method, where at each iteration, we solve
+\paragraph{3. (Inexact) Bregman proximal point} Inspired by the work of \citet{Xie20} on
+Inexact Proximal Optimal Transport, \citet{Xu19, Xu19b}
+propose to apply the Bregman proximal point (BPP) method to the GW problem,
+where at each iteration, we solve
 \begin{align}
   \min_{P \in U(\mu_X, \mu_Y)} \langle C \otimes P, P \rangle + \eta \; \kl(P | P^{(t)}).
 \end{align}
