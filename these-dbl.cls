@@ -268,15 +268,18 @@
 %   % https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
 %   style=nature
 %   ]{biblatex}
-\RequirePackage[natbib=true, style=authoryear-comp, backend=bibtex, maxbibnames=99]{biblatex}
+\RequirePackage[natbib=true, style=authoryear-comp, backend=bibtex, maxbibnames=99, backref=true]{biblatex}
 % \RequirePackage[hyperref, backend=biber, style=alphabetic]{biblatex}
+\DefineBibliographyStrings{english}{
+  backrefpage={Cited on page},
+  backrefpages={Cited on pages}
+}
 
 % Style biblatex avec gestion des mots cl\'{e}s des entr\'{e}es bibliographiques
 % + les abbr\'{e}viations idem, ibidem, op cit. Pr\'{e}voir un fichier bib
 % contenant ces mots-cl\'{e}s, ici primary et secondary.
 \defbibheading{primary}{\section*{Sources primaires}}
 \defbibheading{secondary}{\section*{Sources secondaires}}
-
 
 %%%% Ajustements pour la bibliographie
 
