@@ -19,8 +19,8 @@ must be calculated in advance and the effect of the individual variables is lost
 
 Similar to classical OT, COOT enforces hard constraints on the marginal distributions
 both between samples and features. These constraints lead to two main limitations:
-(1) unbalanced datasets where samples or features are re-weighted
-cannot be accurately compared; (2) mass transportation \emph{must} be exhaustive:
+(1) unbalanced datasets where samples or features cannot be accurately matched;
+(2) mass transportation \emph{must} be exhaustive:
 outliers, if any, must be matched regardless of the cost they induce.
 To circumvent these limitations, we propose to relax the mass preservation constraints
 in the COOT distance and study a broadly applicable and general OT framework
@@ -83,25 +83,6 @@ this is the first time such a general robustness result is established for OT ac
 Our theoretical findings are showcased in unsupervised heterogeneous domain adaptation
 and single-cell multi-omic data alignment, demonstrating a very competitive performance.
 
-\paragraph{Notations.} For any integer $n \geq 1$, we write $[n] := \{1,...,n\}$.
-Given a Polish space $X$, we denote $\cM^+(X)$ the set of nonnegative and finite Borel
-measures over $X$. For any $\mu \in \cM^+(X)$, we denote
-its mass by $m(\mu) := \mu(X)$.
-Unless specified otherwise, we always consider fully supported measures,
-i.e. $\text{supp}(\mu) = X$, for any measure $\mu \in \cM^+(X)$.
-The product measure of two measures $\mu$ and $\nu$ is defined as:
-$d (\mu \otimes \nu)(x,y) := d\mu(x) d\nu(y)$.
-Given $\pi \in \cM^{+}(X \times Y)$, we denote
-$(\pi_{\#1}, \pi_{\#2})$ its marginal distributions i.e. $d\pi_{\#1} = \int_{Y} d\pi$ and
-$d\pi_{\#2} = \int_{X} d\pi$.
-For $\mu, \nu \in \cM^+(X)$, the Kullback-Leibler divergence is defined by
-$\kl(\mu|\nu) := \int \frac{d \mu}{ d \nu} \log \frac{d \mu}{ d \nu} \mathrm d\nu
-- \int \mathrm d\mu + \int \mathrm d\nu$ if $\mu \ll \nu$ and set to $+\infty$ otherwise.
-Finally, the indicator divergence $\iota_{=}(\mu | \nu)$ is equal to 0 if $\mu = \nu$
-and $+\infty$ otherwise.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{From COOT to Unbalanced Co-Optimal Transport} \label{sec:ucoot}
 The ultimate goal behind the CO-Optimal Transport (COOT)
@@ -115,7 +96,7 @@ and show how the aforementioned distances fall into our framework.
 \paragraph{From sample alignment to sample-feature alignment.}
 Let $(X_1^s, \mu_1^s)$ and $(X_2^s, \mu_2^s)$ be a pair of compact measure spaces such that
 $X_1^s$ and $X_2^s$ belong to some common metric space $(\cE, d)$.
-Classical (unbalanced) optimal transport infers one alignment (or joint distribution)
+Classical optimal transport infers one alignment (or joint distribution)
 $\pi^s \in \cM^+(X_1^{s} \times X_2^s)$ with marginals $(\pi^{s}_{\#1}, \pi^{s}_{\#2})$
 close to $(\mu_1^s, \mu_2^s)$ according to some appropriate divergence $D$ such that
 the cost $\int c(x_1, x_2) \; \mathrm d\pi^{s}(x_1, x_2) + D(\pi^{s}_{\#1} | \mu_1^s)
@@ -123,7 +104,7 @@ the cost $\int c(x_1, x_2) \; \mathrm d\pi^{s}(x_1, x_2) + D(\pi^{s}_{\#1} | \mu
 $D$ corresponds to the indicator divergence (resp. KL divergence or TV).
 To define a generalized OT beyond one single alignment, we must first introduce
 a new pair of measure spaces $(X_1^{f}, \mu_1^f)$ and $(X_2^{f}, \mu_2^f)$.
-Intuitively,  the two transport plans that must be inferred: $\pi^s$ across \emph{samples}
+Intuitively, the two transport plans that must be inferred: $\pi^s$ across \emph{samples}
 and $\pi^f$ across \emph{features}, must minimize a cost of the form
 $\iint c((x_1^s, x_1^f), (x_2^s, x_2^f)) \; \mathrm d\pi^s(x_1^s, x_2^s)\; \mathrm d \pi^f(x_1^f, x_2^f)$
 where $c((x_1^s, x_1^f), (x_2^s, x_2^f))$ is the \emph{joint} cost of aligning
@@ -185,9 +166,9 @@ In particular, if the measures $(\mu^s_1, \mu^s_2)$ and $(\mu^f_1, \mu^f_2)$
 are probability measures, then setting $D_1 = D_2 = \iota_=$ leads to the
 COOT problem first introduced in the discrete case in \citep{Redko20} and
 recently generalized to the continuous setting in \citep{Chowdhury21b}
-\footnote{Note that, \citet{Chowdhury21b} consider \textbf{bounded measurable} function
-on the Polish measure space, whereas we work with \textbf{integrable} function
-on the \textbf{compact} Polish measure space.}
+\footnote{Note that, \citet{Chowdhury21b} consider \textbf{bounded measurable} functions
+on the Polish measure space, whereas we work with \textbf{integrable} functions
+on the \textbf{compact} Polish measure space.}.
 In this work, we relax the hard constraints and consider a more flexible formulation
 with the KL divergence:
 \begin{definition}[UCOOT]

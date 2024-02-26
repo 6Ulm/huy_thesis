@@ -646,40 +646,40 @@ The result below formalizes this intuition.
     $\mmot(\mu)$.
   \end{enumerate}
 \end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{GW distance revisited.} Somewhat surprisingly, the relaxation \eqref{relax_mmot} also allows us to prove the equality
-between GW distance and COOT in the discrete setting. Let $\cX$ be a
-finite subset (of size $m$) of a certain metric space. Denote $C_x \in \bbR^{m \times m}$ its similarity matrix (e.g. distance
-matrix). We define similarly the set $\cY$ of size $n$ and the corresponding similarity matrix $C_y \in \bbR^{n \times n}$.
-We also assign two discrete probability measures $\mu_x \in \bbR^m$ and $\mu_y \in \bbR^n$ to $\cX$ and $\cY$,
-respectively. The GW distance is then defined as
-\begin{equation}
-  \gw(C_x, C_y) = \inf_{Q \in U(\mu_x, \mu_y)} \langle L(C_x, C_y), Q \otimes Q \rangle,
-\end{equation}
-and the COOT reads
-\begin{equation}
-  \coot(C_x, C_y) = \inf_{\substack{Q_s \in U(\mu_x, \mu_y) \\ Q_f \in U(\mu_x, \mu_y)}}
-  \langle L(C_x, C_y), Q_s \otimes Q_f \rangle,
-\end{equation}
-where $L(C_x,C_y) \in \bbR^{m \times n \times m \times n}$ represents the $4$-D cost tensor induced by the matrices $C_x$ and $C_y$,
-and $U(\mu, \nu)$ is the set of couplings in $\bbR^{m \times n}_{\geq 0}$ whose two marginal distributions are $\mu$ and
-$\nu$. When $C_x$ and $C_y$ are two squared Euclidean distance matrices, and $L(C_x,C_y)$ is of the form
-$\big(L(C_x,C_y)\big)_{i,j,k,l} = \vert (C_x)_{i,k} - (C_y)_{j,l} \vert^2$, it can be shown that the GW distance is equal
-to the COOT. This is also true when $L(C_x, C_y)$ is a negative definite kernel \citep{Sejourne20}.
-Here, we establish a weaker case where this equality still holds.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{corollary} \label{kernel_gw_coot}
-  If $L(C_x, C_y)$ defines a conditionally negative definite kernel on $(\cX \times \cY)^2$, then we have the equality
-  between GW distance and COOT. Furthermore, if $(Q_s^*,Q_f^*)$ is a solution of the COOT problem, then $Q_s^*$ and $Q_f^*$ are
-  two solutions of the GW problem. In particular, when $L(C_x, C_y)$ induces a strictly positive definite kernel
-  $\exp \big( -\frac{L(C_x, C_y)}{\varepsilon} \big)$, for every $\varepsilon > 0$, we have $Q_s^* = Q_f^*$.
-\end{corollary}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The proof relies on the connection between MMOT-DC and COOT shown in \Cref{interpolation_prop},
-and given a $4$-D solution of MMOT-DC, we can construct another $4$-D solutions whose
-$\cT_1$ and $\cT_2$-marginal matrices are identical,
-under the assumption of the cost tensor. The proof of the second claim is deferred to the
-Appendix \ref{appendix:subsec_mmot_dc}.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \paragraph{GW distance revisited.} Somewhat surprisingly, the relaxation \eqref{relax_mmot} also allows us to prove the equality
+% between GW distance and COOT in the discrete setting. Let $\cX$ be a
+% finite subset (of size $m$) of a certain metric space. Denote $C_x \in \bbR^{m \times m}$ its similarity matrix (e.g. distance
+% matrix). We define similarly the set $\cY$ of size $n$ and the corresponding similarity matrix $C_y \in \bbR^{n \times n}$.
+% We also assign two discrete probability measures $\mu_x \in \bbR^m$ and $\mu_y \in \bbR^n$ to $\cX$ and $\cY$,
+% respectively. The GW distance is then defined as
+% \begin{equation}
+%   \gw(C_x, C_y) = \inf_{Q \in U(\mu_x, \mu_y)} \langle L(C_x, C_y), Q \otimes Q \rangle,
+% \end{equation}
+% and the COOT reads
+% \begin{equation}
+%   \coot(C_x, C_y) = \inf_{\substack{Q_s \in U(\mu_x, \mu_y) \\ Q_f \in U(\mu_x, \mu_y)}}
+%   \langle L(C_x, C_y), Q_s \otimes Q_f \rangle,
+% \end{equation}
+% where $L(C_x,C_y) \in \bbR^{m \times n \times m \times n}$ represents the $4$-D cost tensor induced by the matrices $C_x$ and $C_y$,
+% and $U(\mu, \nu)$ is the set of couplings in $\bbR^{m \times n}_{\geq 0}$ whose two marginal distributions are $\mu$ and
+% $\nu$. When $C_x$ and $C_y$ are two squared Euclidean distance matrices, and $L(C_x,C_y)$ is of the form
+% $\big(L(C_x,C_y)\big)_{i,j,k,l} = \vert (C_x)_{i,k} - (C_y)_{j,l} \vert^2$, it can be shown that the GW distance is equal
+% to the COOT. This is also true when $L(C_x, C_y)$ is a negative definite kernel \citep{Sejourne20}.
+% Here, we rediscover the \Cref{prop:coot_gw_equiv}, a weaker case where this equality still holds.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{corollary} \label{kernel_gw_coot}
+%   If $L(C_x, C_y)$ defines a conditionally negative semi-definite kernel on $(\cX \times \cY)^2$, then we have the equality
+%   between GW distance and COOT. Furthermore, if $(Q_s^*,Q_f^*)$ is a solution of the COOT problem, then $Q_s^*$ and $Q_f^*$ are
+%   two solutions of the GW problem. In particular, when the semi-definiteness is replaced by
+%   the definiteness, we have $Q_s^* = Q_f^*$.
+% \end{corollary}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The proof relies on the connection between MMOT-DC and COOT shown in \Cref{interpolation_prop},
+% and given a $4$-D solution of MMOT-DC, we can construct another $4$-D solutions whose
+% $\cT_1$ and $\cT_2$-marginal matrices are identical,
+% under the assumption of the cost tensor. The proof of the second claim is deferred to the
+% Appendix \ref{appendix:subsec_mmot_dc}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
 \subsection{Numerical solution} \label{sec:algo}

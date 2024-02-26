@@ -179,21 +179,21 @@ $w^t \triangleq (\frac{1}{p}, ..., \frac{1}{p})$.
 
 Given a tuple of hyper-parameters $\theta \triangleq (\rho, \alpha, \varepsilon)$,
 where $\rho, \varepsilon \in \bbR_+$ and $\alpha \in [0,1]$,
-for any coupling $P \in \bbR^{n \times p}$,
+for any coupling $P \in \bbR^{n \times p}_{\geq 0}$,
 we define the fused unbalanced Gromov-Wasserstein loss as
 \begin{equation}
     \label{eq:fugw_obj_func}
     \begin{split}
         L_{\theta}(P) &=
         (1 - \alpha) \underbrace{\sum_{i,j} || F^s_i - F^t_j||_2^2 P_{ij}}_{\text{Wasserstein loss } L_{\text{W}}(P)}
-        + \alpha \underbrace{\sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} P_{kl}}_{\text{Gromov-Wasserstein loss } L_{\text{GW}}(P)} \\
+        + \alpha \underbrace{\sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} P_{kl}}_{\text{Gromov-Wasserstein loss } L_{\gw}(P)} \\
         &+ \rho \underbrace{\left[ \kl(P_{\# 1} \otimes P_{\# 1} \vert w^s \otimes w^s)
         + \kl(P_{\# 2} \otimes P_{\# 2} \vert w^t \otimes w^t) \right]}_{\text{Marginal constraints } L_{\text{U}}(P)}
         + \varepsilon \underbrace{E(P)}_{\text{Entropy}}
     \end{split}
 \end{equation}
 where $L_{\text{W}}(P)$ matches vertices with similar features,
-$L_{\text{GW}}(P)$ penalizes changes in geometry
+$L_{\gw}(P)$ penalizes changes in geometry
 and $L_{\text{U}}(P)$ fosters matching all parts of the source and target distributions.
 Throughout this paper, we refer to relaxing the hard marginal constraints of the underlying
 OT problem into soft ones as \textit{unbalancing}.
@@ -219,18 +219,17 @@ This potentially helps adapting the size of areas where either the signal or the
 differs too much between source and target.
 
 Eventually, we define $\cX^s \triangleq (F^s, D^s, w^s)$ and $\cX^t \triangleq (F^t, D^t, w^t)$,
-and seek to derive an optimal coupling $P \in \bbR^{n \times p}$ minimizing
+and seek to derive an optimal coupling $P \in \bbR^{n \times p}_{\geq 0}$ minimizing
 \begin{equation}
     \label{eq:fugw}
     \begin{split}
         \fugw(\cX^s, \cX^t)
-        &\triangleq \inf_{P \geq 0} L_{\theta}(P).
+        &\triangleq \inf_{P \in \bbR^{n \times p}_{\geq 0}} L_{\theta}(P).
     \end{split}
 \end{equation}
 This can be seen as a natural combination of the fused GW \citep{Vayer19b}
 and the unbalanced GW \citep{Sejourne20} distances. To the best of our knowledge,
 it has never been considered in the literature.
-
 
 \paragraph{Toy example illustrating the unbalancing property}
 
@@ -278,8 +277,8 @@ Consequently, following \citep{Sejourne20}, we instead compute a lower bound whi
 is formulated as a bi-convex problem that relies on the joint estimation of two couplings.
 \begin{align}
     \label{eq:lbfugw}
-    \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{P, Q \geq 0 \\ P = Q}} L_{\theta}(P, Q)
-    \geq \inf_{\substack{P, Q \geq 0 \\ m(P) = m(Q)}}
+    \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{P, Q \in \bbR^{n \times p}_{\geq 0} \\ P = Q}}
+    L_{\theta}(P, Q) \geq \inf_{\substack{P, Q \in \bbR^{n \times p}_{\geq 0} \\ m(P) = m(Q)}}
     L_{\theta}(P, Q) \triangleq \text{LB-FUGW} (\cX^s, \cX^t),
 \end{align}
 where $m(P) = \sum_{i,j} P_{i,j}$ denotes the mass of $P$ and
@@ -287,7 +286,7 @@ where $m(P) = \sum_{i,j} P_{i,j}$ denotes the mass of $P$ and
     \label{eq:fugw_loss_two_couplings}
     \begin{split}
         L_{\theta}(P, Q) \triangleq
-        (1 - \alpha) \enspace L_{\text{W}}(P, Q) + \alpha \enspace L_{\text{GW}}(P, Q)
+        (1 - \alpha) \enspace L_{\text{W}}(P, Q) + \alpha \enspace L_{\gw}(P, Q)
         + \rho \enspace L_{\text{U}}(P, Q) + \varepsilon \enspace E(P, Q),
     \end{split}
 \end{equation}
@@ -313,7 +312,7 @@ First, let us introduce the following problem
 \begin{equation}
   \widetilde{\fugw}(\cX^s, \cX^t) = \inf_{(P, Q) \in \cE} L_{\theta}(P, Q),
 \end{equation}
-where $\cE = \{P, Q \geq 0: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
+where $\cE = \{P, Q \in \bbR^{n \times p}_{\geq 0}: P_{\#1} = Q_{\#1}, P_{\#2} = Q_{\#2} \}$ is
 the set of pairs of transportation plans whose corresponding marginal distributions are equal.
 Clearly, we have
 \begin{equation}
@@ -337,7 +336,7 @@ In our experiments, while the geodesic distances do not necessarily meet these c
 we still observe that the two couplings of LB-FUGW are numerically equal.
 So it is enough to choose, for example, the first one, as alignment between source and target signals.
 
-The lower bound of FUGW involves solving a minimization problem with respect to two independent couplings:
+The lower bound of FUGW \eqref{eq:lbfugw} involves solving a minimization problem with respect to two independent couplings.
 Using a Block-Coordinate Descent (BCD) scheme, we fix a coupling and minimize
 with respect to the other. This allows us to always be dealing with linear problems
 instead of a quadratic one. Eventually, each BCD iteration consists in alternatively solving
