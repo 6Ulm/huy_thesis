@@ -13,10 +13,11 @@
 
 In the recent years, the unprecedented versatility of optimal transport (OT) has gone far beyond
 the original formulation of \citet{Monge81} on the least effort problem,
-thanks to the seminal work of \citet{Kanto42}. From a high-level perspective, we can
+and the seminal work of \citet{Kanto42}. From a high-level perspective, we can
 conceptually describe the OT as a principled approach to compare \textbf{weighted objects}
-(\ie, sets equipped with certain measures), and even better,
-to align their elements in many situations.
+(\ie, sets equipped with certain measures), namely graphs \citep{Nikolentzos17},
+texts \citep{Kusner15}, images \citep{Arjovsky17}, persistence diagrams \citep{Edelsbrunner02},
+or tabular data \citep{Redko20}, while providing a way to align their elements in many situations.
 
 \subsection{Optimal transport for probability measures}
 The most fundamental application of OT, featured by the Wasserstein distance,
@@ -27,9 +28,10 @@ which is asymptotically equivalent to finding an empirical model "closest" to th
 in terms of Kullback-Leibler divergence.
 
 Giving the long history of development of statistics and probability theory,
-there are countless choices of divergences
+there are countless choices of divergences existing in the literature
 \footnote{For a comprehensive and up-to-date taxonomy of divergences, see
-\url{https://franknielsen.github.io/Divergence/Poster-Distances.pdf}.}.
+\url{https://franknielsen.github.io/Divergence/Poster-Distances.pdf}.}:
+Kullback-Leibler divergence, total variation and Euclidean distance to name a few.
 But what distinguishes Wasserstein distance from them in practice?
 First, as opposed to many popular divergences, it allows to compare probability measures with
 non-overlapped supports. This is because it is not based on bin-by-bin comparison,
@@ -41,17 +43,15 @@ meaningful information on the correspondances between samples, and has found imp
 namely in domain adaptation \citep{Courty16} and genomics \citep{Schiebinger19}.
 Broadly speaking, the OT plan can 1) be used to estimate the barycentric mapping
 \citep{Ferradans14,Courty16}, which can be seen as the projection of the source data
-onto the target domain, or 2) provide the predictions in the classification problem,
-without the need of training a classifier \citep{Redko19a}.
+onto the target domain, or 2) provide the label predictions on the target domain
+in the classification problem, without the need of training a classifier \citep{Redko19a}.
 
 The success of Wasserstein distance, or more generally OT, can also be found in
-computer graphics \citep{Bonneel16,Solomon15}, dictionary learning \citep{Rolet16},
-supervised machine learning \citep{Frogner15}
-\footnote{For a more comprehensive and up-to-date review on the applications of OT in
-computer vision and computer graphics, see \citep{Bonneel23}.} and
+computer graphics \citep{Bonneel16,Solomon15,Bonneel23}, dictionary learning \citep{Rolet16},
+supervised machine learning \citep{Frogner15} and
 natural language processing \citep{Kusner15}, to name a few.
 
-\subsection{Optimal transport beyond probability measures}
+\subsection{Optimal transport across spaces and beyond probability measures}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 By definition, Wasserstein distance requires that the probability measures
@@ -59,7 +59,7 @@ must live in a common probability space. This is equivalent to comparing two
 probability spaces whose supports lie in the same underlying (typically metric) space.
 In other words, we implicitly assume that 1) it is always feasible to compute
 the \underline{inter-domain distance}, which also happens to be \underline{the only ingredient}
-we need the Wasserstein distance, and 2) the measures must have \underline{unit mass},
+we need to calculate the Wasserstein distance, and 2) the measures must have \underline{unit mass},
 due to the marginal constraints. To what extent can we relax these assumptions?
 
 \paragraph{Can we handle finite nonnegative measures?} Yes, for example,
@@ -74,6 +74,12 @@ A natural approach is to project them onto a sufficiently rich common space,
 so that it is possible to calculate the Wasserstein distance between their embeddings.
 This leads to a whole family of distances originated from the Gromov-Hausdorff distance.
 The most famous member in this class is the Gromov-Wasserstein (GW) distance \citep{Memoli07,Memoli11}.
+We also note that direct comparison is still possible, for example, in the discrete setting.
+More precisely, \citet{Redko20} take a radically different perspective
+to exploit the input data, by considering the pairwise differences between the coordinates
+of samples across spaces and learning simultaneously the samples and feature alignments.
+The corresponding distance, called Co-Optimal transport,
+provides a principled approach to compare weighted matrices.
 
 \paragraph{How can we integrate extra information into OT?} A natural solution is to optimize
 a linear combination of the OT's objective function and a term which takes into account the
@@ -81,7 +87,7 @@ prior knowledge. This simple strategy usually works well in practice and has bee
 compare the weighted labelled graphs \citep{Vayer19b}, or to incorporate the mutual information
 when the inter and intra-domain distances are informative \citep{Chuang23},
 or in semi-supervised domain adaptation, where the alignments between some labelled source
-and target samples are available \citep{Gu22}.
+and target samples are available \citep{Courty16,Gu22}.
 
 % It is known that GW distance is invariant under isometric transformations. However,
 % not all of them are born equal. For example, digits 6 and 9 are isomorphic in GW sense,
@@ -94,13 +100,6 @@ and target samples are available \citep{Gu22}.
 % Second, the across-domain comparison must be done indirectly via similarity matrix,
 % thus incurs potential information loss.
 
-\paragraph{Can we still \textbf{directly} compare \textbf{incomparable spaces}?} Yes,
-in discrete setting. More precisely, \citet{Redko20} takes a radically different perspective
-to exploit the input data, by considering the pairwise differences between the coordinates
-of samples across spaces and learning simultaneously the samples and feature alignments.
-The corresponding distance, called \textit{Co-Optimal transport} (COOT),
-provides a principled approach to compare weighted matrices.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Thesis outlines and contributions}
 
@@ -109,60 +108,24 @@ by the aforementioned questions, with major focus on the incomparable spaces.
 In particular, this thesis titled
 \textit{Optimal transport for transfer learning across domains} has several main objectives.
 \begin{enumerate}
-    \item Given the discrete nature of Co-Optimal transport, it is natural to study of its continuous extension,
-    which may serve as the first step towards further analysis on the numerical,
-    and potentially, statistical properties. Given the close connection between
-    COOT and GW distance,
-    understanding one may shed light on understanding the other. Related works:
-    \begin{itemize}
-        \item[$\bullet$] \Cref{chap:coot} of this thesis.
+    \item Given the discrete nature of Co-Optimal transport, it is natural to study
+    its continuous extension, which may serve as the first step towards further analysis
+    on the numerical, and potentially, statistical properties. Given the close connection between
+    COOT and GW distance, understanding one may shed light on understanding the other.
+    This objective is addressed in \Cref{chap:coot,chap:ucoot}.
 
-        \item[$\bullet$] \ul{Unbalanced Co-Optimal Transport}. \textbf{Quang Huy Tran},
-        Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko, Pinar Demetci and Ritambhara Singh.
-        \textit{AAAI Conference on Artificial Intelligence}, 2023.
-
-        \item[$\bullet$] \ul{Factored couplings in multi-marginal optimal transport via difference of
-        convex programming}. \textbf{Quang Huy Tran}, Hicham Janati, Ievgen Redko,
-        Rémi Flamary and Nicolas Courty.
-        \textit{NeurIPS Workshop on Optimal Transport and Machine Learning}, 2021.
-    \end{itemize}
-
-    \item Stacking techniques from different branches in OT allows to have the best of many worlds,
+    \item Merging techniques from different branches in OT allows to have the best of many worlds,
     thus can provide efficient solutions to problems arised from real-world applications.
     This strategy has been successfully used,
-    for example in the unbalanced GW \citep{Sejourne20} and the fused GW \citep{Vayer19b}. Related works:
-    \begin{itemize}
-        \item[$\bullet$] \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distance}.
-        Pinar Demetci, \textbf{Quang Huy Tran}, Ievgen Redko and Ritambhara Singh.
-        \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
-
-        \item[$\bullet$] \ul{Unbalanced Co-Optimal Transport}. \textbf{Quang Huy Tran}, Hicham Janati,
-        Nicolas Courty, Rémi Flamary, Ievgen Redko, Pinar Demetci and Ritambhara Singh.
-        \textit{AAAI Conference on Artificial Intelligence}, 2023.
-
-        \item[$\bullet$] \ul{Aligning individual brains with Fused Unbalanced Gromov-Wasserstein}.
-         Alexis Thual$^*$, \textbf{Quang Huy Tran$^*$}, Tatiana Zemskova, Nicolas Courty,
-         Rémi Flamary, Stanislas Dehaene and  Bertrand Thirion.
-         \textit{Neural Information Processing Systems (NeurIPS)}, 2022.
-    \end{itemize}
+    for example in the unbalanced GW \citep{Sejourne20} and the fused GW \citep{Vayer19b}.
+    This objective is addressed in \Cref{chap:agw,chap:ucoot,chap:fugw}.
 
     \item It is desirable to further unlock the potential applicability of COOT
     on across-domain matching. From a practical perspective, COOT brings two distinct advantages:
     the access to the feature correspondances and a novel approach to exploit the data.
     To give an example, COOT offers unique opportunity to perform genomic feature alignments
-    in single-cell multi-omics, which do not exist for GW or other OT-based divergences. Related works:
-    \begin{itemize}
-        \item[$\bullet$] \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distance}.
-        Pinar Demetci, \textbf{Quang Huy Tran}, Ievgen Redko and Ritambhara Singh.
-        \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
-
-        \item[$\bullet$] \ul{Unbalanced Co-Optimal Transport}. \textbf{Quang Huy Tran}, Hicham Janati,
-        Nicolas Courty, Rémi Flamary, Ievgen Redko, Pinar Demetci and Ritambhara Singh.
-        \textit{AAAI Conference on Artificial Intelligence}, 2023.
-
-        \item[$\bullet$] \ul{Jointly aligning cells and genomic features of single-cell multi-omics data with Co-Optimal transport}.
-        Pinar Demetci, \textbf{Quang Huy Tran}, Ievgen Redko, Ritambhara Singh. \textit{bioRxiv}, 2022
-    \end{itemize}
+    in single-cell multi-omics, which do not exist for GW or other OT-based divergences.
+    This objective is addressed in \Cref{chap:agw,chap:ucoot}.
 \end{enumerate}
 Our contributions are in line with these objectives and summarized in the next paragraphs.
 Last but not least, during his PhD, the author has also contributed to the open-source packages,
@@ -176,7 +139,7 @@ The purpose of this chapter is to provide relevant mathematical and numerical ba
 on OT. In particular, we focus on the intuition and motivation of the core starting points
 of this thesis, notably the balanced and unbalanced OT, and the GW distance.
 Second, we spend much effort on their algorithmic and implementation details, which are not
-usually discussed in the literature. We also provide a review on some variations of OT,
+always discussed in the literature. We also provide a review on some variations of OT,
 coming mostly from the machine learning community. This may serve as a supplement
 to the excellent reference on computational OT of \citet{Peyre19} and to the informative
 tutorial of \citet{Sejourne22} on how to used unbalanced transport in machine learning.
@@ -185,11 +148,11 @@ tutorial of \citet{Sejourne22} on how to used unbalanced transport in machine le
 \paragraph{\Cref{chap:coot}: Contributions to Co-Optimal Transport}
 
 In this chapter, we present two contributions to the study of COOT.
-The first one is based on my unpublished working paper
+The first one is based on our unpublished working paper
 on continuous COOT in November 2020 and bears similarity with two concurrent works.
 The first one is the hypergraph COOT \citep{Chowdhury21b} published in December 2021.
 Their work and ours are based on the same mathematical framework of \citet{Chowdhury19},
-which results in the same metric property. Apart from that, they pursue different research objectives,
+thus result in the same metric property. Apart from that, they pursue different research objectives,
 where COOT is used to explore the categorical properties of the space of measure hypernetworks.
 By contrast, we consider continuous COOT as the first step towards the analysis of
 entropic approximation, unbalanced extension and sample complexity.
@@ -208,9 +171,16 @@ COOT can be reformulated as a multi-marginal OT problem under the additional fac
 We generalize this observation and consider the factored multi-marginal OT problem
 and its factorization relaxation via Kullback-Leibler divergence.
 Such relaxation not only enjoys nice interpolation properties, but also
-can be easily approximated, thanks to the Differece-of-Convex algorithm.
+can be easily approximated, thanks to the Difference-of-Convex algorithm.
 Despite high computational cost incurred by the cost tensor,
 it can provide decent estimation of the COOT and GW distance.
+
+\begin{itemize}
+    \item[$\bullet$] \ul{Factored couplings in multi-marginal optimal transport via difference of
+    convex programming}. \textbf{Quang Huy Tran}, Hicham Janati, Ievgen Redko,
+    Rémi Flamary and Nicolas Courty.
+    \textit{NeurIPS Workshop on Optimal Transport and Machine Learning}, 2021.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{\Cref{chap:ucoot}: Unbalanced Co-Optimal Transport}
@@ -220,7 +190,7 @@ We show that our formulation is a well-defined optimization problem.
 More importantly, it guaratees the provable robustness to outliers, which is not the case for COOT.
 As a byproduct, this result can be extended immediately to GW and unbalanced GW.
 The proposed method also shows favorable performance in
-the unsupervised heterogeneous domain adaptation and single-cell multi-omics tasks.
+unsupervised heterogeneous domain adaptation and single-cell multi-omics tasks.
 For the latter, in the unbalanced scenarios, the feature coupling allows to efficiently recover
 the alignments between genes, when the across-domain cells have
 different number of genomic features.
@@ -230,34 +200,37 @@ AAAI Conference on Artificial Intelligence (AAAI 2023). The implementation of
 Unbalanced COOT will be
 integrated into the next release of Python Optimal Transport package \citep{Flamary21}.
 
-% \begin{enumerate}
-%     \item \textbf{Inexact Bregman Proximal Point for Entropic Unbalanced Optimal Transport.}
-%     This contribution is based on my unpublished working paper on an alternative solver
-%     for the unbalanced OT problem,
-%     called \textit{INexact Proximal Unbalanced optimal Transport} (INPUT).
-%     Relied on the Bregman Proximal Point scheme,
-%     INPUT is versatile and simple, yet shows promising performance over many existing methods.
-%     However, its complete convergence analysis remains an open problem.
-% \end{enumerate}
+\begin{itemize}
+    \item[$\bullet$] \ul{Unbalanced Co-Optimal Transport}. \textbf{Quang Huy Tran}, Hicham Janati,
+    Nicolas Courty, Rémi Flamary, Ievgen Redko, Pinar Demetci and Ritambhara Singh.
+    \textit{AAAI Conference on Artificial Intelligence}, 2023.
+\end{itemize}
 
 \paragraph{\Cref{chap:fugw}: Fused Unbalanced Gromov-Wasserstein}
 
-We present a novel method for inter-subject alignment based on OT,
-denoted as Fused Unbalanced Gromov-Wasserstein (FUGW). The method aligns cortical surfaces based
+We present an OT-based method for inter-subject alignment on the brain data,
+denoted as Fused Unbalanced Gromov-Wasserstein (FUGW). It allows to align cortical surfaces based
 on the similarity of their functional signatures in response to a variety of stimulation settings,
 while penalizing large deformations of individual topographic organization. We demonstrate that
 FUGW is well-suited for whole-brain landmark-free alignment. The unbalanced feature allows
 to deal with the fact that functional areas vary in size across subjects. Our results show that
-FUGW alignment significantly increases between-subject correlation of activity for independent
+FUGW matching significantly increases between-subject correlation of activity for independent
 functional data, and leads to more precise mapping at the group level.
-The proposed method also allows to learn better brain templates, comparing to other anatomical
-alignment approaches.
+The proposed method also allows to learn better barycenters (also known as brain templates),
+comparing to other anatomical alignment approaches.
 
 This chapter is based on \citep{Thual22} and has been accepted at the
 Neural Information Processing Systems (NeurIPS 2022).
 It is a collaborative work with MIND team at INRIA Saclay.
 The main contribution of the author is on the formulation of the mathematical framework
 and the implementation of the algorithms.
+
+\begin{itemize}
+    \item[$\bullet$] \ul{Aligning individual brains with Fused Unbalanced Gromov-Wasserstein}.
+     Alexis Thual$^*$, \textbf{Quang Huy Tran$^*$}, Tatiana Zemskova, Nicolas Courty,
+     Rémi Flamary, Stanislas Dehaene and  Bertrand Thirion.
+     \textit{Neural Information Processing Systems (NeurIPS)}, 2022.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{\Cref{chap:agw}: Breaking isometric ties and introducing priors in
@@ -283,3 +256,9 @@ and Ritambhara Singh (Brown University). The main contribution of the author is 
 theoritical analysis of the proposed method. In particular, despite its simplicity,
 the study of the isometries induced by AGW requires very different techniques
 to those of GW distance.
+
+\begin{itemize}
+    \item[$\bullet$] \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distance}.
+    Pinar Demetci, \textbf{Quang Huy Tran}, Ievgen Redko and Ritambhara Singh.
+    \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
+\end{itemize}

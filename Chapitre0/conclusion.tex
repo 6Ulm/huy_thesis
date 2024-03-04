@@ -13,7 +13,7 @@ In particular, our work lies at the intersection of various extensions of OT,
 namely the marginal relaxation, the comparison between weighted objects,
 and the integration of prior knowledge. Our contributions can be organized in two main axes.
 
-On the methodology side, we aim to understand a few popular practices in the usage of
+On the methodology side, we aimed to understand a few popular practices in the usage of
 divergences between incomparable spaces. First, in \Cref{sec:continuous_coot},
 we justify how entropic regularization can be used to approximate the GW distance and COOT.
 Then in \Cref{chap:ucoot},
@@ -23,7 +23,7 @@ whereas respecting them as in COOT and GW distance also paves the way for outlie
 minimum and mislead the alignments.
 
 On the applications side, our proposed methods address the questions arised from real-world
-applications. In \Cref{chap:fugw}, we present the effectiveness of fused unbalaced GW in neuroscience,
+applications. In \Cref{chap:fugw}, we present the effectiveness of fused unbalanced GW in neuroscience,
 where we showcase how it can be used to align human cortical surfaces and
 learn better brain templates than the standard anatomical alignment approaches.
 In computational biology, we tackle different problematics in the integration of
@@ -51,7 +51,7 @@ One possible alternative is the inexact Bregman Proximal Point (BPP) scheme,
 which is first applied to the balanced OT problem by \citet{Xie20},
 known as \textit{Inexact Proximal OT} (IPOT). Interestingly,
 this scheme can be easily extended to the unbalanced setting as follows.
-Denote $F$ the objective function of Problem \eqref{eq:discrete_ent_uot}.
+Denote $F$ the objective function of the regularized unbalanced OT problem \eqref{eq:discrete_ent_uot}.
 For fixed learning rate $\eta > 0$, at iteration $t$, we solve
 \begin{align}
   \label{eq:bpp_eot}
@@ -71,8 +71,8 @@ meaning that the corresponding inexact solution may still empirically converge t
 of the UOT problem.
 
 This inexact BPP scheme has two very appealing features. First, it is flexible and versatile since
-it can handle both balanced, semi-relaxed (whereas MM cannot), and unregularized
-(whereas Sinkhorn-based family cannot) settings.
+it can handle both balanced, semi-relaxed (which MM cannot), and unregularized
+(which Sinkhorn-based family cannot) settings.
 
 Second, the presence of learning rate $\eta$
 increases the level of regularization in the inner entropic UOT subproblem,
@@ -445,7 +445,7 @@ More precisely, given two measure networks $\cX = (X, c_X, \mu_X)$ and $\cY = (Y
 we want to quantify the convergence rate of $|\gw(\cX, \cY) - \gw(\cX_n, \cY_n)|$.
 Note that, \citep{Zhang23} has also established the convergence rate for the case of $2$-GW distance,
 in which the similarity is measured by squared Euclidean distance.
-The advantage of the approach via MMOT-DC, if works, would be able to handle any
+The advantage of the approach via MMOT-DC, would be able to handle any
 conditionally negative semi-definite kernel.
 
 The idea is as follows: by \Cref{prop:coot_gw_equiv},
@@ -457,8 +457,8 @@ we expect that the interpolation property still holds,
 notably MMOT-DC converges to COOT as regularization tends to the infinity.
 Thanks to the Difference-of-Convex algorithm discussed in \Cref{sec:algo},
 we can linearize the MMOT-DC and obtain an entropic MMOT problem, which has two advantages.
-First, one can reuse the technique for entropic OT in \citep{Genevay19}
-and extend to the multi-marginal setting. Second, this entropic problem can approximate COOT.
+First, the technique used to study the sample complexity of entropic OT in \citep{Genevay19}
+can be extended to the multi-marginal setting. Second, this entropic problem can approximate COOT.
 Overall, the sample complexity of GW distance roughly boils down to that of an entropic MMOT problem.
 
 \paragraph{Perspectives on Augmented Gromov-Wasserstein (AGW)}
@@ -475,5 +475,9 @@ decomposition, there are still some open questions.
     \item Given the discrete nature of AGW, it is natural the consider the continuous extension.
     In this case, what are the characteristics of its isometries?
 \end{enumerate}
+
+In conclusion, we hope that this thesis contributes to the theory and practice of optimal transport for
+incomparable spaces, and that it will invite more applications of optimal transport in the interdisciplinary domains,
+including but not limited to computational biology and neuroscience.
 
 \vfill

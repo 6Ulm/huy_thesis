@@ -356,20 +356,21 @@ we need to introduce the following assumption on the measure hypernetwork.
     with respect to the Lebesgue measure.
   \end{enumerate}
 \end{assumption}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proposition} \label{prop:conv_ent_coot}
-  Under \Cref{assump:ent_coot}, if the interactions are continuous, then
-  $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$ when $\varepsilon \to 0$. Moreover,
-  let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
-  positive regularizations such that $\varepsilon_n \to 0$.
-  Denote $\pi_n := (\pi_{1, n}, \pi_{2, n})$ the solution of the entropic problem
-  $\coot_{\varepsilon_n} (\cX, \cY)$. Then, any cluster point of the sequence $(\pi_n)_n$ is
-  a solution of the unregularized COOT problem.
-\end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The above result is similar to the one known in entropic OT \citep{Carlier17}. This is due to the fact
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{proposition} \label{prop:conv_ent_coot}
+%   Under \Cref{assump:ent_coot}, if the interactions are continuous, then
+%   $\coot_{\varepsilon}(\cX, \cY) \to \coot(\cX, \cY)$ when $\varepsilon \to 0$. Moreover,
+%   let $(\varepsilon_n)_{n \in \bbN}$ be a sequence of
+%   positive regularizations such that $\varepsilon_n \to 0$.
+%   Denote $\pi_n := (\pi_{1, n}, \pi_{2, n})$ the solution of the entropic problem
+%   $\coot_{\varepsilon_n} (\cX, \cY)$. Then, any cluster point of the sequence $(\pi_n)_n$ is
+%   a solution of the unregularized COOT problem.
+% \end{proposition}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The above result is similar to the one known in entropic OT \citep{Carlier17}.
+This is due to the fact
 that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
-thus the block approximation and $\Gamma$-convergence techniques can be applied.
+thus the block approximation technique can be applied.
 
 Furthermore, still under \Cref{assump:ent_coot}, if the measure network is bounded,
 then we can quantify the approximation error as follows.
@@ -498,6 +499,7 @@ in the final objective function is then only a byproduct of such constraint due 
 the decomposition of the KL divergence into a sum of three terms with two of them being constant.
 Below we give two more examples of real-world applications related to MMOT problem
 where a certain decomposition imposed on the coupling tensor can be desirable.
+
 \paragraph{Multi-source multi-target translation.} A popular task in computer vision is
 to match images across different domains in order to perform the so-called image translation.
 Such tasks are often tackled within the GAN framework where one source domain from which

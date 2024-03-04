@@ -6,7 +6,7 @@
 \begin{proof}[Proof of \Cref{coro:uot_l2_mm}]
 Following \citep{Chapel21}, we can write Problem \eqref{uot_l2} as
 \begin{align}
-    \min_{t \in \bbR^{mn}_{\geq 0}} \langle c, t \rangle + \frac{|| Mt - y ||^2}{2},
+    \min_{t \in \bbR^{mn}_{\geq 0}} \langle c, t \rangle + \frac{|| Mt - y ||_2^2}{2},
 \end{align}
 where $t = \vect(P), c = \vect(C)$ are the vectorizations of $P, C$, respectively. Here,
 \begin{itemize}
@@ -14,25 +14,26 @@ where $t = \vect(P), c = \vect(C)$ are the vectorizations of $P, C$, respectivel
 
     \item[$\bullet$] $y = (\rho_1^{1/2} \mu^T, \rho_2^{1/2} \nu^T, \varepsilon^{1/2} \vect(\gamma)^T)^T \in \bbR^{m + n + mn}$.
 
-    \item[$\bullet$] $M_r = \texttt{np.repeat(np.eye(n),m)} \in \bbR^{n \times mn}$.
+    \item[$\bullet$] $M_r = \texttt{numpy.repeat(numpy.eye(n),m)} \in \bbR^{n \times mn}$.
 
-    \item[$\bullet$] $M_c = [I_m, ..., I_m] = \texttt{np.tile(np.eye(m),n)} \in \bbR^{m \times mn}$.
+    \item[$\bullet$] $M_c = [I_m, ..., I_m] = \texttt{numpy.tile(numpy.eye(m),n)} \in \bbR^{m \times mn}$.
 \end{itemize}
 See Appendix A in \citep{Chapel21} for more details of $M_r, M_c$.
 Remark that if $A \in \bbR^{m \times n}$ and $B \in \bbR^{m \times p}$, then
 \begin{align}
     (A, B) \begin{pmatrix}
-        X^T \\
+        A^T \\
         B^T
     \end{pmatrix}
-    = X X^T + B B^T.
+    = A A^T + B B^T.
 \end{align}
-Following Equation 23 in \citep{Chapel21},  we have
+Following Equation 23 in \citep{Chapel21}, for $i \in [mn]$,
 \begin{align}
-    t^{(k+1)}_i = t^{(k)}_i \frac{\max( 0, [M^T y]_i - c_i)}{[M^T M t^{(k)}]_i}.
+    t^{(k+1)}_i = t^{(k)}_i \frac{\max \big\{ 0, (M^T y)_i - c_i \big\}}{(M^T M t^{(k)})_i}.
 \end{align}
-Now, $\text{mat}(M^T y) = (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma$.
-Here, matrization is the inverse operation of vectorization. Since,
+Now, we convert the vector $t$ back to the transport plan. More precisely,
+$\text{mat}(M^T y) = (\rho_1 \mu) \oplus (\rho_2 \nu) + \varepsilon \gamma$,
+where matrization is the inverse operation of vectorization. Since,
 $M^T M = \rho_1 M_r^T M_r + \rho_2 M_c^T M_c + \varepsilon I_{mn}$, we obtain
 $\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k)})
 + \varepsilon P^{(k)} $. The result then follows.
@@ -66,8 +67,8 @@ Denote $g$ the objective function of Problem \eqref{eq:uot_bregman}. We have,
     \Big)}_{B} \\
     &= t g(P) + A(t) + (t-1) B.
 \end{align}
-For any minimizer $P^* \in \cC$, denote $\cT^* =\{ t \in \bbR: tP^* \in \cC \}$. Clearly, $\cT^*$ is
-not empty since $1 \in \cT^*$. Since $P^*$ is a (global) minimizer, we have
+For any minimizer $P^* \in E$, denote $E^* =\{ t \in \bbR: tP^* \in E \}$. Clearly,
+$E^*$ is not empty since $1 \in E^*$. Since $P^*$ is a (global) minimizer, we have
 $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$,
 or equivalently,
 \begin{align}

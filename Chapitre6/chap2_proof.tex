@@ -22,9 +22,9 @@
     0 &\leq 2 \tr(AQBP^T) - \tr(AQBQ^T) - \tr(APBP^T) \\
     &= \tr \big( AQB (P-Q)^T \big) - \tr\big( A(P-Q) B P^T \big) \\
     &= \vect(Q^T) (B \otimes_K A) \vect(P-Q) - \vect(P)^T (B \otimes_K A) \vect(P-Q) \\
-    &= - \vect(P-Q)^T (B \otimes_K A) \vect(P-Q)
+    &= - \vect(P-Q)^T (B \otimes_K A) \vect(P-Q),
   \end{align}
-  Now, we recall Theorem 1 in \citep{Maron18}.
+  where $\otimes_K$ denotes the Kronecker product. Now, we recall Theorem 1 in \citep{Maron18}.
   \begin{lemma} \label{lemma:maron}
     If the matrices $A \in \bbR^{m \times m}$ and $B \in \bbR^{n \times n}$
     are CND, then $\vect(X)^T (B \otimes_K A) \vect(X) \geq 0$, for every $X \in \text{lin(DS)}$,
@@ -48,11 +48,11 @@
   $|c_X - c_Y|^p(x_1, y_1, x_2, y_2) := |c_X(x_1, x_2) - c_Y(y_1, y_2) |^p$.
   Now, the COOT problem can be rewritten as
   \begin{equation} \label{UCOOT:1}
-    \coot(\cX, \cY) = \inf_{\pi \in \cU^{\otimes}} \int_{S} \vert c_X - c_Y \vert^p \; d\pi,
+    \coot(\cX, \cY) = \inf_{\pi \in E_{co}} \int_{S} \vert c_X - c_Y \vert^p \; d\pi,
   \end{equation}
   where the set
   \begin{equation}
-    \cU^{\otimes} = \{ \pi \in \cP(S): \pi = \pi_1 \otimes \pi_2,
+    E_{co} = \{ \pi \in \cP(S): \pi = \pi_1 \otimes \pi_2,
     \text{ where } \pi_k \in U(\mu_k^X, \mu_k^Y) \},
   \end{equation}
   contains the factorizable multi-marginal transport plans.
@@ -91,17 +91,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lemma} \label{lemma:compact_subset}
   If $X_k$ and $Y_k$ are Polish spaces, for every $k = 1, 2$,
-  then $\cU^{\otimes}$ is non-empty and weakly compact in $\cP(S)$.
+  then $E_{co}$ is non-empty and weakly compact in $\cP(S)$.
 \end{lemma}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{lemma:compact_subset}]
-  Clearly, $(\mu_1^X \otimes \mu_1^Y) \otimes (\mu_2^X \otimes \mu_2^Y) \in \cU^{\otimes}$,
-  so $\cU^{\otimes}$ is not empty.
+  Clearly, $(\mu_1^X \otimes \mu_1^Y) \otimes (\mu_2^X \otimes \mu_2^Y) \in E_{co}$,
+  so $E_{co}$ is not empty.
   We recall that $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ is the set of admissible couplings
   whose four marginals are $\mu^X_1, \mu^Y_1, \mu^X_2$ and $\mu^Y_2$. First,
-  observe that $\cU^{\otimes} \subset U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
+  observe that $E_{co} \subset U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
   Indeed, given $\pi_k \in U(\mu_k^X, \mu_k^Y)$, for $k = 1,2$ and denote
-  $\pi = \pi_1 \otimes \pi_2 \in \cU^{\otimes}$. Then, for every $i, k \in \{ 1, 2 \}$ and $i \neq k$,
+  $\pi = \pi_1 \otimes \pi_2 \in E_{co}$. Then, for every $i, k \in \{ 1, 2 \}$ and $i \neq k$,
   we have
   \begin{equation}
       \bigg(\int_{X_{i} \times Y_{i}} d\pi_i \bigg) \int_{Y_k}  d\pi_k = d\mu_k^X.
@@ -111,12 +111,12 @@
 
   As a direct generalization of Lemma 4.4 in \citep{Villani08},
   $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$ is weakly compact in $\cP(S)$. Thus,
-  to show the compactness of $\cU^{\otimes}$, it is enough to show that $\cU^{\otimes}$
+  to show the compactness of $E_{co}$, it is enough to show that $E_{co}$
   is a weakly closed subset of $U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$.
-  Take a sequence $(\pi^{(n)})_n \subset \cU^{\otimes}$
+  Take a sequence $(\pi^{(n)})_n \subset E_{co}$
   such that $\pi^{(n)} \rightharpoonup \pi \in U(\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y)$
-  (due to its compactness), we need to show that $\pi \in \cU^{\otimes}$.
-  As $(\pi^{(n)})_n \subset \cU^{\otimes}$, there exist two sequences
+  (due to its compactness), we need to show that $\pi \in E_{co}$.
+  As $(\pi^{(n)})_n \subset E_{co}$, there exist two sequences
   $(\pi_1^{(n)})_n \subset U(\mu_1^X, \mu_1^Y)$ and $(\pi_2^{(n)})_n \subset U(\mu_2^X, \mu_2^Y)$
   such that $\pi^{(n)} = \pi_1^{(n)} \otimes \pi_2^{(n)}$.
 
@@ -125,14 +125,14 @@
   $\pi^{(n_i^{(k)})}_k \rightharpoonup \pi_k \in U(\mu_k^X, \mu_k^Y)$, when $i \to \infty$.
   By applying Theorem 2.8 in \citep{Billingsley99} on the Polish space $S$
   (thanks to \Cref{lemma:product_polish}), we have
-  $\pi^{(n_i^{(1)})}_1 \otimes \pi^{(n_i^{(2)})}_2 \rightharpoonup \pi_1 \otimes \pi_2 \in \cU^{\otimes}$,
-  when $i \to \infty$. This implies $\pi = \pi_1 \otimes \pi_2$, thus $\pi \in \cU^{\otimes}$.
+  $\pi^{(n_i^{(1)})}_1 \otimes \pi^{(n_i^{(2)})}_2 \rightharpoonup \pi_1 \otimes \pi_2 \in E_{co}$,
+  when $i \to \infty$. This implies $\pi = \pi_1 \otimes \pi_2$, thus $\pi \in E_{co}$.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lemma} \label{lemma:coot_continuous}
     If $c_X$ and $c_Y$ are bounded measurable functions, then
-    the functional $F: \pi \to \Big( \int_{S} \vert c_X - c_Y \vert^p \; d\pi \Big)^{1/p}$ is continuous on $\cU^{\otimes}$.
+    the functional $F: \pi \to \Big( \int_{S} \vert c_X - c_Y \vert^p \; d\pi \Big)^{1/p}$ is continuous on $E_{co}$.
 \end{lemma}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{lemma:coot_continuous}]
@@ -192,12 +192,12 @@ formulation of COOT.
   \mcoot(\cX, \cY) =
   \inf_{\substack{T_1 \in \cT(\mu^X_1, \mu^Y_1) \\ T_2 \in \cT(\mu^X_2, \mu^Y_2)}}
   \iint \Big|c_X(x_1, x_2) - c_Y \big( T_1(x_1), T_2(x_2) \big) \Big|^p
-  \; d\mu^X_1(x_1) \; d\mu^X_2(x_2).
+  \; d\mu^X_1(x_1) \; d\mu^X_2(x_2),
 \end{align}
 where recall that
 $\cT(\mu^X_k, \mu^Y_k) = \{T: X_k \to Y_k \text{ such that } T_{\#} \mu^X_k = \mu^Y_k \}$,
 for $k=1,2$. It is not difficult to see that, $\mcoot(\cX, \cY) = 0$ if and only if
-$\cX \in \rms(\cY)$. Similar to the GW and Gromo-Monge distances, we have
+$\cX \in \rms(\cY)$. Similar to the GW and Gromov-Monge distances, we have
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{corollary} \label{coro:coot_mcoot}
   Let $\cX$ and $\cY$ be two measure hypernetworks, then
@@ -324,8 +324,8 @@ Now,
       \coot(\cX, \cY) = \inf_{\cZ \in \rms(\cX)} \mcoot(\cZ, \cY) = 0.
     \end{equation}
     Now, suppose $\coot(\cX, \cY)=0$, then by \Cref{coro:coot_mcoot},
-    there exists a mass splitting $\cZ^*$ of $\cX$ such that
-    $\mcoot(\cZ^*, \cY) = 0$. But this also means $\cZ^*$ is a RMS of $\cY$.
+    there exists $\cZ^* \in \rms(\cX)$ such that $\mcoot(\cZ^*, \cY) = 0$.
+    But this also means $\cZ^*$ is a RMS of $\cY$.
     We conclude that $\cX$ and $\cY$ are weakly isomorphic.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -333,7 +333,7 @@ Now,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{prop:metric_prop}]
   The proof of this result can be found in \citep{Chowdhury21b}.
-  However, we still provide our proof here (though based on the same techniques).
+  However, we still provide our proof here (slightly different but based on the same techniques).
 
   For clarity, given three measure hypernetworks $\cX, \cY$ and $\cZ$,
   we denote $S_{xy} = \prod_{k=1}^2 X_k \times Y_k, S_{yz} = \prod_{k=1}^2 Y_k \times Z_k,
@@ -434,178 +434,183 @@ Now,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proof}[Proof of \Cref{prop:conv_ent_coot}]
-    Recall that
-    \begin{equation}
-      \cU^{\otimes} = \{ \pi \in \cP(S): \pi = \pi_1 \otimes \pi_2,
-      \text{ where } \pi_k \in U(\mu_k^X, \mu_k^Y) \}.
-    \end{equation}
-    First, observe that if $\pi \in \cU^{\otimes}$ is a solution of COOT, then for any $\gamma \in \cU^{\otimes}$, one has
-    \begin{equation}
-      \begin{split}
-        0 &\leq \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \\
-        &\leq \left( \int_{S} \vert c_X - c_Y \vert^p \; d\gamma - \int_{S} \vert c_X - c_Y \vert^p \; d\pi \right) +
-        \varepsilon \kl(\gamma \vert \mu_1 \otimes \mu_2).
-      \end{split}
-    \end{equation}
-    The idea is to choose $\gamma \in \cU^{\otimes}$ such that, for small $\varepsilon$, the quantity inside the bracket can be arbitrarily small
-    (but still positive, due to the optimality of $\pi$), and the KL divergence is always controlled, so that it does not blow up too fast.
-    To do so, we extend the block approximation technique in
-    \citep{Carlier17} to the multi-marginal case.
-    \begin{definition}
-      (Block approximation) Given an integer $K \geq 2$ and $p \geq 1$. For each $k=1,...,K$,
-      let $\mu_k \in \cP(\bbR^{n_k})$, for some integer $n_k \geq 1$, be a probability measure
-      with finite entropy and $p^{\text{th}}$-moment and
-      absolutely continuous with respect to the Lebesgue measure.
+% \begin{proof}[Proof of \Cref{prop:conv_ent_coot}]
 
-      For each $a_k = (a_k^{(1)}, ...,a_k^{(n_k)}) \in \cZ^{n_k}$, we define the unit hypercube
-      $Q_{a_k} = [a_k^{(1)}, a_k^{(1)} + 1) \times ... \times [a_k^{(n_k)}, a_k^{(n_k)} + 1) \subset \bbR^{n_k}$ and for $\Delta > 0$,
-      we denote $Q^{\Delta}_{a_k} = \Delta \cdot Q_{a_k} \subset \bbR^{n_k}$ the rescaled hypercube by $\Delta$ of $Q_{a_k}$.
-      For each $\pi \in \cP(\prod_k \bbR^{n_k})$, we define its block approximation at scale $\Delta$ by
-      \begin{equation}
-        \pi_{\Delta} := \sum_{\substack{a_k \in \cZ^{n_k} \\ k = 1, ..., K}}
-        \pi \big(\prod_{k=1}^K Q^{\Delta}_{a_k}\big) \big( \otimes_{k=1}^K \mu_k^{\Delta} \big),
-      \end{equation}
-      where, for every Borel set $E_k \subset \bbR^{n_k}, \mu_k^{\Delta}$ is the restriction of $\mu_k$ on $Q^{\Delta}_{a_k}$ defined by
-      \begin{equation}
-        \mu_k^{\Delta}(E_k):=
-        \begin{cases}
-          \frac{\mu_k(E_k \cap Q^{\Delta}_{a_k})}{\mu_k(Q^{\Delta}_{a_k})} \; ,\text{ if } \mu_k(Q^{\Delta}_{a_k}) > 0 \\
-          0 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;,\text{ otherwise}.
-        \end{cases}
-      \end{equation}
-    \end{definition}
-    It is not difficult to see that block approximation of a product measure is also a product measure. Indeed, it is enough to consider the case
-    $K=2$. Suppose that $\pi = \pi_1 \otimes \pi_2$, then,
-    \begin{equation}
-      \pi_{\Delta} = \sum_{a_1, a_2}
-      \pi_1(Q^{\Delta}_{a_1}) \; \pi_2(Q^{\Delta}_{a_2}) \; \mu_1^{\Delta} \otimes \mu_2^{\Delta} =
-      \left( \sum_{a_1} \pi_1(Q^{\Delta}_{a_1}) \; \mu_1^{\Delta} \right) \otimes
-      \left( \sum_{a_2} \pi_2(Q^{\Delta}_{a_2}) \; \mu_2^{\Delta} \right).
-    \end{equation}
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{lemma}
-        \label{lemma:block_approx}
-      Recall that $U(\mu_1, ..., \mu_K)$ is the set of couplings whose marginals are $\mu_1,...,\mu_K$.
-      For each $\pi \in U(\mu_1, ..., \mu_K)$, denote $\pi_{\Delta}$ its block approximation at scale $\Delta > 0$.
-      \begin{enumerate}
-        \item The entropy $H(\pi)$ is well defined and
-        \begin{equation}
-          \kl(\pi \vert \otimes_k \mu_k) = H(\pi) - \sum_{k=1}^K H(\mu_k).
-        \end{equation}
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \begin{lemma}
+%         \label{lemma:block_approx}
+%       Recall that $U(\mu_1, ..., \mu_K)$ is the set of couplings whose marginals are $\mu_1,...,\mu_K$.
+%       For each $\pi \in U(\mu_1, ..., \mu_K)$, denote $\pi_{\Delta}$ its block approximation at scale $\Delta > 0$.
+%       \begin{enumerate}
+%         \item The entropy $H(\pi)$ is well defined and
+%         \begin{equation}
+%           \kl(\pi \vert \otimes_k \mu_k) = H(\pi) - \sum_{k=1}^K H(\mu_k).
+%         \end{equation}
 
-        \item For every $\Delta > 0, \pi_{\Delta} \in U(\mu_1, ..., \mu_K)$.
+%         \item For every $\Delta > 0, \pi_{\Delta} \in U(\mu_1, ..., \mu_K)$.
 
-        \item Suppose the product space $\prod_k \bbR^{n_k}$ is endowed with the metric
-        \begin{equation}
-          d((x_1, ..., x_K), (y_1, ..., y_K)) = \Big( \sum_{k=1}^K \vert\vert x_k - y_k \vert\vert^p \Big)^{1/p}.
-        \end{equation}
-        Then
-        \begin{equation}
-          W^p_{d^p}(\pi, \pi_{\Delta}) \leq \Big( \sum_{k=1}^K n_k \Big) \Delta^p,
-        \end{equation}
-        where $W_{d^p}(\pi, \pi_{\Delta})$ is the $p$-Wasserstein distance between $\pi$ and $\pi_{\Delta}$ induced by the cost $d^p$.
-        Consequently, $\pi_{\Delta} \rightharpoonup \pi$ when $\Delta \to 0$.
+%         \item Suppose the product space $\prod_k \bbR^{n_k}$ is endowed with the metric
+%         \begin{equation}
+%           d((x_1, ..., x_K), (y_1, ..., y_K)) = \Big( \sum_{k=1}^K \vert\vert x_k - y_k \vert\vert^p \Big)^{1/p}.
+%         \end{equation}
+%         Then
+%         \begin{equation}
+%           W^p_{d^p}(\pi, \pi_{\Delta}) \leq \Big( \sum_{k=1}^K n_k \Big) \Delta^p,
+%         \end{equation}
+%         where $W_{d^p}(\pi, \pi_{\Delta})$ is the $p$-Wasserstein distance between $\pi$ and $\pi_{\Delta}$ induced by the cost $d^p$.
+%         Consequently, $\pi_{\Delta} \rightharpoonup \pi$ when $\Delta \to 0$.
 
-        \item There exists constants $C > 0$ and $\alpha \in (0,1)$ such that
-        \begin{equation}
-          \kl(\pi_{\Delta} \vert \otimes_k \mu_k) \leq
-          \sum_{k=1}^K \Big( C \big( M(\mu_k) + n_k \Delta^2 + 1 \big)^{\alpha} - n_k \log \Delta \Big).
-        \end{equation}
-      \end{enumerate}
-    \end{lemma}
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{proof}
-      Most proofs follow directly from \citep{Carlier17}.
-      \begin{enumerate}
-        \item If $\pi \ll \otimes_k \mu_k$, then as $\mu_k \ll \lambda_k$, we must have $\pi \ll \otimes_k \lambda_k$. Thus $H(\pi)$ is well
-        defined. Furthermore,
-        \begin{equation}
-          \begin{split}
-            \kl(\pi \vert \otimes_k \mu_k)
-            &= \int \log \Big( \frac{\pi(x_1,...,x_K)}{\mu_1(x_1)...\mu_K(x_K)} \Big) \pi(x_1, ..., x_K) \; dx_1 ... dx_K \\
-            &= \int \pi \log \pi - \sum_{k=1}^K \int \pi(x_1, ..., x_K) \log \mu_k(x_k) \; dx_1 ... dx_K \\
-            &= H(\pi) - \sum_{k=1}^K \int \pi_{\# k}(x_k) \log \mu_k(x_k) \; dx_k \\
-            &= H(\pi) - \sum_{k=1}^K \int \mu_k(x_k) \log \mu_k(x_k) \; dx_k \\
-            &= H(\pi) - \sum_{k=1}^K H(\mu_k).
-          \end{split}
-        \end{equation}
+%         \item There exists constants $C > 0$ and $\alpha \in (0,1)$ such that
+%         \begin{equation}
+%           \kl(\pi_{\Delta} \vert \otimes_k \mu_k) \leq
+%           \sum_{k=1}^K \Big( C \big( M(\mu_k) + n_k \Delta^2 + 1 \big)^{\alpha} - n_k \log \Delta \Big).
+%         \end{equation}
+%       \end{enumerate}
+%     \end{lemma}
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \begin{proof}
+%       Most proofs follow directly from \citep{Carlier17}.
+%       \begin{enumerate}
+%         \item If $\pi \ll \otimes_k \mu_k$, then as $\mu_k \ll \lambda_k$, we must have $\pi \ll \otimes_k \lambda_k$. Thus $H(\pi)$ is well
+%         defined. Furthermore,
+%         \begin{equation}
+%           \begin{split}
+%             \kl(\pi \vert \otimes_k \mu_k)
+%             &= \int \log \Big( \frac{\pi(x_1,...,x_K)}{\mu_1(x_1)...\mu_K(x_K)} \Big) \pi(x_1, ..., x_K) \; dx_1 ... dx_K \\
+%             &= \int \pi \log \pi - \sum_{k=1}^K \int \pi(x_1, ..., x_K) \log \mu_k(x_k) \; dx_1 ... dx_K \\
+%             &= H(\pi) - \sum_{k=1}^K \int \pi_{\# k}(x_k) \log \mu_k(x_k) \; dx_k \\
+%             &= H(\pi) - \sum_{k=1}^K \int \mu_k(x_k) \log \mu_k(x_k) \; dx_k \\
+%             &= H(\pi) - \sum_{k=1}^K H(\mu_k).
+%           \end{split}
+%         \end{equation}
 
-        \item See Proposition 2.10 in \citep{Carlier17}
-        \item See Lemma 2.11 and corollary 2.12 in \citep{Carlier17}
-        \item See Proposition 2.14 in \citep{Carlier17}.
-      \end{enumerate}
-    \end{proof}
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{lemma} \label{lemma:limsupinf}
-      Under Assumption 2a in the Proposition ,
-      let $E$ be a non-empty subset of $\cP(S)$ and $(\varepsilon_n)_n$ be a positive sequence converging to zero.
-      Define $\widetilde{F}: \cP(S) \to \bbR \cup \{ \infty \}$ and
-      $\widetilde{F}_n: \cP(S) \to \bbR \cup \{ \infty \}$ by
-      \begin{equation}
-        \widetilde{F}(\pi) =
-        \begin{cases}
-          \int_{S} \vert c_X - c_Y \vert^p \; d\pi, \text{ if } \pi \in E \\
-          \infty \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; ,\text{ otherwise},
-        \end{cases}
-      \end{equation}
-      and
-      \begin{equation}
-        \widetilde{F}_n(\pi) =
-        \begin{cases}
-          \int_{S} \vert c_X - c_Y \vert^p \; d\pi + \varepsilon_n \kl(\pi \vert \mu_1 \otimes \mu_2), \text{ if } \pi \in E \\
-          \infty \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; ,\text{ otherwise}.
-        \end{cases}
-      \end{equation}
-      \begin{enumerate}
-        \item Assume that if $\pi \in E$, then so is its block approximation. Then for every $\pi \in E$ and positive sequence $(\Delta_n)_n \to 0$, we have
-        \begin{equation}
-          \widetilde{F}(\pi) \geq \lim\sup_{n \to \infty} \widetilde{F}_{\Delta_n}(\pi_{\Delta_n}).
-        \end{equation}
+%         \item See Proposition 2.10 in \citep{Carlier17}
+%         \item See Lemma 2.11 and corollary 2.12 in \citep{Carlier17}
+%         \item See Proposition 2.14 in \citep{Carlier17}.
+%       \end{enumerate}
+%     \end{proof}
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \begin{lemma} \label{lemma:limsupinf}
+%       Under Assumption 2a in the Proposition ,
+%       let $E$ be a non-empty subset of $\cP(S)$ and $(\varepsilon_n)_n$ be a positive sequence converging to zero.
+%       Define $\widetilde{F}: \cP(S) \to \bbR \cup \{ \infty \}$ and
+%       $\widetilde{F}_n: \cP(S) \to \bbR \cup \{ \infty \}$ by
+%       \begin{equation}
+%         \widetilde{F}(\pi) =
+%         \begin{cases}
+%           \int_{S} \vert c_X - c_Y \vert^p \; d\pi, \text{ if } \pi \in E \\
+%           \infty \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; ,\text{ otherwise},
+%         \end{cases}
+%       \end{equation}
+%       and
+%       \begin{equation}
+%         \widetilde{F}_n(\pi) =
+%         \begin{cases}
+%           \int_{S} \vert c_X - c_Y \vert^p \; d\pi + \varepsilon_n \kl(\pi \vert \mu_1 \otimes \mu_2), \text{ if } \pi \in E \\
+%           \infty \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; ,\text{ otherwise}.
+%         \end{cases}
+%       \end{equation}
+%       \begin{enumerate}
+%         \item Assume that if $\pi \in E$, then so is its block approximation. Then for every $\pi \in E$ and positive sequence $(\Delta_n)_n \to 0$, we have
+%         \begin{equation}
+%           \widetilde{F}(\pi) \geq \lim\sup_{n \to \infty} \widetilde{F}_{\Delta_n}(\pi_{\Delta_n}).
+%         \end{equation}
 
-        \item Let $(\pi_n)_n \subset \cP(S)$ be a sequence weakly converging to $\pi \in E$. Then
-        \begin{equation}
-          F(\pi) \leq \lim \inf_{n \to \infty} F_{n}(\pi_n).
-        \end{equation}
-      \end{enumerate}
-    \end{lemma}
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{proof}[Proof of \Cref{lemma:limsupinf}]
-      \text{ }
-      \begin{enumerate}
-        \item When $S$ is a finite-dimensional vector space, by \Cref{lemma:block_approx} and
-        definition 6.8 in \citep{Villani08}, when $n \to \infty$,
-        \begin{equation}
-          \int_S \vert c_X - c_Y\vert^p \; d\pi_{\Delta_n} \to \int_S \vert c_X - c_Y\vert^p \; d\pi.
-        \end{equation}
-        On the other hand, following \Cref{lemma:block_approx} and the proof of the proposition 2.16 in \citep{Carlier17}, we have
-        \begin{equation}
-          \lim\sup_{n \to \infty} \Delta_n \kl(\pi_{\Delta_n} \vert \mu_1 \otimes \mu_2) \leq 0.
-        \end{equation}
-        The claim then follows.
+%         \item Let $(\pi_n)_n \subset \cP(S)$ be a sequence weakly converging to $\pi \in E$. Then
+%         \begin{equation}
+%           F(\pi) \leq \lim \inf_{n \to \infty} F_{n}(\pi_n).
+%         \end{equation}
+%       \end{enumerate}
+%     \end{lemma}
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \begin{proof}[Proof of \Cref{lemma:limsupinf}]
+%       \text{ }
+%       \begin{enumerate}
+%         \item When $S$ is a finite-dimensional vector space, by \Cref{lemma:block_approx} and
+%         definition 6.8 in \citep{Villani08}, when $n \to \infty$,
+%         \begin{equation}
+%           \int_S \vert c_X - c_Y\vert^p \; d\pi_{\Delta_n} \to \int_S \vert c_X - c_Y\vert^p \; d\pi.
+%         \end{equation}
+%         On the other hand, following \Cref{lemma:block_approx} and the proof of the proposition 2.16 in \citep{Carlier17}, we have
+%         \begin{equation}
+%           \lim\sup_{n \to \infty} \Delta_n \kl(\pi_{\Delta_n} \vert \mu_1 \otimes \mu_2) \leq 0.
+%         \end{equation}
+%         The claim then follows.
 
-        \item This is true because the KL divergence is nonnegative and the other terms are lower semicontinuous.
-      \end{enumerate}
-    \end{proof}
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Now, we complete the proof of the .
-    When $\varepsilon \to 0$, in case of finite-dimensional spaces, if $\pi \in \cU^{\otimes}$ (or $E_{gw}$), then so is its block approximation.
-    We deduce from \Cref{lemma:limsupinf} that $\widetilde{F}_{n}$ $\Gamma$-converges to
-    $\widetilde{F}$, whenever $E = \cU^{\otimes}$ or $E = E_{gw}$. Moreover, in both cases, the weak compactness of $E$ implies the equi-coercivity
-    of $\widetilde{F}_n$. By the theorems 7.8 and 7.18 in \citep{Maso93}, we deduce that
-    $\coot_{\varepsilon_n}(\cX, \cY) \to \coot(\cX, \cY)$, when $\varepsilon_n \to 0$,
-    and if $(\pi_{\varepsilon_n})_{n}$ is a sequence of solution of $\coot_{\varepsilon_n}(\cX, \cY)$,
-    then any cluster point of $(\pi_{\varepsilon_n})_{n}$ is a solution of $\coot(\cX, \cY)$.
-  \end{proof}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         \item This is true because the KL divergence is nonnegative and the other terms are lower semicontinuous.
+%       \end{enumerate}
+%     \end{proof}
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Now, we complete the proof of the .
+%     When $\varepsilon \to 0$, in case of finite-dimensional spaces, if $\pi \in E_{co}$ (or $E_{gw}$), then so is its block approximation.
+%     We deduce from \Cref{lemma:limsupinf} that $\widetilde{F}_{n}$ $\Gamma$-converges to
+%     $\widetilde{F}$, whenever $E = E_{co}$ or $E = E_{gw}$. Moreover, in both cases, the weak compactness of $E$ implies the equi-coercivity
+%     of $\widetilde{F}_n$. By the theorems 7.8 and 7.18 in \citep{Maso93}, we deduce that
+%     $\coot_{\varepsilon_n}(\cX, \cY) \to \coot(\cX, \cY)$, when $\varepsilon_n \to 0$,
+%     and if $(\pi_{\varepsilon_n})_{n}$ is a sequence of solution of $\coot_{\varepsilon_n}(\cX, \cY)$,
+%     then any cluster point of $(\pi_{\varepsilon_n})_{n}$ is a solution of $\coot(\cX, \cY)$.
+%   \end{proof}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Recall that
+\begin{equation}
+  E_{co} = \{ \pi \in \cP(S): \pi = \pi_1 \otimes \pi_2,
+  \text{ where } \pi_k \in U(\mu_k^X, \mu_k^Y) \}.
+\end{equation}
+First, observe that if $\pi \in E_{co}$ is a solution of COOT, then for any $\gamma \in E_{co}$, one has
+\begin{equation}
+  \begin{split}
+    0 &\leq \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \\
+    &\leq \left( \int_{S} \vert c_X - c_Y \vert^p \; d\gamma - \int_{S} \vert c_X - c_Y \vert^p \; d\pi \right) +
+    \varepsilon \kl(\gamma \vert \mu_1 \otimes \mu_2).
+  \end{split}
+\end{equation}
+The idea is to choose $\gamma \in E_{co}$ such that, for small $\varepsilon$, the quantity inside the bracket can be arbitrarily small
+(but still positive, due to the optimality of $\pi$), and the KL divergence is always controlled, so that it does not blow up too fast.
+To do so, we extend the block approximation technique in
+\citep{Carlier17} to the multi-marginal case.
+\begin{definition}
+  (Block approximation) Given an integer $K \geq 2$ and $p \geq 1$. For each $k=1,...,K$,
+  let $\mu_k \in \cP(\bbR^{n_k})$, for some integer $n_k \geq 1$, be a probability measure
+  with finite entropy and $p^{\text{th}}$-moment and
+  absolutely continuous with respect to the Lebesgue measure.
+
+  For each tuple of integers $a_k = (a_k^{(1)}, ...,a_k^{(n_k)}) \in \bbZ^{n_k}$, we define the unit hypercube
+  $Q_{a_k} = [a_k^{(1)}, a_k^{(1)} + 1) \times ... \times [a_k^{(n_k)}, a_k^{(n_k)} + 1) \subset \bbR^{n_k}$ and for $\Delta > 0$,
+  we denote $Q^{\Delta}_{a_k} = \Delta \cdot Q_{a_k} \subset \bbR^{n_k}$ the rescaled hypercube by $\Delta$ of $Q_{a_k}$.
+  For each $\pi \in \cP(\prod_k \bbR^{n_k})$, we define its block approximation at scale $\Delta$ by
+  \begin{equation}
+    \pi_{\Delta} := \sum_{\substack{a_k \in \bbZ^{n_k} \\ k = 1, ..., K}}
+    \pi \big(\prod_{k=1}^K Q^{\Delta}_{a_k}\big) \big( \otimes_{k=1}^K \mu_k^{\Delta} \big),
+  \end{equation}
+  where, for every Borel set $E_k \subset \bbR^{n_k}, \mu_k^{\Delta}$ is the restriction of $\mu_k$ on $Q^{\Delta}_{a_k}$ defined by
+  \begin{equation}
+    \mu_k^{\Delta}(E_k):=
+    \begin{cases}
+      \frac{\mu_k(E_k \cap Q^{\Delta}_{a_k})}{\mu_k(Q^{\Delta}_{a_k})} \; ,\text{ if } \mu_k(Q^{\Delta}_{a_k}) > 0 \\
+      0 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;,\text{ otherwise}.
+    \end{cases}
+  \end{equation}
+\end{definition}
+It is not difficult to see that block approximation of a product measure is also a product measure. Indeed, it is enough to consider the case
+$K=2$. Suppose that $\pi = \pi_1 \otimes \pi_2$, then for any $\Delta > 0$,
+\begin{equation}
+  \pi_{\Delta} = \sum_{a_1, a_2}
+  \pi_1(Q^{\Delta}_{a_1}) \; \pi_2(Q^{\Delta}_{a_2}) \; \mu_1^{\Delta} \otimes \mu_2^{\Delta} =
+  \left( \sum_{a_1} \pi_1(Q^{\Delta}_{a_1}) \; \mu_1^{\Delta} \right) \otimes
+  \left( \sum_{a_2} \pi_2(Q^{\Delta}_{a_2}) \; \mu_2^{\Delta} \right).
+\end{equation}
+For each $\pi \in U(\mu_1, ..., \mu_K)$, denote $\pi_{\Delta}$ its block approximation at scale $\Delta > 0$.
+$\Delta > 0, \pi_{\Delta} \in U(\mu_1, ..., \mu_K)$
+By Proposition 2.10 in \citep{Carlier17}
+
 \begin{proof}[Proof of \Cref{prop:quant_bound_ent}]
   This is an adaptation from the proof of quantitative bound between OT and regularized OT
   in \citep{Genevay19}.
-  Let $\pi^* \in \cU^{\otimes}$ be a solution of COOT and denote $\pi_{\Delta}$
+  Let $\pi^* \in E_{co}$ be a solution of COOT and denote $\pi_{\Delta}$
   its block approximation at scale $\Delta > 0$.
-  Clearly, $\pi_{\Delta} \in \cU^{\otimes}$. The sub-optimality of $\pi_{\Delta}$ implies
+  Clearly, $\pi_{\Delta} \in E_{co}$. The sub-optimality of $\pi_{\Delta}$ implies
   \begin{equation}
     \begin{split}
       0 &\leq \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \\
@@ -675,7 +680,7 @@ where, with some abuse of notation, we write $i_{-n} = (i_1, ..., i_{n-1}, i_{n+
   (f_n)_{i_n} = \varepsilon \log (\mu_n)_{i_n} - \varepsilon \log \sum_{i_{-n}}
   \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{i_1,...,i_N}}{\varepsilon} \Big),
 \end{equation}
-or even more compact form
+or a more compact form
 \begin{equation}
   f_n = \varepsilon \log \mu_n - \varepsilon \log \sum_{i_{-n}}
   \exp\Big( \frac{\sum_{j \neq n} (f_j)_{i_j} - C_{\cdot, i_{-n}}}{\varepsilon} \Big).
@@ -684,9 +689,9 @@ Using the primal-dual relation, we obtain the minimiser of the primal problem \e
 \begin{equation}
   P_{i_1,...,i_N} = \exp\Big( \frac{\sum_n (f_n)_{i_n} - C_{i_1,...,i_N}}{\varepsilon} \Big),
 \end{equation}
-for $i_n \in [a_n]$, with $n \in [N]$.
-
-Similar to the entropic OT, the Sinkhorn algorithm \ref{algo:dual_mmot} is also usually implemented in log-domain to avoid numerical instability.
+for $i_n \in [a_n]$, with $n \in [N]$. Similar to the entropic OT,
+the Sinkhorn algorithm \ref{algo:dual_mmot} is also usually implemented in log-domain
+to avoid numerical instability.
 \begin{algorithm}[t]
   \caption{Sinkhorn algorithm for the entropic MMOT problem \eqref{MMOT_primal} from \citep{Benamou14}.}
   \textbf{Input.} Histograms $\mu_1,...,\mu_N$, hyperparameter $\varepsilon > 0$, cost tensor $C$ and
@@ -904,73 +909,73 @@ is a minimiser of $\fmmot(\cT, \mu)$.
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{proof}[Proof of \Cref{kernel_gw_coot}]
-We write $C: = L(C_x,C_y)$, for notational convenience.
-In the setting of GW distance, we have $N=4$ and $M = 2$ with $\cT_1 = (1,2)$ and $\cT_2 = (3,4)$.
-Given a solution $P_{\varepsilon}$ of Problem \eqref{relax_mmot}, we also write
-$P_{\varepsilon, i} := (P_{\varepsilon})_{\# \cT_i}$, for short. Now,
-for any $Q_i \in U( P_{\varepsilon, i}, P_{\varepsilon, i}) \subset U(\mu)$, with $i = 1,2$.
-The optimality of $P_{\varepsilon}$ implies that
-\begin{equation}
-    \langle C, P_{\varepsilon} \rangle + \varepsilon \big[ H(P_{\varepsilon}) - H(P_{\varepsilon, 1}) -
-    H(P_{\varepsilon, 2}) \big] \leq
-    \langle C, Q_i \rangle + \varepsilon \big[ H(Q_i) - 2 H(P_{\varepsilon, i}) \big].
-\end{equation}
-Thus,
-\begin{equation}
-    2 \big( \langle C, P_{\varepsilon} \rangle + \varepsilon H(P_{\varepsilon}) \big) \leq
-    \sum_{i=1}^2 \langle C, Q_i \rangle + \varepsilon H(Q_i).
-\end{equation}
-As this is true for every $Q_i \in U(P_{\varepsilon, i}, P_{\varepsilon, i})$, we have
-\begin{equation}
-    \begin{split}
-        \frac{1}{2} \sum_{i=1}^2
-        \text{OT}_{\varepsilon}(P_{\varepsilon, i}, P_{\varepsilon, i})
-        &= \frac{1}{2} \sum_{i=1}^2 \inf_{Q_i \in U(P_{\varepsilon, i}, P_{\varepsilon, i})}
-        \langle C, Q_i \rangle + \varepsilon H(Q_i) \\
-        &\geq \langle C, P_{\varepsilon} \rangle + \varepsilon H(P_{\varepsilon}) \\
-        &\geq \inf_{P \in U(P_{\varepsilon, 1}, P_{\varepsilon, 2})}
-        \langle C, P \rangle + \varepsilon H(P) \\
-        &= \text{OT}_{\varepsilon}(P_{\varepsilon, 1}, P_{\varepsilon, 2}).
-    \end{split}
-\end{equation}
-The second inequality holds because $P_{\varepsilon} \in U(P_{\varepsilon, 1}, P_{\varepsilon, 2})$. Thus,
-\begin{equation} \label{sinkhorn_div}
-  \text{OT}_{\varepsilon}(P_{\varepsilon, 1}, P_{\varepsilon, 2}) -
-  \frac{1}{2} \sum_{i=1}^2 \text{OT}_{\varepsilon}(P_{\varepsilon, i}, P_{\varepsilon, i}) \leq 0.
-\end{equation}
-The left-hand side of the inequality \eqref{sinkhorn_div} is nothing but the Sinkhorn divergence between $P_{\varepsilon, 1}$ and
-$P_{\varepsilon, 2}$ \citep{Ramdas17}. As the kernel $C$ is conditionally negative definite if and only if for every
-$\varepsilon > 0$, the kernel $e^{-C / \varepsilon}$ is positive definite \citep{Schoenberg38}, by Proposition 5 in \citep{Janati20},
-the inequality in \ref{sinkhorn_div} becomes an equality. As a consequence, for $i=1,2$, if
-$Q_{\varepsilon, i} \in U( P_{\varepsilon, i}, P_{\varepsilon, i})$ is the (unique) optimal plan of the entropic OT problem
-$\text{OT}_{\varepsilon}(P_{\varepsilon, i}, P_{\varepsilon, i})$, then we must have
-\begin{equation}
-  \langle C, P_{\varepsilon} \rangle + \varepsilon \big[ H(P_{\varepsilon}) - H(P_{\varepsilon, 1}) -
-  H(P_{\varepsilon, 2}) \big] =
-  \langle C, Q_{\varepsilon, i} \rangle + \varepsilon \big[ H(Q_{\varepsilon, i}) - 2 H(P_{\varepsilon, i}) \big],
-\end{equation}
-or equivalently, $Q_{\varepsilon, 1}$ and $Q_{\varepsilon, 2}$ are also solutions of Problem \eqref{relax_mmot}.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{proof}[Proof of \Cref{kernel_gw_coot}]
+% We write $C: = L(C_x,C_y)$, for notational convenience.
+% In the setting of GW distance, we have $N=4$ and $M = 2$ with $\cT_1 = (1,2)$ and $\cT_2 = (3,4)$.
+% Given a solution $P_{\varepsilon}$ of Problem \eqref{relax_mmot}, we also write
+% $P_{\varepsilon, i} := (P_{\varepsilon})_{\# \cT_i}$, for short. Now,
+% for any $Q_i \in U( P_{\varepsilon, i}, P_{\varepsilon, i}) \subset U(\mu)$, with $i = 1,2$.
+% The optimality of $P_{\varepsilon}$ implies that
+% \begin{equation}
+%     \langle C, P_{\varepsilon} \rangle + \varepsilon \big[ H(P_{\varepsilon}) - H(P_{\varepsilon, 1}) -
+%     H(P_{\varepsilon, 2}) \big] \leq
+%     \langle C, Q_i \rangle + \varepsilon \big[ H(Q_i) - 2 H(P_{\varepsilon, i}) \big].
+% \end{equation}
+% Thus,
+% \begin{equation}
+%     2 \big( \langle C, P_{\varepsilon} \rangle + \varepsilon H(P_{\varepsilon}) \big) \leq
+%     \sum_{i=1}^2 \langle C, Q_i \rangle + \varepsilon H(Q_i).
+% \end{equation}
+% As this is true for every $Q_i \in U(P_{\varepsilon, i}, P_{\varepsilon, i})$, we have
+% \begin{equation}
+%     \begin{split}
+%         \frac{1}{2} \sum_{i=1}^2
+%         \text{OT}_{\varepsilon}(P_{\varepsilon, i}, P_{\varepsilon, i})
+%         &= \frac{1}{2} \sum_{i=1}^2 \inf_{Q_i \in U(P_{\varepsilon, i}, P_{\varepsilon, i})}
+%         \langle C, Q_i \rangle + \varepsilon H(Q_i) \\
+%         &\geq \langle C, P_{\varepsilon} \rangle + \varepsilon H(P_{\varepsilon}) \\
+%         &\geq \inf_{P \in U(P_{\varepsilon, 1}, P_{\varepsilon, 2})}
+%         \langle C, P \rangle + \varepsilon H(P) \\
+%         &= \text{OT}_{\varepsilon}(P_{\varepsilon, 1}, P_{\varepsilon, 2}).
+%     \end{split}
+% \end{equation}
+% The second inequality holds because $P_{\varepsilon} \in U(P_{\varepsilon, 1}, P_{\varepsilon, 2})$. Thus,
+% \begin{equation} \label{sinkhorn_div}
+%   \text{OT}_{\varepsilon}(P_{\varepsilon, 1}, P_{\varepsilon, 2}) -
+%   \frac{1}{2} \sum_{i=1}^2 \text{OT}_{\varepsilon}(P_{\varepsilon, i}, P_{\varepsilon, i}) \leq 0.
+% \end{equation}
+% The left-hand side of the inequality \eqref{sinkhorn_div} is nothing but the Sinkhorn divergence between $P_{\varepsilon, 1}$ and
+% $P_{\varepsilon, 2}$ \citep{Ramdas17}. As the kernel $C$ is conditionally negative definite if and only if for every
+% $\varepsilon > 0$, the kernel $e^{-C / \varepsilon}$ is positive definite \citep{Schoenberg38}, by Proposition 5 in \citep{Janati20},
+% the inequality in \ref{sinkhorn_div} becomes an equality. As a consequence, for $i=1,2$, if
+% $Q_{\varepsilon, i} \in U( P_{\varepsilon, i}, P_{\varepsilon, i})$ is the (unique) optimal plan of the entropic OT problem
+% $\text{OT}_{\varepsilon}(P_{\varepsilon, i}, P_{\varepsilon, i})$, then we must have
+% \begin{equation}
+%   \langle C, P_{\varepsilon} \rangle + \varepsilon \big[ H(P_{\varepsilon}) - H(P_{\varepsilon, 1}) -
+%   H(P_{\varepsilon, 2}) \big] =
+%   \langle C, Q_{\varepsilon, i} \rangle + \varepsilon \big[ H(Q_{\varepsilon, i}) - 2 H(P_{\varepsilon, i}) \big],
+% \end{equation}
+% or equivalently, $Q_{\varepsilon, 1}$ and $Q_{\varepsilon, 2}$ are also solutions of Problem \eqref{relax_mmot}.
 
-Now, by \Cref{interpolation_prop}, when $\varepsilon \to \infty$, a cluster point
-$P^* = P^*_{\# \cT_1} \otimes P^*_{\# \cT_2}$ of the sequence of minimisers $(P_{\varepsilon})_{\varepsilon}$ induces a solution
-$(P^*_{\# \cT_1}, P^*_{\# \cT_2})$ of the COOT problem. In particular, $P^*_{\# \cT_i}$ is a cluster point of
-$(P_{\varepsilon, i})_{\varepsilon}$ and there exists a cluster point $Q^*_i$ of
-$(Q_{\varepsilon, i})_{\varepsilon}$ in $U(P^*_{\# \cT_i}, P^*_{\# \cT_i})$, for $i=1,2$. But still by
-\Cref{interpolation_prop}, we also have that $Q^*_i = (Q^*_i)_{\# \cT_1} \otimes (Q^*_i)_{\# \cT_2}$. Thus,
-$Q^*_i = P^*_{\# \cT_i} \otimes P^*_{\# \cT_i}$
-and the solution $(P^*_{\# \cT_1}, P^*_{\# \cT_2})$ of the COOT problem satisfies:
-$\langle C, P^*_{\# \cT_1} \otimes P^*_{\# \cT_2} \rangle =
-\langle C, P^*_{\# \cT_1} \otimes P^*_{\# \cT_1} \rangle =
-\langle C, P^*_{\# \cT_2} \otimes P^*_{\# \cT_2} \rangle$. The equality between GW distance and COOT then follows,
-and $P^*_{\# \cT_1}$ and $P^*_{\# \cT_2}$ are two solutions of the GW problem.
+% Now, by \Cref{interpolation_prop}, when $\varepsilon \to \infty$, a cluster point
+% $P^* = P^*_{\# \cT_1} \otimes P^*_{\# \cT_2}$ of the sequence of minimisers $(P_{\varepsilon})_{\varepsilon}$ induces a solution
+% $(P^*_{\# \cT_1}, P^*_{\# \cT_2})$ of the COOT problem. In particular, $P^*_{\# \cT_i}$ is a cluster point of
+% $(P_{\varepsilon, i})_{\varepsilon}$ and there exists a cluster point $Q^*_i$ of
+% $(Q_{\varepsilon, i})_{\varepsilon}$ in $U(P^*_{\# \cT_i}, P^*_{\# \cT_i})$, for $i=1,2$. But still by
+% \Cref{interpolation_prop}, we also have that $Q^*_i = (Q^*_i)_{\# \cT_1} \otimes (Q^*_i)_{\# \cT_2}$. Thus,
+% $Q^*_i = P^*_{\# \cT_i} \otimes P^*_{\# \cT_i}$
+% and the solution $(P^*_{\# \cT_1}, P^*_{\# \cT_2})$ of the COOT problem satisfies:
+% $\langle C, P^*_{\# \cT_1} \otimes P^*_{\# \cT_2} \rangle =
+% \langle C, P^*_{\# \cT_1} \otimes P^*_{\# \cT_1} \rangle =
+% \langle C, P^*_{\# \cT_2} \otimes P^*_{\# \cT_2} \rangle$. The equality between GW distance and COOT then follows,
+% and $P^*_{\# \cT_1}$ and $P^*_{\# \cT_2}$ are two solutions of the GW problem.
 
-If furthermore, the kernel $C$ induces a strictly positive definite kernel, then by Proposition 5 in \citep{Janati20},
-we deduce that $P_{\varepsilon, 1} = P_{\varepsilon, 2}$. One can also use the following reasoning:
-in the finite setting, a strictly positive definite kernel is necessarily universal (see for example Section 2.3 in
-\citep{Borgwardt06}), and the kernel $C$ defined on $(X \times Y)^2$ is necessarily a (symmetric)
-Lipschitz function with respect to both inputs. So, the Sinkhorn divergence vanishes if and only if
-$P_{\varepsilon, 1} = P_{\varepsilon, 2}$ \citep{Feydy19}. From either reasoning, we conclude that
-$P^*_{\# \cT_1} = P^*_{\# \cT_2}$.
-\end{proof}
+% If furthermore, the kernel $C$ induces a strictly positive definite kernel, then by Proposition 5 in \citep{Janati20},
+% we deduce that $P_{\varepsilon, 1} = P_{\varepsilon, 2}$. One can also use the following reasoning:
+% in the finite setting, a strictly positive definite kernel is necessarily universal (see for example Section 2.3 in
+% \citep{Borgwardt06}), and the kernel $C$ defined on $(X \times Y)^2$ is necessarily a (symmetric)
+% Lipschitz function with respect to both inputs. So, the Sinkhorn divergence vanishes if and only if
+% $P_{\varepsilon, 1} = P_{\varepsilon, 2}$ \citep{Feydy19}. From either reasoning, we conclude that
+% $P^*_{\# \cT_1} = P^*_{\# \cT_2}$.
+% \end{proof}

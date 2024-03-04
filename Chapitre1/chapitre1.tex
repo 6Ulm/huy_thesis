@@ -695,7 +695,7 @@ Now, we discuss some existing approaches to solve Problem \eqref{eq:discrete_ent
 \footnote{When the regularizer is the negative entropy, the Sinkhorn algorithm is also called
 \textit{scaling algorithm} \citep{Chizat18a}.} The (strict) convexity of the primal problem ensures
 that duality holds, thanks to the Fenchel-Rockafellar duality theorem. In particular,
-The dual problem of Problem \eqref{eq:discrete_ent_uot} reads
+The dual problem of Problem \eqref{eq:discrete_ent_uot} is equivalent to
 \begin{align}
   \label{eq:dual_uot}
   \sup_{\substack{f \in \bbR^m \\ g \in \bbR^n}}
@@ -874,14 +874,14 @@ the MM iterate of Problem \eqref{eq:discrete_ent_uot} reads
 \begin{align}
     P^{(t+1)} &= \left[ \left( \frac{\mu}{P^{(t)}_{\# 1}}\right)^{\lambda_1} \otimes
     \left( \frac{\nu}{P^{(t)}_{\# 2}}\right)^{\lambda_2} \right] \odot
-    (P^{(t)})^{\lambda_1 + \lambda_2} \odot \gamma^r \odot \exp\left(-\frac{C}{\lambda} \right) \\
+    (P^{(t)})^{\lambda_1 + \lambda_2} \odot \gamma^r \odot \exp\left(-\frac{C}{\rho} \right) \\
     &= \frac{(P^{(t)})^{\lambda_1 + \lambda_2}}{(P^{(t)}_{\# 1})^{\lambda_1}
     \otimes (P^{(t)}_{\# 2})^{\lambda_2}}
     \odot \left( \mu^{\lambda_1} \otimes \nu^{\lambda_2} \right) \odot \gamma^r
-    \odot \exp\left(-\frac{C}{\lambda} \right),
+    \odot \exp\left(-\frac{C}{\rho} \right),
 \end{align}
-where $\lambda = \rho_1 + \rho_2 + \varepsilon$ and
-$\lambda_i = \frac{\rho_i}{\lambda}$ and $r = \frac{\varepsilon}{\lambda}$.
+where $\rho = \rho_1 + \rho_2 + \varepsilon$ and
+$\lambda_i = \frac{\rho_i}{\rho}$ and $r = \frac{\varepsilon}{\rho}$.
 Here, the division and exponential operations are element-wise. We also remark that,
 the unregularized UOT ($\varepsilon = 0$) is naturally handled by MM algorithm,
 whereas the Sinkhorn-based algorithms are only applicable to the regularized UOT. However,
