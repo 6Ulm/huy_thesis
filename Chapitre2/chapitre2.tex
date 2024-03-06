@@ -19,9 +19,10 @@ as qualitative as those obtained using available optimization schemes.
 The second contribution is on the continuous COOT and its entropic approximation.
 We consider a generalization of measure network called \textit{measure hypernetwork}
 and show that continuous COOT can be used to compare such objects.
-We then study the convergence behavior of the entropic approximation of COOT in the finite-dimensional
-setting. Furthermore, under the GW framework, we can quantify the approximation error of
-entropic COOT and easily extend this analysis to the GW distance.
+We then study the convergence behavior of the entropic approximation of COOT
+under the framework of finite-dimensional measure network. In particular,
+we can quantify the approximation error of entropic COOT and
+easily extend this analysis to the GW distance.
 
 \raggedbottom
 
@@ -159,7 +160,7 @@ the alternative minimization procedure for GW distance presented in \Cref{subsec
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section, we present our unpublished work on the continuous COOT and its entropic approximation.
-We will mostly follow the terminology and concepts proposed in \citep{Chowdhury21b}.
+We will mostly follow the terminology and concepts proposed by \citet{Chowdhury21b}.
 
 \subsection{Formulation and preliminary results}
 
@@ -239,7 +240,7 @@ this observation also allows to establish the convergence result of entropic COO
 
 The framework on the GW isomorphism presented in \Cref{subsec:prop_gw}
 can be extended immediately to the COOT setting. In particular, while our
-presentation is different to that of \citep{Chowdhury21b}, we still come up with the
+presentation is different to that of \citet{Chowdhury21b}, we still come up with the
 same metric properties.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -314,7 +315,8 @@ Now, we can characterize the weak isomorphism by
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Entropic regularization and approximation error}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Similar to the Wasserstein and GW distances, one can approximate the COOT with entropic regularization.
+Similar to the Wasserstein and GW distances, one can approximate
+the COOT with entropic regularization.
 In this thesis, we are interested in the following formulation of entropic COOT:
 for $\varepsilon > 0$,
 \begin{align}
@@ -344,18 +346,20 @@ The entropic COOT problem always admits a minimizer.
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%
 One major practical interest of entropic COOT is that, for sufficiently small regularization,
-it provides a good proxy for unregularized COOT. To formalize this observation, first,
-we need to introduce the following assumption on the measure hypernetwork.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{assumption}
-  \label{assump:ent_coot}
-  Given a measure hypernetwork, we assume that
-  \begin{enumerate}
-    \item[A1] The sample and feature spaces are finite-dimensional vector spaces.
-    \item[A2] Their associated Borel probability measures are absolutely continuous
-    with respect to the Lebesgue measure.
-  \end{enumerate}
-\end{assumption}
+it provides a good proxy for unregularized COOT. Now, we establish the bound for the
+approximation error in the setting of finite-dimensional measure network.
+% More precisely,
+% we need to introduce the following assumption on the measure hypernetwork.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{assumption}
+%   \label{assump:ent_coot}
+%   Given a measure network $\cX = (X, c_X, \mu_X)$, we assume that
+%   \begin{enumerate}
+%     \item[A1] The sample and feature spaces are finite-dimensional vector spaces.
+%     \item[A2] Their associated Borel probability measures are absolutely continuous
+%     with respect to the Lebesgue measure.
+%   \end{enumerate}
+% \end{assumption}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{proposition} \label{prop:conv_ent_coot}
 %   Under \Cref{assump:ent_coot}, if the interactions are continuous, then
@@ -367,43 +371,46 @@ we need to introduce the following assumption on the measure hypernetwork.
 %   a solution of the unregularized COOT problem.
 % \end{proposition}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The above result is similar to the one known in entropic OT \citep{Carlier17}.
-This is due to the fact
-that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
-thus the block approximation technique can be applied.
+% The above result is similar to the one known in entropic OT .
 
-Furthermore, still under \Cref{assump:ent_coot}, if the measure network is bounded,
-then we can quantify the approximation error as follows.
+% Furthermore, still under \Cref{assump:ent_coot}, if the measure network is bounded,
+% then we can quantify the approximation error as follows.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proposition} \label{prop:quant_bound_ent}
-  Given two measure networks $\cX = (X, \mu_X, c_X)$ and $\cY = (Y, \mu_Y, c_Y)$.
-  Suppose that $X$ is bounded subset of $\bbR^{d_x}$ and $Y$ is a bounded subset
-  of $\bbR^{d_y}$, where $\diam(X), \diam(Y) \leq D$.
-  Denote $d = \max(d_x, d_y)$. Suppose there exists a constants $q > 0$ such that
-  $c_X(x_1, x_2) = \vert\vert x_1 - x_2 \vert\vert^q$, for every $(x_1,x_2) \in X^2$, and
-  $c_Y(y_1, y_2) = \vert\vert y_1 - y_2 \vert\vert^q$, for every $(y_1,y_2) \in Y^2$.
-  Recall that $p$ is the order of COOT. Then,
+  Given two measure networks $\cX = (X, \mu_X, c_X)$ and $\cY = (Y, \mu_Y, c_Y)$,
+  where $X$ is bounded subset of $\bbR^{d_x}$ and $Y$ is a bounded subset
+  of $\bbR^{d_y}$. Denote $d = \max \{d_x, d_y \}$ and $D = \max\{ \diam(X), \diam(Y) \}$.
+  Suppose there exists two constants $L, q > 0$ such that
+  $|c_X(x_1, x_2)| \leq L \vert\vert x_1 - x_2 \vert\vert^q$, for every $(x_1,x_2) \in X^2$, and
+  $|c_Y(y_1, y_2)| \leq L \vert\vert y_1 - y_2 \vert\vert^q$, for every $(y_1,y_2) \in Y^2$.
+  Then, the approximation error between the $p$-COOT distance
+  and its entropic approximation can be quantified as follows.
   \begin{equation}
     \coot_{\varepsilon}(\cX, \cY) - \coot(\cX, \cY) \leq
-    \frac{2d \varepsilon}{pq} \log\Big( \frac{pq (2D d^{1/p})^{pq}}{2d \varepsilon} \Big).
+    \frac{4d \varepsilon}{pq}
+    + \frac{4d \varepsilon}{pq} \log \Big( \frac{(2D)^{pq} L^p d^q pq}{4d \varepsilon} \Big).
   \end{equation}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%
-This bound is very similar to the one in Wasserstein setting \citep{Genevay19}.
+This bound is similar to the one in Wasserstein setting \citep{Genevay19}.
+This is due to the fact
+that the entropic COOT can be reformulated as a variant of multi-marginal OT problem,
+thus the block approximation technique \citep{Carlier17} can be applied.
+
 Let us consider two special cases of \Cref{prop:quant_bound_ent}.
 \begin{itemize}
   \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are Euclidean distances (\ie, $q=1$),
-  the upper bound becomes $d\varepsilon \log\Big( \frac{4D^2}{\varepsilon} \Big)$.
+  the upper bound becomes $2d \varepsilon + 2d\varepsilon \log\Big( \frac{2 D^2 L^2}{\varepsilon} \Big)$.
 
   \item[$\bullet$] When $p=2$ and $c_X, c_Y$ are squared Euclidean distances
   (\ie, $q=2$), the upper bound becomes
-  $\frac{d\varepsilon}{2} \log\Big( \frac{32dD^4}{\varepsilon} \Big)$.
+  $d\varepsilon + d\varepsilon \log\Big( \frac{16 D^4 L^2 d}{\varepsilon} \Big)$.
 \end{itemize}
 In both situations, the dependence of the bound on the maximal distance $D$ between points
 within each space (even only at logarithmic scale) and on the dimension $d$ indicates
 that either high dimensional space, or large intra-space distance (for example, due to outliers)
-can have negative impact on the approximation error. On the other hand,
-by comparing these two bounds, we deduce that if $\log(2d \varepsilon) \leq 1$,
+may negatively impact the approximation error. On the other hand,
+by comparing these two bounds, we deduce that if $\log \big( \frac{4d \varepsilon}{L^2} \big) \leq 1$,
 then the squared Euclidean distances generates a provably better (smaller) upper bound.
 
 With little modification of the proof, exactly the same upper bound in \Cref{prop:quant_bound_ent}

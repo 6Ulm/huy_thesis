@@ -65,7 +65,7 @@ due to the marginal constraints. To what extent can we relax these assumptions?
 \paragraph{Can we handle finite nonnegative measures?} Yes, for example,
 by replacing the hard marginal constraints by soft penalties.
 This gives rise to the celebrated \textit{Unbalanced Optimal Transport}, first proposed by
-\citet{Benamou03} for numerical purpose. However, in practice, a much more popular version
+\citet{Benamou03}. However, in practice, a much more popular alternative
 is due to the works of \citet{Liero18,Frogner15}.
 
 \paragraph{Can the supports lie in different (also known as, incomparable) spaces?}
@@ -77,7 +77,7 @@ The most famous member in this class is the Gromov-Wasserstein (GW) distance \ci
 We also note that direct comparison is still possible, for example, in the discrete setting.
 More precisely, \citet{Redko20} take a radically different perspective
 to exploit the input data, by considering the pairwise differences between the coordinates
-of samples across spaces and learning simultaneously the samples and feature alignments.
+of samples across spaces and learning simultaneously the sample and feature alignments.
 The corresponding distance, called Co-Optimal transport,
 provides a principled approach to compare weighted matrices.
 
@@ -160,10 +160,10 @@ entropic approximation, unbalanced extension and sample complexity.
 Our study on the entropic COOT also shares some resemblance to the approximation error of
 entropic GW in the paper of \citet{Zhang23} published in December 2022.
 Their analysis and ours use the block approximation technique \citep{Carlier17}
-to show the convergence of the minimum and minimizer, and to quantify the approximation error.
+to quantify the approximation error.
 In particular, our result can be immediately extended to the GW setting. However,
-we consider different assumptions on the metric measure spaces,
-which imply different upper bound of the approximation error.
+we consider different assumptions on the measure networks,
+which result in different upper bound of the approximation error.
 
 The second contribution is based on \citep{Tran21} and published in NeuRIPS Workshop in Optimal
 Transport and Machine Learning (OTML 2021). The motivating idea is that,

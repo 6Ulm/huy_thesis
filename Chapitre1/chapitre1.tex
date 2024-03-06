@@ -101,7 +101,7 @@ known as the \textit{Kantorovich's problem} \citep{Kanto42}.
 \end{definition}
 Throughout this thesis, we refer Problem \eqref{eq:kanto_prob} to as the OT problem.
 When $c(x, y) = d^p(x, y)$, for $p \geq 1$ and $d$ is the (common) metric on the metric spaces
-$X$ and $Y$, we obtain the famous Wasserstein distance of order $p$ \citep{Villani03}.
+$X$ and $Y$, we obtain the famous Wasserstein distance of order $p$ \citep{Villani03} defined as
 \begin{align}
   W^p_p(\mu, \nu) = \inf_{\pi \in U(\mu, \nu)} \int_{X \times Y} d^p(x, y) \; d\pi(x, y).
 \end{align}
@@ -1437,11 +1437,9 @@ setting of networks. More precisely,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Optimization and algorithm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-For $n \in \bbN^*$, we define the probability simplex by
-$\Sigma_n := \{ p \in \bbR^n_{> 0}: \sum_i p_i = 1 \}$.
-In discrete setting, given two matrices (not necessarily symmetric)
-$C^x \in \bbR^{m \times m}, C^y \in \bbR^{n \times n}$ and histograms
-$\mu_X \in \Sigma_m, \mu_Y \in \Sigma_n$, the GW problem reads
+Given two matrices (not necessarily symmetric)
+$C^x \in \bbR^{m \times m}, C^y \in \bbR^{n \times n}$ and two histograms
+$\mu_X \in \Delta_m, \mu_Y \in \Delta_n$, the discrete GW problem reads
 \begin{align}
   \label{eq:discrete_gw}
   \min_{P \in U(\mu, \nu)} \sum_{i,j,k,l} |C^x_{ik} - C^y_{jl}|^p \; P_{ij} P_{kl}.
