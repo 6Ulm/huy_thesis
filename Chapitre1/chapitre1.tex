@@ -392,17 +392,18 @@ which adjusts the coordinates of the coupling matrix until the marginal constrai
 While being admissible, the rounded transport plan may not be the solution of the entropic OT problem.
 
 Second, when $\varepsilon$ is close to $0$, the quick saturation of the kernel
-$\exp^{-C / \varepsilon}$ to the zero matrix may trigger the numerical error caused by the division by zero.
-To avoid this numerical instability, the implementation in the log-domain is recommended
-at the cost of slowing down the algorithm, due to the logsumexp operation.
+$\exp^{-C / \varepsilon}$ to the zero matrix may result in the numerical error triggered by the division by zero.
+Moreover, the entries of the scaling vectors $u, v$ may become very large, thus cause the
+numerical instability. To avoid these issues, the implementation in the log-domain
+is usually recommended at the cost of slowing down the algorithm, due to the logsumexp operation.
 More precisely, the log-domain iterates read
 \begin{enumerate}
   \item $f^{(t+1)} = \log \mu - \log \sum_j \exp \left( g_j^{(t)} - \frac{C_{\cdot, j}}{\varepsilon} \right)$.
   \item $g^{(t+1)} = \log \nu - \log \sum_i \exp \left( f_i^{(t+1)} - \frac{C_{i, \cdot}}{\varepsilon} \right)$.
 \end{enumerate}
-To mitigate the side effect, one can use the redundant parametrization strategy
-\citep{Chizat18a,Schmitzer19}, which additionally performs "absorption" iterations
-to reduce the computational overhead of the logsumexp operation.
+However, even for small regularization, one can still implement with matrix-vector multiplication
+by additionally employing the redundant parametrization trick \citep{Chizat18a,Schmitzer19}
+to control the magnitude of the scaling vectors $u, v$.
 
 Third, the initialization of dual vectors is important.
 Under the absence of prior knowledge, the most popular practice is to initialize with
