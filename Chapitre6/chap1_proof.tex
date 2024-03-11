@@ -1,6 +1,6 @@
 \section{Appendix of Chapter 2}
 
-\subsection{Proofs related to Unbalanced Optimal Transport}
+\subsection{Proofs related to Unbalanced Optimal Transport} \label{appendix:subsec_uot}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{coro:uot_l2_mm}]
@@ -82,15 +82,55 @@ or equivalently,
 The result then follows.
 \end{proof}
 
+\begin{corollary}
+  \label{coro:conseq}
+  Equations \eqref{uot_l2}, \eqref{eq:ugw_minimizer_minimum} and \eqref{eq:ucoot_minimizer_minimum}
+  are consequences of \Cref{prop:uot_minimizer}.
+\end{corollary}
+\begin{proof}[Proof of \Cref{coro:conseq}]
+  Equation \eqref{uot_l2} on the squared $l_2$-regularized UOT follows immediately from \Cref{prop:uot_minimizer},
+  where $D_{\varphi}, D_{\varphi_1}$ and $D_{\varphi_2}$ are the half squared Euclidean norm,
+  and $E = \bbR^{m \times n}_{\geq 0}$. When
+  $D_{\varphi}, D_{\varphi_1}$ and $D_{\varphi_2}$ are the KL divergence,
+  Equation \eqref{eq:ugw_minimizer_minimum} on unbalanced Gromov-Wasserstein and
+  Equation \eqref{eq:ucoot_minimizer_minimum} on unbalanced Co-Optimal Transport can be
+  justified in exactly the same manner. For this reason, we only show how to derive the relation in
+  Equation \eqref{eq:ucoot_minimizer_minimum}. Recall that,
+  from the proof of \Cref{eq:ucoot_existence_copy}, Problem \eqref{eq:ucoot_copy} can be rewritten as
+    \begin{equation}
+      \label{eq:ucoot_uot}
+      \ucoot_{\rho}(\cX_1, \cX_2) =
+      \inf_{\pi \in E_{uco}} \int_{S} \vert \xi_1 - \xi_2 \vert^p
+      \mathrm d\pi + \sum_{k=1,2} \rho_k D_{\phi_k}(\pi_{\# k} \vert \mu_k),
+    \end{equation}
+    where $\mu_k = \mu_k^s \otimes \mu_k^f$, for $k=1,2$, and
+    \begin{equation}
+      E_{uco} = \{ \pi \in \cM^+(S) \vert \pi = \pi^s \otimes \pi^f,
+      \pi^s \in \cM^+(X_1^s \times X_2^s),
+      \pi^f \in \cM^+(X_1^f \times X_2^f) \}
+    \end{equation}
+    is the set of factorizable plans in $\cM^+(S)$. Now, clearly, for any $t > 0$,
+    if $\pi \in E_{uco}$, then $t \pi \in E_{uco}$. So, \Cref{prop:uot_minimizer} can be applied
+    and we deduce that, if $\pi_* = \pi_*^s \otimes \pi_*^f$ is the solution of Problem
+    \eqref{eq:ucoot_uot}, then
+    \begin{align}
+      \ucoot_{\rho}(\cX_1, \cX_2) &= \sum_{k=1}^2 \rho_k m(\mu_k) - (\rho_1 + \rho_2) m(\pi_*) \\
+      &= \sum_{k=1}^2 \rho_k m(\mu_k^s) m(\mu_k^f) - (\rho_1 + \rho_2) m(\pi_*^s) m(\pi_*^f).
+    \end{align}
+    The result then follows.
+\end{proof}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Proofs related to Gromov-Wasserstein distance} \label{subsec:appendix_gw}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{corollary}
+  \label{coro:gh_equiv}
     The formulations \eqref{GH:zeroth} and \eqref{GH:first} of the Gromov-Hausdorff distance
     are equivalent.
 \end{corollary}
-\begin{proof}
+\begin{proof}[Proof of \Cref{coro:gh_equiv}]
 In the formulation \eqref{GH:first}, by choosing identity mappings (which are clearly isometric embeddings)
 $f = \id_X$ and $g = \id_Y$, and $Z = X \cup Y$ equipped with an admissible distance $d$, we have
 \begin{equation}
