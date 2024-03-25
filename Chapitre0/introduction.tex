@@ -14,15 +14,21 @@
 In the recent years, the unprecedented versatility of optimal transport (OT) has gone far beyond
 the original formulation of \citet{Monge81} on the least effort problem,
 and the seminal work of \citet{Kanto42}. From a high-level perspective, we can
-conceptually describe the OT as a principled approach to compare \textbf{weighted objects}
-(\ie, sets equipped with certain measures), namely graphs \citep{Nikolentzos17},
+conceptually describe OT as a principled approach to compare \textbf{weighted sets}
+(\ie, sets equipped with certain measures), namely histograms, graphs \citep{Nikolentzos17},
 texts \citep{Kusner15}, images \citep{Arjovsky17}, persistence diagrams \citep{Edelsbrunner02},
-or tabular data \citep{Redko20}, while providing a way to align their elements in many situations.
+or tabular data \citep{Redko20}, while providing a way to align their elements in
+many situations. This is particularly useful in machine learning (ML), where, for a given task,
+one aims at learning models which are able to capture relevant information from a given dataset.
+In many cases, in order to understand and analyze the performance and behaviors of the ML algorithms,
+it is desirable to infer the underlying probability distribution from the observations.
+This naturally involves in designing a measure of discrepancy between probability distributions.
+To this extent, we now discuss how OT can distinguish itself from other divergences.
 
 \subsection{Optimal transport for probability measures}
 The most fundamental application of OT, featured by the Wasserstein distance,
 is on the comparison of probability measures. Needless to say,
-this task is ubiquitous in statistical learning. A classic example is
+this task is ubiquitous in statistical learning. A classical example is
 the maximum likelihood estimation,
 which is asymptotically equivalent to finding an empirical model "closest" to the true one,
 in terms of Kullback-Leibler divergence.
@@ -34,13 +40,13 @@ there are countless choices of divergences existing in the literature
 Kullback-Leibler divergence, total variation and Euclidean distance to name a few.
 But what distinguishes Wasserstein distance from them in practice?
 First, as opposed to many popular divergences, it allows to compare probability measures with
-non-overlapped supports. This is because it is not based on bin-by-bin comparison,
+non-overlapping supports. This is because it is not based on bin-to-bin comparison,
 but rather on all pairwise relations across the supports captured by the distance function.
 As a result, the Wasserstein distance can characterize the weak convergence,
 which proves to be particularly useful, for example, in training generative adversarial networks \citep{Arjovsky17}.
 Second, as for many OT-based divergences, the resulting OT plan contains
 meaningful information on the correspondances between samples, and has found important applications,
-namely in domain adaptation \citep{Courty16} and genomics \citep{Schiebinger19}.
+for example in domain adaptation \citep{Courty16}, or genomics \citep{Schiebinger19}.
 Broadly speaking, the OT plan can 1) be used to estimate the barycentric mapping
 \citep{Ferradans14,Courty16}, which can be seen as the projection of the source data
 onto the target domain, or 2) provide the label predictions on the target domain
@@ -55,7 +61,7 @@ natural language processing \citep{Kusner15}, to name a few.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 By definition, Wasserstein distance requires that the probability measures
-must live in a common probability space. This is equivalent to comparing two
+should live in a common probability space. This is equivalent to comparing two
 probability spaces whose supports lie in the same underlying (typically metric) space.
 In other words, we implicitly assume that 1) it is always feasible to compute
 the \underline{inter-domain distance}, which also happens to be \underline{the only ingredient}
@@ -64,8 +70,8 @@ due to the marginal constraints. To what extent can we relax these assumptions?
 
 \paragraph{Can we handle finite nonnegative measures?} Yes, for example,
 by replacing the hard marginal constraints by soft penalties.
-This gives rise to the celebrated \textit{Unbalanced Optimal Transport}, first proposed by
-\citet{Benamou03}. However, in practice, a much more popular alternative
+This gives rise to the celebrated \textit{Unbalanced Optimal Transport} (UOT), first proposed by
+\citet{Benamou03}. However, in practice, a much more popular alternative of UOT
 is due to the works of \citet{Liero18,Frogner15}.
 
 \paragraph{Can the supports lie in different (also known as, incomparable) spaces?}
@@ -78,12 +84,12 @@ We also note that direct comparison is still possible, for example, in the discr
 More precisely, \citet{Redko20} take a radically different perspective
 to exploit the input data, by considering the pairwise differences between the coordinates
 of samples across spaces and learning simultaneously the sample and feature alignments.
-The corresponding distance, called Co-Optimal transport,
+The corresponding distance, called Co-Optimal Transport (COOT),
 provides a principled approach to compare weighted matrices.
 
-\paragraph{How can we integrate extra information into OT?} A natural solution is to optimize
+\paragraph{How can we integrate prior knowledge into OT?} A natural solution is to optimize
 a linear combination of the OT's objective function and a term which takes into account the
-prior knowledge. This simple strategy usually works well in practice and has been used, namely to
+prior knowledge. This simple strategy usually works well in practice and has been used to
 compare the weighted labelled graphs \citep{Vayer19b}, or to incorporate the mutual information
 when the inter and intra-domain distances are informative \citep{Chuang23},
 or in semi-supervised domain adaptation, where the alignments between some labelled source
@@ -103,12 +109,12 @@ and target samples are available \citep{Courty16,Gu22}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Thesis outlines and contributions}
 
-My broad research interest lie in the intersection of research directions addressed
-by the aforementioned questions, with major focus on the incomparable spaces.
+The topic of this thesis lies in the intersection of research directions addressed
+by the aforementioned questions, with major focus on incomparable spaces.
 In particular, this thesis titled
-\textit{Optimal transport for transfer learning across domains} has several main objectives.
+\textit{Optimal transport for transfer learning across domains} has several main objectives:
 \begin{enumerate}
-    \item Given the discrete nature of Co-Optimal transport, it is natural to study
+    \item Given the discrete nature of COOT, it is natural to study
     its continuous extension, which may serve as the first step towards further analysis
     on the numerical, and potentially, statistical properties. Given the close connection between
     COOT and GW distance, understanding one may shed light on understanding the other.
@@ -172,7 +178,7 @@ We generalize this observation and consider the factored multi-marginal OT probl
 and its factorization relaxation via Kullback-Leibler divergence.
 Such relaxation not only enjoys nice interpolation properties, but also
 can be easily approximated, thanks to the Difference-of-Convex algorithm.
-Despite high computational cost incurred by the cost tensor,
+Despite high computational cost incurred by the evaluation of cost tensor,
 it can provide decent estimation of the COOT and GW distance.
 
 \begin{itemize}
