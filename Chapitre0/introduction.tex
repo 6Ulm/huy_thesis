@@ -5,9 +5,6 @@
 \renewcommand{\contentsname}{Contents}
 \localtableofcontents*
 \chaptermark{\textbf{Introduction}}
-% \hfill \break
-
-% \raggedbottom
 
 \section{Why and how optimal transport?}
 
@@ -20,10 +17,12 @@ texts \citep{Kusner15}, images \citep{Arjovsky17}, persistence diagrams \citep{E
 or tabular data \citep{Redko20}, while providing a way to align their elements in
 many situations. This is particularly useful in machine learning (ML), where, for a given task,
 one aims at learning models which are able to capture relevant information from a given dataset.
-In many cases, in order to understand and analyze the performance and behaviors of the ML algorithms,
+In many cases, in order to understand and analyze the performance and the ability to generalize
+of the ML algorithms,
 it is desirable to infer the underlying probability distribution from the observations.
 This naturally involves in designing a measure of discrepancy between probability distributions.
-To this extent, we now discuss how OT can distinguish itself from other divergences.
+To this extent, we are interested in the OT and we will
+see how it can distinguish itself from other divergences.
 
 \subsection{Optimal transport for probability measures}
 The most fundamental application of OT, featured by the Wasserstein distance,

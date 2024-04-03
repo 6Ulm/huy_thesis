@@ -445,7 +445,8 @@ close to those in the non-entropic case. We formalize this claim in the followin
 \begin{figure}[t]
   \centering
   \includegraphics[trim={0.5cm 4.5cm 1.5cm 2.4cm}, clip, width=\linewidth]{./Chapitre3/fig/mnist-ucoot-rebuttal.pdf}
-  \caption{Example illustrating the feature alignment $\pi_f$ learned by UCOOT
+  \caption[Example illustrating the feature alignment $\pi_f$ learned by UCOOT
+  and its robustness to outliers]{Example illustrating the feature alignment $\pi_f$ learned by UCOOT
   and its robustness to outliers.
   \textbf{(a)} Visualization of 4 random samples from both datasets.
   The added Gaussian noise only affects the first 10 columns of the images
@@ -773,7 +774,7 @@ in a single-cell multi-omics dataset.
 \begin{figure}[t]
     \centering
     \includegraphics[trim={0.2cm 0.2cm 0.8cm 0.5cm}, clip, width=\linewidth, keepaspectratio=true]{./Chapitre3/fig/genes-alignments.pdf}
-    \caption{Feature alignments on the single-cell multi-omics dataset of COOT and UCOOT between antibodies (surface proteins) and their matching genes (that encode them). \textbf{(a)} The features are sorted such that the correct alignment would yield a diagonal matrix. \textbf{(b)} Only five of the correct gene matches are kept (the last five genes from (a) are excluded). \textbf{(c)} Alignments between the ten antibodies and the top 50 most variable genes, including the matching genes.
+    \caption[Feature alignments on the single-cell multi-omics dataset of COOT and UCOOT between antibodies and their matching genes]{Feature alignments on the single-cell multi-omics dataset of COOT and UCOOT between antibodies (surface proteins) and their matching genes (that encode them). \textbf{(a)} The features are sorted such that the correct alignment would yield a diagonal matrix. \textbf{(b)} Only five of the correct gene matches are kept (the last five genes from (a) are excluded). \textbf{(c)} Alignments between the ten antibodies and the top 50 most variable genes, including the matching genes.
     For \textbf{(b)} and \textbf{(c)}, the diagonal within the dashed square highlights the correct matches.
     Overall, UCOOT gives better feature alignments.
     \label{fig:multiomics}}

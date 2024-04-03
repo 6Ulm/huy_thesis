@@ -60,7 +60,7 @@ that can be measured in brain regions (see \Cref{fig:intro}).
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\columnwidth]{./Chapitre4/figures/intro_variation.pdf}
-    \caption{
+    \caption[High variability in human anatomies and functional MRI responses across subjects]{
         \textbf{High variability in human anatomies and functional MRI responses across subjects}
         In this experiment contrasting areas of the brain
         which respond to mathematical tasks against other that
@@ -255,7 +255,7 @@ whereas the larger blob in the target distribution is also a place of mass creat
 \begin{figure}[t]
     \centering
     \includegraphics[width=1\columnwidth]{./Chapitre4/figures/toy_example.pdf}
-    \caption{
+    \caption[Unbalancing helps accounting for idiosyncrasies of the source and target signals]{
         \textbf{Unbalancing helps accounting for idiosyncrasies of the source and target signals}
         When trying to align the source and target signals (Panel A),
         the classical balanced setup (Panel B, top row) transports all parts of
@@ -344,7 +344,7 @@ two entropic unbalanced OT problems, whose solutions can be approximated using
 the Sinkhorn algorithm \citep{Sejourne19}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Barycenters}
+\subsection{FUGW Barycenters}
 Barycenters represent common patterns across samples.
 Their role is instrumental in identifying a unique target for aligning a given group of individuals.
 As seen in \Cref{fig:intro}, the vertex-wise group average does not usually provide
@@ -410,6 +410,8 @@ We also compare the ensuing gains with those obtained when using the
 competing method MSM \citep{robinson_msm_2014,robinson_multimodal_2018} to align subjects.
 In Experiment 3, we derive a barycenter of individuals and assess its ability to capture fine-grained
 details compared to classical methods.
+
+\subsection{Experimental settings}
 
 \paragraph{Dataset}
 \label{par:dataset}
@@ -534,8 +536,7 @@ respond to specific stimuli. We assess whether FUGW helps find the same clusters
 Eventually, we quantify the number of vertices significantly activated or deactivated
 with and without alignment respectively.
 
-\section{Results}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Experiment 1 - Template anatomy}
 
 \paragraph{Aligning subjects on a fixed mesh}
@@ -550,7 +551,7 @@ from $0.258$ to $0.356$.
     \centering
     \includegraphics[width=0.49\columnwidth]{./Chapitre4/figures/fsaverage5_alignment_correlation_gain_msm.pdf}
     \includegraphics[width=0.49\columnwidth]{./Chapitre4/figures/fsaverage5_alignment_correlation_gain_fugw.pdf}
-    \caption{
+    \caption[Comparison of gains in correlation after inter-subject alignment]{
         \textbf{Comparison of gains in correlation after inter-subject alignment}
         For each pair of source and target subjects of the dataset,
         we compute the average Pearson correlation between 30 test contrasts,
@@ -607,7 +608,7 @@ for human data one might consider that it should not exceed $20mm$.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\columnwidth]{./Chapitre4/figures/cv_all_metrics_hcp_left_fugw.pdf}
-    \caption{
+    \caption[Exploring hyper-parameter space to find relevant couplings]{
         \textbf{Exploring hyper-parameter space to find relevant couplings}
         Given a transport plan aligning a source and target subject,
         we evaluate how much this coupling
@@ -630,7 +631,7 @@ This feature is indeed captured by the difference of mass between subjects
 \begin{figure}[!th]
     \centering
     \includegraphics[width=1\columnwidth]{./Chapitre4/figures/transported_mass.pdf}
-    \caption{
+    \caption[Transported mass indicates areas which have to be resized between subjects]{
         \textbf{Transported mass indicates areas which have to be resized between subjects}
         (Panel A) We show a contrast map from the test set which displays areas showing
         stronger activation during auditory tasks versus equivalent visual tasks. It shows much more
@@ -645,7 +646,7 @@ This feature is indeed captured by the difference of mass between subjects
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\columnwidth]{./Chapitre4/figures/individual_alignment_correlation_gain_fugw}
-    \caption{
+    \caption[Correlation between pairs of subjects is significantly better after alignment on individual anatomies than after projecting subjects onto a common anatomical template]{
         \textbf{Correlation between pairs of subjects is significantly better after alignment on individual anatomies than after projecting subjects onto a common anatomical template}
     }
     \label{fig:gain_comparisions_individual}
@@ -666,7 +667,7 @@ transporting their functional signal in an anatomically sound way.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\columnwidth]{./Chapitre4/figures/individual_alignment.pdf}
-    \caption{
+    \caption[Transporting individual maps onto a reference subject]{
         \textbf{Transporting individual maps onto a reference subject}
         FUGW can help bridge the absence of template anatomies
         and derive pairs of alignments such that all individuals
@@ -675,6 +676,7 @@ transporting their functional signal in an anatomically sound way.
     \label{fig:individual_projections}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Experiment 3 - Barycenter}
 
 In the absence of a proper metric to quantify the correctness of a barycenter,
@@ -695,7 +697,7 @@ as shown in \Cref{fig:barycenter_vs_group_average}.C.
 \begin{figure}[t]
     \centering
     \includegraphics[width=1\columnwidth]{./Chapitre4/figures/barycenter_group_analysis.pdf}
-    \caption{
+    \caption[FUGW barycenter yields much finer-grained maps than group averages]{
         \textbf{FUGW barycenter yields much finer-grained maps than group averages}
         We study the same statistical map as in \Cref{fig:intro}, which contrasts
         areas of the brain involved in mathematical reasoning.
