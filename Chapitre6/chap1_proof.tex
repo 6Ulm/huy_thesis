@@ -54,32 +54,31 @@ we have
   &= \psi(tp) - \psi(q) + t \Big[ D_{\psi}(p | q) + \psi(q) - \psi(p) \Big]
   - (t-1) \langle \nabla \psi(q), q \rangle \\
   &= t D_{\psi}(p | q) + \big[ \psi(tp) - t \psi(p) \big]
-  + (t-1) \big[ \psi(q) - \langle \nabla \psi(q), q \rangle \big].
+  + (t-1) \big[ \psi(q) - \langle \nabla \psi(q), q \rangle \big] \\
+  &= t D_{\psi}(p | q) + \big[ \psi(tp) - t \psi(p) \big] + (1 - t) G_{\psi}(q).
 \end{align}
 Denote $g$ the objective function of Problem \eqref{eq:uot_bregman}. We have,
 \begin{align}
   g(tP) &= t g(P) +
   \underbrace{\Big( \sum_{k=1}^2 \rho_k \big[ \varphi_k(tP_{\# k}) - t \varphi_k(P_{\# k}) \big]
   + \varepsilon \big[ \varphi(tP) - t \varphi(P) \big] \Big)}_{A(t)} \\
-  &+ (t-1) \underbrace{\Big(
-    \sum_{k=1}^2 \rho_k \big[ \varphi_k(\mu_k) - \langle \nabla \varphi_k(\mu_k), \mu_k \rangle \big]
-    + \varepsilon \big[ \varphi(\gamma) - \langle \nabla \varphi(\gamma), \gamma \rangle \big]
-    \Big)}_{B} \\
-    &= t g(P) + A(t) + (t-1) B.
+  &+ (1 - t) \underbrace{\big[ \rho_k G_{\varphi_k}(\mu_k) + \varepsilon G_{\varphi}(\gamma) \big]}_{B} \\
+    &= t g(P) + A(t) + (1 - t) B.
 \end{align}
 For any minimizer $P^* \in E$, denote $E^* =\{ t \in \bbR: tP^* \in E \}$. Clearly,
 $E^*$ is not empty since $1 \in E^*$. Since $P^*$ is a (global) minimizer, we have
 $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$,
 or equivalently,
 \begin{align}
-  g(P^*) &= - B - \frac{\partial A(t)}{\partial t} \bigg|_{t=1} \\
-  &= \sum_{k=1}^2 \rho_k \Big[ \langle \nabla \varphi_k(\mu_k), \mu_k \rangle - \varphi_k(\mu_k) \Big]
-  + \varepsilon \Big[ \langle \nabla \varphi(\gamma), \gamma \rangle - \varphi(\gamma) \Big] \\
-  &+ \sum_{k=1}^2
-  \rho_k \Bigg( \varphi_k(P^*_{\# k}) - \frac{\partial \varphi_k(tP^*_{\# k})}{\partial t} \bigg|_{t=1} \Bigg)
-  + \varepsilon \Bigg( \varphi(P^*) - \frac{\partial \varphi(tP^*)}{\partial t} \bigg|_{t=1} \Bigg).
+  g(P^*) &= B - \frac{\partial A(t)}{\partial t} \bigg|_{t=1} \\
+  &= B - \sum_{k=1}^2
+  \rho_k \Bigg( \frac{\partial \varphi_k(tP^*_{\# k})}{\partial t} \bigg|_{t=1} - \varphi_k(P^*_{\# k}) \Bigg)
+  - \varepsilon \Bigg( \frac{\partial \varphi(tP^*)}{\partial t} \bigg|_{t=1} - \varphi(P^*) \Bigg) \\
+  &= \sum_{k=1}^2 \rho_k G_{\varphi_k}(\mu_k) + \varepsilon G_{\varphi}(\gamma)
+- \left[ \sum_{k=1}^2 \rho_k G_{\varphi_k}(P^*_{\# k}) - \varepsilon G_{\varphi}(P^*) \right],
 \end{align}
-The result then follows.
+since $\frac{\partial f(tx)}{ \partial t} \Big |_{t=1} = \langle \nabla f(x), x \rangle$,
+for any $f \in \cC^1(\bbR^d)$. The result then follows.
 \end{proof}
 
 \begin{corollary}

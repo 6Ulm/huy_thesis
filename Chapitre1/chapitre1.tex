@@ -629,9 +629,13 @@ is that the minimum can be expressed as a \textbf{linear} function of minimizer.
 This is a special case of the following result.
 \begin{definition}[Bregman divergence]
   Suppose $\varphi: E \to \bbR$ is a strictly convex and continuously differentiable function,
-  where $E = \dom(\varphi)$ is a closed convex set in $\bbR^d$. Then,
-  the Bregman divergence $D_{\varphi}: E \times E \to \bbR_{\geq 0}$ is defined as
-  $D_{\varphi}(x, y) = \varphi(x) - \varphi(y) - \langle \nabla \varphi(y), x - y \rangle$.
+  where $E = \dom(\varphi)$ is a closed convex set in $\bbR^d$.
+  \begin{enumerate}
+    \item The Bregman divergence $D_{\varphi}: E \times E \to \bbR_{\geq 0}$ is defined as
+    $D_{\varphi}(x, y) = \varphi(x) - \varphi(y) - \langle \nabla \varphi(y), x - y \rangle$.
+    \item $G_{\varphi}: E \to \bbR$ is defined as
+    $G_{\varphi}(x) = \langle \nabla \varphi(x), x \rangle - \varphi(x)$.
+  \end{enumerate}
 \end{definition}
 \begin{corollary}
   \label{prop:uot_minimizer}
@@ -640,7 +644,7 @@ This is a special case of the following result.
   $\dom = \{P \in \dom(\varphi): P_{\#1} \in \dom(\varphi_1), P_{\#2} \in \dom(\varphi_2) \}$.
   Given two matrices $C \in \bbR^{m \times n}, \gamma \in \dom(\varphi)$ and
   two vectors $\mu_1 \in \dom(\varphi_1), \mu_2 \in \dom(\varphi_2)$,
-  consider the following regularized UOT problem: for $\rho_1, \rho_2, \varepsilon \geq 0$,
+  consider the following UOT problem: for $\rho_1, \rho_2, \varepsilon \geq 0$,
   \begin{align}
     \label{eq:uot_bregman}
     \uot_{\varepsilon, \rho} = \inf_{P \in E} \; \langle C, P \rangle
@@ -653,26 +657,17 @@ This is a special case of the following result.
   \begin{equation}
     \begin{split}
       \uot_{\varepsilon, \rho} &=
-    \sum_{k=1}^2 \rho_k \Big[ \langle \nabla \varphi_k(\mu_k), \mu_k \rangle - \varphi_k(\mu_k) \Big]
-    + \varepsilon \Big[ \langle \nabla \varphi(\gamma), \gamma \rangle - \varphi(\gamma) \Big] \\
-    &+ \sum_{k=1}^2
-    \rho_k \Bigg( \varphi_k(P^*_{\# k}) - \frac{\partial \varphi_k(tP^*_{\# k})}{\partial t} \bigg|_{t=1} \Bigg)
-    + \varepsilon \Bigg( \varphi(P^*) - \frac{\partial \varphi(tP^*)}{\partial t} \bigg|_{t=1} \Bigg).
+    \sum_{k=1}^2 \rho_k G_{\varphi_k}(\mu_k) + \varepsilon G_{\varphi}(\gamma)
+    - \left[ \sum_{k=1}^2 \rho_k G_{\varphi_k}(P^*_{\# k}) - \varepsilon G_{\varphi}(P^*) \right].
     \end{split}
   \end{equation}
 \end{corollary}
 We are interested in two following Bregman divergences.
 \begin{enumerate}
-  \item If $D_{\psi}$ is the squared $l_2$-norm, then $\psi(tP) = t^2 \psi(P)$. So,
-  $\langle \nabla \psi(q), q \rangle - \psi(q) = \psi(q)$ and
-  $\psi(p) - \frac{\partial \psi(tp)}{\partial t} \Big|_{t=1} = -\psi(p)$.
-
+  \item If $D_{\psi}$ is the squared $l_2$-norm, then $G_{\psi}(q) = \psi(q)$.
   \item If $D_{\psi}$ is the KL divergence
   \footnote{KL divergence is also the only divergence which belongs to both Csiszár and
-  Bregman families \citep{Jiantao14}.}, then
-  $\psi(tP) = t \; \psi(P) + t \log t \; m(P) - t + 1$.
-  So, $\langle \nabla \psi(q), q \rangle - \psi(q) = m(q) - 1$ and
-  $\psi(p) - \frac{\partial \psi(tp)}{\partial t} \Big|_{t=1} = 1 - m(p)$.
+  Bregman families \citep{Jiantao14}.}, then $G_{\psi}(q) = m(q) - 1$.
 \end{enumerate}
 We note that \Cref{prop:uot_minimizer} is a generalization of Lemma 4 in \citep{Khiem20}.
 In particular, in case of Problem \eqref{eq:discrete_ent_uot}, we have
