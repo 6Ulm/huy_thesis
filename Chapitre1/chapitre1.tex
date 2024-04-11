@@ -641,19 +641,17 @@ This is a special case of the following result.
   \label{prop:uot_minimizer}
   Let $D_{\varphi_1}, D_{\varphi_2}$ and $D_{\varphi}$ be three Bregman divergences whose
   domains are in $\bbR^m, \bbR^n$ and $\bbR^{m \times n}$, respectively. Denote
-  $\dom = \{P \in \dom(\varphi): P_{\#1} \in \dom(\varphi_1), P_{\#2} \in \dom(\varphi_2) \}$.
+  $\cD = \{P \in \dom(\varphi): P_{\#1} \in \dom(\varphi_1), P_{\#2} \in \dom(\varphi_2) \}$.
   Given two matrices $C \in \bbR^{m \times n}, \gamma \in \dom(\varphi)$ and
   two vectors $\mu_1 \in \dom(\varphi_1), \mu_2 \in \dom(\varphi_2)$,
   consider the following UOT problem: for $\rho_1, \rho_2, \varepsilon \geq 0$,
   \begin{align}
     \label{eq:uot_bregman}
-    \uot_{\varepsilon, \rho} = \inf_{P \in E} \; \langle C, P \rangle
+    \uot_{\varepsilon, \rho} = \inf_{P \in \cD} \; \langle C, P \rangle
     + \rho_1 D_{\varphi_1}(P_{\# 1} | \mu_1) +
     \rho_2 D_{\varphi_2}(P_{\# 2} | \mu_2) + \varepsilon D_{\varphi}(P | \gamma),
   \end{align}
-  where the constraint set $E \subset \dom$ satisfies: for any $P \in E$ and $t \in \bbR$,
-  if $tP \in \dom$, then $t P \in E$. Suppose Problem \eqref{eq:uot_bregman}
-  admits a solution $P^*$, then we have
+  Suppose Problem \eqref{eq:uot_bregman} admits a solution $P^*$, then we have
   \begin{equation}
     \begin{split}
       \uot_{\varepsilon, \rho} &=

@@ -43,7 +43,7 @@ $\text{mat}(M^T M t^{(k)}) = (\rho_1 P_{\# 1}^{(k)}) \oplus (\rho_2 P_{\# 2}^{(k
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{prop:uot_minimizer}]
 We follow the same proof technique of Lemma 4 in \citep{Khiem20}.
-Given a Bregman divergence $D_{\psi}$, for any $t \in \bbR$ such that $tp \in \text{dom}(\psi)$,
+Given a Bregman divergence $D_{\psi}$, for any $t \in \bbR$ such that $tp \in \dom(\psi)$,
 we have
 \begin{align}
   D_{\psi}(t p | q)
@@ -65,10 +65,8 @@ Denote $g$ the objective function of Problem \eqref{eq:uot_bregman}. We have,
   &+ (1 - t) \underbrace{\big[ \rho_k G_{\varphi_k}(\mu_k) + \varepsilon G_{\varphi}(\gamma) \big]}_{B} \\
     &= t g(P) + A(t) + (1 - t) B.
 \end{align}
-For any minimizer $P^* \in E$, denote $E^* =\{ t \in \bbR: tP^* \in E \}$. Clearly,
-$E^*$ is not empty since $1 \in E^*$. Since $P^*$ is a (global) minimizer, we have
-$\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$,
-or equivalently,
+Since $P^*$ is a minimizer, we must have $1 \in \argmin\limits_{t \in \bbR: tP^* \in \cD} g(tP^*)$
+or equivalently $\frac{\partial g(tP^*)}{\partial t} \Big |_{t = 1} = 0$. So,
 \begin{align}
   g(P^*) &= B - \frac{\partial A(t)}{\partial t} \bigg|_{t=1} \\
   &= B - \sum_{k=1}^2
