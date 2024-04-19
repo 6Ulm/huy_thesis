@@ -235,14 +235,15 @@ there exist perfect alignments between rows (samples) and between
 columns (features) of the interaction matrices $\xi_1$ and $\xi_2$.
 
 \paragraph{Relation between UCOOT and its solution.}
-As a consequence of \Cref{prop:uot_minimizer}, UCOOT is a bilinear function of its minimizers,
-thanks to the property of the KL divergence. More precisely,
+Thanks to \Cref{prop:uot_minimizer}, we can show that UCOOT is a bilinear function of its minimizers
+due to the property of the KL divergence. More precisely,
 if $(\pi_*^s, \pi_*^f)$ is the equal-mass solution, then we have
 \begin{align}
   \label{eq:ucoot_minimizer_minimum}
   \ucoot_{\rho}(\cX_1, \cX_2) =
   \sum_{k=1, 2} \rho_k \; m(\mu_k^s) \; m(\mu_k^f) - (\rho_1  + \rho_2) \; m(\pi^s_*) m(\pi^f_*).
 \end{align}
+See Appendix \ref{appendix:subsec_uot} for proof.
 Interestingly, this equation depends only on the measures and hyperparameters. There is no
 dependency on the interactions because they have been fully captured in the masses of
 the optimal sample and feature couplings.

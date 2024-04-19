@@ -82,39 +82,36 @@ for any $f \in \cC^1(\bbR^d)$. The result then follows.
 \begin{corollary}
   \label{coro:conseq}
   Equations \eqref{uot_l2}, \eqref{eq:ugw_minimizer_minimum} and \eqref{eq:ucoot_minimizer_minimum}
-  are consequences of \Cref{prop:uot_minimizer}.
+  holds.
 \end{corollary}
 \begin{proof}[Proof of \Cref{coro:conseq}]
   Equation \eqref{uot_l2} on the squared $l_2$-regularized UOT follows immediately from \Cref{prop:uot_minimizer},
   where $D_{\varphi}, D_{\varphi_1}$ and $D_{\varphi_2}$ are the half squared Euclidean norm,
-  and $E = \bbR^{m \times n}_{\geq 0}$. When
-  $D_{\varphi}, D_{\varphi_1}$ and $D_{\varphi_2}$ are the KL divergence,
-  Equation \eqref{eq:ugw_minimizer_minimum} on unbalanced Gromov-Wasserstein and
+  and $E = \bbR^{m \times n}_{\geq 0}$.
+
+  Equation \eqref{eq:ugw_minimizer_minimum} on unbalanced Gromov-Wasserstein (UGW) and
   Equation \eqref{eq:ucoot_minimizer_minimum} on unbalanced Co-Optimal Transport can be
   justified in exactly the same manner. For this reason, we only show how to derive the relation in
-  Equation \eqref{eq:ucoot_minimizer_minimum}. Recall that,
-  from the proof of \Cref{eq:ucoot_existence_copy}, Problem \eqref{eq:ucoot_copy} can be rewritten as
-    \begin{equation}
-      \label{eq:ucoot_uot}
-      \ucoot_{\rho}(\cX_1, \cX_2) =
-      \inf_{\pi \in E_{uco}} \int_{S} \vert \xi_1 - \xi_2 \vert^p
-      \mathrm d\pi + \sum_{k=1,2} \rho_k D_{\phi_k}(\pi_{\# k} \vert \mu_k),
-    \end{equation}
-    where $\mu_k = \mu_k^s \otimes \mu_k^f$, for $k=1,2$, and
-    \begin{equation}
-      E_{uco} = \{ \pi \in \cM^+(S) \vert \pi = \pi^s \otimes \pi^f,
-      \pi^s \in \cM^+(X_1^s \times X_2^s),
-      \pi^f \in \cM^+(X_1^f \times X_2^f) \}
-    \end{equation}
-    is the set of factorizable plans in $\cM^+(S)$. Now, clearly, for any $t > 0$,
-    if $\pi \in E_{uco}$, then $t \pi \in E_{uco}$. So, \Cref{prop:uot_minimizer} can be applied
-    and we deduce that, if $\pi_* = \pi_*^s \otimes \pi_*^f$ is the solution of Problem
-    \eqref{eq:ucoot_uot}, then
-    \begin{align}
-      \ucoot_{\rho}(\cX_1, \cX_2) &= \sum_{k=1}^2 \rho_k m(\mu_k) - (\rho_1 + \rho_2) m(\pi_*) \\
-      &= \sum_{k=1}^2 \rho_k m(\mu_k^s) m(\mu_k^f) - (\rho_1 + \rho_2) m(\pi_*^s) m(\pi_*^f).
-    \end{align}
-    The result then follows.
+  Equation \eqref{eq:ucoot_minimizer_minimum}. When $D_{\varphi}, D_{\varphi_1}$ and $D_{\varphi_2}$
+  are the KL divergence, observe that for any $t > 0$, we have
+  \begin{align}
+    \kl\big( (tp) \otimes (tp) | q \otimes q \big) &= \kl\big( t^2 (p \otimes p) | q \otimes q \big) \\
+    &= t^2 \kl\big( p \otimes p | q \otimes q \big) + (1 - t^2) m(q)^2 + 2 t^2 \log t \; m(p)^2.
+  \end{align}
+  Now we proceed in the same way as the proof of \Cref{prop:uot_minimizer}. Denote $F$ the objective function
+  of UGW, then
+  \begin{align}
+    F(t\pi) &= t^2 F(\pi) + (1 - t^2) \underbrace{\big[\lambda_1 m(\mu_X)^2 + \lambda_2 m(\mu_Y)^2 \big]}_{M}
+    + 2 \underbrace{(\lambda_1 + \lambda_2)}_{\lambda} t^2 \log t \; m(\pi)^2 \\
+    &= t^2 F(\pi) + (1 - t^2) M + 2 \lambda t^2 \log t \; m(\pi)^2.
+  \end{align}
+  We have
+  \begin{align}
+    \frac{\partial F(t\pi)}{\partial t} &= 2t F(\pi) - 2t M + 2 \lambda m(\pi)^2 (t + 2t \log t) \\
+    &= 2t \big[ F(\pi) - M + \lambda m(\pi)^2 + 2 \lambda m(\pi)^2 \log t \big].
+  \end{align}
+  If $\pi^*$ is a minimizer, then $\frac{\partial F(t\pi^*)}{\partial t} \Big |_{t = 1} = 0$.
+  We deduce that $F(\pi^*) - M + \lambda m(\pi^*)^2 = 0$. The result then follows.
 \end{proof}
 
 

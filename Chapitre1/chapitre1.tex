@@ -656,7 +656,7 @@ This is a special case of the following result.
     \begin{split}
       \uot_{\varepsilon, \rho} &=
     \sum_{k=1}^2 \rho_k G_{\varphi_k}(\mu_k) + \varepsilon G_{\varphi}(\gamma)
-    - \left[ \sum_{k=1}^2 \rho_k G_{\varphi_k}(P^*_{\# k}) - \varepsilon G_{\varphi}(P^*) \right].
+    - \left[ \sum_{k=1}^2 \rho_k G_{\varphi_k}(P^*_{\# k}) + \varepsilon G_{\varphi}(P^*) \right].
     \end{split}
   \end{equation}
 \end{corollary}
@@ -674,14 +674,13 @@ In particular, in case of Problem \eqref{eq:discrete_ent_uot}, we have
   - (\rho_1 + \rho_2 + \varepsilon) \; m(P^*).
 \end{align}
 This relation proves to be particularly helpful when studying the computational complexity of
-Sinkhorn algorithm \citep{Khiem20}. Given the flexible structure of the set $\cC$,
-\Cref{prop:uot_minimizer} has a broad range of applications,
+Sinkhorn algorithm \citep{Khiem20}. We note that \Cref{prop:uot_minimizer} covers a broad range of situations,
 including the unregularized UOT (\ie, $\varepsilon = 0$) and other unbalanced divergences,
-namely the squared $l_2$-regularized UOT \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}),
-the unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
+namely the squared $l_2$-regularized UOT \eqref{uot_l2} (see \Cref{coro:uot_l2_minimizer}).
+Furthermore, it can also be adapted to the unbalanced Gromov-Wasserstein (see Equation \eqref{eq:ugw_minimizer_minimum})
 and the unbalanced Co-Optimal Transport (see Equation \eqref{eq:ucoot_minimizer_minimum}).
 Even more interestingly, these examples share a common trait, that is, the minimum is a polynomial
-of the minimiser, whose coefficients depend only on the input measures (\ie, $\mu, \nu, \gamma$)
+of the minimizer, whose coefficients depend only on the input measures (\ie, $\mu, \nu, \gamma$)
 and hyperparameters (\ie, $\rho_1, \rho_2, \varepsilon$), but not the cost $C$.
 We provide the justification of these claims in Appendix \ref{appendix:subsec_uot}.
 
@@ -1722,7 +1721,8 @@ when $D_{\varphi_1}, D_{\varphi_2}$ are KL divergences, we have
   \text{UGW}_{\lambda}(\cX, \cY) = \lambda_1 \; m(\mu_X)^2 + \lambda_2 \; m(\mu_Y)^2
   - (\lambda_1 + \lambda_2) \; m(\pi^*)^2,
 \end{align}
-meaning that the minimum is a \textbf{quadratic} function of the minimizer.
+meaning that the minimum is a \textbf{quadratic} function of the minimizer. See
+Appendix \ref{appendix:subsec_uot} for proof.
 
 \citet{Zhang21} introduce the unbalanced bi-directional Gromov-Monge divergence defined as:
 for $\lambda_x, \lambda_y > 0$,
