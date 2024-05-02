@@ -351,12 +351,12 @@ As seen in \Cref{fig:intro}, the vertex-wise group average does not usually prov
 well-contrasted maps.
 Inspired by the success of the GW distance when estimating the barycenter of structured objects
 \citep{Peyre16,Vayer19b}, we use FUGW to find the barycenter
-$(F_B, D_B) \in \bbR^{k \times c} \times \bbR^{k \times k}$
+$(F^B, D^B) \in \bbR^{k \times c} \times \bbR^{k \times k}$
 of all subjects $s \in \cS$, as well as the corresponding couplings $P^{s,B}$ from each subject
 to the barycenter. More precisely, we solve
 \begin{equation}
     \label{eq:barycenter}
-    \cX^B = (F_B, D_B, w^B) \in \argmin_{\cX}  \sum_{s \in \cS} \fugw(\cX^s, \cX),
+    \cX^B = (F^B, D^B, w^B) \in \argmin_{\cX}  \sum_{s \in \cS} \fugw(\cX^s, \cX),
 \end{equation}
 where we set the weights $w_B$ to be the uniform distribution.
 By construction, the resulting barycenter benefits from the advantages of FUGW,
