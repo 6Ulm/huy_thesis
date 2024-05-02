@@ -13,7 +13,10 @@
 *.fot
 *.cb
 *.cb2
+*.nav
 main.pdf
+cube.pdf
+soutenance.pdf
 .*.lb
 
 ## Intermediate documents:
