@@ -4,6 +4,7 @@
 
 \usepackage[backend=biber, style=authoryear, backref=true, hyperref=true]{biblatex}
 \addbibresource{biblio.bib}
+\renewcommand*{\bibfont}{\scriptsize}
 
 \usepackage{version}
 \usepackage[utf8]{inputenc}
@@ -32,6 +33,12 @@
   \setlength{\textwidth}{1.05\textwidth}%
 }{}
 
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\setlength{\jot}{0pt}
+
 \newcommand{\gw}{\text{GW}}
 \newcommand{\ot}{\text{OT}}
 \newcommand{\coot}{\text{COOT}}
@@ -43,10 +50,13 @@
 \newcommand{\fgw}{\text{FGW}}
 \newcommand{\fugw}{\text{FUGW}}
 \newcommand{\kl}{\text{KL}}
+\newcommand{\gh}{\text{GH}}
 
 \newcommand{\cX}{\mathcal X}
 \newcommand{\cY}{\mathcal Y}
 \newcommand{\cM}{\mathcal M}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cL}{\mathcal L}
 \newcommand{\bbR}{\mathbb R}
 \newcommand{\rmd}{\mathrm{d}}
 \newcommand{\bX}{\textbf{X}}
@@ -104,8 +114,149 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}{Motivation}
+\scriptsize
 
+\begin{minipage}[t]{0.6\linewidth}
+  {\color{brown}{Density fitting:}}
+  \vspace{-0.7cm}
+  \begin{align*}
+    \arg\min_{\theta \in \Theta} \mathcal D(\mu_{\theta}, \widehat{\mu}_n).
+  \end{align*}
+  % \vspace{l}
+  $\Rightarrow$ Comparing measures: optimal transport
+
+  $\Rightarrow$ Comparing \textbf{weighted sets}.
+
+  \vspace{0.4cm}
+  {\color{brown}{Folks say:}} in machine learning,
+  \begin{itemize}
+    \item Common ground space $\Rightarrow$ Wasserstein.
+    \item Incomparable spaces $\Rightarrow$ Gromov-Wasserstein.
+  \end{itemize}
+
+  \end{minipage}%
+  \hfill%
+  \hspace{-6cm}
+  \begin{minipage}[t]{0.49\linewidth}
+    \vspace{-0.2cm}
+  \begin{figure}
+    \centering
+    \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/appli.pdf}
+  \end{figure}
+  \end{minipage}
+
+  \vspace{0.4cm}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  {\color{brown}{But where Gromov-Wasserstein comes from?}}
+  \begin{minipage}[t]{0.6\linewidth}
+    \begin{itemize}
+      \item Hausdorff distance: $X, Y \subset (Z, d)$
+      \vspace{-0.3cm}
+      \begin{align*}
+        d_{H}^{Z}\big( {\color{blue}{(X, d)}}, {\color{red}{(Y, d)}} \big)
+        = \max \Big\{ \sup_{{\color{blue}{x \in X}}} d({\color{blue}{x}}, {\color{red}{Y}}),
+        \sup_{{\color{red}{y \in Y}}} d({\color{red}{y}}, {\color{blue}{X}}) \Big\}.
+      \end{align*}
+      \begin{tikzpicture}[remember picture, overlay]
+        \node[shift={(4cm,-0.3cm)}] at (current page.center)
+        {\includegraphics[scale=0.3]{OT_new/haus.pdf}};
+      \end{tikzpicture}
+
+      \vspace{-0.4cm}
+      \item Gromov-Hausdorff distance \parencite{Gromov81,Gromov99}
+      \vspace{-0.3cm}
+      \begin{align*}
+        \gh \big( {\color{blue}{(X, d_X)}}, {\color{red}{(Y, d_Y)}} \big) =
+        \inf_{\substack{\text{met.sp.}(Z, d) \\
+        \text{iso.} {\color{blue}{f: X}} \to Z \\
+        \text{iso.} {\color{red}{g: Y}} \to Z}}
+        d_{H}^{Z} \Big( {\color{blue}{\big(f(X), d \big)}}, {\color{red}{\big(g(Y), d \big)}} \Big).
+       \end{align*}
+       \begin{tikzpicture}[remember picture, overlay]
+        \node[shift={(4.3cm,-2.8cm)}] at (current page.center)
+        {\includegraphics[scale=0.3]{OT_new/ghaus.pdf}};
+      \end{tikzpicture}
+    \end{itemize}
+    \end{minipage}%
+
+    \hfill%
+    \hspace{-6cm}
+    \begin{minipage}[t]{0.5\linewidth}
+    \end{minipage}
+\vspace{1cm}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Why Gromov-Wasserstein distance?}
+% \scriptsize
+%   \begin{align*}
+%     d_{H} \big( {\color{blue}{(X, d)}}, {\color{red}{(Y, d)}} \big)
+%     = \inf_{R \in \mathcal R({\color{blue}{X}}, {\color{red}{Y}})}
+%     \sup_{(x, y) \in R} d(x, y)
+%   \end{align*}
+
+%   \begin{align*}
+%     W_{\infty}\big( {\color{blue}{(X, \mu_X, d)}}, {\color{red}{(Y, \mu_Y, d)}} \big) =
+%     \inf_{\pi \in U({\color{blue}{\mu_X}}, {\color{red}{\mu_Y}})} \sup_{(x,y) \in \text{supp}(\pi)}
+%     d(x, y)
+%   \end{align*}
+
+%   \begin{align*}
+%     W_p^p \big( {\color{blue}{(X, \mu_X, d)}}, {\color{red}{(Y, \mu_Y, d)}} \big)
+%     = \inf_{\pi \in U({\color{blue}{\mu_X}}, {\color{red}{\mu_Y}})}
+%     \int d(x, y)^p \; \rmd\pi(x, y).
+%   \end{align*}
+
+%   \begin{align*}
+%     \gh\big( {\color{blue}{(X, d_X)}}, {\color{red}{(Y, d_Y)}} \big)
+%     = \frac{1}{2} \inf_{R \in \mathcal R({\color{blue}{X}}, {\color{red}{Y}})}
+%     \sup_{\substack{(x_1,y_1) \in R \\ (x_2,y_2) \in R}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big|
+%   \end{align*}
+
+%   \begin{align*}
+%     \gw_{\infty}\big( {\color{blue}{(X, \mu_X, d_X)}}, {\color{red}{(Y, \mu_Y, d_Y)}} \big)
+%     = \inf_{ \pi \in U({\color{blue}{\mu_X}}, {\color{red}{\mu_Y}})}
+%     \sup_{\substack{(x_1,y_1) \in \text{supp}(\pi) \\ (x_2,y_2) \in \text{supp}(\pi)}}
+%     \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big|.
+%   \end{align*}
+
+%   \begin{align*}
+%     \gw_p^p\big( {\color{blue}{(X, \mu_X, d_X)}}, {\color{red}{(Y, \mu_Y, d_Y)}} \big)
+%     = \inf_{ \pi \in U({\color{blue}{\mu_X}}, {\color{red}{\mu_Y}})}
+%     \iint |d_X(x_1, x_2) - d_Y(y_1, y_2)|^p \;
+%     \rmd\pi(x_1, y_1) \; \rmd\pi(x_2, y_2).
+% \end{align*}
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \scriptsize
+  % \begin{figure}
+  %   \centering
+  %   \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/gww.pdf}
+  % \end{figure}
+  \begin{tikzpicture}[remember picture, overlay]
+    % we don't want to affect the bounding box if the rectangle is too large
+    \node[shift={(0cm,0.3cm)}] at (current page.center)
+    {\includegraphics[scale=0.45]{OT_new/gww.pdf}};
+    \begin{pgfinterruptboundingbox}
+        % the following coords. may need to be changed to suit your slides
+        \fill <1> [fill=white, opacity=0.85] (-1,-0.5) rectangle (12, -5);
+    \end{pgfinterruptboundingbox}
+    % \node <1> [draw, shape=rectangle, align=right] at (10, 5) {%
+    %     Hello from outliers
+    % };
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,0.3cm)}] at (current page.center)
+    {\includegraphics[scale=0.45]{OT_new/gww.pdf}};
+  \end{tikzpicture}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,7 +269,7 @@
   \begin{align*}
     \gw_p^p(\cX_1, \cX_2) = \inf_{\pi \in U(\mu_1, \mu_2)}
     \iint \left| d_1(x_1, x_1') - d_2(x_2, x_2') \right|^p
-    \rmd\pi(x_1, x_2) \rmd\pi(x_1', x_2').
+    \rmd\pi(x_1, x_2) \; \rmd\pi(x_1', x_2').
   \end{align*}
 \end{block}
 
@@ -134,8 +285,7 @@
   \item Not the only way to compare incomparable spaces
 
   $\Rightarrow$ Godfather: Gromov-Hausdorff dist.
-  \item Extensions: measure networks \parencite{Chowdhury19},
-  sliced-GW \parencite{Vayer19a}, low-rank GW \parencite{Meyer21b}.
+  \item Computationally feasible.
 \end{enumerate}
 \end{minipage}%
 \hfill%
@@ -150,22 +300,22 @@
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{More extensions}
-  \scriptsize
-  \begin{minipage}[t]{0.5\linewidth}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{More extensions}
+%   \scriptsize
+%   \begin{minipage}[t]{0.5\linewidth}
 
-  \end{minipage}%x
-  \hfill%
-  \hspace{-6cm}
-  \begin{minipage}[t]{0.8\linewidth}
-    \vspace{-2cm}
-  \begin{figure}
-    \centering
-    \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/cube_direction.pdf}
-  \end{figure}
-  \end{minipage}
-\end{frame}
+%   \end{minipage}%x
+%   \hfill%
+%   \hspace{-6cm}
+%   \begin{minipage}[t]{0.8\linewidth}
+%     \vspace{-2cm}
+%   \begin{figure}
+%     \centering
+%     \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/cube_direction.pdf}
+%   \end{figure}
+%   \end{minipage}
+% \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -173,18 +323,20 @@
   \vspace{-0.5cm}
   \scriptsize
   \begin{definition}[Unbalanced GW \parencite{Sejourne20}]
-    Given two compact metric-measure spaces $\cX_1 = (X_1, \mu_1, d_1),
-    \cX_2 = (X_2, \mu_2, d_2)$ and a Csiszár divergence $D_{\varphi}$,
+    Given a Csiszár divergence $D_{\varphi}$ and $\lambda_1, \lambda_2 > 0$,
+    the unbalanced GW divergence between two compact metric-measure spaces
+    $\cX_1 = (X_1, \mu_1, d_1)$ and $\cX_2 = (X_2, \mu_2, d_2)$ is defined as
     \begin{align*}
-      \ugw_p^p(\cX_1, \cX_2) = \inf_{\pi \in \cM^+(X_1 \times X_2)} L_{\ugw}(\pi),
+      \ugw_p^p(\cX_1, \cX_2) = \inf_{\pi \in \cM^+(X_1 \times X_2)} \cL_{\ugw}(\pi),
     \end{align*}
     \vspace{-0.3cm}
     where
+    \vspace{-0.5cm}
     \begin{align*}
-      L_{\ugw}(\pi) &= \iint \left| d_1(x_1, x_2) - d_2(y_1, y_2) \right|^p
-      \rmd\pi(x_1, y_1) \rmd\pi(x_2, y_2) \\
-      &+ \rho_1 D_{\varphi}(\pi_{\# 1} \otimes \pi_{\# 1} | \mu_1 \otimes \mu_1)
-      + \rho_2 D_{\varphi}(\pi_{\# 2} \otimes \pi_{\# 2} | \mu_2 \otimes \mu_2).
+      \cL_{\ugw}(\pi) &= \iint \left| d_1(x_1, x_2) - d_2(y_1, y_2) \right|^p
+      \rmd\pi(x_1, y_1) \; \rmd\pi(x_2, y_2) \\
+      &+ \lambda_1 D_{\varphi}(\pi_{\# 1} \otimes \pi_{\# 1} | \mu_1 \otimes \mu_1)
+      + \lambda_2 D_{\varphi}(\pi_{\# 2} \otimes \pi_{\# 2} | \mu_2 \otimes \mu_2).
     \end{align*}
   \end{definition}
 
@@ -197,9 +349,11 @@
   \begin{minipage}[t]{0.6\linewidth}
   \begin{itemize}
     \item In practice: $D_{\varphi} = \text{Kullback-Leibler div}$.
+    \item Quadratic divergence $\Rightarrow$ Homogeneity:
+    $\ugw_p^p(t\cX_1, t \cX_2) = t^2 \; \ugw_p^p(\cX_1, \cX_2)$,
+
+    for $t \cX := (X, t\mu, d)$.
     \item Characterizing isometries.
-    \item Practical robustness to outliers.
-    \item Approx. with/without entropic reg.
   \end{itemize}
   \end{minipage}%
   \hfill%
@@ -218,17 +372,17 @@
 \begin{frame}{Extension 2: Shared space}
   \scriptsize
   \begin{definition}[Fused GW \parencite{Vayer19b}]
-    Consider two attributed graphs $\cX_1 = (D_1, F_1, \mu_1)$ and
-    $\cX_2 = (D_2, F_2, \mu_2)$,
+    For $\alpha \in [0, 1]$, the fused GW between two attributed graphs
+    $\cX_1 = (D_1, F_1, \mu_1)$ and $\cX_2 = (D_2, F_2, \mu_2)$,
     where $D_k \in \bbR^{n_k \times n_k}, F_k \in \bbR^{n_k \times d}$
-    and $\mu_k \in \Delta_{n_k}$. For $\alpha \in [0, 1]$,
+    and $\mu_k \in \Delta_{n_k}$, is defined as
     \begin{align*}
-      \fgw_p^p(\cX_1, \cX_2) = \inf_{\pi \in U(\mu_1, \mu_2)} L_{FGW}(\pi),
+      \fgw_p^p(\cX_1, \cX_2) = \inf_{\pi \in U(\mu_1, \mu_2)} \cL_{\fgw}(\pi),
     \end{align*}
     \vspace{-0.3cm}
     where
     \begin{align*}
-      L_{FGW}(\pi) = (1 - \alpha)
+      \cL_{\fgw}(\pi) = (1 - \alpha)
       \sum_{{\color{blue}{i}},{\color{blue}{j}},{\color{red}{k}},{\color{red}{l}}}
       |(D_1)_{{\color{blue}{i}} {\color{red}{k}}} - (D_2)_{{\color{blue}{j}}{\color{red}{l}}}|^p {\color{blue}{\pi_{ij}}} {\color{red}{\pi_{kl}}}
       + \alpha \sum_{ij} ||(F_1)_i - (F_2)_j||^q \pi_{ij}.
@@ -264,10 +418,12 @@
 \scriptsize
 
 \begin{definition}[Discrete COOT \parencite{Redko20}]
-Given two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
+  The Co-Optimal Transport distance between
+  two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
 and $\cX_2 = (X_2, \mstg, \mftg)$, where
 $X_k \in \bbR^{n_k \times d_k}$ and histograms
-${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}}}$
+${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}}}$,
+is defined as
 \begin{align*}
   \coot_p^p(\cX_1, \cX_2) =
   \min_{\substack{\pis \in U(\mssrc,\mstg) \\ \pif \in U(\mfsrc,\mftg)}}
@@ -382,8 +538,8 @@ ${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}
   \fugw(\cX^s, \cX^t) = \inf_{P \in \bbR^{m \times n}_{\geq 0}} \quad
   &(1 - \alpha) \sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} P_{kl}
   + \alpha \sum_{i,j} || F^s_i - F^t_j||_2^2 P_{ij} \\
-  &+ \lambda \left[ \kl(P_{\# 1} \otimes P_{\# 1} \vert w^s \otimes w^s)
-  + \kl(P_{\# 2} \otimes P_{\# 2} \vert w^t \otimes w^t) \right].
+  &+ \lambda \Big[ \kl(P_{\# 1} \otimes P_{\# 1} \vert w^s \otimes w^s)
+  + \kl(P_{\# 2} \otimes P_{\# 2} \vert w^t \otimes w^t) \Big].
 \end{align*}
 \end{block}
 
@@ -402,11 +558,43 @@ ${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Optimization}
+\scriptsize
+Denote
+\vspace{-0.3cm}
+\begin{align*}
+  \cL_{\fugw}(P, Q) &=
+  (1 - \alpha) \sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} Q_{kl}
+  + \frac{\alpha}{2} \Big[ \sum_{i,j} || F^s_i - F^t_j||_2^2 (P_{ij} + Q_{ij}) \Big] \\
+  &+ \lambda \Big[ \kl(P_{\# 1} \otimes Q_{\# 1} \vert w^s \otimes w^s)
+  + \kl(P_{\# 2} \otimes Q_{\# 2} \vert w^t \otimes w^t) \Big].
+\end{align*}
+\vspace{-0.3cm}
+Then,
+\begin{align*}
+  \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{P = Q}}
+  \cL_{\fugw}(P, Q) &\geq \inf_{\substack{P_{\#1} = Q_{\#1} \\ P_{\#2} = Q_{\#2}}}
+  \cL_{\fugw}(P, Q) \triangleq \widetilde{\fugw}(\cX^s, \cX^t) \\
+  &\geq \inf_{\substack{m(P) = m(Q)}}
+  \cL_{\fugw}(P, Q) \triangleq \text{LB-FUGW} (\cX^s, \cX^t).
+\end{align*}
+\vspace{-0.3cm}
+\begin{itemize}
+  \item LB-FUGW is more amenable to solve
+  $\Rightarrow$ use LB-FUGW as approx. of FUGW.
+  \item Solve LB-FUGW (with/without entropic reg.)
+  by Block Coordinate Descent (BCD)
 
-\end{frame}
+  $\Rightarrow$ Each BCD iteration = solving two UOT problems.
+\end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Optimization}
+\begin{block}{How good is LB-FUGW?}
+  If the distances $D^s$ and $D^t$ are of the forms: $D^s_{ij} = f_i + f_j + A_{ij}$ and
+  $D^t_{kl} = g_k + g_l + B_{kl}$, where $f, g$ are vectors in $\bbR^m, \bbR^n$, respectively,
+  and the matrices $A, B$ are conditionally negative semi-definite, then
+  $\fugw (\cX^s, \cX^t) = \widetilde{\fugw}(\cX^s, \cX^t)$.
+  % Furthermore, if the definiteness holds, then the optimal solution satisfies $P^* = Q^*$,
+  % meaning that $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
+\end{block}
 
 \end{frame}
 
@@ -417,7 +605,7 @@ ${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}
     \centering
     \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_msm.pdf}
     \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_fugw.pdf}
-    \caption*{\scriptsize{Neuroscientific interpretation of FUGW.}}
+    \caption*{\scriptsize{Comparison of gains in correlation after inter-subject alignment.}}
   \end{figure}
 \end{frame}
 
@@ -512,15 +700,15 @@ ${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}
     \ucoot_{\lambda}(\cX_1, \cX_2) :=
   \inf_{\substack{{\color{blue}{\pi^s \in \cM^+(X_1^s \times X_2^s)}}
   \\ {\color{red}{\pi^f \in \cM^+(X_1^f \times X_2^f)}}}}
-  F(\pis, \pif).
+  \cL_{\ucoot}(\pis, \pif).
 \end{align*}
 \vspace{-0.8cm}
 where:
 \begin{align*}
-    F(\pis, \pif) &= \underbrace{\iint
-    |\xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}})|^p {\color{blue}{\mathrm d\pi^s(x_1^s, x_2^s)}}
+    \cL_{\ucoot}(\pis, \pif) &= \underbrace{\iint
+    |\xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}})|^p \; {\color{blue}{\mathrm d\pi^s(x_1^s, x_2^s)}} \;
     {\color{red}{\mathrm d \pi^f(x_1^f, x_2^f)}}}_{\text{transport cost of {\color{blue}{sample}}-{\color{red}{feature}} pairs}} \\
-    &+ \underbrace{\sum_{k=1}^2\lambda_k \text{KL}({\color{blue}{\pi^s_{\# k}}} \otimes {\color{red}{\pi^f_{\# k}}} \vert {\color{blue}{\mu^s_k}} \otimes {\color{red}{\mu^f_k}})}_{\text{mass destruction / creation penalty}}.
+    &+ \underbrace{\sum_{k=1}^2\lambda_k \; \text{KL}({\color{blue}{\pi^s_{\# k}}} \otimes {\color{red}{\pi^f_{\# k}}} \vert {\color{blue}{\mu^s_k}} \otimes {\color{red}{\mu^f_k}})}_{\text{mass destruction / creation penalty}}.
 \end{align*}
 \end{definition}
 
@@ -533,18 +721,31 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Why quadratic divergence?}
   \scriptsize
+  \vspace{-1cm}
 \begin{enumerate}
-  \item Existence of solution: recast UCOOT as UOT problem under additional
+  \item Homogeneity:
+  for $t\cX = \left({\color{blue}{(X^s, t\mu^s)}}, {\color{red}{(X^f, t\mu^f)}}, \xi \right)$
+  \begin{align*}
+    \ucoot_{\lambda}(t\cX_1, t\cX_2) = t^2 \ucoot_{\lambda}(\cX_1, \cX_2).
+  \end{align*}
+  $\Rightarrow$ Due to the property of Csiszár divergence.
+
+  \item Existence of solution: UCOOT = UOT under additional
   factorization constraint.
+
   \item Bilinear relation between minimum and minimizer.
   \begin{align*}
     \ucoot_{\lambda}(\cX_1, \cX_2) =
     \sum_{k=1}^2 \lambda_k m({\color{blue}{\mu_k^s}}) m({\color{red}{\mu_k^f}})
     - (\lambda_1 + \lambda_2) m({\color{blue}{\pi^s_*}}) m({\color{red}{\pi^f_*}}).
   \end{align*}
-  \item Restriction to equal-mass solutions: $m({\color{blue}{\pi^s_*}}) = m({\color{red}{\pi^f_*}})$
-  $\Rightarrow$ numerical stability when solving with entropic regularization.
-  \item Robustness to outlier.
+  $\Rightarrow$ Due to the property of Bregman divergence.
+
+  \item Restriction to equal-mass solutions: $m({\color{blue}{\pi^s_*}}) = m({\color{red}{\pi^f_*}})$.
+
+  $\Rightarrow$ Numerical stability when solving with entropic regularization.
+
+  \item Provable robustness to outliers.
 \end{enumerate}
 
 \begin{tikzpicture}[remember picture, overlay]
@@ -640,9 +841,9 @@ where:
     \centering
     \includegraphics[width=1.05\linewidth, keepaspectratio=true]{SIMPAS/mnist-ucoot-rebuttal.pdf}
     \vspace*{-1cm}
-    \caption*{\scriptsize{Example illustrating and interpreting
-    the {\color{red}{feature alignment $\pi^f$}} learned by UCOOT
-    and its robustness to outliers.}}
+    % \caption*{\scriptsize{Example illustrating and interpreting
+    % the {\color{red}{feature alignment $\pi^f$}} learned by UCOOT
+    % and its robustness to outliers.}}
 \end{figure}
 \end{frame}
 
@@ -652,9 +853,9 @@ where:
 \begin{figure}
       \centering
       \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/genes-alignments.pdf}
-      \caption*{\scriptsize{Example illustrating and interpreting the
-      {\color{red}{feature alignment $\pi^f$}} learned by UCOOT
-      and its robustness to outliers.}}
+      % \caption*{\scriptsize{Example illustrating and interpreting the
+      % {\color{red}{feature alignment $\pi^f$}} learned by UCOOT
+      % and its robustness to outliers.}}
   \end{figure}
 \end{frame}
 
@@ -691,22 +892,15 @@ where:
 \begin{frame}{Formulation}
 \scriptsize
 \begin{block}{Definition}
-  Given two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
-  and $\cX_2 = (X_2, \mstg, \mftg)$, for $0\leq \alpha \leq 1$,
+  For $0\leq \alpha \leq 1$, the Augmented GW divergence between
+  two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$ and
+  $\cX_2 = (X_2, \mstg, \mftg)$ is defined as
   \begin{align*}
     \label{eq:scootr}
     \agw_{\alpha}(\cX_1, \cX_2) &:=
     \min_{\substack{\pis \in U(\mssrc,\mstg) \\ \pif \in U(\mfsrc,\mftg)}}
-    L_{\alpha}(\pis, \pif),
+    \alpha \cL_{\gw}(\pis) + (1-\alpha) \cL_{\coot}(\pis, \pif).
   \end{align*}
-  where $L_{\alpha}(\pis, \pif) =
-  \alpha \; \langle L(D_X,D_Y)\otimes \pis, \pis \rangle
-  + (1-\alpha) \; \langle L(X,Y) \otimes \pis, \pif \rangle$.
-  % \begin{align*}
-  %   L_{\alpha}(\pis, \pif) &=
-  %   \alpha \; \langle L(D_X,D_Y)\otimes \pis, \pis \rangle
-  %   + (1-\alpha) \; \langle L(X,Y) \otimes \pis, \pif \rangle.
-  % \end{align*}
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
@@ -718,7 +912,7 @@ where:
   \begin{itemize}
     \item Interpolating between GW and COOT.
     \item Satisfying relaxed triangle inequality.
-    \item Weak invariant to translation: shift minimum but not minimizer.
+    \item Weak invariant to translation: shift minimum but leave minimizer unchanged.
   \end{itemize}
   \end{minipage}%
   \hfill%
@@ -771,7 +965,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   \item Motivation: almost all current single-cell alignment methods only
   align samples (cells). Feature alignments can yield higher quality
   sample alignments.
-  \item Dataset: CITE-Seq Dataset.
+  \item Dataset: CITE-Seq \parencite{CITEseq}
   \begin{itemize}
     \scriptsize
     \item Source: sample = cells, features = antibodies.
@@ -782,30 +976,35 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/cite_fgcoot_final.pdf}
   \caption*{\scriptsize{Feature alignments generated by competing methods.
-  Green boxes indicate where we expect matches (a notion of “ground-truth”)
+  Green boxes indicate where we expect matches (“ground-truth”)
   based on domain knowledge.}}
 \end{figure}
 \end{frame}
 
-\section{Conclusion and Perspective}
+\section{Conclusion and Perspectives}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Conclusion and Perspective}
+\begin{frame}{Conclusion and Perspectives}
 \scriptsize
-\begin{itemize}
-  \item Conclusion
-  \begin{enumerate}
-    \item
-  \end{enumerate}
 
-  \item Perspectives
-  \begin{enumerate}
-    \scriptsize
-    \item In general, statisical aspects of unbalanced across-space divergences
-    are still little understood.
-    \item Practical consideration: UGW, FUGW, UCOOT rely on BCD
-    $\Rightarrow$ More efficient UOT solvers.
-  \end{enumerate}
-\end{itemize}
+\textbf{Conclusion}
+\begin{enumerate}
+  % \setlength\itemsep{0.5em}
+  \item Filled the cube.
+  \item Established the robustness of unbalanced divergences.
+  \item Real-world applications in neuroscience, computational biology.
+\end{enumerate}
+
+\vspace{1cm}
+\textbf{Perspectives}
+\begin{enumerate}
+  % \setlength\itemsep{0.5em}
+  \item Fill the last missing corner (add cube here).
+  \item In general, statisical aspects of unbalanced across-space divergences
+  are still little understood.
+  \item Practical consideration: UGW, FUGW, UCOOT rely on BCD
+  $\Rightarrow$ More efficient UOT solvers.
+\end{enumerate}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -818,7 +1017,6 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \section*{References}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[allowframebreaks]{References}
-\scriptsize
 \printbibliography
 \end{frame}
 
