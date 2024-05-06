@@ -1,6 +1,11 @@
 \documentclass{beamer}
 \usetheme{Warsaw}
 % \usetheme{metropolis}
+\setbeamertemplate{footline}[page number]
+% \setbeamertemplate{headline}{}
+\setbeamercolor{page number in head/foot}{fg=black}
+\setbeamerfont{page number in head/foot}{size=\footnotesize}
+\setbeamertemplate{navigation symbols}{}
 
 \usepackage[backend=biber, style=authoryear, backref=true, hyperref=true]{biblatex}
 \addbibresource{biblio.bib}
@@ -129,7 +134,7 @@
   $\Rightarrow$ Comparing \textbf{weighted sets}.
 
   \vspace{0.4cm}
-  {\color{brown}{Folks say:}} in machine learning,
+  {\color{brown}{Folks say:}}
   \begin{itemize}
     \item Common ground space $\Rightarrow$ Wasserstein.
     \item Incomparable spaces $\Rightarrow$ Gromov-Wasserstein.
@@ -174,7 +179,7 @@
         d_{H}^{Z} \Big( {\color{blue}{\big(f(X), d \big)}}, {\color{red}{\big(g(Y), d \big)}} \Big).
        \end{align*}
        \begin{tikzpicture}[remember picture, overlay]
-        \node[shift={(4.3cm,-2.8cm)}] at (current page.center)
+        \node[shift={(4.3cm,-2.9cm)}] at (current page.center)
         {\includegraphics[scale=0.3]{OT_new/ghaus.pdf}};
       \end{tikzpicture}
     \end{itemize}
@@ -286,6 +291,7 @@
 
   $\Rightarrow$ Godfather: Gromov-Hausdorff dist.
   \item Computationally feasible.
+  \item Many extensions.
 \end{enumerate}
 \end{minipage}%
 \hfill%
@@ -299,24 +305,6 @@
 \end{minipage}
 
 \end{frame}
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}{More extensions}
-%   \scriptsize
-%   \begin{minipage}[t]{0.5\linewidth}
-
-%   \end{minipage}%x
-%   \hfill%
-%   \hspace{-6cm}
-%   \begin{minipage}[t]{0.8\linewidth}
-%     \vspace{-2cm}
-%   \begin{figure}
-%     \centering
-%     \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/cube_direction.pdf}
-%   \end{figure}
-%   \end{minipage}
-% \end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Extension 1: Marginal relaxation}
@@ -449,7 +437,7 @@ is defined as
   \end{minipage}%
   \hfill%
   \hspace{-6cm}
-  \begin{minipage}[t]{0.6\linewidth}
+  \begin{minipage}[t]{0.55\linewidth}
     \vspace{0.5cm}
   \begin{figure}
     \centering
@@ -462,15 +450,22 @@ is defined as
 \begin{frame}{Summary of contributions (1)}
   \scriptsize
 
-  \vspace{-4cm}
+  \vspace{-3cm}
   {\color{brown}{\textbf{Publication}}}: \ul{Aligning individual brains with Fused Unbalanced Gromov-Wasserstein}.
   Alexis Thual*, \textbf{QHT}*, Tatiana Zemskova, Nicolas Courty,
   Rémi Flamary, Stanislas Dehaene, and Bertrand Thirion.
   \textit{Advances in neural information processing systems (NeurIPS)}, 2022.
 
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Summary}}}: applied fused unbalanced GW to
+  \begin{enumerate}
+    \item Align human cortical surfaces.
+    \item Learn human brain templates.
+  \end{enumerate}
+
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-4cm)}] at (current page.center)
-    {\includegraphics[scale=0.65]{OT_new/cube_fugw_contrib.pdf}};
+    \node[shift={(0cm,-4.4cm)}] at (current page.center)
+    {\includegraphics[scale=0.55]{OT_new/cube_fugw_contrib.pdf}};
   \end{tikzpicture}
 
 \end{frame}
@@ -479,15 +474,22 @@ is defined as
 \begin{frame}{Summary of contributions (2)}
   \scriptsize
 
-  \vspace{-4cm}
+  \vspace{-3cm}
   {\color{brown}{\textbf{Publication}}}: \ul{Unbalanced Co-Optimal Transport}.
   \textbf{QHT}, Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko,
   Pinar Demetci, and Ritambhara Singh.
   \textit{AAAI Conference on Artificial Intelligence}, 2023.
 
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Summary}}}:
+  \begin{enumerate}
+    \item Unbalanced formulation of COOT which is provably robust to outliers.
+    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
+  \end{enumerate}
+
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-4cm)}] at (current page.center)
-    {\includegraphics[scale=0.65]{OT_new/cube_ucoot_contrib.pdf}};
+    \node[shift={(0cm,-4.4cm)}] at (current page.center)
+    {\includegraphics[scale=0.55]{OT_new/cube_ucoot_contrib.pdf}};
   \end{tikzpicture}
 \end{frame}
 
@@ -495,14 +497,21 @@ is defined as
 \begin{frame}{Summary of contributions (3)}
   \scriptsize
 
-  \vspace{-4cm}
+  \vspace{-3cm}
   {\color{brown}{\textbf{Publication}}}: \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distances}.
   Pinar Demetci, \textbf{QHT}, Ievgen Redko, and Ritambhara Singh.
   \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
 
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Summary}}}:
+  \begin{enumerate}
+    \item Interpolation between GW and COOT to get the best from both worlds.
+    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
+  \end{enumerate}
+
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-4cm)}] at (current page.center)
-    {\includegraphics[scale=0.65]{OT_new/cube_agw_contrib.pdf}};
+    \node[shift={(0cm,-4.3cm)}] at (current page.center)
+    {\includegraphics[scale=0.55]{OT_new/cube_agw_contrib.pdf}};
   \end{tikzpicture}
 \end{frame}
 
@@ -514,10 +523,15 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
 \scriptsize
+\begin{itemize}
+  \item High variability in human anatomies and functional MRI responses across subjects.
+  \item Lack of principled framework for brain alignments.
+  \item Averaging surface brains results in loss of individual details.
+\end{itemize}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/intro_variation.pdf}
-  \caption*{\scriptsize{Neuroscientific interpretation of FUGW.}}
+  % \caption*{\scriptsize{High variability in human anatomies and functional MRI responses across subjects.}}
 \end{figure}
 
 \begin{tikzpicture}[remember picture, overlay]
@@ -554,6 +568,22 @@ is defined as
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/fugw.png}
   \caption*{\scriptsize{Neuroscientific interpretation of FUGW.}}
 \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Why is unbalancing important?}
+\scriptsize
+\begin{itemize}
+  \item Feature = scalar.
+  \item On the source mesh, the signal is constituted of two von Mises density functions that differ
+  by their concentration (large and small).
+  \item On the target mesh, only the large one is present, but at a different location.
+\end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/toy_example.pdf}
+    \caption*{\scriptsize{Unbalancing helps accounting for idiosyncrasies of the source and target signals.}}
+  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -599,13 +629,19 @@ Then,
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Correlation}
+\begin{frame}{Experimental results (with Alexis Thual)}
 
   \begin{figure}
     \centering
     \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_msm.pdf}
     \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_fugw.pdf}
     \caption*{\scriptsize{Comparison of gains in correlation after inter-subject alignment.}}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.4\linewidth, keepaspectratio=true]{OT_new/brain_template.png}
+    \caption*{\scriptsize{FUGW barycenter yields much finer-grained maps than group averages.}}
   \end{figure}
 \end{frame}
 
@@ -620,15 +656,15 @@ Then,
 \scriptsize
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth, keepaspectratio=true]{OT_new/COOT_plot.pdf}
+  \includegraphics[width=0.9\linewidth, keepaspectratio=true]{OT_new/COOT_plot.pdf}
 \end{figure}
 \begin{tikzpicture}[remember picture, overlay]
   % we don't want to affect the bounding box if the rectangle is too large
   \begin{pgfinterruptboundingbox}
       % the following coords. may need to be changed to suit your slides
-      \fill <1> [fill=white, opacity=0.8] (0,0) rectangle (12, 4.65);
+      \fill <1> [fill=white, opacity=0.8] (0,0) rectangle (12, 4.5);
   \end{pgfinterruptboundingbox}
-  \node <1> [draw, shape=rectangle, align=right] at (10, 5) {%
+  \node <1> [draw, shape=rectangle, align=right] at (10, 5.3) {%
       Hello from outliers
   };
 \end{tikzpicture}
@@ -639,13 +675,13 @@ Then,
   \scriptsize
   \begin{figure}
     \centering
-    \includegraphics[width=\linewidth, keepaspectratio=true]{OT_new/COOT_plot.pdf}
+    \includegraphics[width=0.9\linewidth, keepaspectratio=true]{OT_new/COOT_plot.pdf}
   \end{figure}
   \begin{tikzpicture}[remember picture, overlay]
     % we don't want to affect the bounding box if the rectangle is too large
     \begin{pgfinterruptboundingbox}
         % the following coords. may need to be changed to suit your slides
-        \fill <1> [fill=white, opacity=0.8] (0,4.65) rectangle (12, 8.7);
+        \fill <1> [fill=white, opacity=0.8] (0,4.57) rectangle (12, 8.7);
     \end{pgfinterruptboundingbox}
     \node <1> [draw, shape=rectangle, align=right] at (10.2, 1.6) {%
         Good bye outliers
@@ -730,8 +766,8 @@ where:
   \end{align*}
   $\Rightarrow$ Due to the property of Csiszár divergence.
 
-  \item Existence of solution: UCOOT = UOT under additional
-  factorization constraint.
+  \item UCOOT = UOT under additional factorization constraint
+  $\Rightarrow$ Existence of solution.
 
   \item Bilinear relation between minimum and minimizer.
   \begin{align*}
@@ -848,7 +884,7 @@ where:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Illustration on single-cell multi-omics}
+\begin{frame}{Illustration on single-cell multi-omics (with Pinar Demetci)}
 \scriptsize
 \begin{figure}
       \centering
@@ -908,20 +944,20 @@ where:
   {\includegraphics[scale=0.3]{OT_new/cube_agw.pdf}};
 \end{tikzpicture}
 
-\begin{minipage}[t]{0.6\linewidth}
+\begin{minipage}[t]{0.55\linewidth}
   \begin{itemize}
     \item Interpolating between GW and COOT.
     \item Satisfying relaxed triangle inequality.
-    \item Weak invariant to translation: shift minimum but leave minimizer unchanged.
+    \item Weak invariant to translation: shift minimum but leaves minimizer unchanged.
   \end{itemize}
   \end{minipage}%
   \hfill%
   \hspace{-6cm}
-  \begin{minipage}[t]{0.4\linewidth}
+  \begin{minipage}[t]{0.45\linewidth}
     \vspace{-0.2cm}
   \begin{figure}
     \centering
-    \includegraphics[width=1.1\linewidth, keepaspectratio=true]{OT_new/agw_alpha.pdf}
+    \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/agw_alpha.pdf}
   \end{figure}
   \end{minipage}
 
@@ -986,31 +1022,45 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \begin{frame}{Conclusion and Perspectives}
 \scriptsize
 
-\textbf{Conclusion}
+{\color{brown}{\textbf{Conclusion}}}
 \begin{enumerate}
   % \setlength\itemsep{0.5em}
   \item Filled the cube.
   \item Established the robustness of unbalanced divergences.
-  \item Real-world applications in neuroscience, computational biology.
+  \item Real-world applications in neuroscience, domain adaptation and computational biology.
 \end{enumerate}
 
 \vspace{1cm}
-\textbf{Perspectives}
+{\color{brown}{\textbf{Perspectives}}}
 \begin{enumerate}
   % \setlength\itemsep{0.5em}
-  \item Fill the last missing corner (add cube here).
-  \item In general, statisical aspects of unbalanced across-space divergences
-  are still little understood.
-  \item Practical consideration: UGW, FUGW, UCOOT rely on BCD
+  \item (Ongoing work) Fill the last missing corner.
+  \item Isometries induced AGW is not fully understood.
+  \item In general, statistical aspects of unbalanced across-space divergences
+  are still little explored.
+  \item Algorithmic acceleration: UGW, FUGW, UCOOT rely on BCD
+
   $\Rightarrow$ More efficient UOT solvers.
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(5.5cm,-3cm)}] at (current page.center)
+    {\includegraphics[scale=0.4]{OT_new/cube_future.pdf}};
+  \end{tikzpicture}
 \end{enumerate}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
+  \vspace{-3.5cm}
   \centering \Large
-  \textbf{{Thank you for your attention}}
+  \textbf{{Thank you for your attention!}}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,-0.5cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/sunrise_vannes.jpg}};
+  \end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
