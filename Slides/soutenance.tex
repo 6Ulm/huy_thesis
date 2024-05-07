@@ -24,7 +24,7 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, citecolor=green, linkcolor=blue, urlcolor=blue}
 \usepackage{color}
-\usepackage{caption}
+\usepackage[skip=2pt]{caption}
 \captionsetup[figure]{labelformat=empty}
 \usepackage{soul}
 
@@ -89,6 +89,13 @@
 \title[PhD Defense]{Optimal Transport for Transfer Learning Across Spaces}
 
 \author[]{Quang Huy Tran \break \scriptsize{Under the supervision of Nicolas Courty, Karim Lounici and Rémi Flamary}}
+\titlegraphic{
+  % \hspace{-0.3cm}
+  \includegraphics[height=0.7cm, keepaspectratio=true]{OT_new/logo_irisa.png}\hspace{0.2cm}~
+  \includegraphics[height=0.9cm, keepaspectratio=true]{OT_new/logo_univ_bret.png}\hspace{0.2cm}~
+  \includegraphics[height=1cm, keepaspectratio=true]{OT_new/logo_cmap.png}\hspace{0.2cm}~
+  \includegraphics[height=1cm, keepaspectratio=true]{OT_new/logo_x_ipp.png}\hspace{0.2cm}
+}
 
 \institute[] % (optional)
 {
@@ -101,12 +108,13 @@
   Ecole Polytechnique
 }
 
-\date[] % (optional)
-{PhD Defense, 16 May 2024, Palaiseau}
+\date[]{PhD Defense, 16 May 2024, Palaiseau}
 
 \begin{document}
 
-\frame{\titlepage}
+\begin{frame}
+  \titlepage
+\end{frame}
 
 \AtBeginSection[]
 {
@@ -118,6 +126,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
 \scriptsize
@@ -150,46 +159,6 @@
     \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/appli.pdf}
   \end{figure}
   \end{minipage}
-
-  \vspace{0.4cm}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  {\color{brown}{But where Gromov-Wasserstein comes from?}}
-  \begin{minipage}[t]{0.6\linewidth}
-    \begin{itemize}
-      \item Hausdorff distance: $X, Y \subset (Z, d)$
-      \vspace{-0.3cm}
-      \begin{align*}
-        d_{H}^{Z}\big( {\color{blue}{(X, d)}}, {\color{red}{(Y, d)}} \big)
-        = \max \Big\{ \sup_{{\color{blue}{x \in X}}} d({\color{blue}{x}}, {\color{red}{Y}}),
-        \sup_{{\color{red}{y \in Y}}} d({\color{red}{y}}, {\color{blue}{X}}) \Big\}.
-      \end{align*}
-      \begin{tikzpicture}[remember picture, overlay]
-        \node[shift={(4cm,-0.3cm)}] at (current page.center)
-        {\includegraphics[scale=0.3]{OT_new/haus.pdf}};
-      \end{tikzpicture}
-
-      \vspace{-0.4cm}
-      \item Gromov-Hausdorff distance \parencite{Gromov81,Gromov99}
-      \vspace{-0.3cm}
-      \begin{align*}
-        \gh \big( {\color{blue}{(X, d_X)}}, {\color{red}{(Y, d_Y)}} \big) =
-        \inf_{\substack{\text{met.sp.}(Z, d) \\
-        \text{iso.} {\color{blue}{f: X}} \to Z \\
-        \text{iso.} {\color{red}{g: Y}} \to Z}}
-        d_{H}^{Z} \Big( {\color{blue}{\big(f(X), d \big)}}, {\color{red}{\big(g(Y), d \big)}} \Big).
-       \end{align*}
-       \begin{tikzpicture}[remember picture, overlay]
-        \node[shift={(4.3cm,-2.9cm)}] at (current page.center)
-        {\includegraphics[scale=0.3]{OT_new/ghaus.pdf}};
-      \end{tikzpicture}
-    \end{itemize}
-    \end{minipage}%
-
-    \hfill%
-    \hspace{-6cm}
-    \begin{minipage}[t]{0.5\linewidth}
-    \end{minipage}
-\vspace{1cm}
 
 \end{frame}
 
@@ -235,38 +204,9 @@
 % \end{align*}
 % \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \scriptsize
-  % \begin{figure}
-  %   \centering
-  %   \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/gww.pdf}
-  % \end{figure}
-  \begin{tikzpicture}[remember picture, overlay]
-    % we don't want to affect the bounding box if the rectangle is too large
-    \node[shift={(0cm,0.3cm)}] at (current page.center)
-    {\includegraphics[scale=0.45]{OT_new/gww.pdf}};
-    \begin{pgfinterruptboundingbox}
-        % the following coords. may need to be changed to suit your slides
-        \fill <1> [fill=white, opacity=0.85] (-1,-0.5) rectangle (12, -5);
-    \end{pgfinterruptboundingbox}
-    % \node <1> [draw, shape=rectangle, align=right] at (10, 5) {%
-    %     Hello from outliers
-    % };
-  \end{tikzpicture}
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,0.3cm)}] at (current page.center)
-    {\includegraphics[scale=0.45]{OT_new/gww.pdf}};
-  \end{tikzpicture}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Across-space comparison}
-  \vspace{-1cm}
+\begin{frame}{Optimal transport across-space}
+  \vspace{-0cm}
   \scriptsize
   \begin{block}{Gromov-Wasserstein distance \parencite{Memoli07,Memoli11}}
   The GW distance of order $p \geq 1$ between two metric-measure spaces
@@ -274,13 +214,14 @@
   \begin{align*}
     \gw_p^p(\cX_1, \cX_2) = \inf_{\pi \in U(\mu_1, \mu_2)}
     \iint \left| d_1(x_1, x_1') - d_2(x_2, x_2') \right|^p
-    \rmd\pi(x_1, x_2) \; \rmd\pi(x_1', x_2').
+    \rmd\pi(x_1, x_2) \; \rmd\pi(x_1', x_2'),
   \end{align*}
+  where $U(\mu_1, \mu_2) = \{ \pi \in \mathcal P(X_1 \times X_2): \int_{X_2} \rmd\pi(\cdot, x_2) = \mu_1 \text{ and } \int_{X_1} \rmd\pi(x_1, \cdot) = \mu_2 \}$.
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_gw.pdf}};
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_gw.pdf}};
 \end{tikzpicture}
 
 \vspace{-0.3cm}
@@ -330,8 +271,8 @@
 
   \vspace{-0.5cm}
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-    {\includegraphics[scale=0.3]{OT_new/cube_ugw.pdf}};
+    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_ugw.pdf}};
   \end{tikzpicture}
 
   \begin{minipage}[t]{0.6\linewidth}
@@ -378,8 +319,8 @@
   \end{definition}
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-    {\includegraphics[scale=0.3]{OT_new/cube_fgw.pdf}};
+    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_fgw.pdf}};
   \end{tikzpicture}
 
   \begin{minipage}[t]{0.6\linewidth}
@@ -421,8 +362,8 @@ is defined as
 \end{definition}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_coot.pdf}};
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_coot.pdf}};
 \end{tikzpicture}
 
 \vspace{-0.3cm}
@@ -447,72 +388,13 @@ is defined as
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions (1)}
+\begin{frame}{Summary of contributions}
   \scriptsize
-
-  \vspace{-3cm}
-  {\color{brown}{\textbf{Publication}}}: \ul{Aligning individual brains with Fused Unbalanced Gromov-Wasserstein}.
-  Alexis Thual*, \textbf{QHT}*, Tatiana Zemskova, Nicolas Courty,
-  Rémi Flamary, Stanislas Dehaene, and Bertrand Thirion.
-  \textit{Advances in neural information processing systems (NeurIPS)}, 2022.
-
-  \vspace{0.3cm}
-  {\color{brown}{\textbf{Summary}}}: applied fused unbalanced GW to
-  \begin{enumerate}
-    \item Align human cortical surfaces.
-    \item Learn human brain templates.
-  \end{enumerate}
-
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-4.4cm)}] at (current page.center)
-    {\includegraphics[scale=0.55]{OT_new/cube_fugw_contrib.pdf}};
+    \node[shift={(4cm,-7.5cm)}] at (current page.center)
+    {\includegraphics[scale=1]{OT_new/cube_intro.pdf}};
   \end{tikzpicture}
 
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions (2)}
-  \scriptsize
-
-  \vspace{-3cm}
-  {\color{brown}{\textbf{Publication}}}: \ul{Unbalanced Co-Optimal Transport}.
-  \textbf{QHT}, Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko,
-  Pinar Demetci, and Ritambhara Singh.
-  \textit{AAAI Conference on Artificial Intelligence}, 2023.
-
-  \vspace{0.3cm}
-  {\color{brown}{\textbf{Summary}}}:
-  \begin{enumerate}
-    \item Unbalanced formulation of COOT which is provably robust to outliers.
-    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
-  \end{enumerate}
-
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-4.4cm)}] at (current page.center)
-    {\includegraphics[scale=0.55]{OT_new/cube_ucoot_contrib.pdf}};
-  \end{tikzpicture}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions (3)}
-  \scriptsize
-
-  \vspace{-3cm}
-  {\color{brown}{\textbf{Publication}}}: \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distances}.
-  Pinar Demetci, \textbf{QHT}, Ievgen Redko, and Ritambhara Singh.
-  \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
-
-  \vspace{0.3cm}
-  {\color{brown}{\textbf{Summary}}}:
-  \begin{enumerate}
-    \item Interpolation between GW and COOT to get the best from both worlds.
-    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
-  \end{enumerate}
-
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-4.3cm)}] at (current page.center)
-    {\includegraphics[scale=0.55]{OT_new/cube_agw_contrib.pdf}};
-  \end{tikzpicture}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -535,9 +417,34 @@ is defined as
 \end{figure}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_fugw.pdf}};
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
 \end{tikzpicture}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Summary of contributions}
+  \scriptsize
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,-1.5cm)}] at (current page.center)
+    {\includegraphics[scale=0.55]{OT_new/cube_fugw_contrib.pdf}};
+  \end{tikzpicture}
+
+  \vspace{5cm}
+  {\color{brown}{\textbf{Summary}}}: applied fused unbalanced GW to
+  \begin{enumerate}
+    \item Align human cortical surfaces.
+    \item Learn human brain templates.
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Publication}}}: \ul{Aligning individual brains with Fused Unbalanced Gromov-Wasserstein}.
+  Alexis Thual*, \textbf{QHT}*, Tatiana Zemskova, Nicolas Courty,
+  Rémi Flamary, Stanislas Dehaene, and Bertrand Thirion.
+  \textit{Advances in neural information processing systems (NeurIPS)}, 2022.
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -558,32 +465,39 @@ is defined as
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_fugw.pdf}};
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
 \end{tikzpicture}
 
 \vspace{-0.6cm}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/fugw.png}
-  \caption*{\scriptsize{Neuroscientific interpretation of FUGW.}}
+  \caption*{\scriptsize{Neuroscientific illustration of FUGW.}}
 \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Why is unbalancing important?}
 \scriptsize
+\vspace{-0.5cm}
 \begin{itemize}
   \item Feature = scalar.
   \item On the source mesh, the signal is constituted of two von Mises density functions that differ
   by their concentration (large and small).
   \item On the target mesh, only the large one is present, but at a different location.
 \end{itemize}
-  \begin{figure}
-    \centering
-    \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/toy_example.pdf}
-    \caption*{\scriptsize{Unbalancing helps accounting for idiosyncrasies of the source and target signals.}}
-  \end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/toy_example.pdf}
+  \caption*{\scriptsize{Unbalancing helps accounting for idiosyncrasies of the source and target signals.}}
+\end{figure}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -630,19 +544,26 @@ Then,
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Experimental results (with Alexis Thual)}
+\vspace{-0.7cm}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_msm.pdf}
+  \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_fugw.pdf}
+  \caption*{\scriptsize{Comparison of gains in correlation after inter-subject alignment.}}
+\end{figure}
 
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_msm.pdf}
-    \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_fugw.pdf}
-    \caption*{\scriptsize{Comparison of gains in correlation after inter-subject alignment.}}
-  \end{figure}
+\vspace{-0.2cm}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\linewidth, keepaspectratio=true]{OT_new/brain_template.png}
+  \caption*{\scriptsize{FUGW barycenter yields much finer-grained maps than group averages.}}
+\end{figure}
 
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.4\linewidth, keepaspectratio=true]{OT_new/brain_template.png}
-    \caption*{\scriptsize{FUGW barycenter yields much finer-grained maps than group averages.}}
-  \end{figure}
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -689,6 +610,30 @@ Then,
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Summary of contributions}
+  \scriptsize
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,-1.5cm)}] at (current page.center)
+    {\includegraphics[scale=0.55]{OT_new/cube_ucoot_contrib.pdf}};
+  \end{tikzpicture}
+
+  \vspace{5cm}
+  {\color{brown}{\textbf{Summary}}}:
+  \begin{enumerate}
+    \item Unbalanced formulation of COOT which is provably robust to outliers.
+    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Publication}}}: \ul{Unbalanced Co-Optimal Transport}.
+  \textbf{QHT}, Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko,
+  Pinar Demetci, and Ritambhara Singh.
+  \textit{AAAI Conference on Artificial Intelligence}, 2023.
+
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Unbalanced CO-Optimal Transport (1)}
 \scriptsize
@@ -706,8 +651,8 @@ Then,
   \vspace{-0.2cm}
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-    {\includegraphics[scale=0.3]{OT_new/cube_ucoot.pdf}};
+    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
   \end{tikzpicture}
 
   \vspace{-0.3cm}
@@ -749,44 +694,8 @@ where:
 \end{definition}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_ucoot.pdf}};
-\end{tikzpicture}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Why quadratic divergence?}
-  \scriptsize
-  \vspace{-1cm}
-\begin{enumerate}
-  \item Homogeneity:
-  for $t\cX = \left({\color{blue}{(X^s, t\mu^s)}}, {\color{red}{(X^f, t\mu^f)}}, \xi \right)$
-  \begin{align*}
-    \ucoot_{\lambda}(t\cX_1, t\cX_2) = t^2 \ucoot_{\lambda}(\cX_1, \cX_2).
-  \end{align*}
-  $\Rightarrow$ Due to the property of Csiszár divergence.
-
-  \item UCOOT = UOT under additional factorization constraint
-  $\Rightarrow$ Existence of solution.
-
-  \item Bilinear relation between minimum and minimizer.
-  \begin{align*}
-    \ucoot_{\lambda}(\cX_1, \cX_2) =
-    \sum_{k=1}^2 \lambda_k m({\color{blue}{\mu_k^s}}) m({\color{red}{\mu_k^f}})
-    - (\lambda_1 + \lambda_2) m({\color{blue}{\pi^s_*}}) m({\color{red}{\pi^f_*}}).
-  \end{align*}
-  $\Rightarrow$ Due to the property of Bregman divergence.
-
-  \item Restriction to equal-mass solutions: $m({\color{blue}{\pi^s_*}}) = m({\color{red}{\pi^f_*}})$.
-
-  $\Rightarrow$ Numerical stability when solving with entropic regularization.
-
-  \item Provable robustness to outliers.
-\end{enumerate}
-
-\begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_ucoot.pdf}};
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
 \end{tikzpicture}
 
 \end{frame}
@@ -820,6 +729,11 @@ where:
   \end{definition}
   $\Rightarrow$ Both costs can explode if the outliers are too impactful.
 
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
+  \end{tikzpicture}
+
 \end{frame}
 
 \begin{frame}{Provable robustness of UCOOT (2)}
@@ -850,6 +764,11 @@ where:
     \end{split}
     \end{equation*}
   \end{enumerate}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
+  \end{tikzpicture}
 \end{proposition}
 
 \begin{minipage}[t]{0.6\linewidth}
@@ -871,7 +790,7 @@ where:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Illustration on MNIST images}
+\begin{frame}{Illustration 1: MNIST images}
 \scriptsize
 \begin{figure}
     \centering
@@ -884,7 +803,7 @@ where:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Illustration on single-cell multi-omics (with Pinar Demetci)}
+\begin{frame}{Illustration 2: Single-cell multi-omics (with Pinar Demetci)}
 \scriptsize
 \begin{figure}
       \centering
@@ -906,7 +825,6 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \scriptsize
 
-\vspace{-0.5cm}
 \begin{enumerate}
   \item Isometries are useful for across-space comparison.
   \item All isometries are created equal, but some are more equal than others.
@@ -917,10 +835,28 @@ where:
     \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/div_vs_angle.pdf}
 \end{figure}
 
-\begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_agw.pdf}};
-\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Summary of contributions}
+  \scriptsize
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,-1.5cm)}] at (current page.center)
+    {\includegraphics[scale=0.55]{OT_new/cube_agw_contrib.pdf}};
+  \end{tikzpicture}
+
+  \vspace{5cm}
+  {\color{brown}{\textbf{Summary}}}:
+  \begin{enumerate}
+    \item Interpolation between GW and COOT to get the best from both worlds.
+    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Publication}}}: \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distances}.
+  Pinar Demetci, \textbf{QHT}, Ievgen Redko, and Ritambhara Singh.
+  \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
 
 \end{frame}
 
@@ -940,8 +876,8 @@ where:
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.5cm,-5.5cm)}] at (current page.center)
-  {\includegraphics[scale=0.3]{OT_new/cube_agw.pdf}};
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
 \end{tikzpicture}
 
 \begin{minipage}[t]{0.55\linewidth}
@@ -966,7 +902,7 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Isometries}
 \scriptsize
-\vspace{-0.2cm}
+\vspace{-1cm}
 
 \begin{assumption}
   \label{assumption:1}
@@ -992,11 +928,18 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
       and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
   \end{enumerate}
 \end{proposition}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Single-cell multi-omics (with Pinar Demetci)}
 \scriptsize
+\vspace{-0.8cm}
 \begin{itemize}
   \item Motivation: almost all current single-cell alignment methods only
   align samples (cells). Feature alignments can yield higher quality
@@ -1008,6 +951,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
     \item Target: samples = same cells, features = gene expressions.
   \end{itemize}
 \end{itemize}
+
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/cite_fgcoot_final.pdf}
@@ -1015,6 +959,12 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   Green boxes indicate where we expect matches (“ground-truth”)
   based on domain knowledge.}}
 \end{figure}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 \section{Conclusion and Perspectives}
@@ -1026,9 +976,19 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \begin{enumerate}
   % \setlength\itemsep{0.5em}
   \item Filled the cube.
+  \begin{itemize}
+    \scriptsize
+    \item FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
+    \item UCOOT: \url{}.
+    \item AGW: \url{}.
+  \end{itemize}
   \item Established the robustness of unbalanced divergences.
   \item Real-world applications in neuroscience, domain adaptation and computational biology.
 \end{enumerate}
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(6.5cm,-0.5cm)}] at (current page.center)
+  {\includegraphics[scale=0.4]{OT_new/cube_summary.pdf}};
+\end{tikzpicture}
 
 \vspace{1cm}
 {\color{brown}{\textbf{Perspectives}}}
@@ -1036,14 +996,14 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   % \setlength\itemsep{0.5em}
   \item (Ongoing work) Fill the last missing corner.
   \item Isometries induced AGW is not fully understood.
-  \item In general, statistical aspects of unbalanced across-space divergences
-  are still little explored.
+  \item Statistical aspects of unbalanced across-space divergences
+  are little explored.
   \item Algorithmic acceleration: UGW, FUGW, UCOOT rely on BCD
 
   $\Rightarrow$ More efficient UOT solvers.
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(5.5cm,-3cm)}] at (current page.center)
+    \node[shift={(4cm,-4cm)}] at (current page.center)
     {\includegraphics[scale=0.4]{OT_new/cube_future.pdf}};
   \end{tikzpicture}
 \end{enumerate}
@@ -1052,15 +1012,16 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-  \vspace{-3.5cm}
+  \vspace{0.5cm}
   \centering \Large
   \textbf{{Thank you for your attention!}}
 
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0cm,-0.5cm)}] at (current page.center)
-    {\includegraphics[scale=0.35]{OT_new/sunrise_vannes.jpg}};
-  \end{tikzpicture}
-
+  \vspace{0.5cm}
+  \begin{figure}
+    \includegraphics[scale=0.35]{OT_new/sunrise_vannes.jpg}
+    \caption{Sunrise in Vannes, 24 September 2021}
+    \label{fig1}
+  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1070,8 +1031,106 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \printbibliography
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Where Gromov-Wasserstein comes from?}
+\scriptsize
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}[t]{0.6\linewidth}
+  \begin{itemize}
+    \item Hausdorff distance: $X, Y \subset (Z, d)$
+    \vspace{-0.3cm}
+    \begin{align*}
+      d_{H}^{Z}\big( {\color{blue}{(X, d)}}, {\color{red}{(Y, d)}} \big)
+      = \max \Big\{ \sup_{{\color{blue}{x \in X}}} d({\color{blue}{x}}, {\color{red}{Y}}),
+      \sup_{{\color{red}{y \in Y}}} d({\color{red}{y}}, {\color{blue}{X}}) \Big\}.
+    \end{align*}
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[shift={(4cm,-0.3cm)}] at (current page.center)
+      {\includegraphics[scale=0.3]{OT_new/haus.pdf}};
+    \end{tikzpicture}
+
+    \vspace{-0.4cm}
+    \item Gromov-Hausdorff distance \parencite{Gromov81,Gromov99}
+    \vspace{-0.3cm}
+    \begin{align*}
+      \gh \big( {\color{blue}{(X, d_X)}}, {\color{red}{(Y, d_Y)}} \big) =
+      \inf_{\substack{\text{met.sp.}(Z, d) \\
+      \text{iso.} {\color{blue}{f: X}} \to Z \\
+      \text{iso.} {\color{red}{g: Y}} \to Z}}
+      d_{H}^{Z} \Big( {\color{blue}{\big(f(X), d \big)}}, {\color{red}{\big(g(Y), d \big)}} \Big).
+      \end{align*}
+      \begin{tikzpicture}[remember picture, overlay]
+      \node[shift={(4.3cm,-2.9cm)}] at (current page.center)
+      {\includegraphics[scale=0.3]{OT_new/ghaus.pdf}};
+    \end{tikzpicture}
+  \end{itemize}
+  \end{minipage}%
+
+  \hfill%
+  \hspace{-6cm}
+  \begin{minipage}[t]{0.5\linewidth}
+\end{minipage}
+\vspace{1cm}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-  Why bilinear relation.
+  \scriptsize
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,0.3cm)}] at (current page.center)
+    {\includegraphics[scale=0.45]{OT_new/gww.pdf}};
+    \begin{pgfinterruptboundingbox}
+        \fill <1> [fill=white, opacity=0.85] (-1,-0.5) rectangle (12, -5);
+    \end{pgfinterruptboundingbox}
+    % \node <1> [draw, shape=rectangle, align=right] at (10, 5) {%
+    %     Hello from outliers
+    % };
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0cm,0.3cm)}] at (current page.center)
+    {\includegraphics[scale=0.45]{OT_new/gww.pdf}};
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Why quadratic divergence?}
+  \scriptsize
+  \vspace{-1cm}
+\begin{enumerate}
+  \item Homogeneity:
+  for $t\cX = \left({\color{blue}{(X^s, t\mu^s)}}, {\color{red}{(X^f, t\mu^f)}}, \xi \right)$
+  \begin{align*}
+    \ucoot_{\lambda}(t\cX_1, t\cX_2) = t^2 \ucoot_{\lambda}(\cX_1, \cX_2).
+  \end{align*}
+  $\Rightarrow$ Due to the property of Csiszár divergence.
+
+  \item UCOOT = UOT under additional factorization constraint
+  $\Rightarrow$ Existence of solution.
+
+  \item Bilinear relation between minimum and minimizer.
+  \begin{align*}
+    \ucoot_{\lambda}(\cX_1, \cX_2) =
+    \sum_{k=1}^2 \lambda_k m({\color{blue}{\mu_k^s}}) m({\color{red}{\mu_k^f}})
+    - (\lambda_1 + \lambda_2) m({\color{blue}{\pi^s_*}}) m({\color{red}{\pi^f_*}}).
+  \end{align*}
+  $\Rightarrow$ Due to the property of Bregman divergence.
+
+  \item Restriction to equal-mass solutions: $m({\color{blue}{\pi^s_*}}) = m({\color{red}{\pi^f_*}})$.
+
+  $\Rightarrow$ Numerical stability when solving with entropic regularization.
+
+  \item Provable robustness to outliers.
+\end{enumerate}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
+\end{tikzpicture}
 
 \end{frame}
 
