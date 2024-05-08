@@ -430,7 +430,8 @@ is defined as
     \centering
     \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
   \end{figure}
-  \end{minipage}
+\end{minipage}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -525,9 +526,9 @@ is defined as
 % \vspace{-0.5cm}
 \begin{itemize}
   \item[$\bullet$] Feature = scalar.
-  \item[$\bullet$] On the source mesh, the signal is constituted of two von Mises density functions that differ
-  by their concentration (large and small).
-  \item[$\bullet$] On the target mesh, only the large one is present, but at a different location.
+  \item[$\bullet$] Source mesh: the signal is constituted of two von Mises
+  density functions that differ by their concentration (large and small).
+  \item[$\bullet$] Target mesh: only the large one is present, but at a different location.
 \end{itemize}
 \vspace{0.2cm}
 \begin{figure}
@@ -591,6 +592,11 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Experimental results (with Alexis Thual)}
 % \vspace{-0.5cm}
+\scriptsize
+\begin{itemize}
+  \item[$\bullet$] Evaluation metric = $\text{corr}(\text{transported features}, \text{target features})$.
+  \item[$\bullet$] Baseline = $\text{corr}(\text{proj}_{\text{source features}}, \text{proj}_{\text{target features}})$.
+\end{itemize}
 \begin{figure}
   \centering
   \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_msm.pdf}
@@ -602,7 +608,7 @@ is defined as
 \begin{figure}
   \centering
   \includegraphics[width=0.4\linewidth, keepaspectratio=true]{OT_new/brain_template.png}
-  \caption*{\scriptsize{FUGW barycenter yields much finer-grained maps than group averages.}}
+  \caption*{\scriptsize{FUGW barycenter vs group average.}}
 \end{figure}
 
 \begin{tikzpicture}[remember picture, overlay]
@@ -719,12 +725,12 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Unbalanced CO-Optimal Transport (2)}
 \scriptsize
-% \vspace{-1cm}
+\vspace{-0.8cm}
 \begin{definition}[UCOOT]
-    Given $\lambda_1, \lambda_2 >0$, the unbalanced COOT of order $p \geq 1$
-    between two \sfspace spaces $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, \xi_1 \right)$
-    and $\cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, \xi_2 \right)$ is defined by
-\begin{align*}
+  Given $\lambda_1, \lambda_2 >0$, the unbalanced COOT of order $p \geq 1$
+  between two \sfspace spaces $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, \xi_1 \right)$
+  and $\cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, \xi_2 \right)$ is defined by
+  \begin{align*}
 \label{eq:ucoot}
     \ucoot_{\lambda}(\cX_1, \cX_2) :=
   \inf_{\substack{{\color{blue}{\pi^s \in \cM^+(X_1^s \times X_2^s)}}
@@ -740,6 +746,12 @@ where:
     &+ \underbrace{\sum_{k=1}^2\lambda_k \; \text{KL}({\color{blue}{\pi^s_{\# k}}} \otimes {\color{red}{\pi^f_{\# k}}} \vert {\color{blue}{\mu^s_k}} \otimes {\color{red}{\mu^f_k}})}_{\text{mass destruction / creation penalty}}.
 \end{align*}
 \end{definition}
+
+\begin{itemize}
+  \item[$\bullet$] Quadratic divergence $\Rightarrow$ Provable robustness.
+  \item[$\bullet$] If ${\color{blue}{\mu^s_k}} = {\color{red}{\mu^f_k}}$ $\Rightarrow$
+  Encoding same (weak) isomorphisms as COOT.
+\end{itemize}
 % {\color{brown}{\textbf{Why quadratic divergence?}}}
 % \begin{itemize}
 %   \item[$\bullet$] UCOOT = UOT under additional factorization constraint
@@ -845,11 +857,11 @@ where:
 \end{minipage}%
 \hfill%
 \hspace{-6cm}
-\begin{minipage}[t]{0.5\linewidth}
+\begin{minipage}[t]{0.47\linewidth}
   \vspace{-0.3cm}
   \begin{figure}
     \centering
-    \includegraphics[width=\linewidth, keepaspectratio=true]{SIMPAS/robustness_2.pdf}
+    \includegraphics[width=1.05\linewidth, keepaspectratio=true]{SIMPAS/robustness_2.pdf}
   \end{figure}
 \end{minipage}
 
@@ -864,9 +876,10 @@ where:
 \begin{frame}{Illustration 1: MNIST images}
 \scriptsize
 \begin{itemize}
-  \item[$\bullet$]
-  \item[$\bullet$]
+  \item[$\bullet$] Feature outliers:
+  \item[$\bullet$] Sample outliers =
 \end{itemize}
+\vspace{-0.5cm}
 \begin{figure}
     \centering
     \includegraphics[width=1.05\linewidth, keepaspectratio=true]{SIMPAS/mnist-ucoot-rebuttal.pdf}
@@ -889,7 +902,7 @@ where:
 % \vspace{-0.3cm}
 \begin{itemize}
   \item[$\bullet$] Datasets: CITE-Seq \parencite{CITEseq}.
-  \item[$\bullet$] Source features = antibodies, target features = gene expressions.
+  \item[$\bullet$] Source features = antibodies, target features = genes.
 \end{itemize}
 \vspace{-0.5cm}
 \begin{figure}
@@ -995,10 +1008,9 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Isometries}
 \scriptsize
-\vspace{-1cm}
+\vspace{-0.3cm}
 
 \begin{assumption}
-  \label{assumption:1}
 Given an input matrix $X \in \bbR^{n \times d}$, assume
 \begin{enumerate}
   \setlength\itemindent{15pt}
@@ -1018,11 +1030,22 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
     the permutation $\sigma_c$ (so $\mftg = (\sigma_c)_{\#} \mfsrc$),
     then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
     \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
-    if $\agw_{\alpha}(\cX_1, \cX_2) = 0$,
-    then there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
+    if $\agw_{\alpha}(\cX_1, \cX_2) = 0$, then $X_1$ and $X_2$ must have the same shape.
+    Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
     and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
   \end{itemize}
 \end{proposition}
+
+\begin{minipage}[t]{0.2\linewidth}
+\end{minipage}
+\hfill%
+\begin{minipage}[t]{0.8\linewidth}
+  \begin{itemize}
+    \item[$\bullet$] Necessary and sufficient conditions?
+    \item[$\bullet$] Why are these isometries relevant?
+    \item[$\bullet$] High-dimensional setting?
+  \end{itemize}
+\end{minipage}%
 
 \begin{tikzpicture}[remember picture, overlay]
   \node[shift={(-3.7cm,-6cm)}] at (current page.center)
@@ -1034,7 +1057,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Single-cell multi-omics (with Pinar Demetci)}
 \scriptsize
-\vspace{-0.8cm}
+\vspace{-2.7cm}
 \begin{itemize}
   \item[$\bullet$] Motivation: almost all current single-cell alignment methods only
   align samples (cells). Feature alignments can yield higher quality
@@ -1048,13 +1071,44 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   \end{itemize}
 \end{itemize}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/cite_fgcoot_final.pdf}
-  \caption*{\scriptsize{Feature alignments generated by competing methods.
-  Green boxes indicate where we expect matches (“ground-truth”)
-  based on domain knowledge.}}
-\end{figure}
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(0cm,0cm)}] at (current page.center)
+  {\includegraphics[scale=0.17]{OT_new/cite_fgcoot_final.pdf}};
+\end{tikzpicture}
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=1.1\linewidth, keepaspectratio=true]{OT_new/cite_fgcoot_final.pdf}
+%   \vspace{0.05cm}
+%   \caption*{\scriptsize{Feature alignments generated by competing methods.
+%   Green boxes indicate where we expect matches (“ground-truth”)
+%   based on domain knowledge.}}
+% \end{figure}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-4.5cm,-1.75cm)}] at (current page.center)
+  {\tiny{$\text{Accuracy} = 19 / 25$}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-1.7cm,-1.75cm)}] at (current page.center)
+  {\tiny{$\text{Accuracy} = 15 / 25$}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(1.1cm,-1.75cm)}] at (current page.center)
+  {\tiny{$\text{Accuracy} = 16 / 25$}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(4.4cm,-1.75cm)}] at (current page.center)
+  {\tiny{$\text{Accuracy} = 13 / 25$}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(0cm,-2.3cm)}, text width=0.9\linewidth] at (current page.center)
+  {\scriptsize{Feature alignments generated by competing methods. Green boxes indicate where we expect matches (“ground-truth”) based on domain knowledge.}};
+\end{tikzpicture}
 
 \begin{tikzpicture}[remember picture, overlay]
   \node[shift={(-3.7cm,-6cm)}] at (current page.center)
