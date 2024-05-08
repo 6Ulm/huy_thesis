@@ -7,6 +7,8 @@
 \setbeamerfont{page number in head/foot}{size=\footnotesize}
 \setbeamertemplate{navigation symbols}{}
 
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+
 \usepackage[backend=biber, style=authoryear, backref=true, hyperref=true]{biblatex}
 \addbibresource{biblio.bib}
 \renewcommand*{\bibfont}{\scriptsize}
@@ -24,13 +26,15 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, citecolor=green, linkcolor=blue, urlcolor=blue}
 \usepackage{color}
+\definecolor{darkgreen}{HTML}{3C8031}
+
 \usepackage[skip=2pt]{caption}
 \captionsetup[figure]{labelformat=empty}
 \usepackage{soul}
 
 \usepackage{tikz}
 % \usetikzlibrary{shapes,positioning,arrows,shapes.arrows, decorations.markings,arrows.meta,decorations.pathreplacing}
-\usetikzlibrary{backgrounds}
+\usetikzlibrary{backgrounds,decorations.pathreplacing,calc,tikzmark}
 
 \setbeamertemplate{headline}{}
 
@@ -62,6 +66,7 @@
 \newcommand{\cM}{\mathcal M}
 \newcommand{\cE}{\mathcal E}
 \newcommand{\cL}{\mathcal L}
+\newcommand{\cP}{\mathcal P}
 \newcommand{\bbR}{\mathbb R}
 \newcommand{\rmd}{\mathrm{d}}
 \newcommand{\bX}{\textbf{X}}
@@ -75,6 +80,11 @@
 \newcommand{\mssrc}{{\color{blue}{\mu_1^s}}}
 \newcommand{\mstg}{{\color{blue}{\mu_2^s}}}
 \newcommand{\sfspace}{{\color{blue}{s.}}{\color{red}{f. }}}
+
+\newcommand{\source}{{\color{red}{\mathcal X}}}
+\newcommand{\target}{{\color{blue}{\mathcal Y}}}
+\newcommand{\redx}{{\color{red}{x}}}
+\newcommand{\bluey}{{\color{blue}{y}}}
 
 \setlength{\leftmargini}{0.2cm}
 \setlength{\leftmarginii}{0.1cm}
@@ -120,45 +130,81 @@
 {
   \begin{frame}
     \frametitle{Table of Contents}
-    \tableofcontents[currentsection]
+    \bf{\tableofcontents[currentsection]}
   \end{frame}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
 \scriptsize
-
 \begin{minipage}[t]{0.6\linewidth}
-  {\color{brown}{Density fitting:}}
-  \vspace{-0.7cm}
-  \begin{align*}
-    \arg\min_{\theta \in \Theta} \mathcal D(\mu_{\theta}, \widehat{\mu}_n).
-  \end{align*}
-  % \vspace{l}
-  $\Rightarrow$ Comparing measures: optimal transport
-
-  $\Rightarrow$ Comparing \textbf{weighted sets}.
-
-  \vspace{0.4cm}
-  {\color{brown}{Folks say:}}
+  \vspace{0cm}
+  {\color{brown}{\textbf{OT = comparison of weighted spaces}.}}
   \begin{itemize}
-    \item Common ground space $\Rightarrow$ Wasserstein.
-    \item Incomparable spaces $\Rightarrow$ Gromov-Wasserstein.
+    \item[$\bullet$] OT-based divergence
+    $\Rightarrow$ Density fitting.
+    \item[$\bullet$] Transport {\color{darkgreen}{\textbf{plan}}}/map
+    $\Rightarrow$ {\color{darkgreen}{\textbf{Alignments}}}/mappings.
   \end{itemize}
 
-  \end{minipage}%
+  \vspace{0.3cm}
+  {\color{brown}{\textbf{Classical setting:}}} metric-measure spaces
+  \hfill\tikzmark{right}
+  \begin{itemize}
+    \item[$\bullet$] Source: ${\color{red}{\cX = (X, d, \mu_X)}}$. \tikzmark{2nd}
+    \item[$\bullet$] Target: ${\color{blue}{\cY = (Y, d, \mu_Y)}}$. \tikzmark{4th}
+  \end{itemize}
+  \vspace{-0.3cm}
+  \begin{align*}
+    W_p^p (\source, \target) =
+    \inf_{\pi \in U({\color{red}{\mu_X}}, {\color{blue}{\mu_Y}})}
+    \int d(\redx, \bluey)^p \; \rmd\pi(\redx, \bluey).
+  \end{align*}
+  \begin{tikzpicture}[overlay, remember picture]
+    \node[anchor=base] (a) at (pic cs:2nd) {\vphantom{h}}; % push the mark to the top of the line (ie including ascenders)
+    \node[anchor=base] (b) at (pic cs:4th) {\vphantom{g}}; % push the mark to the bottom of the line (ie including descenders)
+    \draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
+     (a.north) -- (b.south);
+  \end{tikzpicture}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-0.7cm,1.15cm)}] at (current page.center)
+    {$\Rightarrow$ sharing metric};
+  \end{tikzpicture}
+
+  \end{minipage}%'
   \hfill%
   \hspace{-6cm}
   \begin{minipage}[t]{0.49\linewidth}
     \vspace{-0.2cm}
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[shift={(3.2cm,1.8cm)}] at (current page.center)
+      {\includegraphics[scale=0.3]{OT_new/intro.pdf}};
+    \end{tikzpicture}
+  \end{minipage}
+
+  \vspace{-0.1cm}
+  {\color{brown}{\textbf{How to do the transport if:}}}
+  \begin{itemize}
+    \item[$\bullet$] Incomparable spaces: ${\color{red}{d}} \neq {\color{blue}{d}} \Rightarrow$
+    What does $d(\redx, \bluey)$ mean?
+    \item[$\bullet$] "Partially" comparable spaces: ${\color{red}{X = X_1 \cup X_2}}, {\color{blue}{Y = Y_1 \cup Y_2}}$,
+    where ${\color{red}{X_2}}, {\color{blue}{Y_2}} \subset (E, d)$.
+    \item[$\bullet$] Align everything?
+    \item[$\bullet$] Interaction(image, image) $\Rightarrow$ Can we do Interaction(image, text)?
+  \end{itemize}
+
   \begin{figure}
     \centering
-    \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/appli.pdf}
+    \includegraphics[scale=0.25]{OT_new/intro_ot.png}
+    \caption*{\scriptsize{Cite here}}
   \end{figure}
-  \end{minipage}
+  % \begin{tikzpicture}[remember picture, overlay]
+  %   \node[shift={(0cm,-3.5cm)}] at (current page.center)
+  %   {\includegraphics[scale=0.2]{OT_new/intro_ot.png}};
+  % \end{tikzpicture}
 
 \end{frame}
 
@@ -226,14 +272,14 @@
 
 \vspace{-0.3cm}
 \begin{minipage}[t]{0.5\linewidth}
-\begin{enumerate}
-  \item Metric properties + isometries.
-  \item Not the only way to compare incomparable spaces
+\begin{itemize}
+  \item[$\bullet$] Metric properties + isometries.
+  \item[$\bullet$] Not the only way to compare incomparable spaces
 
   $\Rightarrow$ Godfather: Gromov-Hausdorff dist.
-  \item Computationally feasible.
-  \item Many extensions.
-\end{enumerate}
+  \item[$\bullet$] Computationally feasible.
+  \item[$\bullet$] Many extensions.
+\end{itemize}
 \end{minipage}%
 \hfill%
 \hspace{-6cm}
@@ -271,18 +317,18 @@
 
   \vspace{-0.5cm}
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    \node[shift={(-2.8cm,-5.8cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ugw.pdf}};
   \end{tikzpicture}
 
   \begin{minipage}[t]{0.6\linewidth}
   \begin{itemize}
-    \item In practice: $D_{\varphi} = \text{Kullback-Leibler div}$.
-    \item Quadratic divergence $\Rightarrow$ Homogeneity:
+    \item[$\bullet$] Quadratic divergence $\Rightarrow$ Homogeneity:
     $\ugw_p^p(t\cX_1, t \cX_2) = t^2 \; \ugw_p^p(\cX_1, \cX_2)$,
 
     for $t \cX := (X, t\mu, d)$.
-    \item Characterizing isometries.
+    \item[$\bullet$] Characterizing isometries.
+    \item[$\bullet$] In practice: $D_{\varphi} = \text{Kullback-Leibler div}$.
   \end{itemize}
   \end{minipage}%
   \hfill%
@@ -319,14 +365,14 @@
   \end{definition}
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    \node[shift={(-2.8cm,-5.8cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_fgw.pdf}};
   \end{tikzpicture}
 
   \begin{minipage}[t]{0.6\linewidth}
     \begin{itemize}
-      \item Interpolation between GW and Wasserstein distances.
-      \item Feature-preserving isometries.
+      \item[$\bullet$] Interpolation between GW and Wasserstein distances.
+      \item[$\bullet$] Feature-preserving isometries.
     \end{itemize}
     \end{minipage}%
     \hfill%
@@ -362,18 +408,18 @@ is defined as
 \end{definition}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.8cm,-5.8cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_coot.pdf}};
 \end{tikzpicture}
 
 \vspace{-0.3cm}
 \begin{minipage}[t]{0.6\linewidth}
   \begin{itemize}
-    \item Comparing \underline{arbitrary-size} matrices.
-    \item Continuous extension \parencite{Chowdhury21b}.
-    \item Meaningful {\color{red}{feature}} coupling $\pif$.
-    \item Metric properties.
-    \item Connection with GW distance.
+    \item[$\bullet$] Continuous extension \parencite{Chowdhury21b}.
+    \item[$\bullet$] Comparing \underline{arbitrary-size} matrices.
+    \item[$\bullet$] Meaningful {\color{red}{feature}} coupling $\pif$.
+    \item[$\bullet$] Metric properties.
+    \item[$\bullet$] Connection with GW distance.
   \end{itemize}
   \end{minipage}%
   \hfill%
@@ -406,20 +452,15 @@ is defined as
 \begin{frame}{Motivation}
 \scriptsize
 \begin{itemize}
-  \item High variability in human anatomies and functional MRI responses across subjects.
-  \item Lack of principled framework for brain alignments.
-  \item Averaging surface brains results in loss of individual details.
+  \item[$\bullet$] High variability in human anatomies and functional MRI responses across subjects.
+  \item[$\bullet$] Lack of principled framework for brain alignments.
+  \item[$\bullet$] Averaging surface brains results in loss of individual details.
 \end{itemize}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/intro_variation.pdf}
   % \caption*{\scriptsize{High variability in human anatomies and functional MRI responses across subjects.}}
 \end{figure}
-
-\begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
-  {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
-\end{tikzpicture}
 
 \end{frame}
 
@@ -435,8 +476,9 @@ is defined as
   \vspace{5cm}
   {\color{brown}{\textbf{Summary}}}: applied fused unbalanced GW to
   \begin{enumerate}
-    \item Align human cortical surfaces.
-    \item Learn human brain templates.
+    \setlength\itemindent{10pt}
+    \item[1.] Align human cortical surfaces.
+    \item[2.] Learn human brain templates.
   \end{enumerate}
 
   \vspace{0.3cm}
@@ -465,11 +507,11 @@ is defined as
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
 \end{tikzpicture}
 
-\vspace{-0.6cm}
+\vspace{-0.5cm}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/fugw.png}
@@ -480,13 +522,14 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Why is unbalancing important?}
 \scriptsize
-\vspace{-0.5cm}
+% \vspace{-0.5cm}
 \begin{itemize}
-  \item Feature = scalar.
-  \item On the source mesh, the signal is constituted of two von Mises density functions that differ
+  \item[$\bullet$] Feature = scalar.
+  \item[$\bullet$] On the source mesh, the signal is constituted of two von Mises density functions that differ
   by their concentration (large and small).
-  \item On the target mesh, only the large one is present, but at a different location.
+  \item[$\bullet$] On the target mesh, only the large one is present, but at a different location.
 \end{itemize}
+\vspace{0.2cm}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/toy_example.pdf}
@@ -494,7 +537,7 @@ is defined as
 \end{figure}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
 \end{tikzpicture}
 
@@ -503,8 +546,7 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Optimization}
 \scriptsize
-Denote
-\vspace{-0.3cm}
+\vspace{-1.5cm}
 \begin{align*}
   \cL_{\fugw}(P, Q) &=
   (1 - \alpha) \sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} Q_{kl}
@@ -512,8 +554,7 @@ Denote
   &+ \lambda \Big[ \kl(P_{\# 1} \otimes Q_{\# 1} \vert w^s \otimes w^s)
   + \kl(P_{\# 2} \otimes Q_{\# 2} \vert w^t \otimes w^t) \Big].
 \end{align*}
-\vspace{-0.3cm}
-Then,
+\vspace{-0.7cm}
 \begin{align*}
   \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{P = Q}}
   \cL_{\fugw}(P, Q) &\geq \inf_{\substack{P_{\#1} = Q_{\#1} \\ P_{\#2} = Q_{\#2}}}
@@ -521,16 +562,16 @@ Then,
   &\geq \inf_{\substack{m(P) = m(Q)}}
   \cL_{\fugw}(P, Q) \triangleq \text{LB-FUGW} (\cX^s, \cX^t).
 \end{align*}
-\vspace{-0.3cm}
+\vspace{-0.4cm}
 \begin{itemize}
-  \item LB-FUGW is more amenable to solve
+  \item[$\bullet$] LB-FUGW is more amenable to solve
   $\Rightarrow$ use LB-FUGW as approx. of FUGW.
-  \item Solve LB-FUGW (with/without entropic reg.)
+  \item[$\bullet$] Solve LB-FUGW (with/without entropic reg.)
   by Block Coordinate Descent (BCD)
 
   $\Rightarrow$ Each BCD iteration = solving two UOT problems.
 \end{itemize}
-
+% \vspace{-0.2cm}
 \begin{block}{How good is LB-FUGW?}
   If the distances $D^s$ and $D^t$ are of the forms: $D^s_{ij} = f_i + f_j + A_{ij}$ and
   $D^t_{kl} = g_k + g_l + B_{kl}$, where $f, g$ are vectors in $\bbR^m, \bbR^n$, respectively,
@@ -540,11 +581,16 @@ Then,
   % meaning that $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
 \end{block}
 
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Experimental results (with Alexis Thual)}
-\vspace{-0.7cm}
+% \vspace{-0.5cm}
 \begin{figure}
   \centering
   \includegraphics[width=0.49\linewidth, keepaspectratio=true]{OT_new/fsaverage5_alignment_correlation_gain_msm.pdf}
@@ -560,7 +606,7 @@ Then,
 \end{figure}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
 \end{tikzpicture}
 
@@ -622,8 +668,9 @@ Then,
   \vspace{5cm}
   {\color{brown}{\textbf{Summary}}}:
   \begin{enumerate}
-    \item Unbalanced formulation of COOT which is provably robust to outliers.
-    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
+    \setlength\itemindent{10pt}
+    \item[1.] Unbalanced formulation of COOT which is provably robust to outliers.
+    \item[2.] Applications to heterogeneous domain adaptation and single-cell multi-omics.
   \end{enumerate}
 
   \vspace{0.3cm}
@@ -640,18 +687,19 @@ Then,
   \begin{definition}[{\color{blue}{Sample}} - {\color{red}{feature}} space]
     Let ${\color{blue}{(X^s, \mu^s)}}$ and ${\color{red}{(X^f, \mu^f)}}$ be compact measure spaces, where ${\color{blue}{\mu^s \in \cM^+(X^s)}}$ and ${\color{red}{\mu^f \in \cM^+(X^f)}}$. Let $\xi$ be a scalar integrable function in $L^p({\color{blue}{X^s}} \times {\color{red}{X^f}}, {\color{blue}{\mu^s}} \otimes {\color{red}{\mu^f}})$, for some $p \geq 1$. We call
     \begin{itemize}
-      \item The triplet
+      \setlength\itemindent{10pt}
+      \item[$\bullet$] The triplet
       $\cX = \left({\color{blue}{(X^s, \mu^s)}}, {\color{red}{(X^f, \mu^f)}}, \xi \right)$
       a \underline{\textit{{\color{blue}{sample}} - {\color{red}{feature}} space}}
       (\sfspace space).
 
-      \item The function $\xi$ an \textit{\underline{interaction}}.
+      \item[$\bullet$] The function $\xi$ an \textit{\underline{interaction}}.
     \end{itemize}
   \end{definition}
   \vspace{-0.2cm}
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
   \end{tikzpicture}
 
@@ -671,7 +719,7 @@ Then,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Unbalanced CO-Optimal Transport (2)}
 \scriptsize
-\vspace{-1cm}
+% \vspace{-1cm}
 \begin{definition}[UCOOT]
     Given $\lambda_1, \lambda_2 >0$, the unbalanced COOT of order $p \geq 1$
     between two \sfspace spaces $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, \xi_1 \right)$
@@ -692,9 +740,20 @@ where:
     &+ \underbrace{\sum_{k=1}^2\lambda_k \; \text{KL}({\color{blue}{\pi^s_{\# k}}} \otimes {\color{red}{\pi^f_{\# k}}} \vert {\color{blue}{\mu^s_k}} \otimes {\color{red}{\mu^f_k}})}_{\text{mass destruction / creation penalty}}.
 \end{align*}
 \end{definition}
+% {\color{brown}{\textbf{Why quadratic divergence?}}}
+% \begin{itemize}
+%   \item[$\bullet$] UCOOT = UOT under additional factorization constraint
+%   $\Rightarrow$ Existence of solution.
+
+%   \item[$\bullet$] Restriction to equal-mass solutions: $m({\color{blue}{\pi^s_*}}) = m({\color{red}{\pi^f_*}})$.
+
+%   $\Rightarrow$ Numerical stability when solving with entropic regularization.
+
+%   \item[$\bullet$] Provable robustness to outliers.
+% \end{itemize}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
 \end{tikzpicture}
 
@@ -708,19 +767,22 @@ where:
   $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, \xi_1 \right),
   \cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, \xi_2 \right)$.
   \begin{enumerate}
-      \item \textbf{Noisy} \sfspace space: $\widetilde{\cX_1} = \left( {\color{blue}{(X^s_1 \cup O^s, \widetilde{\mu}^s_1)}}, {\color{red}{(X^f_1 \cup O^f, \widetilde{\mu}^f_1)}}, \xi_1 \right)$, where
-      \begin{itemize}
-        \scriptsize
-          \item {\color{blue}{\textbf{Noisy} measure on sample space:
-          $\widetilde{\mu}^s_1 = \alpha_s \mu^s_1 + (1-\alpha_s) \varepsilon^s$, for $\alpha_s \in [0,1], \varepsilon^s \in \cM^+(O^s)$.}}
-          \item {\color{red}{\textbf{Noisy} measure on feature space: $\widetilde{\mu}^f_1 = \alpha_f \mu^f_1 + (1-\alpha_f) \varepsilon^f$, for $\alpha_f \in [0,1], \varepsilon^f \in \cM^+(O^f)$.}}
-      \end{itemize}
+    \setlength\itemindent{5pt}
+    \item[1.] \textbf{Noisy} \sfspace space: $\widetilde{\cX_1} = \left( {\color{blue}{(X^s_1 \cup O^s, \widetilde{\mu}^s_1)}}, {\color{red}{(X^f_1 \cup O^f, \widetilde{\mu}^f_1)}}, \xi_1 \right)$, where
+    \begin{itemize}
+      \scriptsize
+      \setlength\itemindent{10pt}
+        \item[$\bullet$] {\color{blue}{\textbf{Noisy} sample measure:
+        $\widetilde{\mu}^s_1 = \alpha_s \mu^s_1 + (1-\alpha_s) \varepsilon^s$, for $\alpha_s \in [0,1], \varepsilon^s \in \cM^+(O^s)$.}}
+        \item[$\bullet$] {\color{red}{\textbf{Noisy} feature measure:
+        $\widetilde{\mu}^f_1 = \alpha_f \mu^f_1 + (1-\alpha_f) \varepsilon^f$, for $\alpha_f \in [0,1], \varepsilon^f \in \cM^+(O^f)$.}}
+    \end{itemize}
 
-      \item Minimal cost: $\Delta_{0} := \min_{\substack{
-        {\color{blue}{x_1^s \in O^s}}, {\color{red}{x_1^f \in O^f}} \\
-        {\color{blue}{x_2^s \in X_2^s}}, {\color{red}{x_2^f \in X_2^f}}}}\quad \left| \xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}}) \right|^p$.
+    \item[2.] Minimal cost: $\Delta_{0} := \min_{\substack{
+      {\color{blue}{x_1^s \in O^s}}, {\color{red}{x_1^f \in O^f}} \\
+      {\color{blue}{x_2^s \in X_2^s}}, {\color{red}{x_2^f \in X_2^f}}}}\quad \left| \xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}}) \right|^p$.
 
-    \item Maximal cost: $\Delta_{\infty} := \max_{
+    \item[3.] Maximal cost: $\Delta_{\infty} := \max_{
     \substack{
     {\color{blue}{x_1^s \in X_1^s \cup O^s}}, {\color{red}{x_1^f \in X_1^f \cup O^f}} \\
     {\color{blue}{x_2^s \in X_2^s}}, {\color{red}{x_2^f \in X_2^f}}
@@ -730,7 +792,7 @@ where:
   $\Rightarrow$ Both costs can explode if the outliers are too impactful.
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
   \end{tikzpicture}
 
@@ -741,19 +803,23 @@ where:
 \vspace{-0.2cm}
 \begin{proposition}
   \begin{enumerate}
-    \setlength\itemsep{0em}
-    \item COOT is sensitive to outliers:
+    % \setlength\itemsep{0em}
+    \setlength\itemindent{5pt}
+    \item[1.] COOT is sensitive to outliers:
     $\coot(\widetilde{\cX_1}, \cX_2) \geq (1 - {\color{blue}{\alpha_s}})(1 - {\color{red}{\alpha_f}})\Delta_0$.
 
-    \item UCOOT is robust to outliers: denote
+    \item[2.] UCOOT is robust to outliers: denote
     \begin{itemize}
       \scriptsize
-      \item $\delta = 2(\lambda_1 + \lambda_2)(1 - {\color{blue}{\alpha_s}} {\color{red}{\alpha_f}})$.
+      \setlength\itemindent{10pt}
+      \item[$\bullet$] $\delta = 2(\lambda_1 + \lambda_2)(1 - {\color{blue}{\alpha_s}} {\color{red}{\alpha_f}})$.
 
-      \item $M= m(\pis) = m(\pif)$: mass of OT plans between clean data.
+      \item[$\bullet$] $M= m(\pis) = m(\pif)$: mass of OT plans between clean data.
 
-      \item $K = M + \frac{1}{M}\ucoot_{\lambda}(\cX_1, \cX_2) + \delta$.
+      \item[$\bullet$] $K = M + \frac{1}{M}\ucoot_{\lambda}(\cX_1, \cX_2) + \delta$.
     \end{itemize}
+    Then,
+    \vspace{-0.4cm}
     \begin{equation*} %\label{eq:ucoot-robust}
     \begin{split}
       \underbrace{\ucoot_{\lambda}(\widetilde{\cX_1}, \cX_2)}_{\text{"noisy divergence"}}
@@ -766,15 +832,15 @@ where:
   \end{enumerate}
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+    \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
   \end{tikzpicture}
 \end{proposition}
 
 \begin{minipage}[t]{0.6\linewidth}
   \begin{itemize}
-    \item UCOOT is always upper bounded.
-    \item Robustness also holds for unbalanced GW.
+    \item[$\bullet$] UCOOT is always upper bounded.
+    \item[$\bullet$] Robustness also holds for unbalanced GW.
   \end{itemize}
 \end{minipage}%
 \hfill%
@@ -787,11 +853,20 @@ where:
   \end{figure}
 \end{minipage}
 
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Illustration 1: MNIST images}
 \scriptsize
+\begin{itemize}
+  \item[$\bullet$]
+  \item[$\bullet$]
+\end{itemize}
 \begin{figure}
     \centering
     \includegraphics[width=1.05\linewidth, keepaspectratio=true]{SIMPAS/mnist-ucoot-rebuttal.pdf}
@@ -800,11 +875,23 @@ where:
     % the {\color{red}{feature alignment $\pi^f$}} learned by UCOOT
     % and its robustness to outliers.}}
 \end{figure}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
+\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Illustration 2: Single-cell multi-omics (with Pinar Demetci)}
 \scriptsize
+% \vspace{-0.3cm}
+\begin{itemize}
+  \item[$\bullet$] Datasets: CITE-Seq \parencite{CITEseq}.
+  \item[$\bullet$] Source features = antibodies, target features = gene expressions.
+\end{itemize}
+\vspace{-0.5cm}
 \begin{figure}
       \centering
       \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/genes-alignments.pdf}
@@ -812,6 +899,11 @@ where:
       % {\color{red}{feature alignment $\pi^f$}} learned by UCOOT
       % and its robustness to outliers.}}
   \end{figure}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
+  \end{tikzpicture}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -826,9 +918,9 @@ where:
 \scriptsize
 
 \begin{enumerate}
-  \item Isometries are useful for across-space comparison.
-  \item All isometries are created equal, but some are more equal than others.
-  \item GW induces all isometries but COOT is good at exploiting data.
+  \item[1.] Isometries are useful for across-space comparison.
+  \item[2.] All isometries are created equal, but some are more equal than others.
+  \item[3.] GW induces all isometries but COOT is good at exploiting data.
 \end{enumerate}
 \begin{figure}
     \centering
@@ -849,8 +941,9 @@ where:
   \vspace{5cm}
   {\color{brown}{\textbf{Summary}}}:
   \begin{enumerate}
-    \item Interpolation between GW and COOT to get the best from both worlds.
-    \item Applications to heterogeneous domain adaptation and single-cell multi-omics.
+    \setlength\itemindent{10pt}
+    \item[1.] Interpolation between GW and COOT to get the best from both worlds.
+    \item[2.] Applications to heterogeneous domain adaptation and single-cell multi-omics.
   \end{enumerate}
 
   \vspace{0.3cm}
@@ -866,7 +959,7 @@ where:
 \begin{block}{Definition}
   For $0\leq \alpha \leq 1$, the Augmented GW divergence between
   two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$ and
-  $\cX_2 = (X_2, \mstg, \mftg)$ is defined as
+  $\cX_2 = (X_2, \mstg, \mftg)$ is defined as (add more details on matrix $X$)
   \begin{align*}
     \label{eq:scootr}
     \agw_{\alpha}(\cX_1, \cX_2) &:=
@@ -882,9 +975,9 @@ where:
 
 \begin{minipage}[t]{0.55\linewidth}
   \begin{itemize}
-    \item Interpolating between GW and COOT.
-    \item Satisfying relaxed triangle inequality.
-    \item Weak invariant to translation: shift minimum but leaves minimizer unchanged.
+    \item[$\bullet$] Interpolating between GW and COOT.
+    \item[$\bullet$] Satisfying relaxed triangle inequality.
+    \item[$\bullet$] Weak invariant to translation: shift minimum but leaves minimizer unchanged.
   \end{itemize}
   \end{minipage}%
   \hfill%
@@ -908,8 +1001,9 @@ where:
   \label{assumption:1}
 Given an input matrix $X \in \bbR^{n \times d}$, assume
 \begin{enumerate}
-  \item[(A1)] $n \geq d$: Low-dimensional setting.
-  \item[(A2)] $X$ is full rank: Easily met by preprocessing.
+  \setlength\itemindent{15pt}
+  \item[(A1)] Low-dimensional setting: $n \geq d$.
+  \item[(A2)] $X$ is full rank: easily met by preprocessing.
   \item[(A3)] $X$ has $d$ distinct singular values. Fact:
   set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
 \end{enumerate}
@@ -917,16 +1011,17 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \begin{proposition}
   Given two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
   and $\cX_2 = (X_2, \mstg, \mftg)$,
-  \begin{enumerate}
-      \item[$(\Rightarrow)$] If $\mssrc = \mstg$ and
-      $X_2$ is obtained by permuting columns of $X_1$ via
-      the permutation $\sigma_c$ (so $\mftg = (\sigma_c)_{\#} \mfsrc$),
-      then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
-      \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
-      if $\agw_{\alpha}(\cX_1, \cX_2) = 0$,
-      then there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
-      and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
-  \end{enumerate}
+  \begin{itemize}
+    \setlength\itemindent{15pt}
+    \item[$(\Rightarrow)$] If $\mssrc = \mstg$ and
+    $X_2$ is obtained by permuting columns of $X_1$ via
+    the permutation $\sigma_c$ (so $\mftg = (\sigma_c)_{\#} \mfsrc$),
+    then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
+    \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
+    if $\agw_{\alpha}(\cX_1, \cX_2) = 0$,
+    then there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
+    and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
+  \end{itemize}
 \end{proposition}
 
 \begin{tikzpicture}[remember picture, overlay]
@@ -941,14 +1036,15 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \scriptsize
 \vspace{-0.8cm}
 \begin{itemize}
-  \item Motivation: almost all current single-cell alignment methods only
+  \item[$\bullet$] Motivation: almost all current single-cell alignment methods only
   align samples (cells). Feature alignments can yield higher quality
   sample alignments.
-  \item Dataset: CITE-Seq \parencite{CITEseq}
+  \item[$\bullet$] Dataset: CITE-Seq \parencite{CITEseq}
   \begin{itemize}
     \scriptsize
-    \item Source: sample = cells, features = antibodies.
-    \item Target: samples = same cells, features = gene expressions.
+    \setlength\itemindent{10pt}
+    \item[$+$] Source: sample = cells, features = antibodies.
+    \item[$+$] Target: samples = same cells, features = gene expressions.
   \end{itemize}
 \end{itemize}
 
@@ -975,15 +1071,16 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 {\color{brown}{\textbf{Conclusion}}}
 \begin{enumerate}
   % \setlength\itemsep{0.5em}
-  \item Filled the cube.
+  \item[1.] Filled the cube.
   \begin{itemize}
+    \setlength\itemindent{5pt}
     \scriptsize
-    \item FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
-    \item UCOOT: \url{}.
-    \item AGW: \url{}.
+    \item[$\bullet$] FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
+    \item[$\bullet$] UCOOT: \url{}.
+    \item[$\bullet$] AGW: \url{}.
   \end{itemize}
-  \item Established the robustness of unbalanced divergences.
-  \item Real-world applications in neuroscience, domain adaptation and computational biology.
+  \item[2.] Established the robustness of unbalanced divergences.
+  \item[3.] Real-world applications in neuroscience, domain adaptation and computational biology.
 \end{enumerate}
 \begin{tikzpicture}[remember picture, overlay]
   \node[shift={(6.5cm,-0.5cm)}] at (current page.center)
@@ -994,11 +1091,11 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 {\color{brown}{\textbf{Perspectives}}}
 \begin{enumerate}
   % \setlength\itemsep{0.5em}
-  \item (Ongoing work) Fill the last missing corner.
-  \item Isometries induced AGW is not fully understood.
-  \item Statistical aspects of unbalanced across-space divergences
+  \item[1.] (Ongoing work) Fill the last missing corner.
+  \item[2.] Isometries induced AGW is not fully understood.
+  \item[3.] Statistical aspects of unbalanced across-space divergences
   are little explored.
-  \item Algorithmic acceleration: UGW, FUGW, UCOOT rely on BCD
+  \item[4.] Algorithmic acceleration: UGW, FUGW, UCOOT rely on BCD
 
   $\Rightarrow$ More efficient UOT solvers.
 
@@ -1016,7 +1113,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   \centering \Large
   \textbf{{Thank you for your attention!}}
 
-  \vspace{0.5cm}
+  \vspace{0.3cm}
   \begin{figure}
     \includegraphics[scale=0.35]{OT_new/sunrise_vannes.jpg}
     \caption{Sunrise in Vannes, 24 September 2021}
