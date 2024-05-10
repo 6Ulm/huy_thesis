@@ -137,74 +137,115 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivation}
-\scriptsize
-\begin{minipage}[t]{0.6\linewidth}
-  \vspace{0cm}
-  {\color{brown}{\textbf{OT = comparison of weighted spaces}.}}
-  \begin{itemize}
-    \item[$\bullet$] OT-based divergence
-    $\Rightarrow$ Density fitting.
-    \item[$\bullet$] Transport {\color{darkgreen}{\textbf{plan}}}/map
-    $\Rightarrow$ {\color{darkgreen}{\textbf{Alignments}}}/mappings.
-  \end{itemize}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Cross-domain alignment}
+% \scriptsize
+% \begin{minipage}[t]{0.6\linewidth}
+%   \vspace{0cm}
+%   {\color{brown}{\textbf{OT = comparison of weighted spaces}.}}
+%   \begin{itemize}
+%     \item[$\bullet$] OT-based divergence
+%     $\Rightarrow$ Density fitting.
+%     \item[$\bullet$] Transport {\color{darkgreen}{\textbf{plan}}}/map
+%     $\Rightarrow$ {\color{darkgreen}{\textbf{Alignments}}}/mappings.
+%   \end{itemize}
 
-  \vspace{0.3cm}
-  {\color{brown}{\textbf{Classical setting:}}} metric-measure spaces
-  \hfill\tikzmark{right}
-  \begin{itemize}
-    \item[$\bullet$] Source: ${\color{red}{\cX = (X, d, \mu_X)}}$. \tikzmark{2nd}
-    \item[$\bullet$] Target: ${\color{blue}{\cY = (Y, d, \mu_Y)}}$. \tikzmark{4th}
-  \end{itemize}
-  \vspace{-0.3cm}
-  \begin{align*}
-    W_p^p (\source, \target) =
-    \inf_{\pi \in U({\color{red}{\mu_X}}, {\color{blue}{\mu_Y}})}
-    \int d(\redx, \bluey)^p \; \rmd\pi(\redx, \bluey).
-  \end{align*}
-  \begin{tikzpicture}[overlay, remember picture]
-    \node[anchor=base] (a) at (pic cs:2nd) {\vphantom{h}}; % push the mark to the top of the line (ie including ascenders)
-    \node[anchor=base] (b) at (pic cs:4th) {\vphantom{g}}; % push the mark to the bottom of the line (ie including descenders)
-    \draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
-     (a.north) -- (b.south);
-  \end{tikzpicture}
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-0.7cm,1.15cm)}] at (current page.center)
-    {$\Rightarrow$ sharing metric};
-  \end{tikzpicture}
+%   \vspace{0.3cm}
+%   {\color{brown}{\textbf{Classical setting:}}} metric-measure spaces
+%   \hfill\tikzmark{right}
+%   \begin{itemize}
+%     \item[$\bullet$] Source: ${\color{red}{\cX = (X, d, \mu_X)}}$. \tikzmark{2nd}
+%     \item[$\bullet$] Target: ${\color{blue}{\cY = (Y, d, \mu_Y)}}$. \tikzmark{4th}
+%   \end{itemize}
+%   \vspace{-0.3cm}
+%   \begin{align*}
+%     W_p^p (\source, \target) =
+%     \inf_{\pi \in U({\color{red}{\mu_X}}, {\color{blue}{\mu_Y}})}
+%     \int d(\redx, \bluey)^p \; \rmd\pi(\redx, \bluey).
+%   \end{align*}
+%   \begin{tikzpicture}[overlay, remember picture]
+%     \node[anchor=base] (a) at (pic cs:2nd) {\vphantom{h}}; % push the mark to the top of the line (ie including ascenders)
+%     \node[anchor=base] (b) at (pic cs:4th) {\vphantom{g}}; % push the mark to the bottom of the line (ie including descenders)
+%     \draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
+%      (a.north) -- (b.south);
+%   \end{tikzpicture}
+%   \begin{tikzpicture}[remember picture, overlay]
+%     \node[shift={(-0.7cm,1.15cm)}] at (current page.center)
+%     {$\Rightarrow$ sharing metric};
+%   \end{tikzpicture}
 
-  \end{minipage}%'
-  \hfill%
-  \hspace{-6cm}
-  \begin{minipage}[t]{0.49\linewidth}
-    \vspace{-0.2cm}
-    \begin{tikzpicture}[remember picture, overlay]
-      \node[shift={(3.2cm,1.8cm)}] at (current page.center)
-      {\includegraphics[scale=0.3]{OT_new/intro.pdf}};
-    \end{tikzpicture}
-  \end{minipage}
+%   \end{minipage}%'
+%   \hfill%
+%   \hspace{-6cm}
+%   \begin{minipage}[t]{0.49\linewidth}
+%     \vspace{-0.2cm}
+%     \begin{tikzpicture}[remember picture, overlay]
+%       \node[shift={(3.2cm,1.8cm)}] at (current page.center)
+%       {\includegraphics[scale=0.3]{OT_new/intro.pdf}};
+%     \end{tikzpicture}
+%   \end{minipage}
 
-  \vspace{-0.1cm}
-  {\color{brown}{\textbf{How to do the transport if:}}}
-  \begin{itemize}
-    \item[$\bullet$] Incomparable spaces: ${\color{red}{d}} \neq {\color{blue}{d}} \Rightarrow$
-    What does $d(\redx, \bluey)$ mean?
-    \item[$\bullet$] "Partially" comparable spaces: ${\color{red}{X = X_1 \cup X_2}}, {\color{blue}{Y = Y_1 \cup Y_2}}$,
-    where ${\color{red}{X_2}}, {\color{blue}{Y_2}} \subset (E, d)$.
-    \item[$\bullet$] Align everything?
-    \item[$\bullet$] Interaction(image, image) $\Rightarrow$ Can we do Interaction(image, text)?
-  \end{itemize}
+%   \vspace{-0.1cm}
+%   {\color{brown}{\textbf{How to do the transport if:}}}
+%   \begin{itemize}
+%     \item[$\bullet$] Incomparable spaces: ${\color{red}{d}} \neq {\color{blue}{d}} \Rightarrow$
+%     What does $d(\redx, \bluey)$ mean?
+%     \item[$\bullet$] "Partially" comparable spaces: ${\color{red}{X = X_1 \cup X_2}}, {\color{blue}{Y = Y_1 \cup Y_2}}$,
+%     where ${\color{red}{X_2}}, {\color{blue}{Y_2}} \subset (E, d)$.
+%     \item[$\bullet$] Align everything?
+%     \item[$\bullet$] Interaction(image, image) $\Rightarrow$ Can we do Interaction(image, text)?
+%   \end{itemize}
 
+%   \begin{figure}
+%     \centering
+%     \includegraphics[scale=0.25]{OT_new/intro_ot.png}
+%     \caption*{\scriptsize{Cite here}}
+%   \end{figure}
+%   % \begin{tikzpicture}[remember picture, overlay]
+%   %   \node[shift={(0cm,-3.5cm)}] at (current page.center)
+%   %   {\includegraphics[scale=0.2]{OT_new/intro_ot.png}};
+%   % \end{tikzpicture}
+
+% \end{frame}
+
+\begin{frame}{Cross-domain alignment}
+
+  \vspace{-0.2cm}
   \begin{figure}
     \centering
-    \includegraphics[scale=0.25]{OT_new/intro_ot.png}
-    \caption*{\scriptsize{Cite here}}
+    \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/intro_new1.pdf}
+    \vspace{-0.5cm}
+    \caption*{\scriptsize{Examples of cross-domain alignment: machine translation \parencite{Peyre16},
+    image-text summary \parencite{Peyre16}, cell alignment \parencite{Peyre16}}}
   \end{figure}
+
   % \begin{tikzpicture}[remember picture, overlay]
-  %   \node[shift={(0cm,-3.5cm)}] at (current page.center)
-  %   {\includegraphics[scale=0.2]{OT_new/intro_ot.png}};
+  %   \node[shift={(0cm,1.8cm)}] at (current page.center)
+  %   {\includegraphics[scale=0.75]{OT_new/intro_new1.pdf}};
   % \end{tikzpicture}
+
+  % \begin{tikzpicture}[remember picture, overlay]
+  %   \node[shift={(-3.5cm,-1.75cm)}, text width=0.25\linewidth] at (current page.center)
+  %   {\tiny{Machine translation \parencite{Peyre16}}};
+  % \end{tikzpicture}
+
+  % \begin{tikzpicture}[remember picture, overlay]
+  %   \node[shift={(0.5cm, -1.75cm)}, text width=0.25\linewidth] at (current page.center)
+  %   {\tiny{Image-text summary \parencite{Peyre16}}};
+  % \end{tikzpicture}
+
+  % \begin{tikzpicture}[remember picture, overlay]
+  %   \node[shift={(3.5cm, -1.75cm)}, text width=0.25\linewidth] at (current page.center)
+  %   {\tiny{Cell alignment \parencite{Peyre16}}};
+  % \end{tikzpicture}
+
+  \vspace{-0.3cm}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth, keepaspectratio=true]{OT_new/intro_new2.pdf}
+    \vspace{-0.2cm}
+    \caption*{\scriptsize{Abstraction of weighted space.}}
+  \end{figure}
 
 \end{frame}
 
@@ -278,7 +319,6 @@
 
   $\Rightarrow$ Godfather: Gromov-Hausdorff dist.
   \item[$\bullet$] Computationally feasible.
-  \item[$\bullet$] Many extensions.
 \end{itemize}
 \end{minipage}%
 \hfill%
@@ -323,18 +363,15 @@
 
   \begin{minipage}[t]{0.6\linewidth}
   \begin{itemize}
-    \item[$\bullet$] Quadratic divergence $\Rightarrow$ Homogeneity:
-    $\ugw_p^p(t\cX_1, t \cX_2) = t^2 \; \ugw_p^p(\cX_1, \cX_2)$,
-
-    for $t \cX := (X, t\mu, d)$.
-    \item[$\bullet$] Characterizing isometries.
+    \item[$\bullet$] Quadratic div: $D_{\varphi}(p \otimes p | q \otimes q) \neq D_{\varphi}(p | q)$.
     \item[$\bullet$] In practice: $D_{\varphi} = \text{Kullback-Leibler div}$.
+    \item[$\bullet$] Characterizing isometries.
   \end{itemize}
   \end{minipage}%
   \hfill%
   \hspace{-6cm}
   \begin{minipage}[t]{0.5\linewidth}
-    \vspace{-0.cm}
+    \vspace{0.2cm}
   \begin{figure}
     \centering
     \includegraphics[width=1.1\linewidth, keepaspectratio=true]{OT_new/ugw.pdf}
@@ -344,9 +381,23 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Extension 2: Shared space}
+\begin{frame}{Extension 2: Shared space (1)}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw_abstract2.pdf}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/fgw.pdf}
+    % \caption*{\scriptsize{Inspired by \parencite{Vayer19b}}}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Extension 2: Shared space (2)}
   \scriptsize
-  \begin{definition}[Fused GW \parencite{Vayer19b}]
+  \begin{definition}[(Informal) Fused GW \parencite{Vayer19b}]
     For $\alpha \in [0, 1]$, the fused GW between two attributed graphs
     $\cX_1 = (D_1, F_1, \mu_1)$ and $\cX_2 = (D_2, F_2, \mu_2)$,
     where $D_k \in \bbR^{n_k \times n_k}, F_k \in \bbR^{n_k \times d}$
@@ -389,7 +440,19 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Extension 3: Bilinear relaxation}
+\begin{frame}{Extension 3: Bilinear relaxation (1)}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_new2.pdf}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Extension 3: Bilinear relaxation (2)}
 \scriptsize
 
 \begin{definition}[Discrete COOT \parencite{Redko20}]
@@ -408,7 +471,7 @@ is defined as
 \end{definition}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.8cm,-5.8cm)}] at (current page.center)
+  \node[shift={(-4cm,-5.5cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_coot.pdf}};
 \end{tikzpicture}
 
