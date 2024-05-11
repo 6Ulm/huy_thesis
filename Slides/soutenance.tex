@@ -30,7 +30,6 @@
 
 \usepackage[skip=2pt]{caption}
 \captionsetup[figure]{labelformat=empty}
-\usepackage{soul}
 
 \usepackage{tikz}
 % \usetikzlibrary{shapes,positioning,arrows,shapes.arrows, decorations.markings,arrows.meta,decorations.pathreplacing}
@@ -96,9 +95,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Information to be included in the title page:
-\title[PhD Defense]{Optimal Transport for Transfer Learning Across Spaces}
+\title[PhD Defense]{Optimal Transport for Transfer Learning \break Across Spaces}
 
-\author[]{Quang Huy Tran \break \scriptsize{Under the supervision of Nicolas Courty, Karim Lounici and Rémi Flamary}}
+\author[]{Quang Huy Tran \break \break \scriptsize{Under the supervision of Nicolas Courty, Karim Lounici and Rémi Flamary}}
 \titlegraphic{
   % \hspace{-0.3cm}
   \includegraphics[height=0.7cm, keepaspectratio=true]{OT_new/logo_irisa.png}\hspace{0.2cm}~
@@ -107,16 +106,16 @@
   \includegraphics[height=1cm, keepaspectratio=true]{OT_new/logo_x_ipp.png}\hspace{0.2cm}
 }
 
-\institute[] % (optional)
-{
-  \inst{1}%
-  Institut de Recherche en Informatique et Systèmes Aléatoires - IRISA \\
-  Université Bretagne Sud
-  \and
-  \inst{2}%
-  Centre de Mathématiques Appliquées - CMAP \\
-  Ecole Polytechnique
-}
+% \institute[] % (optional)
+% {
+%   \inst{1}%
+%   Institut de Recherche en Informatique et Systèmes Aléatoires - IRISA \\
+%   Université Bretagne Sud
+%   \and
+%   \inst{2}%
+%   Centre de Mathématiques Appliquées - CMAP \\
+%   Ecole Polytechnique
+% }
 
 \date[]{PhD Defense, 16 May 2024, Palaiseau}
 
@@ -210,13 +209,13 @@
 
 \begin{frame}{Cross-domain alignment}
 
-  \vspace{-0.2cm}
+  \vspace{-0.5cm}
   \begin{figure}
     \centering
     \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/intro_new1.pdf}
     \vspace{-0.5cm}
-    \caption*{\scriptsize{Examples of cross-domain alignment: machine translation \parencite{Peyre16},
-    image-text summary \parencite{Peyre16}, cell alignment \parencite{Peyre16}}}
+    % \caption*{\scriptsize{Examples: ,
+    % image-text summary \footnote{\tiny{\parencite{Qiu23}}}, cell alignment \footnote{\tiny{\parencite{Huizing22a}}}}}
   \end{figure}
 
   % \begin{tikzpicture}[remember picture, overlay]
@@ -224,22 +223,25 @@
   %   {\includegraphics[scale=0.75]{OT_new/intro_new1.pdf}};
   % \end{tikzpicture}
 
-  % \begin{tikzpicture}[remember picture, overlay]
-  %   \node[shift={(-3.5cm,-1.75cm)}, text width=0.25\linewidth] at (current page.center)
-  %   {\tiny{Machine translation \parencite{Peyre16}}};
-  % \end{tikzpicture}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-3.6cm,0.75cm)}, text width=0.3\linewidth] at (current page.center)
+    {\scriptsize{Machine translation \footnotemark}};
+  \end{tikzpicture}
+  \footnotetext[1]{\tiny{\parencite{Bahdanau15}}}
 
-  % \begin{tikzpicture}[remember picture, overlay]
-  %   \node[shift={(0.5cm, -1.75cm)}, text width=0.25\linewidth] at (current page.center)
-  %   {\tiny{Image-text summary \parencite{Peyre16}}};
-  % \end{tikzpicture}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(0.6cm,0.75cm)}, text width=0.4\linewidth] at (current page.center)
+    {\scriptsize{Image-text summary \footnotemark}};
+  \end{tikzpicture}
+  \footnotetext[2]{\tiny{\parencite{Qiu23}}}
 
-  % \begin{tikzpicture}[remember picture, overlay]
-  %   \node[shift={(3.5cm, -1.75cm)}, text width=0.25\linewidth] at (current page.center)
-  %   {\tiny{Cell alignment \parencite{Peyre16}}};
-  % \end{tikzpicture}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(5.5cm,0.75cm)}, text width=0.4\linewidth] at (current page.center)
+    {\scriptsize{Cell alignment \footnotemark}};
+  \end{tikzpicture}
+  \footnotetext[3]{\tiny{\parencite{Huizing22a}}}
 
-  \vspace{-0.3cm}
+  \vspace{-1.3cm}
   \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth, keepaspectratio=true]{OT_new/intro_new2.pdf}
@@ -315,10 +317,8 @@
 \begin{minipage}[t]{0.5\linewidth}
 \begin{itemize}
   \item[$\bullet$] Metric properties + isometries.
-  \item[$\bullet$] Not the only way to compare incomparable spaces
-
-  $\Rightarrow$ Godfather: Gromov-Hausdorff dist.
   \item[$\bullet$] Computationally feasible.
+  \item[$\bullet$] Quadratic and nonconvex problem.
 \end{itemize}
 \end{minipage}%
 \hfill%
@@ -381,7 +381,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Extension 2: Shared space (1)}
+\begin{frame}{Extension 2: Shared subspace (1)}
   \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw_abstract2.pdf}
@@ -395,9 +395,9 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Extension 2: Shared space (2)}
+\begin{frame}{Extension 2: Shared subspace (2)}
   \scriptsize
-  \begin{definition}[(Informal) Fused GW \parencite{Vayer19b}]
+  \begin{definition}[Fused GW \parencite{Vayer19b}]
     For $\alpha \in [0, 1]$, the fused GW between two attributed graphs
     $\cX_1 = (D_1, F_1, \mu_1)$ and $\cX_2 = (D_2, F_2, \mu_2)$,
     where $D_k \in \bbR^{n_k \times n_k}, F_k \in \bbR^{n_k \times d}$
@@ -498,13 +498,11 @@ is defined as
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions}
-  \scriptsize
+\begin{frame}{Contributions of the thesis}
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(4cm,-7.5cm)}] at (current page.center)
-    {\includegraphics[scale=1]{OT_new/cube_intro.pdf}};
+    \node[shift={(0cm,-4cm)}] at (current page.center)
+    {\includegraphics[scale=0.8]{OT_new/cube_intro.pdf}};
   \end{tikzpicture}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -513,7 +511,7 @@ is defined as
 \section{Fused Unbalanced Gromov-Wasserstein}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivation}
+\begin{frame}{Motivation from neuroscience}
 \scriptsize
 \begin{itemize}
   \item[$\bullet$] High variability in human anatomies and functional MRI responses across subjects.
@@ -529,7 +527,7 @@ is defined as
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions}
+\begin{frame}{Fused Unbalanced Gromov-Wasserstein}
   \scriptsize
 
   \begin{tikzpicture}[remember picture, overlay]
@@ -546,10 +544,10 @@ is defined as
   \end{enumerate}
 
   \vspace{0.3cm}
-  {\color{brown}{\textbf{Publication}}}: \ul{Aligning individual brains with Fused Unbalanced Gromov-Wasserstein}.
-  Alexis Thual*, \textbf{QHT}*, Tatiana Zemskova, Nicolas Courty,
+  {\color{brown}{\textbf{Publication}}}: Aligning individual brains with Fused Unbalanced Gromov-Wasserstein.
+  Alexis Thual*, QHT*, Tatiana Zemskova, Nicolas Courty,
   Rémi Flamary, Stanislas Dehaene, and Bertrand Thirion.
-  \textit{Advances in neural information processing systems (NeurIPS)}, 2022.
+  Advances in neural information processing systems (NeurIPS), 2022.
 
 \end{frame}
 
@@ -579,7 +577,7 @@ is defined as
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/fugw.png}
-  \caption*{\scriptsize{Neuroscientific illustration of FUGW.}}
+  \caption*{\scriptsize{Illustration of FUGW on human....}}
 \end{figure}
 \end{frame}
 
@@ -688,7 +686,7 @@ is defined as
 \section{Unbalanced CO-Optimal Transport}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivation (1)}
+\begin{frame}{Motivation: alignments under presence of outliers (1)}
 \scriptsize
 \begin{figure}
   \centering
@@ -707,7 +705,7 @@ is defined as
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivation (2)}
+\begin{frame}{Motivation: alignments under presence of outliers (2)}
   \scriptsize
   \begin{figure}
     \centering
@@ -720,13 +718,13 @@ is defined as
         \fill <1> [fill=white, opacity=0.8] (0,4.57) rectangle (12, 8.7);
     \end{pgfinterruptboundingbox}
     \node <1> [draw, shape=rectangle, align=right] at (10.2, 1.6) {%
-        Good bye outliers
+        Goodbye outliers
     };
   \end{tikzpicture}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions}
+\begin{frame}{Unbalanced Co-Optimal Transport}
   \scriptsize
 
   \begin{tikzpicture}[remember picture, overlay]
@@ -743,15 +741,15 @@ is defined as
   \end{enumerate}
 
   \vspace{0.3cm}
-  {\color{brown}{\textbf{Publication}}}: \ul{Unbalanced Co-Optimal Transport}.
-  \textbf{QHT}, Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko,
+  {\color{brown}{\textbf{Publication}}}: Unbalanced Co-Optimal Transport.
+  QHT, Hicham Janati, Nicolas Courty, Rémi Flamary, Ievgen Redko,
   Pinar Demetci, and Ritambhara Singh.
-  \textit{AAAI Conference on Artificial Intelligence}, 2023.
+  AAAI Conference on Artificial Intelligence, 2023.
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Unbalanced CO-Optimal Transport (1)}
+\begin{frame}{Formulation (1)}
 \scriptsize
   \begin{definition}[{\color{blue}{Sample}} - {\color{red}{feature}} space]
     Let ${\color{blue}{(X^s, \mu^s)}}$ and ${\color{red}{(X^f, \mu^f)}}$ be compact measure spaces, where ${\color{blue}{\mu^s \in \cM^+(X^s)}}$ and ${\color{red}{\mu^f \in \cM^+(X^f)}}$. Let $\xi$ be a scalar integrable function in $L^p({\color{blue}{X^s}} \times {\color{red}{X^f}}, {\color{blue}{\mu^s}} \otimes {\color{red}{\mu^f}})$, for some $p \geq 1$. We call
@@ -786,7 +784,7 @@ is defined as
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Unbalanced CO-Optimal Transport (2)}
+\begin{frame}{Formulation (2)}
 \scriptsize
 \vspace{-0.8cm}
 \begin{definition}[UCOOT]
@@ -835,7 +833,7 @@ where:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Provable robustness of UCOOT (1)}
+\begin{frame}{Robustness property (1)}
 \scriptsize
   \begin{definition}[Noisy \sfspace space]
   Given two \textbf{clean} \sfspace spaces
@@ -873,7 +871,7 @@ where:
 
 \end{frame}
 
-\begin{frame}{Provable robustness of UCOOT (2)}
+\begin{frame}{Robustness property (2)}
 \scriptsize
 \vspace{-0.2cm}
 \begin{proposition}
@@ -939,8 +937,8 @@ where:
 \begin{frame}{Illustration 1: MNIST images}
 \scriptsize
 \begin{itemize}
-  \item[$\bullet$] Feature outliers:
-  \item[$\bullet$] Sample outliers =
+  \item[$\bullet$] Feature outliers = Gaussian noise of shape $28 \times 6$.
+  \item[$\bullet$] Sample outliers = Gaussian noise of shape $28 \times 34$.
 \end{itemize}
 \vspace{-0.5cm}
 \begin{figure}
@@ -989,7 +987,7 @@ where:
 \section{Augmented Gromov-Wasserstein}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivation}
+\begin{frame}{Isometries: too flexible vs too rigid}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \scriptsize
 
@@ -1006,7 +1004,7 @@ where:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Summary of contributions}
+\begin{frame}{Augmented Gromov-Wasserstein}
   \scriptsize
 
   \begin{tikzpicture}[remember picture, overlay]
@@ -1023,9 +1021,9 @@ where:
   \end{enumerate}
 
   \vspace{0.3cm}
-  {\color{brown}{\textbf{Publication}}}: \ul{Breaking isometric ties and introducing priors in Gromov-Wasserstein distances}.
-  Pinar Demetci, \textbf{QHT}, Ievgen Redko, and Ritambhara Singh.
-  \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2024.
+  {\color{brown}{\textbf{Publication}}}: Breaking isometric ties and introducing priors in Gromov-Wasserstein distances.
+  Pinar Demetci, QHT, Ievgen Redko, and Ritambhara Singh.
+  International Conference on Artificial Intelligence and Statistics (AISTATS), 2024.
 
 \end{frame}
 
@@ -1053,7 +1051,7 @@ where:
   \begin{itemize}
     \item[$\bullet$] Interpolating between GW and COOT.
     \item[$\bullet$] Satisfying relaxed triangle inequality.
-    \item[$\bullet$] Weak invariant to translation: shift minimum but leaves minimizer unchanged.
+    \item[$\bullet$] Weak invariant to translation: shift AGW but leaves OT plans unchanged.
   \end{itemize}
   \end{minipage}%
   \hfill%
@@ -1071,7 +1069,6 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Isometries}
 \scriptsize
-\vspace{-0.3cm}
 
 \begin{assumption}
 Given an input matrix $X \in \bbR^{n \times d}$, assume
@@ -1103,6 +1100,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \end{minipage}
 \hfill%
 \begin{minipage}[t]{0.8\linewidth}
+  {\color{brown}{\textbf{Open questions}}}
   \begin{itemize}
     \item[$\bullet$] Necessary and sufficient conditions?
     \item[$\bullet$] Why are these isometries relevant?
@@ -1185,22 +1183,21 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \begin{frame}{Conclusion and Perspectives}
 \scriptsize
 
-{\color{brown}{\textbf{Conclusion}}}
+{\color{brown}{\textbf{Contributions}}}: filled the cube.
 \begin{enumerate}
   % \setlength\itemsep{0.5em}
-  \item[1.] Filled the cube.
+  \item[1.] Established the robustness of unbalanced divergences.
+  \item[2.] Real-world applications in neuroscience, domain adaptation and computational biology.
+  \item[3.] Open-source contribution:
   \begin{itemize}
     \setlength\itemindent{5pt}
     \scriptsize
     \item[$\bullet$] FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
-    \item[$\bullet$] UCOOT: \url{}.
-    \item[$\bullet$] AGW: \url{}.
+    \item[$\bullet$] FUGW, UCOOT, AGW: Python Optimal Transport (work in progress)
   \end{itemize}
-  \item[2.] Established the robustness of unbalanced divergences.
-  \item[3.] Real-world applications in neuroscience, domain adaptation and computational biology.
 \end{enumerate}
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(6.5cm,-0.5cm)}] at (current page.center)
+  \node[shift={(6.6cm,-1.7cm)}] at (current page.center)
   {\includegraphics[scale=0.4]{OT_new/cube_summary.pdf}};
 \end{tikzpicture}
 
@@ -1217,7 +1214,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   $\Rightarrow$ More efficient UOT solvers.
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(4cm,-4cm)}] at (current page.center)
+    \node[shift={(4cm,-3.8cm)}] at (current page.center)
     {\includegraphics[scale=0.4]{OT_new/cube_future.pdf}};
   \end{tikzpicture}
 \end{enumerate}
