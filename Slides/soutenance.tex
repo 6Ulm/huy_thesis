@@ -294,45 +294,86 @@
 % \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Optimal transport across-space}
-  \vspace{-0cm}
+\begin{frame}{Cross-domain alignment with Optimal transport}
+  \vspace{-0.6cm}
   \scriptsize
   \begin{block}{Gromov-Wasserstein distance \parencite{Memoli07,Memoli11}}
   The GW distance of order $p \geq 1$ between two metric-measure spaces
   $\cX_1 = (X_1, \mu_1, d_1)$ and $\cX_2 = (X_2, \mu_2, d_2)$ is defined as
   \begin{align*}
     \gw_p^p(\cX_1, \cX_2) = \inf_{\pi \in U(\mu_1, \mu_2)}
-    \iint \left| d_1(x_1, x_1') - d_2(x_2, x_2') \right|^p
-    \rmd\pi(x_1, x_2) \; \rmd\pi(x_1', x_2'),
+    \iint \left| d_1({\color{blue}{x_1}}, {\color{red}{x_1'}}) - d_2({\color{blue}{x_2}}, {\color{red}{x_2'}}) \right|^p
+    \rmd\pi({\color{blue}{x_1, x_2}}) \; \rmd\pi({\color{red}{x_1', x_2'}}),
   \end{align*}
   where $U(\mu_1, \mu_2) = \{ \pi \in \mathcal P(X_1 \times X_2): \int_{X_2} \rmd\pi(\cdot, x_2) = \mu_1 \text{ and } \int_{X_1} \rmd\pi(x_1, \cdot) = \mu_2 \}$.
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-4cm,-5.5cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_gw.pdf}};
 \end{tikzpicture}
 
 \vspace{-0.3cm}
 \begin{minipage}[t]{0.5\linewidth}
 \begin{itemize}
-  \item[$\bullet$] Metric properties + isometries.
-  \item[$\bullet$] Computationally feasible.
+  \item[$\bullet$] Metric properties
+  \item[$\bullet$] Isometries.
   \item[$\bullet$] Quadratic and nonconvex problem.
+  \item[$\bullet$] More computationally feasible than peers.
 \end{itemize}
 \end{minipage}%
 \hfill%
 \hspace{-6cm}
-\begin{minipage}[t]{0.5\linewidth}
-  \vspace{0.5cm}
+\begin{minipage}[t]{0.55\linewidth}
+  % \vspace{0.1cm}
 \begin{figure}
   \centering
-  \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/gw.pdf}
+  \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/gw.pdf}
 \end{figure}
 \end{minipage}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Cross-domain alignment with Optimal transport}
+  \vspace{-0.6cm}
+  \scriptsize
+  \begin{block}{Gromov-Wasserstein distance \parencite{Memoli07,Memoli11}}
+  The GW distance of order $p \geq 1$ between two metric-measure spaces
+  $\cX_1 = (X_1, \mu_1, d_1)$ and $\cX_2 = (X_2, \mu_2, d_2)$ is defined as
+  \begin{align*}
+    \gw_p^p(\cX_1, \cX_2) = \inf_{\pi \in U(\mu_1, \mu_2)}
+    \iint \left| d_1({\color{blue}{x_1}}, {\color{red}{x_1'}}) - d_2({\color{blue}{x_2}}, {\color{red}{x_2'}}) \right|^p
+    \rmd\pi({\color{blue}{x_1, x_2}}) \; \rmd\pi({\color{red}{x_1', x_2'}}),
+  \end{align*}
+  where $U(\mu_1, \mu_2) = \{ \pi \in \mathcal P(X_1 \times X_2): \int_{X_2} \rmd\pi(\cdot, x_2) = \mu_1 \text{ and } \int_{X_1} \rmd\pi(x_1, \cdot) = \mu_2 \}$.
+\end{block}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[shift={(-4cm,-5.5cm)}] at (current page.center)
+  {\includegraphics[scale=0.35]{OT_new/cube_gw.pdf}};
+\end{tikzpicture}
+
+\vspace{-0.3cm}
+\begin{minipage}[t]{0.5\linewidth}
+\begin{itemize}
+  \item[$\bullet$] Metric properties
+  \item[$\bullet$] Isometries.
+  \item[$\bullet$] Quadratic and nonconvex problem.
+  \item[$\bullet$] More computationally feasible than peers.
+\end{itemize}
+\end{minipage}%
+\hfill%
+\hspace{-6cm}
+\begin{minipage}[t]{0.55\linewidth}
+  % \vspace{0.1cm}
+\begin{figure}
+  \centering
+  \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/ugw_transition.pdf}
+\end{figure}
+\end{minipage}
+
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Extension 1: Marginal relaxation}
   \vspace{-0.5cm}
@@ -348,8 +389,8 @@
     where
     \vspace{-0.5cm}
     \begin{align*}
-      \cL_{\ugw}(\pi) &= \iint \left| d_1(x_1, x_2) - d_2(y_1, y_2) \right|^p
-      \rmd\pi(x_1, y_1) \; \rmd\pi(x_2, y_2) \\
+      \cL_{\ugw}(\pi) &= \iint \left| d_1({\color{blue}{x_1}}, {\color{red}{x_1'}}) - d_2({\color{blue}{x_2}}, {\color{red}{x_2'}}) \right|^p
+      \rmd\pi({\color{blue}{x_1, x_2}}) \; \rmd\pi({\color{red}{x_1', x_2'}}) \\
       &+ \lambda_1 D_{\varphi}(\pi_{\# 1} \otimes \pi_{\# 1} | \mu_1 \otimes \mu_1)
       + \lambda_2 D_{\varphi}(\pi_{\# 2} \otimes \pi_{\# 2} | \mu_2 \otimes \mu_2).
     \end{align*}
@@ -357,7 +398,7 @@
 
   \vspace{-0.5cm}
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-2.8cm,-5.8cm)}] at (current page.center)
+    \node[shift={(-4cm,-5.5cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ugw.pdf}};
   \end{tikzpicture}
 
@@ -384,19 +425,40 @@
 \begin{frame}{Extension 2: Shared subspace (1)}
   \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw_abstract2.pdf}
+    \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw_abstract.pdf}
   \end{figure}
 
   \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/fgw.pdf}
-    % \caption*{\scriptsize{Inspired by \parencite{Vayer19b}}}
+    \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw.pdf}
+  \end{figure}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    % we don't want to affect the bounding box if the rectangle is too large
+    \begin{pgfinterruptboundingbox}
+        % the following coords. may need to be changed to suit your slides
+        \fill <1> [fill=white, opacity=0.8] (0,0.6) rectangle (10, 4.5);
+    \end{pgfinterruptboundingbox}
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Extension 2: Shared subspace (1)}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw_abstract.pdf}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth, keepaspectratio=true]{OT_new/fgw.pdf}
   \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Extension 2: Shared subspace (2)}
   \scriptsize
+  \vspace{-0.7cm}
   \begin{definition}[Fused GW \parencite{Vayer19b}]
     For $\alpha \in [0, 1]$, the fused GW between two attributed graphs
     $\cX_1 = (D_1, F_1, \mu_1)$ and $\cX_2 = (D_2, F_2, \mu_2)$,
@@ -410,19 +472,20 @@
     \begin{align*}
       \cL_{\fgw}(\pi) = (1 - \alpha)
       \sum_{{\color{blue}{i}},{\color{blue}{j}},{\color{red}{k}},{\color{red}{l}}}
-      |(D_1)_{{\color{blue}{i}} {\color{red}{k}}} - (D_2)_{{\color{blue}{j}}{\color{red}{l}}}|^p {\color{blue}{\pi_{ij}}} {\color{red}{\pi_{kl}}}
-      + \alpha \sum_{ij} ||(F_1)_i - (F_2)_j||^q \pi_{ij}.
+      |(D_1)_{{\color{blue}{i}} {\color{red}{k}}} - (D_2)_{{\color{blue}{j}}{\color{red}{l}}}|^p \pi_{\color{blue}{{ij}}} \pi_{\color{red}{{kl}}}
+      + \alpha \sum_{{\color{blue}{i,j}}} ||(F_1)_{\color{blue}{i}} - (F_2)_{\color{blue}{j}}||^q \pi_{\color{blue}{{ij}}}.
     \end{align*}
   \end{definition}
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-2.8cm,-5.8cm)}] at (current page.center)
+    \node[shift={(-4cm,-5.5cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_fgw.pdf}};
   \end{tikzpicture}
 
+  \vspace{-0.3cm}
   \begin{minipage}[t]{0.6\linewidth}
     \begin{itemize}
-      \item[$\bullet$] Interpolation between GW and Wasserstein distances.
+      \item[$\bullet$] Interpolation between GW and Wasserstein.
       \item[$\bullet$] Feature-preserving isometries.
     \end{itemize}
     \end{minipage}%
@@ -432,29 +495,61 @@
       \vspace{-0.cm}
     \begin{figure}
       \centering
-      \includegraphics[width=\linewidth, keepaspectratio=true]{OT_new/fgw.pdf}
+      \includegraphics[width=1.1\linewidth, keepaspectratio=true]{OT_new/fgw.pdf}
       % \caption*{\scriptsize{Inspired by \parencite{Vayer19b}}}
     \end{figure}
     \end{minipage}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Extension 2: Shared subspace (2)}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth, keepaspectratio=true]{OT_new/coot_motiv.pdf}
+  \end{figure}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Extension 3: Bilinear relaxation (1)}
   \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_new2.pdf}
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_new.pdf}
   \end{figure}
 
   \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
+    \caption*{\scriptsize{Sample and feature alignments in discrete setting.}}
+  \end{figure}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    % we don't want to affect the bounding box if the rectangle is too large
+    \begin{pgfinterruptboundingbox}
+        % the following coords. may need to be changed to suit your slides
+        \fill <1> [fill=white, opacity=0.8] (0,0) rectangle (12, 5);
+    \end{pgfinterruptboundingbox}
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Extension 3: Bilinear relaxation (1)}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_new.pdf}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
+    \caption*{\scriptsize{Sample and feature alignments in discrete setting.}}
   \end{figure}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Extension 3: Bilinear relaxation (2)}
 \scriptsize
-
+\vspace{-0.5cm}
 \begin{definition}[Discrete COOT \parencite{Redko20}]
   The Co-Optimal Transport distance between
   two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
@@ -488,7 +583,7 @@ is defined as
   \hfill%
   \hspace{-6cm}
   \begin{minipage}[t]{0.55\linewidth}
-    \vspace{0.5cm}
+    \vspace{0.2cm}
   \begin{figure}
     \centering
     \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
@@ -561,8 +656,10 @@ is defined as
   $\cX^t = (D^t, F^t, \mu^t)$ is defined as
 \begin{align*}
   \fugw(\cX^s, \cX^t) = \inf_{P \in \bbR^{m \times n}_{\geq 0}} \quad
-  &(1 - \alpha) \sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} P_{kl}
-  + \alpha \sum_{i,j} || F^s_i - F^t_j||_2^2 P_{ij} \\
+  &(1 - \alpha) \sum_{{\color{blue}{i, j}},{\color{red}{k, l}}} |
+  D^s_{{\color{blue}{i}}{\color{red}{k}}} - D^t_{{\color{blue}{j}}{\color{red}{l}}}|^2
+  P_{\color{blue}{ij}} P_{\color{red}{kl}}
+  + \alpha \sum_{{\color{blue}{i, j}}} || F^s_{\color{blue}{i}} - F^t_{\color{blue}{j}}||_2^2 P_{\color{blue}{ij}} \\
   &+ \lambda \Big[ \kl(P_{\# 1} \otimes P_{\# 1} \vert w^s \otimes w^s)
   + \kl(P_{\# 2} \otimes P_{\# 2} \vert w^t \otimes w^t) \Big].
 \end{align*}
@@ -577,7 +674,7 @@ is defined as
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/fugw.png}
-  \caption*{\scriptsize{Illustration of FUGW on human....}}
+  \caption*{\scriptsize{Illustration of FUGW on human cortical surfaces}}
 \end{figure}
 \end{frame}
 
@@ -608,32 +705,33 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Optimization}
 \scriptsize
-\vspace{-1.5cm}
+\vspace{-1.3cm}
 \begin{align*}
-  \cL_{\fugw}(P, Q) &=
-  (1 - \alpha) \sum_{i,j,k,l} | D^s_{ik} - D^t_{jl}|^2 P_{ij} Q_{kl}
-  + \frac{\alpha}{2} \Big[ \sum_{i,j} || F^s_i - F^t_j||_2^2 (P_{ij} + Q_{ij}) \Big] \\
-  &+ \lambda \Big[ \kl(P_{\# 1} \otimes Q_{\# 1} \vert w^s \otimes w^s)
-  + \kl(P_{\# 2} \otimes Q_{\# 2} \vert w^t \otimes w^t) \Big].
+  \cL_{\fugw}({\color{blue}{P}}, {\color{red}{Q}}) &=
+  (1 - \alpha) \sum_{{\color{blue}{i, j}},{\color{red}{k, l}}} |
+  D^s_{{\color{blue}{i}}{\color{red}{k}}} - D^t_{{\color{blue}{j}}{\color{red}{l}}}|^2
+  {\color{blue}{P_{ij}}} {\color{red}{Q_{kl}}} \\
+  &+ \frac{\alpha}{2} \sum_{{\color{blue}{i, j}}} || F^s_{\color{blue}{i}} - F^t_{\color{blue}{j}}||_2^2 {\color{blue}{P_{ij}}}
+  + \frac{\alpha}{2} \sum_{{\color{red}{k, l}}} || F^s_{{\color{red}{k}}} - F^t_{{\color{red}{l}}}||_2^2 {\color{red}{Q_{kl}}} \\
+  &+ \lambda \Big[ \kl({\color{blue}{P}}_{\# 1} \otimes {\color{red}{Q}}_{\# 1} \vert w^s \otimes w^s)
+  + \kl({\color{blue}{P}}_{\# 2} \otimes {\color{red}{Q}}_{\# 2} \vert w^t \otimes w^t) \Big].
 \end{align*}
 \vspace{-0.7cm}
 \begin{align*}
-  \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{P = Q}}
-  \cL_{\fugw}(P, Q) &\geq \inf_{\substack{P_{\#1} = Q_{\#1} \\ P_{\#2} = Q_{\#2}}}
-  \cL_{\fugw}(P, Q) \triangleq \widetilde{\fugw}(\cX^s, \cX^t) \\
-  &\geq \inf_{\substack{m(P) = m(Q)}}
-  \cL_{\fugw}(P, Q) \triangleq \text{LB-FUGW} (\cX^s, \cX^t).
+  \quad \fugw(\cX^s, \cX^t) = \inf_{\substack{{\color{blue}{P}} = {\color{red}{Q}}}}
+  \cL_{\fugw}({\color{blue}{P}}, {\color{red}{Q}}) &\geq \inf_{\substack{{\color{blue}{P}}_{\#1} = {\color{red}{Q}}_{\#1} \\ {\color{blue}{P}}_{\#2} = {\color{red}{Q}}_{\#2}}}
+  \cL_{\fugw}({\color{blue}{P}}, {\color{red}{Q}}) \triangleq \widetilde{\fugw}(\cX^s, \cX^t) \\
+  &\geq \inf_{\substack{m({\color{blue}{P}}) = m({\color{red}{Q}})}}
+  \cL_{\fugw}({\color{blue}{P}}, {\color{red}{Q}}) \triangleq \text{LB-FUGW} (\cX^s, \cX^t).
 \end{align*}
-\vspace{-0.4cm}
+\vspace{-0.5cm}
 \begin{itemize}
   \item[$\bullet$] LB-FUGW is more amenable to solve
-  $\Rightarrow$ use LB-FUGW as approx. of FUGW.
+  $\Rightarrow$ Use LB-FUGW as approx. of FUGW.
   \item[$\bullet$] Solve LB-FUGW (with/without entropic reg.)
-  by Block Coordinate Descent (BCD)
-
-  $\Rightarrow$ Each BCD iteration = solving two UOT problems.
+  by Block Coordinate Descent (BCD).
 \end{itemize}
-% \vspace{-0.2cm}
+\vspace{-0.2cm}
 \begin{block}{How good is LB-FUGW?}
   If the distances $D^s$ and $D^t$ are of the forms: $D^s_{ij} = f_i + f_j + A_{ij}$ and
   $D^t_{kl} = g_k + g_l + B_{kl}$, where $f, g$ are vectors in $\bbR^m, \bbR^n$, respectively,
@@ -752,19 +850,22 @@ is defined as
 \begin{frame}{Formulation (1)}
 \scriptsize
   \begin{definition}[{\color{blue}{Sample}} - {\color{red}{feature}} space]
-    Let ${\color{blue}{(X^s, \mu^s)}}$ and ${\color{red}{(X^f, \mu^f)}}$ be compact measure spaces, where ${\color{blue}{\mu^s \in \cM^+(X^s)}}$ and ${\color{red}{\mu^f \in \cM^+(X^f)}}$. Let $\xi$ be a scalar integrable function in $L^p({\color{blue}{X^s}} \times {\color{red}{X^f}}, {\color{blue}{\mu^s}} \otimes {\color{red}{\mu^f}})$, for some $p \geq 1$. We call
+    Let ${\color{blue}{(X^s, \mu^s)}}$ and ${\color{red}{(X^f, \mu^f)}}$ be compact measure spaces, where ${\color{blue}{\mu^s \in \cM^+(X^s)}}$ and ${\color{red}{\mu^f \in \cM^+(X^f)}}$. Let $c$ be a scalar integrable function in $L^p({\color{blue}{X^s}} \times {\color{red}{X^f}}, {\color{blue}{\mu^s}} \otimes {\color{red}{\mu^f}})$, for some $p \geq 1$. We call
     \begin{itemize}
       \setlength\itemindent{10pt}
       \item[$\bullet$] The triplet
-      $\cX = \left({\color{blue}{(X^s, \mu^s)}}, {\color{red}{(X^f, \mu^f)}}, \xi \right)$
+      $\cX = \left({\color{blue}{(X^s, \mu^s)}}, {\color{red}{(X^f, \mu^f)}}, c \right)$
       a \underline{\textit{{\color{blue}{sample}} - {\color{red}{feature}} space}}
       (\sfspace space).
 
-      \item[$\bullet$] The function $\xi$ an \textit{\underline{interaction}}.
+      \item[$\bullet$] The function $c$ an \textit{\underline{interaction}}.
     \end{itemize}
   \end{definition}
-  \vspace{-0.2cm}
-
+  \begin{itemize}
+    \setlength\itemindent{5pt}
+    \item[$\bullet$] Ours $\neq$ \parencite{Chowdhury21b}: bounded measurable function on measure spaces.
+  \end{itemize}
+s
   \begin{tikzpicture}[remember picture, overlay]
     \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
@@ -789,8 +890,8 @@ is defined as
 \vspace{-0.8cm}
 \begin{definition}[UCOOT]
   Given $\lambda_1, \lambda_2 >0$, the unbalanced COOT of order $p \geq 1$
-  between two \sfspace spaces $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, \xi_1 \right)$
-  and $\cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, \xi_2 \right)$ is defined by
+  between two \sfspace spaces $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, c_1 \right)$
+  and $\cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, c_2 \right)$ is defined by
   \begin{align*}
 \label{eq:ucoot}
     \ucoot_{\lambda}(\cX_1, \cX_2) :=
@@ -802,7 +903,7 @@ is defined as
 where:
 \begin{align*}
     \cL_{\ucoot}(\pis, \pif) &= \underbrace{\iint
-    |\xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}})|^p \; {\color{blue}{\mathrm d\pi^s(x_1^s, x_2^s)}} \;
+    |c_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - c_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}})|^p \; {\color{blue}{\mathrm d\pi^s(x_1^s, x_2^s)}} \;
     {\color{red}{\mathrm d \pi^f(x_1^f, x_2^f)}}}_{\text{transport cost of {\color{blue}{sample}}-{\color{red}{feature}} pairs}} \\
     &+ \underbrace{\sum_{k=1}^2\lambda_k \; \text{KL}({\color{blue}{\pi^s_{\# k}}} \otimes {\color{red}{\pi^f_{\# k}}} \vert {\color{blue}{\mu^s_k}} \otimes {\color{red}{\mu^f_k}})}_{\text{mass destruction / creation penalty}}.
 \end{align*}
@@ -835,13 +936,13 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Robustness property (1)}
 \scriptsize
-  \begin{definition}[Noisy \sfspace space]
+  \begin{definition}[Noisy {\color{blue}{sample}} - {\color{red}{feature}} space]
   Given two \textbf{clean} \sfspace spaces
-  $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, \xi_1 \right),
-  \cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, \xi_2 \right)$.
+  $\cX_1 = \left({\color{blue}{(X_1^s, \mu_1^s)}}, {\color{red}{(X_1^f, \mu_1^f)}}, c_1 \right),
+  \cX_2 = \left({\color{blue}{(X_2^s, \mu_2^s)}}, {\color{red}{(X_2^f, \mu_2^f)}}, c_2 \right)$.
   \begin{enumerate}
     \setlength\itemindent{5pt}
-    \item[1.] \textbf{Noisy} \sfspace space: $\widetilde{\cX_1} = \left( {\color{blue}{(X^s_1 \cup O^s, \widetilde{\mu}^s_1)}}, {\color{red}{(X^f_1 \cup O^f, \widetilde{\mu}^f_1)}}, \xi_1 \right)$, where
+    \item[1.] \textbf{Noisy} \sfspace space: $\widetilde{\cX_1} = \left( {\color{blue}{(X^s_1 \cup O^s, \widetilde{\mu}^s_1)}}, {\color{red}{(X^f_1 \cup O^f, \widetilde{\mu}^f_1)}}, c_1 \right)$, where
     \begin{itemize}
       \scriptsize
       \setlength\itemindent{10pt}
@@ -853,16 +954,28 @@ where:
 
     \item[2.] Minimal cost: $\Delta_{0} := \min_{\substack{
       {\color{blue}{x_1^s \in O^s}}, {\color{red}{x_1^f \in O^f}} \\
-      {\color{blue}{x_2^s \in X_2^s}}, {\color{red}{x_2^f \in X_2^f}}}}\quad \left| \xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}}) \right|^p$.
+      {\color{blue}{x_2^s \in X_2^s}}, {\color{red}{x_2^f \in X_2^f}}}}\quad \left| c_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - c_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}}) \right|^p$.
 
     \item[3.] Maximal cost: $\Delta_{\infty} := \max_{
     \substack{
     {\color{blue}{x_1^s \in X_1^s \cup O^s}}, {\color{red}{x_1^f \in X_1^f \cup O^f}} \\
     {\color{blue}{x_2^s \in X_2^s}}, {\color{red}{x_2^f \in X_2^f}}
-    }} \quad \left| \xi_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - \xi_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}}) \right|^p$.
+    }} \quad \left| c_1({\color{blue}{x_1^s}}, {\color{red}{x_1^f}}) - c_2({\color{blue}{x_2^s}}, {\color{red}{x_2^f}}) \right|^p$.
   \end{enumerate}
   \end{definition}
-  $\Rightarrow$ Both costs can explode if the outliers are too impactful.
+
+  \begin{minipage}[t]{0.7\linewidth}
+    $\Rightarrow$ Both costs can explode if the outliers are too impactful.
+  \end{minipage}%
+    \hfill%
+    \hspace{-6cm}
+    \begin{minipage}[t]{0.3\linewidth}
+      \vspace{-0.5cm}
+    \begin{figure}
+      \centering
+      \includegraphics[width=1.25\linewidth, keepaspectratio=true]{OT_new/noisy_toy.pdf}
+    \end{figure}
+  \end{minipage}
 
   \begin{tikzpicture}[remember picture, overlay]
     \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
@@ -993,12 +1106,13 @@ where:
 
 \begin{enumerate}
   \item[1.] Isometries are useful for across-space comparison.
-  \item[2.] All isometries are created equal, but some are more equal than others.
-  \item[3.] GW induces all isometries but COOT is good at exploiting data.
+  \item[2.] Isometry farm: "all isometries are created equal, but some are more equal than others".
+  \item[3.] GW induces all isometries but maybe too many.
+  \item[4.] COOT is good at exploiting data but maybe too rigid with isometries.
 \end{enumerate}
 \begin{figure}
     \centering
-    \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/div_vs_angle.pdf}
+    \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/div_vs_angle.pdf}
 \end{figure}
 
 \end{frame}
@@ -1043,7 +1157,7 @@ where:
 \end{block}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.2cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
 \end{tikzpicture}
 
@@ -1051,16 +1165,16 @@ where:
   \begin{itemize}
     \item[$\bullet$] Interpolating between GW and COOT.
     \item[$\bullet$] Satisfying relaxed triangle inequality.
-    \item[$\bullet$] Weak invariant to translation: shift AGW but leaves OT plans unchanged.
+    \item[$\bullet$] Translation shifts AGW but not OT plans.
   \end{itemize}
   \end{minipage}%
   \hfill%
   \hspace{-6cm}
-  \begin{minipage}[t]{0.45\linewidth}
+  \begin{minipage}[t]{0.5\linewidth}
     \vspace{-0.2cm}
   \begin{figure}
     \centering
-    \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/agw_alpha.pdf}
+    \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/agw_alpha.pdf}
   \end{figure}
   \end{minipage}
 
@@ -1071,10 +1185,10 @@ where:
 \scriptsize
 
 \begin{assumption}
-Given an input matrix $X \in \bbR^{n \times d}$, assume
+Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, assume
 \begin{enumerate}
   \setlength\itemindent{15pt}
-  \item[(A1)] Low-dimensional setting: $n \geq d$.
+  \item[(A1)] Low-dimensional setting: ${\color{blue}{n}} \geq {\color{red}{d}}$.
   \item[(A2)] $X$ is full rank: easily met by preprocessing.
   \item[(A3)] $X$ has $d$ distinct singular values. Fact:
   set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
@@ -1109,9 +1223,131 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \end{minipage}%
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.2cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
 \end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  % we don't want to affect the bounding box if the rectangle is too large
+  \begin{pgfinterruptboundingbox}
+      % the following coords. may need to be changed to suit your slides
+      \fill <1> [fill=white, opacity=0.8] (-0.2,2.2) rectangle (12,5.4);
+  \end{pgfinterruptboundingbox}
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  % we don't want to affect the bounding box if the rectangle is too large
+  \begin{pgfinterruptboundingbox}
+      % the following coords. may need to be changed to suit your slides
+      \fill <1> [fill=white, opacity=0.8] (1.5,0.3) rectangle (8,2.26);
+  \end{pgfinterruptboundingbox}
+\end{tikzpicture}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Isometries}
+  \scriptsize
+
+  \begin{assumption}
+    Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, assume
+    \begin{enumerate}
+      \setlength\itemindent{15pt}
+      \item[(A1)] Low-dimensional setting: ${\color{blue}{n}} \geq {\color{red}{d}}$.
+      \item[(A2)] $X$ is full rank: easily met by preprocessing.
+      \item[(A3)] $X$ has $d$ distinct singular values. Fact:
+    set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
+  \end{enumerate}
+  \end{assumption}
+  \begin{proposition}
+    Given two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
+    and $\cX_2 = (X_2, \mstg, \mftg)$,
+    \begin{itemize}
+      \setlength\itemindent{15pt}
+      \item[$(\Rightarrow)$] If $\mssrc = \mstg$ and
+      $X_2$ is obtained by permuting columns of $X_1$ via
+      the permutation $\sigma_c$ (so $\mftg = (\sigma_c)_{\#} \mfsrc$),
+      then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
+      \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
+      if $\agw_{\alpha}(\cX_1, \cX_2) = 0$, then $X_1$ and $X_2$ must have the same shape.
+      Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
+      and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
+    \end{itemize}
+  \end{proposition}
+
+  \begin{minipage}[t]{0.2\linewidth}
+  \end{minipage}
+  \hfill%
+  \begin{minipage}[t]{0.8\linewidth}
+    {\color{brown}{\textbf{Open questions}}}
+    \begin{itemize}
+      \item[$\bullet$] Necessary and sufficient conditions?
+      \item[$\bullet$] Why are these isometries relevant?
+      \item[$\bullet$] High-dimensional setting?
+    \end{itemize}
+  \end{minipage}%
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-3.7cm,-6.2cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
+  \end{tikzpicture}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    % we don't want to affect the bounding box if the rectangle is too large
+    \begin{pgfinterruptboundingbox}
+        % the following coords. may need to be changed to suit your slides
+        \fill <1> [fill=white, opacity=0.8] (1.5,0.3) rectangle (8,2.26);
+    \end{pgfinterruptboundingbox}
+  \end{tikzpicture}
+
+  \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Isometries}
+  \scriptsize
+
+  \begin{assumption}
+  Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, assume
+  \begin{enumerate}
+    \setlength\itemindent{15pt}
+    \item[(A1)] Low-dimensional setting: ${\color{blue}{n}} \geq {\color{red}{d}}$.
+    \item[(A2)] $X$ is full rank: easily met by preprocessing.
+    \item[(A3)] $X$ has $d$ distinct singular values. Fact:
+    set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
+  \end{enumerate}
+  \end{assumption}
+  \begin{proposition}
+    Given two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
+    and $\cX_2 = (X_2, \mstg, \mftg)$,
+    \begin{itemize}
+      \setlength\itemindent{15pt}
+      \item[$(\Rightarrow)$] If $\mssrc = \mstg$ and
+      $X_2$ is obtained by permuting columns of $X_1$ via
+      the permutation $\sigma_c$ (so $\mftg = (\sigma_c)_{\#} \mfsrc$),
+      then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
+      \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
+      if $\agw_{\alpha}(\cX_1, \cX_2) = 0$, then $X_1$ and $X_2$ must have the same shape.
+      Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
+      and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
+    \end{itemize}
+  \end{proposition}
+
+  \begin{minipage}[t]{0.2\linewidth}
+  \end{minipage}
+  \hfill%
+  \begin{minipage}[t]{0.8\linewidth}
+    {\color{brown}{\textbf{Open questions}}}
+    \begin{itemize}
+      \item[$\bullet$] Necessary and sufficient conditions?
+      \item[$\bullet$] Why are these isometries relevant?
+      \item[$\bullet$] High-dimensional setting?
+    \end{itemize}
+  \end{minipage}%
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-3.7cm,-6.2cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
+  \end{tikzpicture}
 
 \end{frame}
 
@@ -1172,12 +1408,13 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
 \end{tikzpicture}
 
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(-3.7cm,-6cm)}] at (current page.center)
+  \node[shift={(-3.7cm,-6.2cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_agw.pdf}};
 \end{tikzpicture}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Perspectives}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conclusion and Perspectives}
@@ -1193,7 +1430,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
     \setlength\itemindent{5pt}
     \scriptsize
     \item[$\bullet$] FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
-    \item[$\bullet$] FUGW, UCOOT, AGW: Python Optimal Transport (work in progress)
+    \item[$\bullet$] FUGW, UCOOT, AGW: Python Optimal Transport (work in progress).
   \end{itemize}
 \end{enumerate}
 \begin{tikzpicture}[remember picture, overlay]
@@ -1314,7 +1551,7 @@ Given an input matrix $X \in \bbR^{n \times d}$, assume
   \vspace{-1cm}
 \begin{enumerate}
   \item Homogeneity:
-  for $t\cX = \left({\color{blue}{(X^s, t\mu^s)}}, {\color{red}{(X^f, t\mu^f)}}, \xi \right)$
+  for $t\cX = \left({\color{blue}{(X^s, t\mu^s)}}, {\color{red}{(X^f, t\mu^f)}}, c \right)$
   \begin{align*}
     \ucoot_{\lambda}(t\cX_1, t\cX_2) = t^2 \ucoot_{\lambda}(\cX_1, \cX_2).
   \end{align*}
