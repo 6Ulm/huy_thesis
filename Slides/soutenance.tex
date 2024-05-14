@@ -34,6 +34,10 @@
 \usepackage{tikz}
 % \usetikzlibrary{shapes,positioning,arrows,shapes.arrows, decorations.markings,arrows.meta,decorations.pathreplacing}
 \usetikzlibrary{backgrounds,decorations.pathreplacing,calc,tikzmark}
+\newcommand{\AxisRotator}[1][rotate=0]{%
+    \tikz [x=0.4cm,y=0.60cm,line width=.2ex,-stealth,#1]
+    \draw (-54,-5.5) arc (-150:150:1 and 1);%
+}
 
 \setbeamertemplate{headline}{}
 
@@ -50,7 +54,6 @@
 \newcommand{\gw}{\text{GW}}
 \newcommand{\ot}{\text{OT}}
 \newcommand{\coot}{\text{COOT}}
-
 \newcommand{\ugw}{\text{UGW}}
 \newcommand{\agw}{\text{AGW}}
 \newcommand{\uot}{\text{UOT}}
@@ -133,9 +136,6 @@
   \end{frame}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
-
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{frame}{Cross-domain alignment}
 % \scriptsize
@@ -207,49 +207,49 @@
 
 % \end{frame}
 
-\begin{frame}{Cross-domain alignment}
+% \begin{frame}{Cross-domain alignment}
 
-  \vspace{-0.5cm}
-  \begin{figure}
-    \centering
-    \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/intro_new1.pdf}
-    \vspace{-0.5cm}
-    % \caption*{\scriptsize{Examples: ,
-    % image-text summary \footnote{\tiny{\parencite{Qiu23}}}, cell alignment \footnote{\tiny{\parencite{Huizing22a}}}}}
-  \end{figure}
+%   \vspace{-0.5cm}
+%   \begin{figure}
+%     \centering
+%     \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/intro_new1.pdf}
+%     \vspace{-0.5cm}
+%     % \caption*{\scriptsize{Examples: ,
+%     % image-text summary \footnote{\tiny{\parencite{Qiu23}}}, cell alignment \footnote{\tiny{\parencite{Huizing22a}}}}}
+%   \end{figure}
 
-  % \begin{tikzpicture}[remember picture, overlay]
-  %   \node[shift={(0cm,1.8cm)}] at (current page.center)
-  %   {\includegraphics[scale=0.75]{OT_new/intro_new1.pdf}};
-  % \end{tikzpicture}
+%   % \begin{tikzpicture}[remember picture, overlay]
+%   %   \node[shift={(0cm,1.8cm)}] at (current page.center)
+%   %   {\includegraphics[scale=0.75]{OT_new/intro_new1.pdf}};
+%   % \end{tikzpicture}
 
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(-3.6cm,0.75cm)}, text width=0.3\linewidth] at (current page.center)
-    {\scriptsize{Machine translation \footnotemark}};
-  \end{tikzpicture}
-  \footnotetext[1]{\tiny{\parencite{Bahdanau15}}}
+%   \begin{tikzpicture}[remember picture, overlay]
+%     \node[shift={(-3.6cm,0.75cm)}, text width=0.3\linewidth] at (current page.center)
+%     {\scriptsize{Machine translation \footnotemark}};
+%   \end{tikzpicture}
+%   \footnotetext[1]{\tiny{\parencite{Bahdanau15}}}
 
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(0.6cm,0.75cm)}, text width=0.4\linewidth] at (current page.center)
-    {\scriptsize{Image-text summary \footnotemark}};
-  \end{tikzpicture}
-  \footnotetext[2]{\tiny{\parencite{Qiu23}}}
+%   \begin{tikzpicture}[remember picture, overlay]
+%     \node[shift={(0.6cm,0.75cm)}, text width=0.4\linewidth] at (current page.center)
+%     {\scriptsize{Image-text summary \footnotemark}};
+%   \end{tikzpicture}
+%   \footnotetext[2]{\tiny{\parencite{Qiu23}}}
 
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(5.5cm,0.75cm)}, text width=0.4\linewidth] at (current page.center)
-    {\scriptsize{Cell alignment \footnotemark}};
-  \end{tikzpicture}
-  \footnotetext[3]{\tiny{\parencite{Huizing22a}}}
+%   \begin{tikzpicture}[remember picture, overlay]
+%     \node[shift={(5.5cm,0.75cm)}, text width=0.4\linewidth] at (current page.center)
+%     {\scriptsize{Cell alignment \footnotemark}};
+%   \end{tikzpicture}
+%   \footnotetext[3]{\tiny{\parencite{Huizing22a}}}
 
-  \vspace{-1.3cm}
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth, keepaspectratio=true]{OT_new/intro_new2.pdf}
-    \vspace{-0.2cm}
-    \caption*{\scriptsize{Abstraction of weighted space.}}
-  \end{figure}
+%   \vspace{-1.3cm}
+%   \begin{figure}
+%     \centering
+%     \includegraphics[width=0.75\linewidth, keepaspectratio=true]{OT_new/intro_new2.pdf}
+%     \vspace{-0.2cm}
+%     \caption*{\scriptsize{Abstraction of weighted space.}}
+%   \end{figure}
 
-\end{frame}
+% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{frame}{Why Gromov-Wasserstein distance?}
@@ -293,6 +293,76 @@
 % \end{align*}
 % \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Cross-domain alignment}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.65\linewidth, keepaspectratio=true]{OT_new/translation.png}
+    \caption*{\scriptsize{Machine translation \parencite{Bahdanau15}}}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Cross-domain alignment}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/img2text.png}
+    \caption*{\scriptsize{Image-text summary \parencite{Qiu23}}}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Cross-domain alignment}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/xSp_cellAlign.png}
+    \caption*{\scriptsize{Cell alignments \parencite{Demetci23}}}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Cross-domain alignment}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/brain.png}
+    \caption*{\scriptsize{Human brain alignments \parencite{Thual22}}}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Alignment with Optimal transport}
+  \vspace*{0.5cm}
+  \scriptsize
+  \begin{itemize}
+    \setlength\itemsep{0.5cm}
+
+    \item[$\bullet$] {\color{brown}{\textbf{Transport plan:}}}
+    $\ot(\cX_1, \cX_2) = \inf_{\pi} \cL_{OT}(\pi)$.
+    \vspace*{0.2cm}
+    \begin{enumerate}
+      \scriptsize
+      \setlength\itemindent{10pt}
+      \setlength\itemsep{0.2cm}
+      \item[1.] Position of alignments.
+      \item[2.] Importance of alignments.
+    \end{enumerate}
+    \item[$\bullet$] {\color{brown}{\textbf{Inputs of OT:}}} weighted spaces.
+  \end{itemize}
+
+  \vspace*{-1cm}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.65\linewidth, keepaspectratio=true]{OT_new/intro_new2.pdf}
+    \vspace*{-1.2cm}
+    \caption*{\scriptsize{Abstraction of weighted space.}}
+  \end{figure}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-4cm,-5.5cm)}] at (current page.center)
+    {\includegraphics[scale=0.35]{OT_new/cube_empty.pdf}};
+  \end{tikzpicture}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Cross-domain alignment with Optimal transport}
   \vspace{-0.6cm}
@@ -319,7 +389,6 @@
   \item[$\bullet$] Metric properties
   \item[$\bullet$] Isometries.
   \item[$\bullet$] Quadratic and nonconvex problem.
-  \item[$\bullet$] More computationally feasible than peers.
 \end{itemize}
 \end{minipage}%
 \hfill%
@@ -360,7 +429,6 @@
   \item[$\bullet$] Metric properties
   \item[$\bullet$] Isometries.
   \item[$\bullet$] Quadratic and nonconvex problem.
-  \item[$\bullet$] More computationally feasible than peers.
 \end{itemize}
 \end{minipage}%
 \hfill%
@@ -407,15 +475,16 @@
     \item[$\bullet$] Quadratic div: $D_{\varphi}(p \otimes p | q \otimes q) \neq D_{\varphi}(p | q)$.
     \item[$\bullet$] In practice: $D_{\varphi} = \text{Kullback-Leibler div}$.
     \item[$\bullet$] Characterizing isometries.
+    \item[$\bullet$] Partial GW \parencite{Chapel20}.
   \end{itemize}
   \end{minipage}%
   \hfill%
   \hspace{-6cm}
-  \begin{minipage}[t]{0.5\linewidth}
+  \begin{minipage}[t]{0.45\linewidth}
     \vspace{0.2cm}
   \begin{figure}
     \centering
-    \includegraphics[width=1.1\linewidth, keepaspectratio=true]{OT_new/ugw.pdf}
+    \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/ugw.pdf}
   \end{figure}
   \end{minipage}
 
@@ -520,7 +589,7 @@
   \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
-    \caption*{\scriptsize{Sample and feature alignments in discrete setting.}}
+    \caption*{\scriptsize{{\color{blue}{Sample}} and {\color{red}{feature}} transport plans in discrete setting.}}
   \end{figure}
 
   \begin{tikzpicture}[remember picture, overlay]
@@ -542,14 +611,14 @@
   \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
-    \caption*{\scriptsize{Sample and feature alignments in discrete setting.}}
+    \caption*{\scriptsize{{\color{blue}{Sample}} and {\color{red}{feature}} transport plans in discrete setting.}}
   \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Extension 3: Bilinear relaxation (2)}
 \scriptsize
-\vspace{-0.5cm}
+\vspace{-0.8cm}
 \begin{definition}[Discrete COOT \parencite{Redko20}]
   The Co-Optimal Transport distance between
   two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$
@@ -570,13 +639,18 @@ is defined as
   {\includegraphics[scale=0.35]{OT_new/cube_coot.pdf}};
 \end{tikzpicture}
 
-\vspace{-0.3cm}
+\vspace{-0.5cm}
 \begin{minipage}[t]{0.6\linewidth}
   \begin{itemize}
     \item[$\bullet$] Continuous extension \parencite{Chowdhury21b}.
     \item[$\bullet$] Comparing \underline{arbitrary-size} matrices.
-    \item[$\bullet$] Meaningful {\color{red}{feature}} coupling $\pif$.
-    \item[$\bullet$] Metric properties.
+    \item[$\bullet$] {\color{red}{Feature}} coupling:
+    \begin{enumerate}
+      \scriptsize
+      \setlength\itemindent{10pt}
+      \item[1.] Is meaningful.
+      \item[2.] Improves {\color{blue}{sample}} alignments.
+    \end{enumerate}
     \item[$\bullet$] Connection with GW distance.
   \end{itemize}
   \end{minipage}%
@@ -586,7 +660,7 @@ is defined as
     \vspace{0.2cm}
   \begin{figure}
     \centering
-    \includegraphics[width=1.15\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
+    \includegraphics[width=1.2\linewidth, keepaspectratio=true]{OT_new/coot_matrix_ot.pdf}
   \end{figure}
 \end{minipage}
 
@@ -609,16 +683,24 @@ is defined as
 \begin{frame}{Motivation from neuroscience}
 \scriptsize
 \begin{itemize}
+  \setlength\itemsep{0.3cm}
   \item[$\bullet$] High variability in human anatomies and functional MRI responses across subjects.
-  \item[$\bullet$] Lack of principled framework for brain alignments.
-  \item[$\bullet$] Averaging surface brains results in loss of individual details.
+
+  $\Rightarrow$ Allow for adaptation of inter-individual variability.
+
+  \item[$\bullet$] Averaging functional surface brains results in loss of individual details.
+
+  $\Rightarrow$ Generate sharper barycenters for functional signals.
+
+  \item[$\bullet$] Lack of efficient methods for brain alignments.
+
+  $\Rightarrow$ Exploit anatomical and functional information.
 \end{itemize}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/intro_variation.pdf}
   % \caption*{\scriptsize{High variability in human anatomies and functional MRI responses across subjects.}}
 \end{figure}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -741,6 +823,13 @@ is defined as
   % meaning that $\text{LB-FUGW} (\cX^s, \cX^t) = \fugw(\cX^s, \cX^t)$.
 \end{block}
 
+\begin{minipage}[t]{0.2\linewidth}
+\end{minipage}
+\hfill%
+\begin{minipage}[t]{0.8\linewidth}
+  Practice $\neq$ theory but still observe ${\color{blue}{P}} = {\color{red}{Q}}$.
+\end{minipage}%
+
 \begin{tikzpicture}[remember picture, overlay]
   \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_fugw.pdf}};
@@ -753,6 +842,7 @@ is defined as
 % \vspace{-0.5cm}
 \scriptsize
 \begin{itemize}
+  \item[$\bullet$] Learn transport plan from train functional maps, predict on test functional maps.
   \item[$\bullet$] Evaluation metric = $\text{corr}(\text{transported features}, \text{target features})$.
   \item[$\bullet$] Baseline = $\text{corr}(\text{proj}_{\text{source features}}, \text{proj}_{\text{target features}})$.
 \end{itemize}
@@ -782,6 +872,22 @@ is defined as
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Contribution on UCOOT
 \section{Unbalanced CO-Optimal Transport}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Alignment with CO-Optimal Transport}
+  \scriptsize
+  \vspace*{0.5cm}
+  \begin{itemize}
+    \setlength\itemsep{0.2cm}
+    \item[$\bullet$] $X \in \bbR^{{\color{blue}{20}} \times {\color{red}{16}}}: X_{ij} = \cos({\color{blue}{\frac{i}{20}}} \pi) + \cos({\color{red}{\frac{j}{16}}} \pi)$.
+    \item[$\bullet$] $Y \in \bbR^{{\color{blue}{10}} \times {\color{red}{8}}}: Y_{ij} = \cos({\color{blue}{\frac{i}{10}}} \pi) + \cos({\color{red}{\frac{j}{8}}} \pi)$.
+  \end{itemize}
+  \vspace*{-0.2cm}
+  \begin{figure}
+    \centering
+    \includegraphics[width=1.4\linewidth, keepaspectratio=true]{OT_new/UCOOT_plot_intro.pdf}
+  \end{figure}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation: alignments under presence of outliers (1)}
@@ -865,7 +971,7 @@ is defined as
     \setlength\itemindent{5pt}
     \item[$\bullet$] Ours $\neq$ \parencite{Chowdhury21b}: bounded measurable function on measure spaces.
   \end{itemize}
-s
+
   \begin{tikzpicture}[remember picture, overlay]
     \node[shift={(-3.7cm,-6.3cm)}] at (current page.center)
     {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
@@ -910,9 +1016,9 @@ where:
 \end{definition}
 
 \begin{itemize}
-  \item[$\bullet$] Quadratic divergence $\Rightarrow$ Provable robustness.
   \item[$\bullet$] If ${\color{blue}{\mu^s_k}} = {\color{red}{\mu^f_k}}$ $\Rightarrow$
   Encoding same (weak) isomorphisms as COOT.
+  \item[$\bullet$] Quadratic divergence $\Rightarrow$ Provable robustness.
 \end{itemize}
 % {\color{brown}{\textbf{Why quadratic divergence?}}}
 % \begin{itemize}
@@ -969,11 +1075,11 @@ where:
   \end{minipage}%
     \hfill%
     \hspace{-6cm}
-    \begin{minipage}[t]{0.3\linewidth}
+    \begin{minipage}[t]{0.35\linewidth}
       \vspace{-0.5cm}
     \begin{figure}
       \centering
-      \includegraphics[width=1.25\linewidth, keepaspectratio=true]{OT_new/noisy_toy.pdf}
+      \includegraphics[width=1.1\linewidth, keepaspectratio=true]{OT_new/noisy_toy.pdf}
     \end{figure}
   \end{minipage}
 
@@ -1073,10 +1179,15 @@ where:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Illustration 2: Single-cell multi-omics (with Pinar Demetci)}
 \scriptsize
-% \vspace{-0.3cm}
+\vspace{-0.2cm}
 \begin{itemize}
-  \item[$\bullet$] Datasets: CITE-Seq \parencite{CITEseq}.
-  \item[$\bullet$] Source features = antibodies, target features = genes.
+  \item[$\bullet$] Dataset: CITE-Seq \parencite{CITEseq}
+  \begin{itemize}
+    \scriptsize
+    \setlength\itemindent{10pt}
+    \item[$+$] Source: sample = cells, features = antibodies.
+    \item[$+$] Target: samples = same cells, features = gene expressions.
+  \end{itemize}
 \end{itemize}
 \vspace{-0.5cm}
 \begin{figure}
@@ -1106,7 +1217,7 @@ where:
 
 \begin{enumerate}
   \item[1.] Isometries are useful for across-space comparison.
-  \item[2.] Isometry farm: "all isometries are created equal, but some are more equal than others".
+  \item[2.] Isometry farm: all isometries are created equal, but some are more equal than others.
   \item[3.] GW induces all isometries but maybe too many.
   \item[4.] COOT is good at exploiting data but maybe too rigid with isometries.
 \end{enumerate}
@@ -1147,7 +1258,10 @@ where:
 \begin{block}{Definition}
   For $0\leq \alpha \leq 1$, the Augmented GW divergence between
   two weighted matrices $\cX_1 = (X_1, \mssrc, \mfsrc)$ and
-  $\cX_2 = (X_2, \mstg, \mftg)$ is defined as (add more details on matrix $X$)
+  $\cX_2 = (X_2, \mstg, \mftg)$, where
+  $X_k \in \bbR^{{\color{blue}{n_k}} \times {\color{red}{d_k}}}$ and histograms
+  ${\color{blue}{\mu^s_k \in \Delta_{n_k}}}, {\color{red}{\mu^f_k \in \Delta_{d_k}}}$,
+  is defined as
   \begin{align*}
     \label{eq:scootr}
     \agw_{\alpha}(\cX_1, \cX_2) &:=
@@ -1171,7 +1285,7 @@ where:
   \hfill%
   \hspace{-6cm}
   \begin{minipage}[t]{0.5\linewidth}
-    \vspace{-0.2cm}
+    \vspace{-0.5cm}
   \begin{figure}
     \centering
     \includegraphics[width=1.05\linewidth, keepaspectratio=true]{OT_new/agw_alpha.pdf}
@@ -1190,7 +1304,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
   \setlength\itemindent{15pt}
   \item[(A1)] Low-dimensional setting: ${\color{blue}{n}} \geq {\color{red}{d}}$.
   \item[(A2)] $X$ is full rank: easily met by preprocessing.
-  \item[(A3)] $X$ has $d$ distinct singular values. Fact:
+  \item[(A3)] $X$ has ${\color{red}{d}}$ distinct singular values. Fact:
   set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
 \end{enumerate}
 \end{assumption}
@@ -1205,8 +1319,8 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
     then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
     \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
     if $\agw_{\alpha}(\cX_1, \cX_2) = 0$, then $X_1$ and $X_2$ must have the same shape.
-    Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
-    and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
+    Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_{\color{red}{d}}$
+    and a permutation matrix $P \in \mathcal P_{\color{red}{d}}$ such that $X_2 = X_1 OP$.
   \end{itemize}
 \end{proposition}
 
@@ -1255,7 +1369,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
       \setlength\itemindent{15pt}
       \item[(A1)] Low-dimensional setting: ${\color{blue}{n}} \geq {\color{red}{d}}$.
       \item[(A2)] $X$ is full rank: easily met by preprocessing.
-      \item[(A3)] $X$ has $d$ distinct singular values. Fact:
+      \item[(A3)] $X$ has ${\color{red}{d}}$ distinct singular values. Fact:
     set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
   \end{enumerate}
   \end{assumption}
@@ -1270,8 +1384,8 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
       then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
       \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
       if $\agw_{\alpha}(\cX_1, \cX_2) = 0$, then $X_1$ and $X_2$ must have the same shape.
-      Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
-      and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
+      Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_{\color{red}{d}}$
+      and a permutation matrix $P \in \mathcal P_{\color{red}{d}}$ such that $X_2 = X_1 OP$.
     \end{itemize}
   \end{proposition}
 
@@ -1312,7 +1426,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
     \setlength\itemindent{15pt}
     \item[(A1)] Low-dimensional setting: ${\color{blue}{n}} \geq {\color{red}{d}}$.
     \item[(A2)] $X$ is full rank: easily met by preprocessing.
-    \item[(A3)] $X$ has $d$ distinct singular values. Fact:
+    \item[(A3)] $X$ has ${\color{red}{d}}$ distinct singular values. Fact:
     set of Hermitian matrices with repeated eigenvalues has zero Lebesgue measure.
   \end{enumerate}
   \end{assumption}
@@ -1327,8 +1441,8 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
       then $\agw_{\alpha}(\cX_1, \cX_2) = 0$.
       \item[$(\Leftarrow)$] Suppose $X_1$ satisfies A1-A3. For any $0 < \alpha < 1$,
       if $\agw_{\alpha}(\cX_1, \cX_2) = 0$, then $X_1$ and $X_2$ must have the same shape.
-      Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_d$
-      and a permutation matrix $P \in \mathcal P_d$ such that $X_2 = X_1 OP$.
+      Moreover, there exist a symmetric orthogonal matrix $O \in \mathcal O_{\color{red}{d}}$
+      and a permutation matrix $P \in \mathcal P_{\color{red}{d}}$ such that $X_2 = X_1 OP$.
     \end{itemize}
   \end{proposition}
 
@@ -1357,8 +1471,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
 \vspace{-2.7cm}
 \begin{itemize}
   \item[$\bullet$] Motivation: almost all current single-cell alignment methods only
-  align samples (cells). Feature alignments can yield higher quality
-  sample alignments.
+  align samples (cells).
   \item[$\bullet$] Dataset: CITE-Seq \parencite{CITEseq}
   \begin{itemize}
     \scriptsize
@@ -1419,30 +1532,34 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conclusion and Perspectives}
 \scriptsize
-
+\vspace{0.2cm}
 {\color{brown}{\textbf{Contributions}}}: filled the cube.
+\vspace{0.1cm}
 \begin{enumerate}
-  % \setlength\itemsep{0.5em}
-  \item[1.] Established the robustness of unbalanced divergences.
-  \item[2.] Real-world applications in neuroscience, domain adaptation and computational biology.
+  \setlength\itemsep{0.1cm}
+  \item[1.] Theoritical contribution: established the robustness of unbalanced divergences.
+  \item[2.] Practical contribution: real-world applications in neuroscience, domain adaptation and computational biology.
   \item[3.] Open-source contribution:
+  % \setlength\itemsep{0.1cm}
   \begin{itemize}
     \setlength\itemindent{5pt}
     \scriptsize
+    \setlength\itemsep{0.1cm}
     \item[$\bullet$] FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
-    \item[$\bullet$] FUGW, UCOOT, AGW: Python Optimal Transport (work in progress).
+    \item[$\bullet$] COOT, FUGW*, UCOOT*: Python Optimal Transport.
   \end{itemize}
 \end{enumerate}
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(6.6cm,-1.7cm)}] at (current page.center)
+  \node[shift={(3.5cm,-3.5cm)}] at (current page.center)
   {\includegraphics[scale=0.4]{OT_new/cube_summary.pdf}};
 \end{tikzpicture}
 
-\vspace{1cm}
+\vspace{0.8cm}
 {\color{brown}{\textbf{Perspectives}}}
+\setlength\itemsep{0.4cm}
 \begin{enumerate}
-  % \setlength\itemsep{0.5em}
-  \item[1.] (Ongoing work) Fill the last missing corner.
+  \setlength\itemsep{0.1cm}
+  \item[1.] Fill the last missing corner.
   \item[2.] Isometries induced AGW is not fully understood.
   \item[3.] Statistical aspects of unbalanced across-space divergences
   are little explored.
@@ -1451,11 +1568,14 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
   $\Rightarrow$ More efficient UOT solvers.
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(4cm,-3.8cm)}] at (current page.center)
+    \node[shift={(5.8cm,-3.5cm)}] at (current page.center)
     {\includegraphics[scale=0.4]{OT_new/cube_future.pdf}};
   \end{tikzpicture}
 \end{enumerate}
 
+\begin{tikzpicture}
+  \AxisRotator[x=0.2cm,y=0.5cm,->,densely dotted];
+  \end{tikzpicture}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
