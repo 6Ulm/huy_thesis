@@ -13,6 +13,7 @@
 \addbibresource{biblio.bib}
 \renewcommand*{\bibfont}{\scriptsize}
 
+\usepackage{booktabs}
 \usepackage{version}
 \usepackage[utf8]{inputenc}
 % \usepackage[french]{babel}
@@ -27,7 +28,6 @@
 \hypersetup{colorlinks=true, citecolor=green, linkcolor=blue, urlcolor=blue}
 \usepackage{color}
 \definecolor{darkgreen}{HTML}{3C8031}
-
 \usepackage[skip=2pt]{caption}
 \captionsetup[figure]{labelformat=empty}
 
@@ -36,7 +36,7 @@
 \usetikzlibrary{backgrounds,decorations.pathreplacing,calc,tikzmark}
 \newcommand{\AxisRotator}[1][rotate=0]{%
     \tikz [x=0.4cm,y=0.60cm,line width=.2ex,-stealth,#1]
-    \draw (-54,-5.5) arc (-150:150:1 and 1);%
+    \draw (-54,-5.8) arc (-150:150:1 and 1);%
 }
 
 \setbeamertemplate{headline}{}
@@ -69,6 +69,7 @@
 \newcommand{\cE}{\mathcal E}
 \newcommand{\cL}{\mathcal L}
 \newcommand{\cP}{\mathcal P}
+\newcommand{\cS}{\mathcal S}
 \newcommand{\bbR}{\mathbb R}
 \newcommand{\rmd}{\mathrm{d}}
 \newcommand{\bX}{\textbf{X}}
@@ -324,7 +325,7 @@
 \begin{frame}{Cross-domain alignment}
   \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/brain.png}
+    \includegraphics[width=0.7\linewidth, keepaspectratio=true]{OT_new/intro_brain.pdf}
     \caption*{\scriptsize{Human brain alignments \parencite{Thual22}}}
   \end{figure}
 \end{frame}
@@ -1156,8 +1157,8 @@ where:
 \begin{frame}{Illustration 1: MNIST images}
 \scriptsize
 \begin{itemize}
-  \item[$\bullet$] Feature outliers = Gaussian noise of shape $28 \times 6$.
-  \item[$\bullet$] Sample outliers = Gaussian noise of shape $28 \times 34$.
+  \item[$\bullet$] Feature outliers = Gaussian noise of shape $28 \times 10$.
+  \item[$\bullet$] Sample outliers = 50 random images of shape $28 \times 34$, with uniform entries in [0, 1].
 \end{itemize}
 \vspace{-0.5cm}
 \begin{figure}
@@ -1532,31 +1533,34 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conclusion and Perspectives}
 \scriptsize
-\vspace{0.2cm}
+\vspace{0.5cm}
 {\color{brown}{\textbf{Contributions}}}: filled the cube.
 \vspace{0.1cm}
 \begin{enumerate}
   \setlength\itemsep{0.1cm}
   \item[1.] Theoritical contribution: established the robustness of unbalanced divergences.
   \item[2.] Practical contribution: real-world applications in neuroscience, domain adaptation and computational biology.
+  \vspace{-0.1cm}
   \item[3.] Open-source contribution:
+  \vspace{0.1cm}
   % \setlength\itemsep{0.1cm}
   \begin{itemize}
     \setlength\itemindent{5pt}
     \scriptsize
     \setlength\itemsep{0.1cm}
     \item[$\bullet$] FUGW (w/ Alexis Thual): \url{https://github.com/alexisthual/fugw}.
-    \item[$\bullet$] COOT, FUGW*, UCOOT*: Python Optimal Transport.
+    \item[$\bullet$] COOT: Python Optimal Transport.
+    \item[$\bullet$] FUGW, UCOOT: Pull request to Python Optimal Transport.
   \end{itemize}
 \end{enumerate}
 \begin{tikzpicture}[remember picture, overlay]
-  \node[shift={(3.5cm,-3.5cm)}] at (current page.center)
+  \node[shift={(3.5cm,-4cm)}] at (current page.center)
   {\includegraphics[scale=0.4]{OT_new/cube_summary.pdf}};
 \end{tikzpicture}
 
 \vspace{0.8cm}
 {\color{brown}{\textbf{Perspectives}}}
-\setlength\itemsep{0.4cm}
+\vspace{0.1cm}
 \begin{enumerate}
   \setlength\itemsep{0.1cm}
   \item[1.] Fill the last missing corner.
@@ -1568,7 +1572,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
   $\Rightarrow$ More efficient UOT solvers.
 
   \begin{tikzpicture}[remember picture, overlay]
-    \node[shift={(5.8cm,-3.5cm)}] at (current page.center)
+    \node[shift={(5.8cm,-4cm)}] at (current page.center)
     {\includegraphics[scale=0.4]{OT_new/cube_future.pdf}};
   \end{tikzpicture}
 \end{enumerate}
@@ -1613,11 +1617,11 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
       \sup_{{\color{red}{y \in Y}}} d({\color{red}{y}}, {\color{blue}{X}}) \Big\}.
     \end{align*}
     \begin{tikzpicture}[remember picture, overlay]
-      \node[shift={(4cm,-0.3cm)}] at (current page.center)
+      \node[shift={(4cm,2cm)}] at (current page.center)
       {\includegraphics[scale=0.3]{OT_new/haus.pdf}};
     \end{tikzpicture}
 
-    \vspace{-0.4cm}
+    \vspace{1cm}
     \item Gromov-Hausdorff distance \parencite{Gromov81,Gromov99}
     \vspace{-0.3cm}
     \begin{align*}
@@ -1628,7 +1632,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
       d_{H}^{Z} \Big( {\color{blue}{\big(f(X), d \big)}}, {\color{red}{\big(g(Y), d \big)}} \Big).
       \end{align*}
       \begin{tikzpicture}[remember picture, overlay]
-      \node[shift={(4.3cm,-2.9cm)}] at (current page.center)
+      \node[shift={(4.3cm,-1cm)}] at (current page.center)
       {\includegraphics[scale=0.3]{OT_new/ghaus.pdf}};
     \end{tikzpicture}
   \end{itemize}
@@ -1665,6 +1669,42 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%   \scriptsize
+%   \begin{equation}
+%     \label{eq:barycenter}
+%     \cX^B = (F^B, D^B, w^B) \in \argmin_{\cX}  \sum_{s \in \cS} \fugw(\cX^s, \cX),
+% \end{equation}
+
+% \begin{algorithm}[t]
+%   \caption{LB-FUGW barycenter for Problem \eqref{eq:barycenter}}
+%   \label{alg:fugw_barycenter}
+%   \begin{algorithmic}[1]
+%       \STATE \textbf{Input:} $(\cX^s)_{s \in \cS}, \rho, \alpha, \varepsilon$.
+%       \STATE \textbf{Output:} Individual couplings $(P^{s, B})_{s \in \cS}$, barycenter $\cX^B$.
+%       \STATE Initialize: $F^B = \mathbb I_k$; $D^B = 0_k$.
+%       \WHILE{$\cX^B = (F^B, D^B, w^B)$ has not converged}
+%           \STATE Draw $\widetilde{S}$ subset of $S$.
+%           \FOR{$s \in \widetilde{S}$}
+%               \STATE Align: $P^{s, B} \gets \text{LB-FUGW}(\cX^s, \cX^B, \rho, \alpha, \varepsilon)$.
+%               \COMMENT{Fixed $\cX^B$}
+%           \ENDFOR
+%           \STATE Update $F^B$, $D^B$:
+%           \COMMENT{Fixed $P^{s, B}$}
+%           \begin{equation*}
+%               F^B = \frac{1}{| \widetilde{S} |} \sum_{s \in \widetilde{S}}
+%               \text{diag} \left( \frac{1}{P^{s, B}_{\# 2}} \right)
+%               (P^{s, B})^\top F^s \; \text{ and } \;
+%               D_B = \frac{1}{| \widetilde{S} |} \sum_{s \in \widetilde{S}}
+%               \frac{(P^{s, B})^\top D^s P^{s, B}}{P^{s, B}_{\# 2} (P^{s, B}_{\# 2})^\top}.
+%           \end{equation*}
+%       \ENDWHILE
+%   \end{algorithmic}
+% \end{algorithm}
+
+% \end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Why quadratic divergence?}
   \scriptsize
@@ -1699,7 +1739,100 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
   \node[shift={(-3.7cm,-6cm)}] at (current page.center)
   {\includegraphics[scale=0.35]{OT_new/cube_ucoot.pdf}};
 \end{tikzpicture}
+\end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{UCOOT on unsupervised HDA}
+\begin{table}[t]
+  \centering
+  \scriptsize
+		\begin{tabular}{c c c c c}
+				\toprule
+				Domains & GW & UGW & COOT & UCOOT \\
+				\midrule
+
+				C $\to$ C & 16.25 ($\pm$ 7.54) & 10.85 ($\pm$ 2.13) & 36.40 ($\pm$ 12.94) & \textbf{44.05 ($\pm$ 19.33)} \\
+				\hline
+				C $\to$ A & 12.95 ($\pm$ 7.74) & 11.60 ($\pm$ 4.86) & 28.30 ($\pm$ 11.78) & \textbf{31.90 ($\pm$ 7.43)} \\
+				\hline
+				C $\to$ W & 18.95 ($\pm$ 9.43) & 14.15 ($\pm$ 3.98) & 19.55 ($\pm$ 14.51) & \textbf{28.55 ($\pm$ 6.60)} \\
+				\hline
+
+				A $\to$ C & 16.40 ($\pm$ 8.99) & 10.25 ($\pm$ 5.66) & \textbf{41.80 ($\pm$ 14.81)} & 39.15 ($\pm$ 17.98) \\
+				\hline
+				A $\to$ A & 14.75 ($\pm$ 15.20) & 20.20 ($\pm$ 6.45) & \textbf{57.90 ($\pm$ 16.84)} & 42.45 ($\pm$ 15.47) \\
+				\hline
+				A $\to$ W & 14.55 ($\pm$ 8.83) & 20.65 ($\pm$ 4.13) & 42.10 ($\pm$ 7.80) & \textbf{48.55 ($\pm$ 13.06)} \\
+				\hline
+
+				W $\to$ C & 20.65 ($\pm$ 11.90) & 14.20 ($\pm$ 5.13) & 8.60 ($\pm$ 6.56) & \textbf{69.80 ($\pm$ 14.91)} \\
+				\hline
+				W $\to$ A & 17.00 ($\pm$ 9.75) & 7.10 ($\pm$ 2.45) & 16.65 ($\pm$ 10.01) & \textbf{30.55 ($\pm$ 10.09)} \\
+				\hline
+				W $\to$ W & 19.30 ($\pm$ 11.87) & 24.40 ($\pm$ 3.28) & \textbf{75.30 ($\pm$ 3.26)} & 51.50 ($\pm$ 20.51) \\
+				\bottomrule
+				Average & 16.76 ($\pm$ 10.14) & 14.82 ($\pm$ 4.23) & 36.29 ($\pm$ 10.95) & \textbf{42.94 ($\pm$ 13.93)} \\
+				\bottomrule
+			\end{tabular}
+	\caption*{\scriptsize{Unsupervised HDA from CaffeNet to GoogleNet}.}
+\end{table}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Robustness of UCOOT on MNIST}
+  \begin{figure}
+    \includegraphics[width=0.7\linewidth,keepaspectratio=true]{OT_new/mnist-sigma.pdf}
+    \caption{\scriptsize{Robustness of UCOOT vs. COOT on MNIST example, at different noise levels.}}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{UCOOT on unsupervised HDA}
+  \begin{table}[t]
+    \begin{center}
+    \resizebox{1.0\linewidth}{!}{
+    \begin{tabular}{lccccccc}
+    \hline
+                                         & \textbf{Simulation 1}                                           & \textbf{Simulation 2}                                          & \textbf{Simulation 3}                                          & \textbf{Simulated RNA-seq}      & \textbf{scGEM}                                              & \textbf{SNARE-seq}                                                & \textbf{CITE-seq}                                             \\
+                                         & \begin{tabular}[c]{@{}c@{}}(300x1000, \\ 300x2000)\end{tabular} & \begin{tabular}[c]{@{}c@{}}(300x1000,\\ 300x2000)\end{tabular} & \begin{tabular}[c]{@{}c@{}}(300x1000,\\ 300x2000)\end{tabular} & \begin{tabular}[c]{@{}c@{}}(5000x50, \\ 5000x500)\end{tabular}                 & \begin{tabular}[c]{@{}c@{}}(177x28,\\  177x34)\end{tabular} & \begin{tabular}[c]{@{}c@{}}(1047x1000,\\  1047x3000)\end{tabular} & \begin{tabular}[c]{@{}c@{}}(1000x25, \\ 1000x24)\end{tabular} \\ \hline
+    \multicolumn{1}{l|}{\textbf{AGW}}    & \textbf{0.0730}                                                 & \textbf{0.0041}                                                & \textbf{0.0082}                                                & \textbf{0.0}                                                                   & 0.183                                                       & \textbf{0.132}                                                    & \textbf{0.091}                                                \\
+    \multicolumn{1}{l|}{\textbf{GW}}     & 0.0866                                                          & 0.0216                                                         & {\underline{0.0084}}                                                   & 7.1e-5                                                                         & 0.198                                                       & 0.150                                                             & 0.121                                                         \\
+    \multicolumn{1}{l|}{\textbf{COOT}}   & {\underline{0.0752}}                                                    & \textbf{0.0041}                                                & 0.0088                                                         & \textbf{0.0}                                                                   & 0.206                                                       & 0.153                                                             & 0.132                                                         \\
+    \multicolumn{1}{l|}{\textbf{UGW}}    & 0.0838                                                          & 0.0522                                                         & 0.0105                                                         & 0.096                                                                          & \textbf{0.161}                                              & {\underline{0.140}}                                                       & {\underline{0.116}}                                                   \\
+    \multicolumn{1}{l|}{\textbf{UCOOT}}  & 0.0850                                                          & {\underline{0.0081}}                                                   & 0.0122                                                         & 0.115                                                                          & {\underline{0.181}}                                                 & 0.188                                                             & 0.127                                                         \\
+    \multicolumn{1}{l|}{\textbf{bindSC}} & N/A                                                             & N/A                                                            & N/A                                                            & 3.8e-4                                                                         & N/A                                                         & 0.242                                                             & 0.144                                                         \\ \hline
+    \end{tabular}}
+    \end{center}
+    \caption*{\scriptsize{\textbf{Single-cell alignment error},
+    as quantified by the average `fraction of samples closer than true match'
+    (FOSCTTM) metric (lower values are better).
+    For each dataset, the size of the two domains they contain are expression in the format
+    (number of samples x number of features) in the second row.
+    }}
+    \end{table}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Difference between FGW and AGW}
+\scriptsize
+\begin{enumerate}
+  \setlength\itemsep{0.3cm}
+   \item \textbf{Structure of input data:}
+   FGW needs two different views of data:
+   structural and feature information for the GW and Wasserstein terms,
+   respectively. AGW, can directly operate on the embeddings
+   without any feature information.
+
+   \item \textbf{Control over isometries:}
+   The above difference implies the difference in invariants of FGW and AGW.
+
+  \item \textbf{Use of transport plans:} FGW only uses one common
+  sample coupling for computing sample-level alingments based
+  on both structural and feature spaces.
+  By contrast, AGW learns two different couplings,
+  one for sample-level and one for raw feature-level
+  correspondences/alignments.
+\end{enumerate}
 \end{frame}
 
 \end{document}
