@@ -475,7 +475,7 @@
   \begin{itemize}
     \item[$\bullet$] Quadratic div: $D_{\varphi}(p \otimes p | q \otimes q) \neq D_{\varphi}(p | q)$.
     \item[$\bullet$] In practice: $D_{\varphi} = \text{Kullback-Leibler div}$.
-    \item[$\bullet$] Characterizing isometries.
+    \item[$\bullet$] Invariant to isometries.
     \item[$\bullet$] Partial GW \parencite{Chapel20}.
   \end{itemize}
   \end{minipage}%
@@ -687,20 +687,20 @@ is defined as
   \setlength\itemsep{0.3cm}
   \item[$\bullet$] High variability in human anatomies and functional MRI responses across subjects.
 
-  $\Rightarrow$ Allow for adaptation of inter-individual variability.
+  $\Rightarrow$ How to adapt the inter-individual variability?
 
   \item[$\bullet$] Averaging functional surface brains results in loss of individual details.
 
-  $\Rightarrow$ Generate sharper barycenters for functional signals.
+  $\Rightarrow$ How to generate sharper barycenters/templates for functional signals?
 
   \item[$\bullet$] Lack of efficient methods for brain alignments.
 
-  $\Rightarrow$ Exploit anatomical and functional information.
+  $\Rightarrow$ How to efficiently exploit anatomical and functional information?
 \end{itemize}
 \begin{figure}
   \centering
   \includegraphics[width=1.\linewidth, keepaspectratio=true]{OT_new/intro_variation.pdf}
-  % \caption*{\scriptsize{High variability in human anatomies and functional MRI responses across subjects.}}
+  \caption*{\scriptsize{High variability in human anatomies and functional MRI responses across subjects.}}
 \end{figure}
 \end{frame}
 
@@ -766,7 +766,7 @@ is defined as
 \scriptsize
 % \vspace{-0.5cm}
 \begin{itemize}
-  \item[$\bullet$] Feature = scalar.
+  \item[$\bullet$] Signal = scalar.
   \item[$\bullet$] Source mesh: the signal is constituted of two von Mises
   density functions that differ by their concentration (large and small).
   \item[$\bullet$] Target mesh: only the large one is present, but at a different location.
@@ -843,9 +843,9 @@ is defined as
 % \vspace{-0.5cm}
 \scriptsize
 \begin{itemize}
-  \item[$\bullet$] Learn transport plan from train functional maps, predict on test functional maps.
-  \item[$\bullet$] Evaluation metric = $\text{corr}(\text{transported features}, \text{target features})$.
-  \item[$\bullet$] Baseline = $\text{corr}(\text{proj}_{\text{source features}}, \text{proj}_{\text{target features}})$.
+  \item[$\bullet$] Learn transport plan from train functional signals, predict on test functional signals.
+  \item[$\bullet$] Evaluation metric = $\text{corr}(\text{transported signals}, \text{target signals})$.
+  \item[$\bullet$] Baseline = $\text{corr}(\text{proj}_{\text{source signals}}, \text{proj}_{\text{target signals}})$.
 \end{itemize}
 \begin{figure}
   \centering
@@ -957,7 +957,12 @@ is defined as
 \begin{frame}{Formulation (1)}
 \scriptsize
   \begin{definition}[{\color{blue}{Sample}} - {\color{red}{feature}} space]
-    Let ${\color{blue}{(X^s, \mu^s)}}$ and ${\color{red}{(X^f, \mu^f)}}$ be compact measure spaces, where ${\color{blue}{\mu^s \in \cM^+(X^s)}}$ and ${\color{red}{\mu^f \in \cM^+(X^f)}}$. Let $c$ be a scalar integrable function in $L^p({\color{blue}{X^s}} \times {\color{red}{X^f}}, {\color{blue}{\mu^s}} \otimes {\color{red}{\mu^f}})$, for some $p \geq 1$. We call
+    Let ${\color{blue}{(X^s, \mu^s)}}$ and ${\color{red}{(X^f, \mu^f)}}$
+    be compact measure spaces, where ${\color{blue}{\mu^s \in \cM^+(X^s)}}$
+    and ${\color{red}{\mu^f \in \cM^+(X^f)}}$.
+    Let $c$ be a scalar integrable function in
+    $L^p({\color{blue}{X^s}} \times {\color{red}{X^f}}, {\color{blue}{\mu^s}} \otimes {\color{red}{\mu^f}})$,
+    for some $p \geq 1$. We call
     \begin{itemize}
       \setlength\itemindent{10pt}
       \item[$\bullet$] The triplet
@@ -965,7 +970,7 @@ is defined as
       a \underline{\textit{{\color{blue}{sample}} - {\color{red}{feature}} space}}
       (\sfspace space).
 
-      \item[$\bullet$] The function $c$ an \textit{\underline{interaction}}.
+      \item[$\bullet$] The value of $c$ an \textit{\underline{interaction}}.
     \end{itemize}
   \end{definition}
   \begin{itemize}
@@ -1219,8 +1224,8 @@ where:
 \begin{enumerate}
   \item[1.] Isometries are useful for across-space comparison.
   \item[2.] Isometry farm: all isometries are created equal, but some are more equal than others.
-  \item[3.] GW induces all isometries but maybe too many.
-  \item[4.] COOT is good at exploiting data but maybe too rigid with isometries.
+  \item[3.] GW is invariant to isometries but maybe \textbf{too many}.
+  \item[4.] COOT is good at exploiting data but maybe \textbf{too rigid} with isometries.
 \end{enumerate}
 \begin{figure}
     \centering
@@ -1354,7 +1359,7 @@ Given an input matrix $X \in \bbR^{{\color{blue}{n}} \times {\color{red}{d}}}$, 
   % we don't want to affect the bounding box if the rectangle is too large
   \begin{pgfinterruptboundingbox}
       % the following coords. may need to be changed to suit your slides
-      \fill <1> [fill=white, opacity=0.8] (1.5,0.3) rectangle (8,2.26);
+      \fill <1> [fill=white, opacity=0.8] (1.5,0.3) rectangle (8,2.3);
   \end{pgfinterruptboundingbox}
 \end{tikzpicture}
 

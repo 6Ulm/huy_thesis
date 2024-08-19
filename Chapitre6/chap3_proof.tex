@@ -1,4 +1,4 @@
-\section{Appendix of Chapter 5}
+\section{Appendix of Chapter 6}
 
 \subsection{Proofs related to Augmented Gromov-Wasserstein} \label{appendix:agw}
 
@@ -17,10 +17,10 @@
   \end{itemize}
   Due to the suboptimality of $P_{\alpha}$ for GW and $(P_1, Q_0)$ for AGW, we have
   \begin{align}
-      \alpha \langle L(C^x, C^y) \otimes P_1, P_1 \rangle
-      &\leq \alpha \langle L(C^x, C^y) \otimes P_{\alpha}, P_{\alpha} \rangle
+      \alpha \langle L(C^X, C^Y) \otimes P_1, P_1 \rangle
+      &\leq \alpha \langle L(C^X, C^Y) \otimes P_{\alpha}, P_{\alpha} \rangle
       + (1 - \alpha) \langle L(X, Y) \otimes Q_{\alpha}, P_{\alpha} \rangle \\
-      &\leq \alpha \langle L(C^x, C^y) \otimes P_1, P_1 \rangle
+      &\leq \alpha \langle L(C^X, C^Y) \otimes P_1, P_1 \rangle
       + (1 - \alpha) \langle L(X, Y) \otimes Q_0, P_1 \rangle,
   \end{align}
   or equivalently
@@ -31,48 +31,105 @@
   Similarly, we have
   \begin{align}
       (1 - \alpha) \coot(\cX, \cY) &\leq \agw_{\alpha}(\cX, \cY) \\
-      &\leq (1 - \alpha) \coot(\cX, \cY) + \alpha \langle L(C^x, C^y) \otimes P_0, P_0 \rangle.
+      &\leq (1 - \alpha) \coot(\cX, \cY) + \alpha \langle L(C^X, C^Y) \otimes P_0, P_0 \rangle.
   \end{align}
   The interpolation property then follows by the sandwich theorem.
-
-  Regarding the relaxed triangle inequality, given three weighted matrices $\cX, \cY$ and $\cZ$,
-  denote $(P^{XY}, Q^{XY}), (P^{YZ}, Q^{YZ})$ and $(P^{XZ}, Q^{XZ})$
-  the solutions of $\agw_{\alpha}(\cX, \cY), \agw_{\alpha}(\cY, \cZ)$ and
-  $\agw_{\alpha}(\cX, \cZ)$, respectively. We define
-  $P = P^{XY} \diag \left( \frac{1}{\mu_1^Y} \right) P^{YZ}$ and
-  $Q = Q^{XY} \diag \left( \frac{1}{\mu_2^Y} \right) Q^{YZ}$. Then,
-  $P \in U(\mu_1^X, \mu_1^Z)$ and $Q \in U(\mu_2^X, \mu_2^Z)$.
-  The suboptimality of $(P,Q)$ implies that
-  \begin{align}
-      &\frac{\agw_{\alpha}(\cX, \cZ)}{2} \\
-      &\leq \alpha \sum_{i,j,k,l} \frac{|C^x_{i,j} - C^z_{k,l}|^2}{2} P_{i,k} P_{j, l}
-      + (1 - \alpha) \sum_{i,j,k,l} \frac{|X_{i,j} - Z_{k,l}|^2}{2} P_{i,k} Q_{j,l} \\
-      &= \alpha \sum_{i,j,k,l} \frac{|C^x_{i,j} - C^z_{k,l}|^2}{2}
-      \left( \sum_e \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e} \right)
-      \left(\sum_o \frac{P^{XY}_{j,o} P^{YZ}_{o,l}}{(\mu_1^Y)_o} \right) \\
-      &+ (1 - \alpha) \sum_{i,j,k,l} \frac{|X_{i,j} - Z_{k,l}|^2}{2}
-      \left(\sum_e \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e} \right)
-      \left( \sum_o \frac{Q^{XY}_{j,o} Q^{YZ}_{o,l}}{(\mu_2^Y)_o} \right) \\
-      &\leq \alpha \sum_{i,j,k,l,e,o} |C^x_{i,j} - C^y_{e, o}|^2
-      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
-      \frac{P^{XY}_{j,o} P^{YZ}_{o,l}}{(\mu_1^Y)_o} \\
-      &+ (1 - \alpha) \sum_{i,j,k,l,e,o} |X_{i,j} - Y_{e,o}|^2
-      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
-      \frac{Q^{XY}_{j,o} Q^{YZ}_{o,l}}{(\mu_2^Y)_o} \\
-      &+ \alpha \sum_{i,j,k,l,e,o} |C^y_{e,o} - C^z_{k,l}|^2
-      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
-      \frac{P^{XY}_{j,o} P^{YZ}_{o,l}}{(\mu_1^Y)_o} \\
-      &+ (1 - \alpha) \sum_{i,j,k,l,e,o} |Y_{e, o} - Z_{k,l}|^2
-      \frac{P^{XY}_{i,e} P^{YZ}_{e,k}}{(\mu_1^Y)_e}
-      \frac{Q^{XY}_{j,o} Q^{YZ}_{o,l}}{(\mu_2^Y)_o} \\
-      &= \alpha \sum_{i,j,e,o} |C^x_{i,j} - C^y_{e, o}|^2 P^{XY}_{i,e} P^{XY}_{j,o}
-      + (1 - \alpha) \sum_{i,j,e,o} |X_{i,j} - Y_{e,o}|^2 P^{XY}_{i,e} Q^{XY}_{j,o} \\
-      &+ \alpha \sum_{k, l, e, o} |C^y_{e,o} - C^z_{k,l}|^2 P^{YZ}_{e,k} P^{YZ}_{o,l}
-      + (1 - \alpha) \sum_{k,l,e,o} |Y_{e, o} - Z_{k,l}|^2 P^{YZ}_{e,k} Q^{YZ}_{o,l} \\
-      &= \agw_{\alpha}(\cX, \cY) + \agw_{\alpha}(\cY, \cZ).
-  \end{align}
-  where the second inequality follows from the inequality: $(x + y)^2 \leq 2(x^2 + y^2)$.
 \end{proof}
+
+We thank professor Facundo Memoli for pointing out the proof techniques,
+which allow to establish the metric properties of AGW.
+Let us first state the following lemma.
+\begin{lemma}
+    \label{lemma:triangle_ineq}
+    Let $d_X: X^2 \to \bbR^+$ and $d_Y: Y^2 \to \bbR^+$ be two functions.
+    For any $p \geq 1$ and $\alpha, \beta \geq 0$, define the function
+    $d: (X \times Y)^2 \to \bbR^+$ by $d((x_1, y_1), (x_2, y_2)) = \big[ \alpha d^p_X(x_1, x_2) + \beta d^p_Y(y_1, y_2) \big]^{1/p}$.
+    If $d_X$ and $d_Y$ satisfy the triangle inequality, then so does $d$.
+\end{lemma}
+\begin{proof}[Proof of \Cref{lemma:triangle_ineq}]
+    WLOG, assume $\alpha = \beta = 1$ (otherwise consider
+    $\widehat{d}_X = \alpha^{1/p} d_X$ and $\widehat{d}_Y = \beta^{1/p} d_Y$).
+    For convenience, denote $z = (x, y)$. We have
+    \begin{align}
+        d^p(z_1, z_2) &= d^p_X(x_1, x_2) + d^p_Y(y_1, y_2) \\
+        &\leq \Big[ d_X(x_1, x_3) + d_X(x_3, x_2) \Big]^p
+        + \Big[d_Y(y_1, y_3) + d_Y(y_3, y_2) \Big]^p \\
+        &\leq \Big[ (d^p_X(x_1, x_3) + d^p_Y(y_1, y_3))^{1 / p}
+        + (d^p_X(x_3, x_2) + d_Y^p(y_3, y_2))^{1/p} \Big]^p \\
+        &=\Big[ d(z_1, z_3) + d(z_3, z_2) \Big]^p,
+    \end{align}
+    where the second inequality is due to the Minkowski's inequality in case of counting measure:
+    $\big[ (a + b)^p + (c+d)^p \big]^{1/p} \leq (a^p + c^p)^{1 / p} + (b^p + d^p)^{1/p}$,
+    for any $a,b,c,d \geq 0$ and $p \geq 1$. The result then follows.
+\end{proof}
+
+\begin{proof}[Proof of \Cref{prop:metric_agw}]
+    Recall that in GW, Wasserstein, COOT distances, there are only two crucial
+    components in the proof of the triangle inequality: the glueing lemma
+    and the fact that the objectives functions satisfy the triangle inequality.
+    More precisely,
+      \begin{itemize}
+          \item[$\bullet$] In Wasserstein distance: $W_p(\cX, \cY)= \inf_{\pi \in U(\mu_x, \mu_y)} ||d||_{L^p(\mu)}$, where $d: X \times Y \to \bbR^+$ is
+          a distance function. Here $d(x, y) \leq d(x, z) + d(y, z)$.
+          \item[$\bullet$] In GW distance: $\gw_p(\cX, \cY)= \inf_{\pi \in U(\mu_x, \mu_y)} ||\Gamma_{XY}||_{L^p(\mu \otimes \mu)}$,
+          where $\Gamma_{XY} : (X \times Y)^2 \to \bbR^+$ defined by
+          $\Gamma_{XY}((x, y), (x', y')) := |d_X(x, x') - d_Y(y, y')|$. Here,
+          $\Gamma_{XY}((x, y), (x', y')) \leq \Gamma_{YZ}((y, z), (y', z')) + \Gamma_{XZ}((x, z), (x', z'))$.
+      \end{itemize}
+      For this reason, in order to establish the triangle inequality for AGW,
+      it is enough to show that its objective function
+      satisfies the triangle inequality. Note that,
+      \begin{align}
+          &L_{\agw}(\cX, \cY) \\
+          &= \alpha \sum_{i,j,k,l} |C^X_{i,j} - C^Y_{k,l}|^p P_{i,k} P_{j, l}
+          + (1 - \alpha) \sum_{i,j,k,l} |X_{i,j} - Y_{k,l}|^p P_{i,k} Q_{j,l} \\
+          &= \sum_{i,j,k,l,m,n} \Big[ \alpha |C^X_{i,j} - C^Y_{k,l}|^p
+          + (1 - \alpha) |X_{i,m} - Y_{k,n}|^p \Big] P_{i,k} P_{j, l} Q_{m,n} \\
+          &= \iiint \Big[ \alpha |C^X(x, x') - C^Y(y, y')|^p
+          + (1 - \alpha) |x_{m} - y_{n}|^2 \Big] \mathrm{d}P(x, y) \; \mathrm{d}P(x', y') \; \mathrm{d}Q(x_m, y_n) \\
+          &= || F_{XY} ||^p_{L^p(P \otimes P \otimes Q)},
+      \end{align}
+      where $F_{XY}: (\widetilde{X} \times \widetilde{Y} \times \bbR)^2 \to \bbR^+$ is defined by
+      \begin{align}
+          F_{XY}((x, x', x_m), (y, y', y_n)) :=
+          \Big( \alpha |C^X(x, x') - C^Y(y, y')|^p + (1 - \alpha) |x_{m} - y_{n}|^p \Big)^{1/p}.
+      \end{align}
+      Here, the sets $\widetilde{X}, \widetilde{Y}$ contain $n_x, n_y$ rows of matrices $X, Y$, respectively.
+      The scalars $x_m, y_n$ represent the $m^{\text{th}}, n^{\text{th}}$ coordinates of
+      the vectors $x \in \widetilde{X}, y \in \widetilde{Y}$, respectively.
+      By \Cref{lemma:triangle_ineq}, since $\Gamma_{XY}: ((x,y), (x',y')) \to |C^X(x, x') - C^Y(y, y')|$
+      and $|\cdot|: (a, b) \to |a-b|$ satisfy the triangle inequality,
+      so does $F_{XY}$. Now, the proof of the triangle inequality of AGW can be
+      adapted immediately from that of any distance amongst Wasserstein, GW and COOT.
+
+      Fixing $\alpha \in [0,1)$, suppose that there exist two bijections
+      $\sigma_r \in \mathbb S_{n_x}$ and $\sigma_c \in \mathbb S_{d_x}$ such that
+      $X_{ij} = Y_{\sigma_r(i), \sigma_c(j)}$. Denote $P, Q$ the permutation matrices
+      corresponding to the permutation $\sigma_r, \sigma_c$, respectively.
+      Then, for any $q \geq 0$,
+      \begin{align}
+        (C^X_{i,j})^q &= \sum_{d = 1}^{d_x} |X_{id} - X_{jd}|^q
+        = \sum_{d = 1}^{d_x} |Y_{\sigma_r(i), \sigma_c(d)} - Y_{\sigma_r(j), \sigma_c(d)}|^q \\
+        &= \sum_{d' = 1}^{d_y} |Y_{\sigma_r(i), d'} - Y_{\sigma_r(j), d'}|^q
+        = (C^Y_{\sigma_r(i), \sigma_r(j)})^q,
+      \end{align}
+      where recall that, we must have $d_x = d_y$. We deduce that
+      \begin{align}
+        \sum_{i,j,k,l} |C^X_{i,j} - C^Y_{k,l}|^p P_{ik} P_{jl} =
+        \sum_{i,j} |C^X_{i,j} - C^Y_{\sigma_r(i), \sigma_r(j)}|^p = 0.
+      \end{align}
+      Clearly, $\sum_{i,j,k,l} |X_{i,j} - Y_{k,l}|^p P_{ik} Q_{jl} = 0$.
+      So, $\agw_{\alpha}(\cX, \cY) = 0$. Conversely,
+      if $\agw_{\alpha}(\cX, \cY) = 0$, then we must have $\coot(\cX, \cY) = 0$.
+      By Proposition 3.1 in \citep{Redko20}, there exist two bijections
+      $\sigma_r \in \mathbb S_{n_x}$ and $\sigma_c \in \mathbb S_{d_x}$ such that
+      $X_{ij} = Y_{\sigma_r(i), \sigma_c(j)}$.
+\end{proof}
+
+\paragraph{Remark.} The above proof of the triangle inequality of AGW can be
+adapted immediately to the fused GW \citep{Vayer19b}. In particular, FGW
+defines a proper metric, rather than just a semi-metric as stated in Theorem 6.3
+in \citep{Vayer19b}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{corr:hermitian}]
@@ -111,24 +168,13 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}[Proof of \Cref{thm:invariant}]
-  Regarding the first claim, note that $Y = X Q$,
-  where $Q$ is a permutation matrix corresponding to the permutation $\sigma_c$.
-  Since $Y$ is obtained by swapping columns of $X$, it is easy to see that $\gw(\cX, \cY) = 0$
-  and the optimal plan between $X$ and $Y$ is $P^* = \frac{1}{n^2} \id_n$.
-  Similarly, $\coot(\cX, \cY) = 0$, where $P^*$ and $Q^* = \frac{1}{n} Q$ are the optimal sample and
-  feature couplings, respectively. In other words,
-  $\langle L(C^x, C^y)\otimes P^*, P^* \rangle = 0$ and
-  $\langle L(X, Y) \otimes Q^*, P^* \rangle = 0$. We deduce that $\agw_{\alpha}(\cX, \cY) = 0$.
-
-  Now, for $0 < \alpha < 1$, if $\agw_{\alpha}(\cX, \cY) = 0$, then
+  For $0 < \alpha < 1$, if $\agw_{\alpha}(\cX, \cY) = 0$, then
   $\gw(\cX, \cY) = \coot(\cX, \cY) = 0$. In particular,
   $X$ and $Y$ must have the same shape, so $X, Y \in \bbR^{n \times d}$.
   As $\gw(\cX, \cY) = 0$, there exists an isometry from $X$ to $Y$. Note that every isometry from
   $\bbR^d$ to $\bbR^d$ is a composition of at most $d+1$ reflections
   (see, for example, Corollary A.7 in \citep{Konrad}). So, $Y = X O$, for some $O \in \cO_d$.
-  As $\coot(\cX, \cY) = 0$, there exist two permutations
-  $\sigma_r$ and $\sigma_c$ such that $X_{i, j} = Y_{\sigma_r(i), \sigma_c(j)}$,
-  or equivalently two permutation matrices $P \in \cP_n, Q_1 \in \cP_d$ such that $Y = P X Q_1$.
+  As $\coot(\cX, \cY) = 0$, there exist two permutation matrices $P \in \cP_n, Q_1 \in \cP_d$ such that $Y = P X Q_1$.
   We deduce that $X O = P X Q_1$, or equivalently $X = P X Q$, for
   $Q = Q_1 O^T \in \cO_d$. We will show that $Q$ is symmetric.
 
@@ -150,7 +196,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lemma}
 \label{prop:coot_invariant}
-    COOT is weakly invariant to translation.
+    For $p=2$, COOT is weakly invariant to translation.
 \end{lemma}
 \begin{proof}[Proof of \Cref{prop:coot_invariant}]
 For any $P \in U(\mu_1^X, \mu_1^Y), Q \in U(\mu_2^X, \mu_2^Y)$ and $c \in \bbR$, we have
@@ -175,7 +221,7 @@ This implies that COOT is weakly invariant to translation.
 
 \begin{proof}[Proof of \Cref{prop:invariant}]
 Note that the GW term in AGW remains unchanged by translation.
-By adapting the proof of \Cref{prop:coot_invariant}, we obtain
+By adapting the proof of \Cref{prop:coot_invariant}, for $p=2$, we obtain
 \begin{align}
     \agw_{\alpha}(\cX, \cY + c) = \agw_{\alpha}(\cX, \cY) + (1 - \alpha) \left[ c^2
     - 2 c \left( (\mu_1^X)^T X \mu_2^X - (\mu_1^Y)^T Y \mu_2^Y \right) \right].

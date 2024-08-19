@@ -14,7 +14,7 @@ This chapter presents the results from \citep{Demetci23} and address the problem
 incorporating priors into Gromov-Wasserstein (GW) distance.
 GW distance has many applications in machine learning due to its ability
 to compare measures across metric spaces and its invariance to isometric transformations. However,
-in certain applications, this invariant property can be too flexible, thus undesirable. Moreover,
+in certain applications, this invariance property can be too flexible, thus undesirable. Moreover,
 the GW distance solely considers pairwise sample similarities in input datasets,
 disregarding the raw feature representations. We propose a new optimal transport formulation,
 called Augmented Gromov-Wasserstein (AGW), that allows for some control over the
@@ -25,7 +25,7 @@ for single-cell multi-omic alignment tasks and heterogeneous domain adaptation i
 
 % \paragraph{Contributions} PD, IR and RS designed and planned the study. All authors wrote
 % the paper and revised the manuscript. by PD and RS did the experimental design and analysis.
-% The theoritical analysis of the proposed method is performed by QHT and revised by IR.
+% The theoretical analysis of the proposed method is performed by QHT and revised by IR.
 
 \raggedbottom
 
@@ -117,7 +117,7 @@ GW distance mentioned above. We summarize our contributions as follows:
 Confusion matrices of GW, AGW with $\alpha=0.5$ and COOT.
 (*) denote pair alignments ;
 \textbf{(B)} Feature coupling $Q$ of AGW compared to COOT;
-\textbf{(C)} Illustration of a case from where GW's and COOT's invariants are
+\textbf{(C)} Illustration of a case from where GW's and COOT's invariances are
 detrimental for obtaining a meaningful comparison, while AGW remains informative.
 \textbf{(D)} Example showing improved digit alignment with feature-level supervision
 that restricts reflections \textbf{(E)} Feature coupling recovered by AGW ($\alpha =0.5$)
@@ -127,12 +127,12 @@ in the supervised setting of (D).}
 
 Here, we start by outlining the motivation for our proposed formulation,
 highlighting the different properties of GW distance and COOT. Then,
-we detail our AGW method that interpolates between the two, followed by a
+we detail our AGW distance that interpolates between the two, followed by a
 theoretical study of its properties.
 
 \subsection{Motivation}
 
-\paragraph{Invariants of GW} GW distance remains unchanged under isometric transformations of
+\paragraph{Invariances of GW} GW distance remains unchanged under isometric transformations of
 the input data. This property has contributed much to the popularity of GW distance,
 as isometries naturally appear in many applications. However,
 not all isometries are equally desirable. For instance, a rotation of the
@@ -141,7 +141,7 @@ for small angles or to a digit $9$ when the angle is close to $180$ degrees. In 
 however, the GW distance remains unchanged, making it insufficient to distinguish
 the two digits apart.
 
-\paragraph{Invariants of COOT} Unlike GW, COOT has fewer degrees of freedom
+\paragraph{Invariances of COOT} Unlike GW, COOT has fewer degrees of freedom
 in terms of invariance to global isometric transformations as it is limited to
 permutations of rows and columns of the two matrices, and not all isometric transformations
 can be achieved via such permutations.
@@ -154,8 +154,8 @@ between the two datasets. Further, unlike GW, it is invariant to local isometrie
 that can be achieved via permutations of a subset of features.
 
 \subsection{AGW formulation} \label{subsec:agw_formulation}
-Given the above discussion on the invariants of COOT and GW distance,
-interpolating between them will restrict each other's invariants. Additionally,
+Given the above discussion on the invariances of COOT and GW distance,
+interpolating between them will restrict each other's invariances. Additionally,
 interpolating with COOT is a natural way to introduce raw feature alignments in GW,
 which allows for leveraging priors on them. We call this interpolation \textbf{Augmented GW} (AGW).
 Recall that a weighted matrix is the triplet $\cX = (X, \mu_1^X, \mu_2^X)$, where
@@ -167,24 +167,28 @@ Given $\alpha \in [0,1]$, we define the AGW between two weighted matrices $\cX$ 
 \min_{\substack{P \in U(\mu_1^X, \mu_1^Y) \\ Q \in U(\mu_2^X,\mu_2^Y)}} \quad
 \alpha \; \langle L(C^x,C^y) \otimes P, P \rangle + (1-\alpha) \; \langle L(X,Y) \otimes P, Q \rangle,
 \end{align}
-where
+where, for $p \geq 1$,
 \begin{itemize}
     \item[$\bullet$] $\langle L(C^x,C^y) \otimes P, P \rangle
-    = \sum_{i,j,k,l} \; (C^x_{ik} - C^y_{jl})^2 P_{ij} P_{kl}$ is the objective function of
+    = \sum_{i,j,k,l} \; (C^x_{ik} - C^y_{jl})^p P_{ij} P_{kl}$ is the objective function of
     the GW distance. Here, the matrices $C^x \in \bbR^{n_x \times n_x}$ and
     $C^y \in \bbR^{n_y \times n_y}$
     contain the intra-domain pairwise distances between the rows of $X$ and $Y$, respectively.
+    More precisely, the distance matrices are of the form:
+    $C^x_{ik} = ||x_i - x_k||_q$ and $C^y_{jl} = ||y_j - y_l||_q$, for some $q > 0$. Here,
+    $(x_i, x_k) \in \bbR^{d_x} \times \bbR^{d_x}$ and $(y_j, y_l) \in \bbR^{d_y} \times \bbR^{d_y}$
+    are tuples of rows in $X$ and $Y$, respectively.
 
     \item[$\bullet$] $\langle L(X,Y) \otimes P, Q \rangle =
-    \sum_{i,j,k,l} \; (X_{ik} - Y_{jl})^2 P_{ij} Q_{kl}$ is the objective function of the COOT.
+    \sum_{i,j,k,l} \; (X_{ik} - Y_{jl})^p P_{ij} Q_{kl}$ is the objective function of the COOT.
 \end{itemize}
 The AGW problem always admits a solution. Indeed, as the objective function is continuous
 and the sets of admissible couplings are compact, the existence of minimum and minimizer
-is guaranteed.
+is guaranteed. In practice, we mostly consider $p=2$ for computational convenience.
 
 When $\alpha = 1$, we recover the GW distance, whereas $\alpha = 0$ corresponds to the
 COOT. Our interpolation offers several important benefits. First, COOT term ensures that AGW
-will take different values for any two isometries whenever $d_x \neq d_y$. Intuitively,
+will take different values for any two isometries whenever the dimensions are different: $d_x \neq d_y$. Intuitively,
 AGW's value will then depend on how ``far'' a given isometry is from a permutation of rows
 and columns of the inputs. Thus, we restrict a broad class of (infinitely many) transformations
 that GW cannot distinguish and we tell them apart by assessing whether they
@@ -229,7 +233,8 @@ the cell type clusters when they have a similar number of cells, whereas AGW is 
 to this phenomenon.
 
 \paragraph{Optimization} For simplicity, suppose $n_x = n_y = n$ and $d_x = d_y = d$.
-With the squared loss in both GW and COOT terms, the computational trick by \citet{Peyre16}
+With the squared loss in both GW and COOT terms (meaning that $p=2$),
+the computational trick by \citet{Peyre16}
 can be applied, which reduces the complexity of AGW from $O(n^4 + n^2 d^2)$
 to $O(n^3 + dn^2 + nd^2)$. For optimization, we use the block coordinate descent (BCD) algorithm,
 where we alternatively fix one coupling and minimize AGW with respect to the other (\Cref{alg:bcd_agw}).
@@ -258,28 +263,25 @@ In practice, we rely on the built-in functions of the Python Optimal Transport p
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Theoretical analysis} \label{subsec:agw_property}
 
-\paragraph{Preliminary results}
-Intuitively, we expect that AGW interpolates between GW and COOT and shares similar properties
-with Fused Gromov-Wasserstein (FGW) distance \citep{Vayer19b}, namely
-the relaxed triangle inequality (since COOT and GW distances are both metrics).
-The following result summarizes these observations, whose proofs are presented in
-Appendix \ref{appendix:agw}.
+Intuitively, we expect that AGW interpolates between GW and COOT.
+The following result formalizes this observation.
 \begin{proposition}
 \label{prop:basic_prop}
-For $\alpha \in [0, 1]$,
-\begin{enumerate}
-    \item Given two weighted matrices $\cX$ and $\cY$, when $\alpha \to 0$ (or $1$),
-    one has $\agw_{\alpha}(\cX, \cY) \to \coot(\cX, \cY)$ (or $\gw(\cX, \cY)$).
-
-    \item AGW satisfies the relaxed triangle inequality: for any weighted matrices $\cX, \cY$
-    and $\cZ$, one has $\agw_{\alpha}(\cX, \cY) \leq 2 \big( \agw_{\alpha}(\cX, \cZ)
-    + \agw_{\alpha}(\cZ,  \cY) \big)$.
-\end{enumerate}
+Given two weighted matrices $\cX$ and $\cY$, when $\alpha \to 0$ (or $1$),
+one has $\agw_{\alpha}(\cX, \cY) \to \coot(\cX, \cY)$ (or $\gw(\cX, \cY)$).
 \end{proposition}
-
-\paragraph{Invariants of AGW}
-A more intriguing question is about the invariants that AGW exhibits.
-We denote $\cO_d$ and $\cP_d$ the sets of orthogonal and permutation matrices of size $d$,
+We also expect that AGW inherits the metric properties from GW and COOT distances.
+\begin{proposition}[Metric properties]
+    \label{prop:metric_agw}
+    For $\alpha \in [0, 1]$, AGW satisfies the triangle inequality. Moreover,
+    suppose that $\mu_1^X, \mu_1^Y, \mu_2^X, \mu_2^Y$ are uniform distributions. Then for
+    $\alpha \in [0, 1)$, AGW defines a distance on the space of weighted matrices,
+    up to permutation of the matrix coordinates. More precisely, $Y$ is
+    obtained by permuting entries of $X$ if and only if $\agw_{\alpha}(\cX, \cY) = 0$.
+\end{proposition}
+In other words, $\agw_{\alpha}(\cX, \cY) = 0$ if and only if $\coot(\cX, \cY) = 0$.
+Under mild conditions, we can further characterize the isometries encoded by AGW.
+First, let us denote $\cO_d$ and $\cP_d$ the sets of orthogonal and permutation matrices of size $d$,
 respectively. Given a matrix $X \in \bbR^{n \times d}$, we assume that
 \begin{assumption}
     \label{assumption:1}
@@ -298,30 +300,23 @@ Since the singular values of $X$ are determined by the symmetric matrix $X X^T$,
 with repeated eigenvalues. With these, we present:
 \begin{theorem}
 \label{thm:invariant}
-Given two weighted matrices $\cX$ and $\cY$.
-\begin{enumerate}
-    \item If $\mu_1^X = \mu_1^Y$ and $Y$ is obtained by permuting columns of
-    $X$ via the permutation $\sigma_c$ (so $\mu_2^Y = (\sigma_c)_{\#} \mu_2^X$),
-    then $\agw_{\alpha}(\cX, \cY) = 0$.
-    \item Suppose $X \in \bbR^{n \times d}$, where $n \geq d$, satisfies \Cref{assumption:1}.
-    For any $0 < \alpha < 1$, if $\agw_{\alpha}(\cX, \cY) = 0$,
-    then there exist a symmetric orthogonal matrix $O \in \cO_d$ and
-    a permutation matrix $P \in \cP_d$ such that $Y = X OP$.
-\end{enumerate}
+Given two weighted matrices $\cX$ and $\cY$. Suppose $X \in \bbR^{n \times d}$,
+where $n \geq d$, satisfies \Cref{assumption:1}.
+For any $0 < \alpha < 1$, if $\agw_{\alpha}(\cX, \cY) = 0$,
+then there exist a symmetric orthogonal matrix $O \in \cO_d$ and
+a permutation matrix $P \in \cP_d$ such that $Y = X OP$.
 \end{theorem}
-Despite the simplicity of the interpolation structure, the invariants induced by AGW
-present novel and non-trivial challenges for theoretical analysis.
-While sharing basic invariants, such as feature swaps, AGW covers much fewer isometries than
-GW distance. Similar to COOT, AGW only has at most finitely many, whereas GW has infinitely many isometries.
-Under mild conditions, when AGW vanishes, only transformations with a particular structure
-(compositions of a permutation and a symmetric orthogonal transformation) are eligible.
-Given the superior empirical performance of AGW over GW and COOT, such isometries appear
-meaningful and relevant in real-world tasks.
+% Despite the simplicity of the interpolation structure, the invariances induced by AGW
+% present novel and non-trivial challenges for theoretical analysis.
+% While sharing basic invariances, such as feature swaps, AGW covers much fewer isometries than
+% GW distance.
+% Given the superior empirical performance of AGW over GW and COOT, such isometries appear
+% meaningful and relevant in real-world tasks.
 
-\paragraph{Weak invariant to translation}
-While enjoying the interpolation and metric properties, AGW does not inherit the invariant
+\paragraph{Weak invariance to translation}
+While enjoying the interpolation and metric properties, AGW does not inherit the invariance
 to the translation of the GW distance. However, we find that it satisfies a relaxed version
-of this invariant defined as follows.
+of this invariance defined as follows.
 \begin{definition}
     We call $D = \inf_{\pi \in \cU} F(\pi, X, Y)$, where $X, Y$ are input data and $\cU$
     is a set of feasible couplings and $F$ is a real-valued functional, an OT-based divergence.
@@ -334,10 +329,11 @@ Intuitively, an OT-based divergence is weakly invariant to translation if only
 the optimal transport plan is preserved under translation, but not necessarily the divergence itself.
 In practice, we would argue that the ability to preserve the optimal plan under translation
 is much more important than preserving the distance itself. In other words,
-the translation only shifts the minimum but has no impact on the optimization procedure,
-meaning that the minimizer remains unchanged. This is indeed the case of AGW.
+the translation only shifts the divergence by a constant but has no impact on the optimization procedure,
+meaning that the OT plan remains unchanged. This is indeed the case of AGW.
 \begin{proposition}
-    \label{prop:invariant} For any $\alpha \in [0,1]$, AGW is weakly invariant to translation.
+    \label{prop:invariant} For $p=2$ and for any $\alpha \in [0,1]$,
+    AGW is weakly invariant to translation.
 \end{proposition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
@@ -348,10 +344,9 @@ that compares structured objects. Its objective function is a convex combination
 the GW term defined based on the pairwise intra-domain distances and the Wasserstein term
 defined over additional features that live in the same space for both input matrices.
 Despite the resemblance to FGW, AGW fundamentally differs from it in several ways.
-Firstly, AGW uses explicit control over the invariants of GW to provide more meaningful
+Firstly, AGW uses explicit control over the invariances of GW to provide more meaningful
 cross-domain matchings. No other OT-based metric in the literature (including FGW)
-leverages a similar idea. As such, \Cref{thm:invariant} is the first result of its kind
-aiming at characterizing the invariances resulting from such interpolation.
+leverages a similar idea.
 
 Secondly, FGW is mostly used for structured objects endowed with additional information living
 in the same space, for example, two graphs where each node may be colored by
@@ -579,13 +574,12 @@ and support extending AGW to unbalanced scenarios as future work.
 
 \section{Discussion}
 
-We present Augmented Gromov-Wasserstein (AGW), a new OT-based divergence for incomparable spaces.
+We present Augmented Gromov-Wasserstein (AGW), a new OT-based distance for incomparable spaces.
 It interpolates between GW and CO-Optimal transport and allows to narrow down the
 choices of isometries induced by GW, while efficiently exploiting the prior knowledge
 on the input data. We study its basic properties and empirically show that such restrictions
 result in better performance for single-cell multi-omic alignment tasks and transfer learning.
-Future work will focus on refining the theoretical analysis of the AGW invariants to
-better understand their performance in practice. We will also extend AGW to the unbalanced
+Future work will focus on extending AGW to the unbalanced
 and/or continuous setting, and other tasks where feature supervision by domain experts
 may be incorporated in OT framework.
 

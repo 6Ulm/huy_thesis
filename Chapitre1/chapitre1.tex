@@ -12,7 +12,7 @@
 
 In this chapter, we provide relevant technical background to three problems:
 balanced optimal transport (OT), unbalanced OT and Gromov-Wasserstein distance.
-The general structure for each topic includes the motivation, the theoritical and numerical aspects.
+The general structure for each topic includes the motivation, the theoretical and numerical aspects.
 In particular, we focus on the numerics, which are not usually discussed in the OT literature.
 By contrast, we only briefly present the theory since it has already been well-studied and
 can be found in many prior works, which will be precised during the discussion of each topic.
@@ -35,7 +35,7 @@ whose origin comes from the Gromov-Hausdorff distance adapted to the Wasserstein
 We present two viewpoints on the motivation of the OT problem:
 the Monge problem serves as the historical starting point and
 the Hausdorff distance later provides the intuition of the Gromov-Wasserstein distance.
-Then, we introduce some important theoritical properties of the Wasserstein distance,
+Then, we introduce some important theoretical properties of the Wasserstein distance,
 which are widely used in machine learning applications.
 Finally, we discuss in details the algorithmic and practical aspects of the
 entropic approximation of the OT distance.
@@ -131,23 +131,23 @@ Proposition 7.3.3 in \citep{Burago01}).
 % for any $K \in \cC(Z)$ such that $X \cup Y \subset K$ (see for example, \citep{Aamari22}).
 % Now, we consider a different formulation of the Hausdorff distance.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{definition}[Correspondance]
+\begin{definition}[correspondence]
 Given two non-empty sets $X$ and $Y$,
-a subset $R \subset X \times Y$ is a correspondance between $X$ and $Y$ if and only if
+a subset $R \subset X \times Y$ is a correspondence between $X$ and $Y$ if and only if
 \begin{itemize}
     \item[$\bullet$] For every $x \in X$, there exists $y \in Y$ such that $(x,y) \in R$.
     \item[$\bullet$] For every $y \in Y$, there exists $x \in X$ such that $(x,y) \in R$.
 \end{itemize}
 \end{definition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-An example of correspondance is illustrated in \Cref{fig:correspondance}.
+An example of correspondence is illustrated in \Cref{fig:correspondence}.
 When $X$ and $Y$ are finite with cardinals $m$ and $n$, respectively,
-then all correspondances can be constructed as follows:
+then all correspondences can be constructed as follows:
 choose a matrix $M \in \{0,1 \}^{m \times n}$ such that every row and column
-contains at least a value $1$, then the correspondance can be defined as
+contains at least a value $1$, then the correspondence can be defined as
 $R:= \{(x_i, y_j) \in X \times Y: M_{ij} = 1 \}$. In particular, if $X$ and $Y$ are disjoint,
 then $R$ corresponds to a bipartite graph in which every edge has uniform weight of one.
-In this case, there is an intimate relation between the correspondance
+In this case, there is an intimate relation between the correspondence
 and the transportation plan in OT
 \footnote{More discussion on the bipartite-graph viewpoint of OT can be found in
 Chapter 8 in \citep{Brualdi06} or Chapter 3.4 in \citep{Peyre19}.}.
@@ -156,13 +156,13 @@ Second, the transport plan can also be seen as a flow in a bipartite graph,
 where the source nodes must be connected to all target nodes via weighted edges.
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.35\textwidth,keepaspectratio]{Chapitre1/figures/correspondance.pdf}
-  \caption[Example of correspondance]{Example of correspondance $R$ between two sets $X = \{x_1, x_2, x_3, x_4\}$ and
+  \includegraphics[width=0.35\textwidth,keepaspectratio]{Chapitre1/figures/correspondence.pdf}
+  \caption[Example of correspondence]{Example of correspondence $R$ between two sets $X = \{x_1, x_2, x_3, x_4\}$ and
   $Y = \{y_1, y_2, y_3, y_4 \}$. Here,
   $R = \{(x_1, y_1), (x_1, y_3), (x_2, y_2), (x_3, y_2), (x_4, y_3), (x_4, y_4) \}$.}
-  \label{fig:correspondance}
+  \label{fig:correspondence}
 \end{figure}
-Denote $\mathcal R(X,Y)$ the collection of all correspondances between $X$ and $Y$,
+Denote $\mathcal R(X,Y)$ the collection of all correspondences between $X$ and $Y$,
 then by Proposition 2.1 in \citep{Memoli11}, we have
 \begin{align} \label{haus_corres}
   d_{H}^{(Z, d)}(X,Y) = \inf_{R \in  \mathcal R(X,Y)} \sup_{(x,y) \in R} d(x,y)
@@ -172,7 +172,7 @@ Suppose that we equip each compact subset in $\cC(Z)$ with a Borel probability m
 the collection of such "weighted spaces"
 $\cC_w(Z) := \{(X,\mu_X): \text{supp}(\mu_X) = X \text{ and } X \in \cC(Z) \}$.
 Given the similarity discussed above,
-one can replace the correspondance by the admissible coupling and obtain the Wasserstein distance
+one can replace the correspondence by the admissible coupling and obtain the Wasserstein distance
 \begin{align}
   W_{Z, \infty}\big((X,\mu_X), (Y,\mu_Y) \big) :=
   \inf_{\pi \in U(\mu_X, \mu_Y)} \sup_{(x,y) \in R(\pi)} d(x,y)
@@ -196,7 +196,7 @@ when extending to the setting of metric measure space.
   \centering
   \includegraphics[width=0.85\textwidth,keepaspectratio]{Chapitre1/figures/wass_motiv.pdf}
   \caption[Process of transforming the Hausdorff distance into the $p$-Wasserstein distance]
-  {Process of transforming the Hausdorff distance into the $p$-Wasserstein distance. "W" indicates the \textit{Wassersteinization} process defined by replacing the optimization over the correspondances by over the admissible couplings.
+  {Process of transforming the Hausdorff distance into the $p$-Wasserstein distance. "W" indicates the \textit{Wassersteinization} process defined by replacing the optimization over the correspondences by over the admissible couplings.
   "$L^p$" indicates the \textit{$L^p$-ization} process defined by replacing the supremum norm by the $L^p$-norm.}
   \label{fig:wass_motiv}
 \end{figure}
@@ -238,7 +238,7 @@ in \citep{Fillipo15}, one has
 \end{align}
 where $\cC_b(X), \cC_b(Y)$ denote the space of bounded continuous functions on $X, Y$, respectively.
 Strong duality still holds in a much more general setting (see Theorem 5.10 in \citep{Villani08}).
-The theory of duality plays a crucial role, not only in theoritical study, but also
+The theory of duality plays a crucial role, not only in theoretical study, but also
 in practical applications. In particular, it is at the heart of some exact solvers
 for the discrete OT problem (see Section 3 in \citep{Peyre19}).
 In the case of Wasserstein distance, the duality theory allows to deduce other reformulations
@@ -1010,10 +1010,10 @@ Facundo Mémoli used it to refer to two other distances, including the now-stand
 popularized by the work of the same author \citep{Memoli11}.}. It allows to handle a more general
 object called \textit{metric-measure} space, instead of just probability measure, as in
 the Wasserstein distance. The GW distance is not only theoretically sound \citep{Memoli11,Sturm12},
-but also computationally tractable. For this reason, it has been used extensively in practice,
+but also more computationally feasible than its peers. For this reason, it has been used extensively in practice,
 for example in graph \citep{Vayer19b,Xu19,Xu19b,Chowdhury20,Vincent21},
 computational biology \citep{Demetci20}, comparing kernel matrices \citep{Peyre16},
-correspondance alignment \citep{Solomon16}, heterogeneous domain adaptation \citep{Yan18},
+correspondence alignment \citep{Solomon16}, heterogeneous domain adaptation \citep{Yan18},
 or machine translation \citep{Melis18}, clustering and data visualization \citep{Ryner22}.
 
 While GW distance is of major interest in this thesis, as a byproduct,
@@ -1178,7 +1178,7 @@ Now, due to Theorem 7.3.25 in \citep{Burago01},
   \sup_{\substack{(x_1,y_1) \in R \\ (x_2,y_2) \in R}} \big| d_X(x_1, x_2) - d_Y(y_1, y_2) \big| \\
   &= \frac{1}{2} \inf_{R} || d_X - d_Y ||_{L^{\infty}(R \times R)},
 \end{align}
-where the infimum is taken over all $R \in \mathcal R(X,Y)$. By replacing the correspondance
+where the infimum is taken over all $R \in \mathcal R(X,Y)$. By replacing the correspondence
 with the admissible coupling, we obtain the GW distance \citep{Memoli07,Memoli11}:
 for $1 \leq p < \infty$,
 \begin{align}
@@ -1394,11 +1394,11 @@ The following result is very handy as it allows us to flexibly switch between th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{proof}
-If $\cX$ and $\cY$ are weakly isormorphic, then there exists a common mass splitting
+If $\cX$ and $\cY$ are weakly isomorphic, then there exists a common mass splitting
 $\cZ$ of $\cX$ and $\cY$, which means $\text{GM}(\cZ, \cY) = 0$. By \Cref{GW_mGW},
 $\gw(\cX, \cY) = \text{GM}(\cZ, \cY) = 0$. Conversely, if $\gw(\cX, \cY) = 0$,
 then by \Cref{GW_mGW}, there exists $\cZ \in \ms(\cX)$ such that $\text{GM}(\cZ, \cY) = 0$.
-But this means $\cZ \in \ms(\cY)$. We conclude that $\cX$ and $\cY$ are weakly isormorphic
+But this means $\cZ \in \ms(\cY)$. We conclude that $\cX$ and $\cY$ are weakly isomorphic
 since $\cZ$ is the common mass splitting. The equivalence between semi-strong isormorphism and
 GM follows immediately from the definition.
 \end{proof}
@@ -1531,8 +1531,8 @@ global convergence. For example, when $p=2$ and $C^x, C^y$ are squared Euclidean
 \citet{Ryner23} propose to apply the cutting-plane method to a tractable relaxation of the GW problem
 and show that this algorithm converges to the global optimum of the GW problem.
 
-\paragraph{1. Condition gradient descent} \citet{Vayer19b} directly estimate the GW problem by using
-the Frank-Wolfe algorithm, also known as \textit{condition gradient descent}
+\paragraph{1. Conditional gradient descent} \citet{Vayer19b} directly estimate the GW problem by using
+the Frank-Wolfe algorithm, also known as \textit{conditional gradient descent}
 \citep{Frank56,Jaggi13}. More precisely, each iteration requires
 solving an unregularized OT problem, whose cost $C \otimes P^{(t)}$ is the gradient
 involving the previous OT plan, then interpolating betweeen the newly acquired OT plan and
@@ -1569,7 +1569,7 @@ convergence analysis remains unexplored. As a side note,
 adding regularization to the GW distance also incurs bias,
 similar to the entropic OT. Inspired by the Sinkhorn divergence,
 \citet{Bunne19} apply the same strategy to debiase the entropic GW,
-but there is no theoritical guarantee with their approach.
+but there is no theoretical guarantee with their approach.
 
 \paragraph{3. (Inexact) Bregman proximal point} Inspired by the work of \citet{Xie20} on
 Inexact Proximal Optimal Transport, \citet{Xu19, Xu19b}
@@ -1627,7 +1627,7 @@ is also established for hBPG.
 
 \paragraph{6. Saddle point approximation} Similar to \citep{Koehl19},
 \citet{Koehl23} use the framework from statistical physics and approximate the GW distance by
-the limit of a decreasing sequence of free energies. Rougly speaking, at each iteration,
+the limit of a decreasing sequence of free energies. Roughly speaking, at each iteration,
 this boils down to iteratively estimating the free energy by using the saddle point approximation.
 Formally, we fix a increasing sequence of inverse temperatures $(\beta_t)_t$ converging to $+\infty$.
 At the iteration $t$, set $Q^{(0)} = P^{(t-1)}$. Then, for $k \geq 1$,

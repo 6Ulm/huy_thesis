@@ -8,7 +8,7 @@
 
 \section{Contributions}
 
-The central motivation of this thesis is on the comparison between incomparable spaces.
+The central motivation of this thesis is the comparison between incomparable spaces.
 In particular, our work lies at the intersection of various extensions of OT,
 namely the marginal relaxation, the comparison between weighted objects,
 and the integration of prior knowledge. Our contributions can be organized in two main axes.
@@ -31,7 +31,7 @@ single-cell multi-omics data, including how to account for outliers (\Cref{chap:
 and how to better exploit the input data (\Cref{chap:agw}).
 In particular, we illustrate how the proposed variations of COOT are still able to correctly recover
 the relationships amongst genomic features, while providing meaningful
-cell correspondances between the multi-omics datasets and even outperforming
+cell correspondences between the multi-omics datasets and even outperforming
 many other OT-based competitors. These variations also show strong performance in the
 heterogeneous domain adaptation tasks, especially in the unsupervised setting.
 
@@ -448,7 +448,7 @@ in which the similarity is measured by squared Euclidean distance.
 The advantage of the approach via MMOT-DC, would be able to handle any
 conditionally negative semi-definite kernel.
 
-The idea is as follows: by \Cref{prop:coot_gw_equiv},
+The idea is as follows: under the assumptions of \Cref{prop:coot_gw_equiv},
 COOT and GW distance are equivalent
 \footnote{Note that one needs to properly extend \Cref{prop:coot_gw_equiv} to the continuous setting
 (of measure networks).}. So, we can replace GW distance by COOT.
@@ -461,20 +461,20 @@ First, the technique used to study the sample complexity of entropic OT in \cite
 can be extended to the multi-marginal setting. Second, this entropic problem can approximate COOT.
 Overall, the sample complexity of GW distance roughly boils down to that of an entropic MMOT problem.
 
-\paragraph{Perspectives on Augmented Gromov-Wasserstein (AGW)}
-While AGW has shown favorable performance over many other OT-based divergences,
-its isometries are still far from being fully understood. In particular, while
-we are able to explore the structure of \textbf{some} isometries via the singular-value
-decomposition, there are still some open questions.
-\begin{enumerate}
-    \item What is the intuition behinds the isometries induced by AGW?
-    To what extent are they "better" than those of GW distance?
-    \item Our analysis is only restricted to the case where $n \geq d$, meaning that
-    the high-dimensional setting remains staying in the dark.
-    \item We can only establish the necessary conditions. But are they also sufficient?
-    \item Given the discrete nature of AGW, it is natural the consider the continuous extension.
-    In this case, what are the characteristics of its isometries?
-\end{enumerate}
+% \paragraph{Perspectives on Augmented Gromov-Wasserstein (AGW)}
+% While AGW has shown favorable performance over many other OT-based divergences,
+% its isometries are still far from being fully understood. In particular, while
+% we are able to explore the structure of \textbf{some} isometries via the singular-value
+% decomposition, there are still some open questions.
+% \begin{enumerate}
+%     \item What is the intuition behinds the isometries induced by AGW?
+%     To what extent are they "better" than those of GW distance?
+%     \item Our analysis is only restricted to the case where $n \geq d$, meaning that
+%     the high-dimensional setting remains staying in the dark.
+%     \item We can only establish the necessary conditions. But are they also sufficient?
+%     \item Given the discrete nature of AGW, it is natural the consider the continuous extension.
+%     In this case, what are the characteristics of its isometries?
+% \end{enumerate}
 
 In conclusion, we hope that this thesis contributes to the theory and practice of optimal transport for
 incomparable spaces, and that it will invite more applications of optimal transport in the interdisciplinary domains,

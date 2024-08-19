@@ -62,7 +62,10 @@ weighted matrices $\cX = (X, \mu_1^X, \mu_2^X)$ and $\cY = (Y, \mu_1^Y, \mu_2^Y)
 \end{align}
 By Proposition 1 in \citep{Redko20}, if the weights are uniforms,
 then COOT defines a distance on the space of weighted matrices,
-up to permutation of the matrix coordinates. We note that the formulation \eqref{eq:discrete_coot}
+up to permutation of the matrix coordinates. Notably, $\coot(\cX, \cY) = 0$
+if and only if there exist two permutations $\sigma_r \in \mathbb S_{n_x}$ and
+$\sigma_c \in \mathbb S_{d_x}$ such that $X_{i,k} = Y_{\sigma_r(i), \sigma_c(k)}$,
+for every $i \in [n_x], k \in [d_x]$. We note that the formulation \eqref{eq:discrete_coot}
 can be easily extended to the multi-coupling setting, for example, in \citep{Kerdoncuff22}.
 % They show has shown strong performance of the proposed method in
 % heterogeneous domain adaptation.
@@ -88,7 +91,7 @@ whose applicability is summarized in \Cref{t:comparisons}.
     \hline
 		\end{tabular}
 		\caption{Applicablility of some popular divergences. COOT is much more flexible than
-    other OT-based divergences. UOT and UGW are the unbalaced OT and unbalaced GW divergence, respectively.
+    other OT-based divergences. UOT and UGW are the unbalanced OT and unbalanced GW divergence, respectively.
     FGW is the Fused GW divergence. SW and SGW denote the sliced Wasserstein \citep{Rabin12,Bonneel15}
     and sliced GW \citep{Vayer19a} distances.
     \label{t:comparisons}}

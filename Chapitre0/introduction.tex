@@ -44,7 +44,7 @@ but rather on all pairwise relations across the supports captured by the distanc
 As a result, the Wasserstein distance can characterize the weak convergence,
 which proves to be particularly useful, for example, in training generative adversarial networks \citep{Arjovsky17}.
 Second, as for many OT-based divergences, the resulting OT plan contains
-meaningful information on the correspondances between samples, and has found important applications,
+meaningful information on the correspondences between samples, and has found important applications,
 for example in domain adaptation \citep{Courty16}, or genomics \citep{Schiebinger19}.
 Broadly speaking, the OT plan can 1) be used to estimate the barycentric mapping
 \citep{Ferradans14,Courty16}, which can be seen as the projection of the source data
@@ -65,9 +65,10 @@ probability spaces whose supports lie in the same underlying (typically metric) 
 In other words, we implicitly assume that 1) it is always feasible to compute
 the \underline{inter-domain distance}, which also happens to be \underline{the only ingredient}
 we need to calculate the Wasserstein distance, and 2) the measures must have \underline{unit mass},
-due to the marginal constraints. To what extent can we relax these assumptions?
+or more generally, equal mass due to the marginal constraints.
+To what extent can we relax these assumptions?
 
-\paragraph{Can we handle finite nonnegative measures?} Yes, for example,
+\paragraph{Can we handle any finite nonnegative measures?} Yes, for example,
 by replacing the hard marginal constraints by soft penalties.
 This gives rise to the celebrated \textit{Unbalanced Optimal Transport} (UOT), first proposed by
 \citet{Benamou03}. However, in practice, a much more popular alternative of UOT
@@ -120,14 +121,14 @@ In particular, this thesis titled
     This objective is addressed in \Cref{chap:coot,chap:ucoot}.
 
     \item Merging techniques from different branches in OT allows to have the best of many worlds,
-    thus can provide efficient solutions to problems arised from real-world applications.
+    thus can provide efficient solutions to problems arising from real-world applications.
     This strategy has been successfully used,
     for example in the unbalanced GW \citep{Sejourne20} and the fused GW \citep{Vayer19b}.
     This objective is addressed in \Cref{chap:agw,chap:ucoot,chap:fugw}.
 
     \item It is desirable to further unlock the potential applicability of COOT
     on across-domain matching. From a practical perspective, COOT brings two distinct advantages:
-    the access to the feature correspondances and a novel approach to exploit the data.
+    the access to the feature correspondences and a novel approach to exploit the data.
     To give an example, COOT offers unique opportunity to perform genomic feature alignments
     in single-cell multi-omics, which do not exist for GW or other OT-based divergences.
     This objective is addressed in \Cref{chap:agw,chap:ucoot}.
@@ -159,8 +160,8 @@ The first one is the hypergraph COOT \citep{Chowdhury21b} published in December 
 Their work and ours are based on the same mathematical framework of \citet{Chowdhury19},
 thus result in the same metric property. Apart from that, they pursue different research objectives,
 where COOT is used to explore the categorical properties of the space of measure hypernetworks.
-By contrast, we consider continuous COOT as the first step towards the analysis of
-entropic approximation, unbalanced extension and sample complexity.
+By contrast, we consider continuous extension as the first step towards the analysis of
+entropic approximation, unbalanced extension and sample complexity of COOT.
 
 Our study on the entropic COOT also shares some resemblance to the approximation error of
 entropic GW in the paper of \citet{Zhang23} published in December 2022.
@@ -172,7 +173,7 @@ which result in different upper bound of the approximation error.
 
 The second contribution is based on \citep{Tran21} and published in NeuRIPS Workshop in Optimal
 Transport and Machine Learning (OTML 2021). The motivating idea is that,
-COOT can be reformulated as a multi-marginal OT problem under the additional factorization constraint.
+COOT can be reformulated as a multi-marginal OT problem under an additional factorization constraint.
 We generalize this observation and consider the factored multi-marginal OT problem
 and its factorization relaxation via Kullback-Leibler divergence.
 Such relaxation not only enjoys nice interpolation properties, but also
@@ -242,7 +243,7 @@ and the implementation of the algorithms.
 Gromov-Wasserstein distance}
 
 It is known that GW distance is invariant under isometric transformations. However,
-not all of them are born equal. For example, digits 6 and 9 are isomorphic in GW sense,
+they are not necessarily born equal. For example, digits 6 and 9 are isomorphic in GW sense,
 but they clearly represent different labels. We propose a simple,
 yet efficient variation of GW distance, called \textit{Augmented Gromov-Wasserstein} (AGW) divergence,
 which partially addresses the above isssue.
@@ -251,14 +252,14 @@ linearly combining the objective functions of GW distance and COOT.
 We show that such combination results in much less isometries than GW distance.
 More importantly, the strong performance of AGW in our experiments indicates
 that these invariants appear to be relevant and meaningful.
-Furthermore, the information on the feature correspondances also proves to be particularly useful
+Furthermore, the information on the feature correspondences also proves to be particularly useful
 in the single-cell multi-omics integration tasks.
 
 This chapter is based on \citep{Demetci23} and has been accepted at the
 International Conference on Artificial Intelligence and Statistics (AISTATS 2024).
 It is a collaborative work with Ievgen Redko (Huawei), Pinar Demetci (Broad Institute)
 and Ritambhara Singh (Brown University). The main contribution of the author is on the
-theoritical analysis of the proposed method. In particular, despite its simplicity,
+theoretical analysis of the proposed method. In particular, despite its simplicity,
 the study of the isometries induced by AGW requires very different techniques
 to those of GW distance.
 
